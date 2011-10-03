@@ -1,0 +1,36 @@
+26/04/2011
+-Update diagnosis and procedure small than before
+15/04/2011
+- Show diagnosis and procedure follow department
+- Fix show procedures on IPD Record
+14/04/2011
+- Change solution get diagnosis and procedure
+09-04-2011
+-Update get obs group and create obs group if not exist at dashboard  
+1.0
+-Update search diagnosis and procedure from server side
+-Fix bug list investigation report. ( 04-05-2011 ) 
+-Add radio name reviewed 
+0.9
+- Fixed bug showing Admit radio button when a patient has been already in IPD
+
+0.5
+- Added IPD Record tab
+##############################
+0.4
+- Insert necessary concepts and encounter on the first time run
+- Insert necessary external hospitals unless they exist
+- minor fix in investigation report tab.
+########################################
+0.3
+- Add patient to queue when select internal referral in opd entry form
+###################
+0.2
+- integrate with ddupatientqueue.
+- Fixed bug display incorrect diagnosis in Clinical summary tab.
+####################
+0.1
+- finish opd entry, except IPD admit function.
+- finish clinical summary
+- finish investigation reports
+- require hospitalcore module version 0.3

@@ -1,0 +1,19 @@
+/* MAIN PAGE*/
+/*span.tab-header { color: white;}
+
+div#tabs { width: 100%;}
+*/
+em { font-weight: bold; padding-right: 1em; vertical-align: top;color: red }
+tr.hover {cursor: pointer; background-color:#F0E68C }
+input.ui-button {
+    /* padding values here to your liking */
+	font-size:10px;
+}
+
+.ui-tabs{
+	font-size:12px;
+}
+input.ui-button {
+    /* padding values here to your liking */
+	font-size:10px;
+}
