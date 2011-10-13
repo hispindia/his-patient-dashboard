@@ -1,5 +1,5 @@
 /**
- *  Copyright 2010 Health Information Systems Project of India
+ *  Copyright 2010 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
  *
