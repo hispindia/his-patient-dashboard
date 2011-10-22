@@ -38,7 +38,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
-import org.openmrs.module.hospitalcore.util.PatientUtil;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.patientdashboard.util.PatientDashboardUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +58,7 @@ public class MainController {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
 		model.addAttribute("patient", patient);
-		model.addAttribute("patientCategory",PatientUtil.getPatientCategory(patient));
+		model.addAttribute("patientCategory",PatientUtils.getPatientCategory(patient));
 		model.addAttribute("queueId",queueId);
 		model.addAttribute("age", PatientDashboardUtil.getAgeFromBirthDate(
 				patient.getBirthdate(), patient.getBirthdateEstimated()));
