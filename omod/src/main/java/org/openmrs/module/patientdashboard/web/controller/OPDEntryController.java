@@ -262,7 +262,7 @@ public class OPDEntryController {
 		obsExternalReferral.setConcept(cExternalReferral);
 		obsExternalReferral.setValueCoded(conceptService.getConcept(command.getExternalReferral()));
 		obsExternalReferral.setCreator(user );
-		obsExternalReferral.setDateCreated(new Date());
+		obsExternalReferral.setDateCreated(date);
 		obsExternalReferral.setEncounter(encounter);
 		obsExternalReferral.setPatient(patient);
 		encounter.addObs(obsExternalReferral);
