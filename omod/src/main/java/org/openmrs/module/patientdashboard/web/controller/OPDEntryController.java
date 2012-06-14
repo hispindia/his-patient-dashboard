@@ -112,6 +112,16 @@ public class OPDEntryController {
 		User user =Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(command.getPatientId());
+		
+		// harsh 14/6/2012 setting death date to today's date and dead variable to true when "died" is selected
+		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")){
+			patient.setDead(true);
+			patient.setDeathDate(new Date());
+		
+			ps.savePatient(patient);
+		}
+		
+		
 		Date date = new Date();
 		//create obs group only for internal referral and admit
 		Obs obsGroup = null;
