@@ -40,10 +40,16 @@
 		<td width="30%"><b>Age:</b> ${age }</td>
 		<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 	</tr>
+	<!-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed-->
 	<tr>
-		<td width="40%"><b>Patient category:</b> ${patientCategory}</td>
+		<td width="40%"><b>Patient category:</b> ${patientCategory} -
+		<c:forEach items="${observation}" var="observation">
+			${observation.valueText} 
+		</c:forEach>
+		</td>
 		<td width="30%"><b>Age category:</b> ${ageCategory }</td>
 		<td width="30%"><b>Referral:</b> ${referral.name }</td>
+		
 	</tr>
 </table>
 <div id="tabs">
