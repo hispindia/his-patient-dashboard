@@ -20,7 +20,10 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.openmrs.Concept;
@@ -28,13 +31,17 @@ import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptClass;
 import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
+import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
+import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -50,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/module/patientdashboard/main.htm")
 public class MainController {
 
+	@SuppressWarnings("deprecation")
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstView(@RequestParam("patientId") Integer patientId,
 			@RequestParam("opdId") Integer opdId,
@@ -57,8 +65,48 @@ public class MainController {
 			@RequestParam("referralId") Integer referralId, Model model) {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
+		
+		//ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,Temporary category is not being displayed
+		List<EncounterType> types = new ArrayList<EncounterType>();
+		EncounterType reginit = Context.getEncounterService().getEncounterType(1);
+		types.add(reginit);
+		EncounterType revisit = Context.getEncounterService().getEncounterType(2);
+		types.add(revisit);
+		
+		EncounterType check = Context.getEncounterService().getEncounterType(3);
+		EncounterType check1 = Context.getEncounterService().getEncounterType(4);
+		EncounterType check2 = Context.getEncounterService().getEncounterType(5);
+		EncounterType check3 = Context.getEncounterService().getEncounterType(6);
+		EncounterType check4 = Context.getEncounterService().getEncounterType(7);
+		EncounterType check5 = Context.getEncounterService().getEncounterType(8);
+		EncounterType check6 = Context.getEncounterService().getEncounterType(9);
+		EncounterType check7 = Context.getEncounterService().getEncounterType(10);
+		
+		types.add(check);
+		types.add(check1);
+		types.add(check2);
+		types.add(check3);
+		types.add(check4);
+		types.add(check5);
+		types.add(check6);
+		types.add(check7);
+		
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		Encounter encounter = hcs.getLastVisitEncounter(patient, types);
+		Set<Obs> setObs = Context.getObsService().getObservations(encounter);
+		List<Obs> listObs = new ArrayList<Obs>();
+		Iterator<Obs> obs = setObs.iterator();
+		Obs o = new Obs();
+		while(obs.hasNext()){
+			o = obs.next();
+			if(11 == o.getConcept().getId())
+				listObs.add(o);
+		}
+		
+		model.addAttribute("observation", listObs);
 		model.addAttribute("patient", patient);
 		model.addAttribute("patientCategory",PatientUtils.getPatientCategory(patient));
+		
 		model.addAttribute("queueId",queueId);
 		model.addAttribute("age", PatientDashboardUtil.getAgeFromBirthDate(
 				patient.getBirthdate(), patient.getBirthdateEstimated()));
