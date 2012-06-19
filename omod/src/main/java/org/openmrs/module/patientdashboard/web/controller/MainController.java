@@ -68,28 +68,19 @@ public class MainController {
 		
 		//ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,Temporary category is not being displayed
 		List<EncounterType> types = new ArrayList<EncounterType>();
-		EncounterType reginit = Context.getEncounterService().getEncounterType(1);
+		
+		EncounterType reginit=Context.getEncounterService().getEncounterType("REGINITIAL");
 		types.add(reginit);
-		EncounterType revisit = Context.getEncounterService().getEncounterType(2);
-		types.add(revisit);
-		
-		EncounterType check = Context.getEncounterService().getEncounterType(3);
-		EncounterType check1 = Context.getEncounterService().getEncounterType(4);
-		EncounterType check2 = Context.getEncounterService().getEncounterType(5);
-		EncounterType check3 = Context.getEncounterService().getEncounterType(6);
-		EncounterType check4 = Context.getEncounterService().getEncounterType(7);
-		EncounterType check5 = Context.getEncounterService().getEncounterType(8);
-		EncounterType check6 = Context.getEncounterService().getEncounterType(9);
-		EncounterType check7 = Context.getEncounterService().getEncounterType(10);
-		
-		types.add(check);
-		types.add(check1);
-		types.add(check2);
-		types.add(check3);
-		types.add(check4);
-		types.add(check5);
-		types.add(check6);
-		types.add(check7);
+		EncounterType regrevisit=Context.getEncounterService().getEncounterType("REGREVISIT");
+		types.add(regrevisit);
+		EncounterType labencounter=Context.getEncounterService().getEncounterType("LABENCOUNTER");
+		types.add(labencounter);
+		EncounterType radiologyencounter=Context.getEncounterService().getEncounterType("RADIOLOGYENCOUNTER");
+		types.add(radiologyencounter);
+		EncounterType opdencounter=Context.getEncounterService().getEncounterType("OPDENCOUNTER");
+		types.add(opdencounter);
+		EncounterType ipdencounter=Context.getEncounterService().getEncounterType("IPDENCOUNTER");
+		types.add(ipdencounter);
 		
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		Encounter encounter = hcs.getLastVisitEncounter(patient, types);
