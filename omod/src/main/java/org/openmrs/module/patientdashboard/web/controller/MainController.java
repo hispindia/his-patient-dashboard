@@ -21,6 +21,7 @@
 package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +44,9 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
+import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.patientdashboard.util.PatientDashboardUtil;
@@ -56,82 +59,87 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller("patientDashboardMainController")
 @RequestMapping("/module/patientdashboard/main.htm")
 public class MainController {
-
+	
+	/**
+	 * June 20th 2012 - Thai Chuong updated for Bug #45 and optimized issue #44
+	 */
 	@SuppressWarnings("deprecation")
 	@RequestMapping(method = RequestMethod.GET)
-	public String firstView(@RequestParam("patientId") Integer patientId,
-			@RequestParam("opdId") Integer opdId,
-			@RequestParam(value="queueId", required=false) Integer queueId,
-			@RequestParam("referralId") Integer referralId, Model model) {
+	public String firstView(@RequestParam("patientId") Integer patientId, @RequestParam("opdId") Integer opdId,
+	                        @RequestParam(value = "queueId", required = false) Integer queueId,
+	                        @RequestParam("referralId") Integer referralId, Model model) {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
 		
 		//ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,Temporary category is not being displayed
 		List<EncounterType> types = new ArrayList<EncounterType>();
 		
-		EncounterType reginit=Context.getEncounterService().getEncounterType("REGINITIAL");
+		EncounterType reginit = Context.getEncounterService().getEncounterType("REGINITIAL");
 		types.add(reginit);
-		EncounterType regrevisit=Context.getEncounterService().getEncounterType("REGREVISIT");
+		EncounterType regrevisit = Context.getEncounterService().getEncounterType("REGREVISIT");
 		types.add(regrevisit);
-		EncounterType labencounter=Context.getEncounterService().getEncounterType("LABENCOUNTER");
+		EncounterType labencounter = Context.getEncounterService().getEncounterType("LABENCOUNTER");
 		types.add(labencounter);
-		EncounterType radiologyencounter=Context.getEncounterService().getEncounterType("RADIOLOGYENCOUNTER");
+		EncounterType radiologyencounter = Context.getEncounterService().getEncounterType("RADIOLOGYENCOUNTER");
 		types.add(radiologyencounter);
-		EncounterType opdencounter=Context.getEncounterService().getEncounterType("OPDENCOUNTER");
+		EncounterType opdencounter = Context.getEncounterService().getEncounterType("OPDENCOUNTER");
 		types.add(opdencounter);
-		EncounterType ipdencounter=Context.getEncounterService().getEncounterType("IPDENCOUNTER");
+		EncounterType ipdencounter = Context.getEncounterService().getEncounterType("IPDENCOUNTER");
 		types.add(ipdencounter);
 		
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		Encounter encounter = hcs.getLastVisitEncounter(patient, types);
-		Set<Obs> setObs = Context.getObsService().getObservations(encounter);
-		List<Obs> listObs = new ArrayList<Obs>();
-		Iterator<Obs> obs = setObs.iterator();
-		Obs o = new Obs();
-		while(obs.hasNext()){
-			o = obs.next();
-			if(11 == o.getConcept().getId())
-				listObs.add(o);
+		// get Date of OPD Patient queue
+		PatientQueueService pqs = Context.getService(PatientQueueService.class);
+		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
+		Date createdOn = opdPatientQueue.getCreatedOn();
+		
+		// get Encounter by date
+		Encounter encounter = null;
+		EncounterService es = Context.getEncounterService();
+		List<Encounter> listEncounter = es.getEncounters(patient, createdOn, createdOn);
+		if (1 == listEncounter.size())
+			encounter = listEncounter.get(0);
+		else { // unsafe code
+			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+			encounter = hcs.getLastVisitEncounter(patient, types);
 		}
 		
-		model.addAttribute("observation", listObs);
-		model.addAttribute("patient", patient);
-		model.addAttribute("patientCategory",PatientUtils.getPatientCategory(patient));
-		
-		model.addAttribute("queueId",queueId);
-		model.addAttribute("age", PatientDashboardUtil.getAgeFromBirthDate(
-				patient.getBirthdate(), patient.getBirthdateEstimated()));
-		model.addAttribute("ageCategory",
-				PatientDashboardUtil.calcAgeClass(patient.getAge()));
-		model.addAttribute("opd", Context.getConceptService().getConcept(opdId));
-		model.addAttribute("referral",
-				Context.getConceptService().getConcept(referralId));
-		
-
-		
-
 		/*
-		 * String isInit = Context.getAdministrationService().getGlobalProperty(
-		 * PatientDashboardConstants.PROPERTY_INIT_CONCEPT); if(
-		 * "false".equals(isInit)){ ConceptService conceptService =
-		 * Context.getConceptService();
-		 * 
-		 * ConceptDatatype datatype =
-		 * Context.getConceptService().getConceptDatatypeByName("N/A");
-		 * ConceptClass conceptClass =
-		 * conceptService.getConceptClassByName("Misc"); String conceptName =
-		 * Context
-		 * .getAdministrationService().getGlobalProperty(PatientDashboardConstants
-		 * .PROPERTY_PROVISIONAL_DIAGNOSIS); Concept con =
-		 * conceptService.getConcept(conceptName); if( con == null ){ con = new
-		 * Concept(); ConceptName name = new ConceptName(conceptName,
-		 * Context.getLocale()); con.addName(name); con.setDatatype(datatype);
-		 * con.setConceptClass(conceptClass); conceptService.saveConcept(con); }
-		 * }
+		 * INIT THE CONCEPT INFORMATION
 		 */
-
-
-		// Init needed concepts
+		Concept referralConcept = Context.getConceptService().getConcept("PATIENT REFERRED TO HOSPITAL?");
+		Concept conceptYesAnswer = Context.getConceptService().getConcept("YES");
+		Concept referredTypeConcept = Context.getConceptService().getConcept("REASON FOR REFERRAL");
+		Concept temporaryCategoryConcept = Context.getConceptService().getConcept("TEMPORARY CATEGORY");
+		
+		List<Obs> listObsTemporaryCategories = new ArrayList<Obs>();
+		Obs referral = null;
+		
+		Set<Obs> setObs = Context.getObsService().getObservations(encounter);
+		Iterator<Obs> obs = setObs.iterator();
+		Obs o = new Obs();
+		while (obs.hasNext()) {
+			o = obs.next();
+			if (temporaryCategoryConcept.getId() == o.getConcept().getId())
+				listObsTemporaryCategories.add(o); // get temporary category
+			if (referredTypeConcept.getId() == o.getConcept().getId())
+				referral = o; // get referredType if patient come from another health place
+		}
+		
+		model.addAttribute("observation", listObsTemporaryCategories);
+		model.addAttribute("patient", patient);
+		model.addAttribute("patientCategory", PatientUtils.getPatientCategory(patient));
+		
+		model.addAttribute("queueId", queueId);
+		model.addAttribute("age",
+		    PatientDashboardUtil.getAgeFromBirthDate(patient.getBirthdate(), patient.getBirthdateEstimated()));
+		model.addAttribute("ageCategory", PatientDashboardUtil.calcAgeClass(patient.getAge()));
+		model.addAttribute("opd", Context.getConceptService().getConcept(opdId));
+		
+		// If the patient from another health place come.
+		if (null != referral)
+			model.addAttribute("referredType", referral.getValueCoded().getName());
+		
+		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
 		
 		insertPropertiesUnlessExist();
 		
@@ -141,68 +149,57 @@ public class MainController {
 		
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(patientId);
 		
-		if( admitted != null ){
+		if (admitted != null) {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
 		
 		return "module/patientdashboard/main";
 	}
-
+	
 	private void insertPropertiesUnlessExist() {
-
+		
 		GlobalProperty isInit = getGlobalProperty();
-
+		
 		if ("0".equals(isInit.getPropertyValue())) {
-
+			
 			// System.out.println("run it");
-
+			
 			try {
 				isInit.setPropertyValue("1");
 				Context.getAdministrationService().saveGlobalProperty(isInit);
-
+				
 				ConceptService conceptService = Context.getConceptService();
-
+				
 				// external hospital
-				insertConcept(conceptService, "Coded", "Question",
-						PatientDashboardConstants.PROPERTY_HOSPITAL);
-
+				insertConcept(conceptService, "Coded", "Question", PatientDashboardConstants.PROPERTY_HOSPITAL);
+				
 				// Provisional diagnosis
-				insertConcept(
-						conceptService,
-						"N/A",
-						"Misc",
-						PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-
+				insertConcept(conceptService, "N/A", "Misc", PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
+				
 				// Post for procedure
-				insertConcept(conceptService, "N/A", "Misc",
-						PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
-
+				insertConcept(conceptService, "N/A", "Misc", PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+				
 				// Internal referral
-				insertConcept(conceptService, "Coded", "Question",
-						PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
-
+				insertConcept(conceptService, "Coded", "Question", PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
+				
 				// External referral
-				insertConcept(conceptService, "Coded", "Question",
-						PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
-
+				insertConcept(conceptService, "Coded", "Question", PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
+				
 				// Visit outcome
-				insertConcept(conceptService, "Text", "Misc",
-						PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
-
+				insertConcept(conceptService, "Text", "Misc", PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
+				
 				// OPD WARD
-				insertConcept(conceptService, "Coded", "Question",
-						PatientDashboardConstants.PROPERTY_OPDWARD);
-
+				insertConcept(conceptService, "Coded", "Question", PatientDashboardConstants.PROPERTY_OPDWARD);
+				
 				// IPD WARD
-				insertConcept(conceptService, "Coded", "Question",
-						PatientDashboardConstants.PROPERTY_IPDWARD);
-
+				insertConcept(conceptService, "Coded", "Question", PatientDashboardConstants.PROPERTY_IPDWARD);
+				
 				// OPD encounter
 				insertEncounter(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
-
+				
 				// LAB encounter
 				insertEncounter(PatientDashboardConstants.PROPERTY_LAB_ENCOUTNER_TYPE);
-
+				
 				/*
 				 * Add external hospitals CHANGE LATER
 				 */
@@ -211,117 +208,106 @@ public class MainController {
 				// Change the global property to 2
 				isInit.setPropertyValue("2");
 				Context.getAdministrationService().saveGlobalProperty(isInit);
-
-			} catch (Exception e) {
+				
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 				isInit.setPropertyValue("0");
 				Context.getAdministrationService().saveGlobalProperty(isInit);
 			}
-
+			
 		}
 	}
 	
 	// Return the globalProperty to tell necessary concepts are created.
 	// If it does not exist, create the new one with value 0
-	private GlobalProperty getGlobalProperty(){
-
-		GlobalProperty gp = Context.getAdministrationService()
-				.getGlobalPropertyObject(
-						PatientDashboardConstants.PROPERTY_INIT_CONCEPT);
-
+	private GlobalProperty getGlobalProperty() {
+		
+		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(
+		    PatientDashboardConstants.PROPERTY_INIT_CONCEPT);
+		
 		if (gp == null) {
-			gp = new GlobalProperty(
-					PatientDashboardConstants.PROPERTY_INIT_CONCEPT, "0");
+			gp = new GlobalProperty(PatientDashboardConstants.PROPERTY_INIT_CONCEPT, "0");
 		}
-
+		
 		try {
 			Integer.parseInt(gp.getPropertyValue());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			gp.setPropertyValue("0");
 		}
 		
 		return gp;
 	}
-
-	private Concept insertConcept(ConceptService conceptService,
-			String dataTypeName, String conceptClassName, String conceptNameKey) {
+	
+	private Concept insertConcept(ConceptService conceptService, String dataTypeName, String conceptClassName,
+	                              String conceptNameKey) {
 		try {
-			ConceptDatatype datatype = Context.getConceptService()
-					.getConceptDatatypeByName(dataTypeName);
-			ConceptClass conceptClass = conceptService
-					.getConceptClassByName(conceptClassName);
-			GlobalProperty gp = Context.getAdministrationService()
-					.getGlobalPropertyObject(conceptNameKey);
+			ConceptDatatype datatype = Context.getConceptService().getConceptDatatypeByName(dataTypeName);
+			ConceptClass conceptClass = conceptService.getConceptClassByName(conceptClassName);
+			GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(conceptNameKey);
 			Concept con = conceptService.getConcept(gp.getPropertyValue());
 			// System.out.println(con);
 			if (con == null) {
 				con = new Concept();
-				ConceptName name = new ConceptName(gp.getPropertyValue(),
-						Context.getLocale());
+				ConceptName name = new ConceptName(gp.getPropertyValue(), Context.getLocale());
 				con.addName(name);
 				con.setDatatype(datatype);
 				con.setConceptClass(conceptClass);
 				return conceptService.saveConcept(con);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-
-	private Concept insertHospital(ConceptService conceptService,
-			String hospitalName) {
+	
+	private Concept insertHospital(ConceptService conceptService, String hospitalName) {
 		try {
-			ConceptDatatype datatype = Context.getConceptService()
-					.getConceptDatatypeByName("N/A");
-			ConceptClass conceptClass = conceptService
-					.getConceptClassByName("Misc");
+			ConceptDatatype datatype = Context.getConceptService().getConceptDatatypeByName("N/A");
+			ConceptClass conceptClass = conceptService.getConceptClassByName("Misc");
 			Concept con = conceptService.getConceptByName(hospitalName);
 			// System.out.println(con);
 			if (con == null) {
 				con = new Concept();
-				ConceptName name = new ConceptName(hospitalName,
-						Context.getLocale());
+				ConceptName name = new ConceptName(hospitalName, Context.getLocale());
 				con.addName(name);
 				con.setDatatype(datatype);
 				con.setConceptClass(conceptClass);
 				return conceptService.saveConcept(con);
 			}
 			return con;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-
+	
 	private void insertEncounter(String typeKey) {
 		try {
-			GlobalProperty gp = Context.getAdministrationService()
-					.getGlobalPropertyObject(typeKey);
-			if (Context.getEncounterService().getEncounterType(
-					gp.getPropertyValue()) == null) {
+			GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(typeKey);
+			if (Context.getEncounterService().getEncounterType(gp.getPropertyValue()) == null) {
 				EncounterType et = new EncounterType(gp.getPropertyValue(), "");
 				Context.getEncounterService().saveEncounterType(et);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void insertExternalHospitalConcepts(ConceptService conceptService) {
 		// System.out.println("========= insertExternalHospitalConcepts =========");
-		Concept concept = conceptService
-				.getConcept(PatientDashboardConstants.PROPERTY_HOSPITAL);
+		Concept concept = conceptService.getConcept(PatientDashboardConstants.PROPERTY_HOSPITAL);
 		if (concept != null) {
-			String[] hospitalNames = { "INDIRA GANDHI MEDICAL COLLLEGE",
-					"POST GRADUATE INSTITUTE, CHANDIGARH",
-					"ALL INDIA INSTITUTE OF MEDICAL SCIENCE, NEW DELHI"
-					};
+			String[] hospitalNames = { "INDIRA GANDHI MEDICAL COLLLEGE", "POST GRADUATE INSTITUTE, CHANDIGARH",
+			        "ALL INDIA INSTITUTE OF MEDICAL SCIENCE, NEW DELHI" };
 			for (String hn : hospitalNames) {
 				insertHospital(conceptService, hn);
 			}
-			addConceptAnswers(concept, hospitalNames,
-					Context.getAuthenticatedUser());
+			addConceptAnswers(concept, hospitalNames, Context.getAuthenticatedUser());
 		}
 	}
 	
@@ -329,19 +315,15 @@ public class MainController {
 		// System.out.println("========= insertExternalHospitalConcepts =========");
 		Concept concept = conceptService.getConcept(PatientDashboardConstants.PROPERTY_IPDWARD);
 		if (concept != null) {
-			String[] wards = { "Ipd Ward 1",
-					"Ipd Ward 2",
-					"Ipd Ward 3" };
+			String[] wards = { "Ipd Ward 1", "Ipd Ward 2", "Ipd Ward 3" };
 			for (String hn : wards) {
 				insertHospital(conceptService, hn);
 			}
-			addConceptAnswers(concept, wards,
-					Context.getAuthenticatedUser());
+			addConceptAnswers(concept, wards, Context.getAuthenticatedUser());
 		}
 	}
-
-	private void addConceptAnswers(Concept concept, String[] answerNames,
-			User creator) {
+	
+	private void addConceptAnswers(Concept concept, String[] answerNames, User creator) {
 		Set<Integer> currentAnswerIds = new HashSet<Integer>();
 		for (ConceptAnswer answer : concept.getAnswers()) {
 			currentAnswerIds.add(answer.getAnswerConcept().getConceptId());
@@ -360,5 +342,5 @@ public class MainController {
 			Context.getConceptService().saveConcept(concept);
 		}
 	}
-
+	
 }

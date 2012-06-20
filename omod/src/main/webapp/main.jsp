@@ -16,7 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
---%> 
+--%>
+<%@page import="org.openmrs.ConceptName" %>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <openmrs:require privilege="View PatientDashboard" otherwise="/login.htm" redirect="index.htm" />
 <%@ include file="/WEB-INF/template/header.jsp" %>
@@ -48,7 +49,17 @@
 		</c:forEach>
 		</td>
 		<td width="30%"><b>Age category:</b> ${ageCategory }</td>
-		<td width="30%"><b>Referral:</b> ${referral.name }</td>
+		<td width="30%"><b>Referral:</b>
+		<!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
+		<c:choose> 
+				<c:when test="${referredType.class.name == 'org.openmrs.ConceptName'}">
+					${referredType}
+				</c:when>
+				<c:otherwise>
+					${referral.name }	
+				</c:otherwise>
+			</c:choose>
+		</td>
 		
 	</tr>
 </table>
