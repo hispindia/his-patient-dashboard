@@ -98,13 +98,13 @@ public class MainController {
 		List<Encounter> listEncounter = es.getEncounters(patient, createdOn, createdOn);
 		if (1 == listEncounter.size())
 			encounter = listEncounter.get(0);
-		else { // unsafe code
+		else {
 			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 			encounter = hcs.getLastVisitEncounter(patient, types);
 		}
 		
 		/*
-		 * INIT THE CONCEPT INFORMATION
+		 * INIT THE CONCEPT INFORMATION - issue #45, #44
 		 */
 		Concept referralConcept = Context.getConceptService().getConcept("PATIENT REFERRED TO HOSPITAL?");
 		Concept conceptYesAnswer = Context.getConceptService().getConcept("YES");
@@ -120,22 +120,29 @@ public class MainController {
 		while (obs.hasNext()) {
 			o = obs.next();
 			if (temporaryCategoryConcept.getId().equals(o.getConcept().getId()))
-				listObsTemporaryCategories.add(o); // get temporary category
+				listObsTemporaryCategories.add(o); // get temporary category - issue #44
 			if (referredTypeConcept.getId().equals(o.getConcept().getId()))
-				referral = o; // get referredType if patient come from another health place
+				referral = o; // get referredType if patient come from another health place - issue #45
 		}
+		
+		/**
+		 * June 21st 2012 - Thai Chuong supported for issue #108 - estimate patient's age
+		 */
+		Date birthday = patient.getBirthdate();
 		
 		model.addAttribute("observation", listObsTemporaryCategories);
 		model.addAttribute("patient", patient);
 		model.addAttribute("patientCategory", PatientUtils.getPatientCategory(patient));
 		
 		model.addAttribute("queueId", queueId);
-		model.addAttribute("age",
-		    PatientDashboardUtil.getAgeFromBirthDate(patient.getBirthdate(), patient.getBirthdateEstimated()));
+		// issue #108
+		//		model.addAttribute("age",
+		//		    PatientDashboardUtil.getAgeFromBirthDate(patient.getBirthdate(), patient.getBirthdateEstimated()));
+		model.addAttribute("age", PatientUtils.estimateAge(birthday));
 		model.addAttribute("ageCategory", PatientDashboardUtil.calcAgeClass(patient.getAge()));
 		model.addAttribute("opd", Context.getConceptService().getConcept(opdId));
 		
-		// If the patient from another health place come.
+		// If the patient from another health place come - issue #45
 		if (null != referral)
 			model.addAttribute("referredType", referral.getValueCoded().getName());
 		
