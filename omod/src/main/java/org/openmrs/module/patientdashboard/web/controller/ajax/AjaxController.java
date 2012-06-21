@@ -18,7 +18,6 @@
  *
  **/
 
-
 package org.openmrs.module.patientdashboard.web.controller.ajax;
 
 import java.util.ArrayList;
@@ -65,46 +64,58 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * <p> Class: AjaxController </p>
- * <p> Package: org.openmrs.module.patientdashboard.web.controller.ajax </p> 
- * <p> Author: Nguyen manh chuyen </p>
- * <p> Update by: Nguyen manh chuyen </p>
- * <p> Version: $1.0 </p>
- * <p> Create date: Mar 24, 2011 4:16:48 PM </p>
- * <p> Update date: Mar 24, 2011 4:16:48 PM </p>
+ * <p>
+ * Class: AjaxController
+ * </p>
+ * <p>
+ * Package: org.openmrs.module.patientdashboard.web.controller.ajax
+ * </p>
+ * <p>
+ * Author: Nguyen manh chuyen
+ * </p>
+ * <p>
+ * Update by: Nguyen manh chuyen
+ * </p>
+ * <p>
+ * Version: $1.0
+ * </p>
+ * <p>
+ * Create date: Mar 24, 2011 4:16:48 PM
+ * </p>
+ * <p>
+ * Update date: Mar 24, 2011 4:16:48 PM
+ * </p>
  **/
 @Controller("PatientDashboardAjaxController")
 public class AjaxController {
-	@RequestMapping(value="/module/patientdashboard/backToOpdQueue.htm" , method=RequestMethod.GET)
-	public String backToOpdQueue(
-            @RequestParam("queueId") Integer queueId,
-            Map<String, Object> model, HttpServletRequest request){
+	
+	@RequestMapping(value = "/module/patientdashboard/backToOpdQueue.htm", method = RequestMethod.GET)
+	public String backToOpdQueue(@RequestParam("queueId") Integer queueId, Map<String, Object> model,
+	                             HttpServletRequest request) {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		OpdPatientQueue queue = queueService.getOpdPatientQueueById(queueId);
 		Integer opdId = 0;
-		if(queue != null){
+		if (queue != null) {
 			try {
 				queue.setStatus("");
 				queueService.saveOpdPatientQueue(queue);
 				opdId = queue.getOpdConcept().getId();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 		}
 		
-		
-		return "redirect:/module/patientqueue/main.htm?opdId="+opdId;
+		return "redirect:/module/patientqueue/main.htm?opdId=" + opdId;
 	}
 	
-	
-	@RequestMapping(value="/module/patientdashboard/showAllDiagnosis.htm" , method=RequestMethod.GET)
-	public String showAllDiagnosis(
-            @RequestParam(value="queueId", required=false) String queueId,
-            @RequestParam(value="opdId", required=false) String opdId,
-            @RequestParam(value="patientId", required=false) String patientId,
-            @RequestParam(value="referralId", required=false) String referralId,
-            Map<String, Object> model){
+	@RequestMapping(value = "/module/patientdashboard/showAllDiagnosis.htm", method = RequestMethod.GET)
+	public String showAllDiagnosis(@RequestParam(value = "queueId", required = false) String queueId,
+	                               @RequestParam(value = "opdId", required = false) String opdId,
+	                               @RequestParam(value = "patientId", required = false) String patientId,
+	                               @RequestParam(value = "referralId", required = false) String referralId,
+	                               Map<String, Object> model) {
 		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
 		
 		List<Concept> diagnosisList = patientDashboardService.searchDiagnosis(null);
@@ -112,18 +123,16 @@ public class AjaxController {
 		return "module/patientdashboard/showAllDiagnosis";
 	}
 	
-	@RequestMapping(value = "/module/patientdashboard/discharge.htm" , method=RequestMethod.GET)
-	public String dischargeView(
-			@RequestParam(value ="id",required=false) Integer admittedId, 
-			Model model){
+	@RequestMapping(value = "/module/patientdashboard/discharge.htm", method = RequestMethod.GET)
+	public String dischargeView(@RequestParam(value = "id", required = false) Integer admittedId, Model model) {
 		
-		IpdService  ipdService = (IpdService)Context.getService(IpdService.class);
+		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
 		IpdPatientAdmitted admitted = ipdService.getIpdPatientAdmitted(admittedId);
 		
 		Patient patient = admitted.getPatient();
 		
 		PersonAddress add = patient.getPersonAddress();
-		String address = " "+add.getCountyDistrict() + " "+add.getCityVillage();
+		String address = " " + add.getCountyDistrict() + " " + add.getCityVillage();
 		model.addAttribute("address", address);
 		
 		PersonAttribute relationNameattr = patient.getAttribute("Father/Husband Name");
@@ -135,18 +144,16 @@ public class AjaxController {
 		return "module/patientdashboard/dischargeForm";
 	}
 	
-	@RequestMapping(value = "/module/patientdashboard/addConceptToWard.htm" , method=RequestMethod.POST)
-	public String addConceptToWard(
-			@RequestParam(value ="opdId",required=false) Integer opdId, 
-			@RequestParam(value ="conceptId",required=false) Integer conceptId,
-			@RequestParam(value ="typeConcept",required=false) Integer typeConcept,
-			Model model){
+	@RequestMapping(value = "/module/patientdashboard/addConceptToWard.htm", method = RequestMethod.POST)
+	public String addConceptToWard(@RequestParam(value = "opdId", required = false) Integer opdId,
+	                               @RequestParam(value = "conceptId", required = false) Integer conceptId,
+	                               @RequestParam(value = "typeConcept", required = false) Integer typeConcept, Model model) {
 		
-		if(opdId != null && opdId > 0 && conceptId != null && conceptId > 0 && typeConcept != null && typeConcept > 0){
+		if (opdId != null && opdId > 0 && conceptId != null && conceptId > 0 && typeConcept != null && typeConcept > 0) {
 			PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
 			Department department = patientDashboardService.getDepartmentByWard(opdId);
 			Concept concept = Context.getConceptService().getConcept(conceptId);
-			if(concept != null && department != null){
+			if (concept != null && department != null) {
 				DepartmentConcept departmentConcept = new DepartmentConcept();
 				departmentConcept.setConcept(concept);
 				departmentConcept.setDepartment(department);
@@ -160,13 +167,9 @@ public class AjaxController {
 		return "/module/patientdashboard/ajax/addConceptToWard";
 	}
 	
-	@RequestMapping(value = "/module/patientdashboard/discharge.htm" , method=RequestMethod.POST)
-	public String dischargePost(
-			@RequestParam("admittedId") Integer id,
-			@RequestParam("outCome") Integer outCome,
-			Model model){
-		IpdService  ipdService = (IpdService)Context.getService(IpdService.class);
-		
+	@RequestMapping(value = "/module/patientdashboard/discharge.htm", method = RequestMethod.POST)
+	public String dischargePost(@RequestParam("admittedId") Integer id, @RequestParam("outCome") Integer outCome, Model model) {
+		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
 		
 		IpdPatientAdmitted pa = ipdService.getIpdPatientAdmitted(id);
 		IpdPatientAdmissionLog pal = pa.getPatientAdmissionLog();
@@ -184,52 +187,53 @@ public class AjaxController {
 		return "/module/patientdashboard/thickbox/success";
 	}
 	
-	@RequestMapping(value = "/module/patientdashboard/changeFinalResult.htm" , method=RequestMethod.GET)
-	public String finalResult(
-			@ModelAttribute("ipdCommand") IpdFinalResultCommand command,
-			@RequestParam(value ="id",required=false) Integer id, 
-			Model model){
+	@RequestMapping(value = "/module/patientdashboard/changeFinalResult.htm", method = RequestMethod.GET)
+	public String finalResult(@ModelAttribute("ipdCommand") IpdFinalResultCommand command,
+	                          @RequestParam(value = "id", required = false) Integer id, Model model) {
 		
-		IpdService  ipdService = (IpdService)Context.getService(IpdService.class);
+		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
 		IpdPatientAdmissionLog admissionLog = ipdService.getIpdPatientAdmissionLog(id);
 		
 		//
-		 ConceptService conceptService = Context.getConceptService();
-		 AdministrationService administrationService = Context.getAdministrationService();
-        String gpDiagnosis = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-        String gpProcedure = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+		ConceptService conceptService = Context.getConceptService();
+		AdministrationService administrationService = Context.getAdministrationService();
+		String gpDiagnosis = administrationService
+		        .getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
+		String gpProcedure = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
 		List<Obs> obsList = new ArrayList<Obs>(admissionLog.getIpdEncounter().getAllObs());
-		Concept conDiagnosis  = conceptService.getConcept(gpDiagnosis);
+		Concept conDiagnosis = conceptService.getConcept(gpDiagnosis);
 		
-		Concept conProcedure  = conceptService.getConcept(gpProcedure);
+		Concept conProcedure = conceptService.getConcept(gpProcedure);
 		
 		List<Concept> selectedDiagnosisList = new ArrayList<Concept>();
 		List<Concept> selectedProcedureList = new ArrayList<Concept>();
-		if(CollectionUtils.isNotEmpty(obsList)){
-			for( Obs obs : obsList){
-				if( obs.getConcept().getConceptId().equals(conDiagnosis.getConceptId()) ){
+		if (CollectionUtils.isNotEmpty(obsList)) {
+			for (Obs obs : obsList) {
+				if (obs.getConcept().getConceptId().equals(conDiagnosis.getConceptId())) {
 					selectedDiagnosisList.add(obs.getValueCoded());
 				}
-				if( obs.getConcept().getConceptId().equals(conProcedure.getConceptId()) ){
+				if (obs.getConcept().getConceptId().equals(conProcedure.getConceptId())) {
 					selectedProcedureList.add(obs.getValueCoded());
 				}
 			}
 		}
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(admissionLog.getPatient().getId());
 		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
-		List<Concept> diagnosis = dashboardService.listByDepartmentByWard(admitted.getAdmittedWard().getId(), DepartmentConcept.TYPES[0]);
-		if(CollectionUtils.isNotEmpty(diagnosis) && CollectionUtils.isNotEmpty(selectedDiagnosisList)){
+		List<Concept> diagnosis = dashboardService.listByDepartmentByWard(admitted.getAdmittedWard().getId(),
+		    DepartmentConcept.TYPES[0]);
+		if (CollectionUtils.isNotEmpty(diagnosis) && CollectionUtils.isNotEmpty(selectedDiagnosisList)) {
 			diagnosis.removeAll(selectedDiagnosisList);
 		}
-		if(CollectionUtils.isNotEmpty(diagnosis)){
+		if (CollectionUtils.isNotEmpty(diagnosis)) {
 			Collections.sort(diagnosis, new ConceptComparator());
 		}
 		model.addAttribute("listDiagnosis", diagnosis);
-		List<Concept> procedures = dashboardService.listByDepartmentByWard(admitted.getAdmittedWard().getId(), DepartmentConcept.TYPES[1]);
-		if(CollectionUtils.isNotEmpty(procedures) && CollectionUtils.isNotEmpty(selectedProcedureList)){
+		List<Concept> procedures = dashboardService.listByDepartmentByWard(admitted.getAdmittedWard().getId(),
+		    DepartmentConcept.TYPES[1]);
+		if (CollectionUtils.isNotEmpty(procedures) && CollectionUtils.isNotEmpty(selectedProcedureList)) {
 			procedures.removeAll(selectedProcedureList);
 		}
-		if(CollectionUtils.isNotEmpty(procedures)){
+		if (CollectionUtils.isNotEmpty(procedures)) {
 			Collections.sort(procedures, new ConceptComparator());
 		}
 		model.addAttribute("listProcedures", procedures);
@@ -241,25 +245,23 @@ public class AjaxController {
 		return "module/patientdashboard/ipdFinalResult";
 	}
 	
-	
-	@RequestMapping(value = "/module/patientdashboard/changeFinalResult.htm" , method=RequestMethod.POST)
-	public String submitFinalResult(
-			IpdFinalResultCommand command,
-			HttpServletRequest request, 
-			Model model){
-		IpdService  ipdService = (IpdService)Context.getService(IpdService.class);
+	@RequestMapping(value = "/module/patientdashboard/changeFinalResult.htm", method = RequestMethod.POST)
+	public String submitFinalResult(IpdFinalResultCommand command, HttpServletRequest request, Model model) {
+		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
 		IpdPatientAdmissionLog admissionLog = ipdService.getIpdPatientAdmissionLog(command.getAdmissionLogId());
 		
 		//
 		AdministrationService administrationService = Context.getAdministrationService();
-		GlobalProperty gpDiagnosis = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-		GlobalProperty procedure = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+		GlobalProperty gpDiagnosis = administrationService
+		        .getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
+		GlobalProperty procedure = administrationService
+		        .getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
 		ConceptService conceptService = Context.getConceptService();
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis.getPropertyValue());
 		Concept cProcedure = conceptService.getConceptByName(procedure.getPropertyValue());
 		Encounter ipdEncounter = admissionLog.getIpdEncounter();
 		List<Obs> listObsOfIpdEncounter = new ArrayList<Obs>(ipdEncounter.getAllObs());
-		Location location = new Location( 1 );
+		Location location = new Location(1);
 		
 		User user = Context.getAuthenticatedUser();
 		Date date = new Date();
@@ -271,52 +273,53 @@ public class AjaxController {
 		
 		List<Concept> listConceptDianosisOfIpdEncounter = new ArrayList<Concept>();
 		List<Concept> listConceptProcedureOfIpdEncounter = new ArrayList<Concept>();
-		if(CollectionUtils.isNotEmpty(listObsOfIpdEncounter)){
-			for(Obs obx : obses){
-				if(obx.getConcept().getConceptId() == cDiagnosis.getConceptId()){
+		if (CollectionUtils.isNotEmpty(listObsOfIpdEncounter)) {
+			for (Obs obx : obses) {
+				if (obx.getConcept().getConceptId().equals(cDiagnosis.getConceptId())) {
 					listConceptDianosisOfIpdEncounter.add(obx.getValueCoded());
 				}
 				
-				if(obx.getConcept().getConceptId() == cProcedure.getConceptId()){
+				if (obx.getConcept().getConceptId().equals(cProcedure.getConceptId())) {
 					listConceptProcedureOfIpdEncounter.add(obx.getValueCoded());
 				}
 			}
 		}
 		
 		List<Concept> listConceptDiagnosis = new ArrayList<Concept>();
-		for( Integer cId : command.getSelectedDiagnosisList()){
+		for (Integer cId : command.getSelectedDiagnosisList()) {
 			Concept cons = conceptService.getConcept(cId);
 			listConceptDiagnosis.add(cons);
-			if(!listConceptDianosisOfIpdEncounter.contains(cons)){
+			if (!listConceptDianosisOfIpdEncounter.contains(cons)) {
 				Obs obsDiagnosis = new Obs();
 				//obsDiagnosis.setObsGroup(obsGroup);
 				obsDiagnosis.setConcept(cDiagnosis);
 				obsDiagnosis.setValueCoded(cons);
-				obsDiagnosis.setCreator( user);
+				obsDiagnosis.setCreator(user);
 				obsDiagnosis.setObsDatetime(date);
 				obsDiagnosis.setLocation(location);
 				obsDiagnosis.setDateCreated(date);
 				obsDiagnosis.setPatient(ipdEncounter.getPatient());
 				obsDiagnosis.setEncounter(ipdEncounter);
-				obsDiagnosis =Context.getObsService().saveObs(obsDiagnosis, "update obs diagnosis if need");
+				obsDiagnosis = Context.getObsService().saveObs(obsDiagnosis, "update obs diagnosis if need");
 				obses.add(obsDiagnosis);
 			}
 		}
 		List<Concept> listConceptProcedure = new ArrayList<Concept>();
-		if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
+		if (!ArrayUtils.isEmpty(command.getSelectedProcedureList())) {
 			
-			if( cProcedure == null ){
+			if (cProcedure == null) {
 				try {
 					throw new Exception("Post for procedure concept null");
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			for( Integer pId : command.getSelectedProcedureList()){
+			for (Integer pId : command.getSelectedProcedureList()) {
 				Concept cons = conceptService.getConcept(pId);
 				listConceptProcedure.add(cons);
-				if(!listConceptProcedureOfIpdEncounter.contains(cons)){
+				if (!listConceptProcedureOfIpdEncounter.contains(cons)) {
 					Obs obsProcedure = new Obs();
 					//obsDiagnosis.setObsGroup(obsGroup);
 					obsProcedure.setConcept(cProcedure);
@@ -327,20 +330,20 @@ public class AjaxController {
 					obsProcedure.setPatient(ipdEncounter.getPatient());
 					obsProcedure.setDateCreated(date);
 					obsProcedure.setEncounter(ipdEncounter);
-					obsProcedure =Context.getObsService().saveObs(obsProcedure, "update obs diagnosis if need");
+					obsProcedure = Context.getObsService().saveObs(obsProcedure, "update obs diagnosis if need");
 					//ipdEncounter.addObs(obsProcedure);
 					obses.add(obsProcedure);
 				}
 			}
-		
+			
 		}
 		
 		// Remove obs diagnosis and procedure 
 		
-		for(  Concept con :  listConceptDianosisOfIpdEncounter ){
-			if( !listConceptDiagnosis.contains(con)){
-				for(Obs obx : listObsOfIpdEncounter){
-					if( obx.getValueCoded().getConceptId().intValue() == con.getConceptId().intValue()){
+		for (Concept con : listConceptDianosisOfIpdEncounter) {
+			if (!listConceptDiagnosis.contains(con)) {
+				for (Obs obx : listObsOfIpdEncounter) {
+					if (obx.getValueCoded().getConceptId().intValue() == con.getConceptId().intValue()) {
 						Context.getObsService().deleteObs(obx);
 						obses.remove(obx);
 					}
@@ -348,10 +351,10 @@ public class AjaxController {
 			}
 		}
 		
-		for(  Concept con :  listConceptProcedureOfIpdEncounter ){
-			if( !listConceptProcedure.contains(con)){
-				for(Obs obx : listObsOfIpdEncounter){
-					if( obx.getValueCoded().getConceptId().intValue() == con.getConceptId().intValue()){
+		for (Concept con : listConceptProcedureOfIpdEncounter) {
+			if (!listConceptProcedure.contains(con)) {
+				for (Obs obx : listObsOfIpdEncounter) {
+					if (obx.getValueCoded().getConceptId().intValue() == con.getConceptId().intValue()) {
 						Context.getObsService().deleteObs(obx);
 						obses.remove(obx);
 					}
@@ -362,7 +365,7 @@ public class AjaxController {
 		ipdEncounter.setObs(obses);
 		
 		Context.getEncounterService().saveEncounter(ipdEncounter);
-	
+		
 		//save ipd encounter
 		
 		//redirect to main page
@@ -371,11 +374,10 @@ public class AjaxController {
 		Integer opdId = pql.getOpdConcept().getConceptId();
 		Integer referralId = pql.getReferralConcept().getConceptId();
 		
-		
 		String url = "main.htm?patientId=" + patientId + "&opdId=" + opdId + "&referralId=" + referralId;
 		model.addAttribute("urlS", url);
 		model.addAttribute("message", "Succesfully");
 		return "/module/patientdashboard/thickbox/success";
-	
+		
 	}
 }

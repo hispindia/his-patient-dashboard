@@ -119,9 +119,9 @@ public class MainController {
 		Obs o = new Obs();
 		while (obs.hasNext()) {
 			o = obs.next();
-			if (temporaryCategoryConcept.getId() == o.getConcept().getId())
+			if (temporaryCategoryConcept.getId().equals(o.getConcept().getId()))
 				listObsTemporaryCategories.add(o); // get temporary category
-			if (referredTypeConcept.getId() == o.getConcept().getId())
+			if (referredTypeConcept.getId().equals(o.getConcept().getId()))
 				referral = o; // get referredType if patient come from another health place
 		}
 		

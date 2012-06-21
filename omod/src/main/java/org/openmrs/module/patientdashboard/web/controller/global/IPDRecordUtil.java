@@ -36,136 +36,128 @@ import org.openmrs.module.hospitalcore.model.IpdPatientAdmittedLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 
 public class IPDRecordUtil {
-
+	
 	private static final String HOSPITAL_NAME = " Hospital";
-
-	public List<IPDRecord> generateIPDRecord(
-			List<IpdPatientAdmissionLog> admissionLogs,
-			List<IpdPatientAdmittedLog> admittedLogs) {
+	
+	public List<IPDRecord> generateIPDRecord(List<IpdPatientAdmissionLog> admissionLogs,
+	                                         List<IpdPatientAdmittedLog> admittedLogs) {
 		List<IPDRecord> records = new ArrayList<IPDRecord>();
 		for (IpdPatientAdmissionLog admissionLog : admissionLogs) {
 			IPDRecord record = new IPDRecord();
 			record.setHospitalName(HOSPITAL_NAME);
 			record.setAdmissionDate(admissionLog.getAdmissionDate());
-			IpdPatientAdmittedLog admittedLog = getAdmitedLogByAdmissionLog(
-					admittedLogs, admissionLog);
+			IpdPatientAdmittedLog admittedLog = getAdmitedLogByAdmissionLog(admittedLogs, admissionLog);
 			record.setDischargeDate(admittedLog.getAdmissionDate());
-			record.setDiagnosis(getDiagnosisProcedure(admissionLog , 1));	
+			record.setDiagnosis(getDiagnosisProcedure(admissionLog, 1));
 			record.setProcedures(getDiagnosisProcedure(admissionLog, 2));
 			record.setAdmissionOutcome(admittedLog.getAdmissionOutCome());
 			records.add(record);
-		}		
-
+		}
+		
 		return records;
 	}
-
-	private IpdPatientAdmittedLog getAdmitedLogByAdmissionLog(
-			List<IpdPatientAdmittedLog> logs,
-			IpdPatientAdmissionLog admissionLog) {
+	
+	private IpdPatientAdmittedLog getAdmitedLogByAdmissionLog(List<IpdPatientAdmittedLog> logs,
+	                                                          IpdPatientAdmissionLog admissionLog) {
 		for (IpdPatientAdmittedLog log : logs) {
-			if (log.getPatientAdmissionLog().getId() == admissionLog.getId()) {
+			if (log.getPatientAdmissionLog().getId().equals(admissionLog.getId())) {
 				return log;
 			}
 		}
 		return null;
 	}
-
+	
 	private String getDiagnosisProcedure(IpdPatientAdmissionLog currentAdmissionLog, int type) {
-
+		
 		String results = "";
-
+		
 		// get diagnosis concept
 		ConceptService conceptService = Context.getConceptService();
 		AdministrationService administrationService = Context.getAdministrationService();
 		
-
 		Set<Obs> listObsByObsGroup = currentAdmissionLog.getIpdEncounter().getAllObs();
 		//System.out.println("listObsByObsGroup ;"+listObsByObsGroup);
-		if(type == 1){
-			String gpDiagnosis = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-			Concept conDiagnosis = conceptService.getConcept(gpDiagnosis);	
+		if (type == 1) {
+			String gpDiagnosis = administrationService
+			        .getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
+			Concept conDiagnosis = conceptService.getConcept(gpDiagnosis);
 			
 			if (CollectionUtils.isNotEmpty(listObsByObsGroup)) {
 				for (Obs obs : listObsByObsGroup) {
-				//	System.out.println("obs : "+obs.getId());
-					if (obs.getConcept().getConceptId()
-							.equals(conDiagnosis.getConceptId())) {
+					//	System.out.println("obs : "+obs.getId());
+					if (obs.getConcept().getConceptId().equals(conDiagnosis.getConceptId())) {
 						if (obs.getValueCoded() != null) {
-					//		System.out.println(" value coded : "+obs.getValueCoded().getName());
+							//		System.out.println(" value coded : "+obs.getValueCoded().getName());
 							results += obs.getValueCoded().getName() + "<br/>";
 						}
 						if (StringUtils.isNotBlank(obs.getValueText())) {
-						//	System.out.println(" value text : "+obs.getValueAsString(Context.getLocale()));
-							results +=obs.getValueText()+ "<br/>";
+							//	System.out.println(" value text : "+obs.getValueAsString(Context.getLocale()));
+							results += obs.getValueText() + "<br/>";
 						}
 					}
-
+					
 				}
 			}
-		}else if(type == 2){
-			String gpProcedure = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
-			Concept conProcedure = conceptService.getConcept(gpProcedure);	
+		} else if (type == 2) {
+			String gpProcedure = administrationService
+			        .getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+			Concept conProcedure = conceptService.getConcept(gpProcedure);
 			if (CollectionUtils.isNotEmpty(listObsByObsGroup)) {
 				for (Obs obs : listObsByObsGroup) {
-				//	System.out.println("obs : "+obs.getId());
-					if (obs.getConcept().getConceptId()
-							.equals(conProcedure.getConceptId())) {
+					//	System.out.println("obs : "+obs.getId());
+					if (obs.getConcept().getConceptId().equals(conProcedure.getConceptId())) {
 						if (obs.getValueCoded() != null) {
-					//		System.out.println(" value coded : "+obs.getValueCoded().getName());
+							//		System.out.println(" value coded : "+obs.getValueCoded().getName());
 							results += obs.getValueCoded().getName() + "<br/>";
 						}
 						if (StringUtils.isNotBlank(obs.getValueText())) {
-						//	System.out.println(" value text : "+obs.getValueAsString(Context.getLocale()));
-							results +=obs.getValueText()+ "<br/>";
+							//	System.out.println(" value text : "+obs.getValueAsString(Context.getLocale()));
+							results += obs.getValueText() + "<br/>";
 						}
 					}
-
+					
 				}
 			}
 		}
 		
-		
-		if( StringUtils.endsWith(results, "<br/>")){
+		if (StringUtils.endsWith(results, "<br/>")) {
 			results = StringUtils.removeEnd(results, "<br/>");
 		}
-
+		
 		return results;
 	}
 	
 	private String getProcedure(IpdPatientAdmissionLog currentAdmissionLog) {
-
+		
 		String procedure = "";
-
+		
 		// get diagnosis concept
 		ConceptService conceptService = Context.getConceptService();
 		AdministrationService administrationService = Context.getAdministrationService();
 		String gpProcedure = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
 		Concept conProcedure = conceptService.getConcept(gpProcedure);
 		List<Obs> listObsByObsGroup = Context.getObsService().findObsByGroupId(currentAdmissionLog.getOpdObsGroup().getId());
-
+		
 		if (CollectionUtils.isNotEmpty(listObsByObsGroup)) {
 			for (Obs obs : listObsByObsGroup) {
-				if (obs.getConcept().getConceptId()
-						.equals(conProcedure.getConceptId())
-						&& obs.getObsGroup() != null
-						&& obs.getObsGroup().getId() == currentAdmissionLog
-								.getOpdObsGroup().getId()) {
+				if (obs.getConcept().getConceptId().equals(conProcedure.getConceptId()) && obs.getObsGroup() != null
+				        && obs.getObsGroup().getId().equals(currentAdmissionLog.getOpdObsGroup().getId())) {
 					if (obs.getValueCoded() != null) {
 						procedure += obs.getValueCoded().getName() + "<br/>";
 					}
 					if (StringUtils.isNotBlank(obs.getValueText())) {
-						procedure += obs.getValueText()+ "<br/>";
+						procedure += obs.getValueText() + "<br/>";
 					}
 				}
-
+				
 			}
 		}
 		
-		if( StringUtils.endsWith(procedure, "<br/>")){
+		if (StringUtils.endsWith(procedure, "<br/>")) {
 			procedure = StringUtils.removeEnd(procedure, "<br/>");
 		}
-
+		
 		return procedure;
 	}
-
+	
 }
