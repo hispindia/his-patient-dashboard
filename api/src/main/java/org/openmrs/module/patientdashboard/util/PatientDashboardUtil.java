@@ -30,7 +30,6 @@ public class PatientDashboardUtil {
 //	        var d = parseDateString(birth.substring(0,9));
 //	        Date d2 = parseDateString(birth);
 
-	        Date today = new Date();
 	        Calendar now = Calendar.getInstance();
 	        Calendar bd = Calendar.getInstance();
 	        bd.setTime(birth);
