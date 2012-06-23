@@ -145,10 +145,10 @@ public class InvestigationReportController {
         }
         
 		List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, investigationCommand.getDate());
-		Set<String> dates = new TreeSet<String>();
+		Set<String> dates = new TreeSet<String>(); // tree for dates
 		if( encounters != null ){
 			Set<Obs> listObs = null;
-			Set<Node> nodes = new TreeSet<Node>();
+			Set<Node> nodes = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
 			Concept orderConcept = null;
 			Concept obsConcept  = null;
 			for( Encounter enc : encounters)
@@ -158,28 +158,37 @@ public class InvestigationReportController {
 					for( Obs obs : listObs ){
 						// result 
 						obsConcept = obs.getConcept();
-						
+						// loop the the end
 						if(!checkSubmitTest(obsConcept.getConceptId(), investigationCommand.getTests())){
 							continue;
 						}
 //						System.out.println("con: "+obsConcept.getDisplayString()+"=======================================================");
-						
+						// matched the concept
 						orderConcept = obs.getOrder().getConcept();
 //						System.out.println("orderConcept: "+orderConcept.getDisplayString() + " - "+orderConcept.getConceptId());
-						
+						/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
+						String value = "";
+						if( obs.getValueCoded() == null)
+							value = obs.getValueText();
+						else
+							value = obs.getValueAsString(Context.getLocale());
 						if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Test")){
 							Node node = getNode(obsConcept.getId(), nodes);
 							if( node == null ){
 								node = new Node(obsConcept.getId(), obsConcept.getName().getName());
 								addNode(node, nodes, obsConcept, listParent);
 							}
+							// node <name of obs, dateCreatedon> become an information for node
+							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
+//							Node result = new Node(obsConcept.getName().getName(),Context.getDateFormat().format(obs.getDateCreated()),
+//									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(obsConcept));
 							Node result = new Node(obsConcept.getName().getName(),Context.getDateFormat().format(obs.getDateCreated()),
-									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(obsConcept));
+								value +"  " + getUnitStringFromConcept(obsConcept));
 							node.addResultToSet(result);
 						}else if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Labset")){
-							
+							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
 							Node resultNode = new Node(obsConcept.getName().getName(), Context.getDateFormat().format(obs.getDateCreated()),
-									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(obsConcept));
+								value +"  " + getUnitStringFromConcept(obsConcept));
 							
 							Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
 							
@@ -187,7 +196,7 @@ public class InvestigationReportController {
 							nodes = addNodeAndChild(nodes, orderConcept, childNode, resultNode, listParent, true);
 						}
 //						 add date
-						dates.add(Context.getDateFormat().format(obs.getDateCreated()));
+						dates.add(Context.getDateFormat().format(obs.getDateCreated())); // datecreatedOn in to dateTree
 					}
 				}
 			}// end for encounter
