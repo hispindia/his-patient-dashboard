@@ -1,3 +1,15 @@
+1.3.6
+- Resolved issues
+	Bug #44:  OPD Dashboard/ Temporary category is not being displayed
+	Bug #45:  Dashboard
+	Bug #108: Discrepancy in age in Registartion and OPD
+	Bug #122: investigation report in opd
+	Bug #144: OPD Investigation report
+	Bug #173: Patient dashboard in OPD
+	Bug #233: [1.3.6-SNAPSHOT][DDU] Unable to view Investigation report
+	Bug #234: [1.3.6 -Snapshot] [DDU] Unable to view patient category on patient dashboard
+	Bug #294: DDU - Temporary category on the patient dashboard
+
 26/04/2011
 -Update diagnosis and procedure small than before
 15/04/2011
