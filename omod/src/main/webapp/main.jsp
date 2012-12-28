@@ -67,12 +67,16 @@
      <ul>
          <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
          <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical summary</span></a></li>
+         <%-- ghanshyam,date:28-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
+         <li><a href="laboratoryReport.htm?patientId=${patient.patientId }"   title="Laboratory report"><span>Laboratory report</span></a></li>
          <li><a href="investigationReport.htm?patientId=${patient.patientId }"  title="Investigation report"><span >Investigation report</span></a></li>
          <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD record</span></a></li>
      </ul>
      
      <div id="OPD_entry"></div>
 	 <div id="Clinical_summary"></div>
+	 <%-- ghanshyam,date:28-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
+	 <div id="Laboratory_report"></div>
 	 <div id="Investigation_report"></div>
 	 <div id="IPD_record"></div>
 </div>
