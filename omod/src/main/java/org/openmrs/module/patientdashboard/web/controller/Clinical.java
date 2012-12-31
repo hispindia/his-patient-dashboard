@@ -30,6 +30,7 @@ public class Clinical {
 	private String treatingDoctor;
 	private String diagnosis;
 	private String procedures ;
+	private String visitOutcomes;
 	private String linkedVisit;
 	public Integer getId() {
 		return id;
@@ -73,7 +74,13 @@ public class Clinical {
 	public void setLinkedVisit(String linkedVisit) {
 		this.linkedVisit = linkedVisit;
 	}
-	
+//	Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552	
+	public String getVisitOutcomes() {
+		return visitOutcomes;
+	}
+	public void setVisitOutcomes(String visitOutcomes) {
+		this.visitOutcomes = visitOutcomes;
+	}
 	
 
 }

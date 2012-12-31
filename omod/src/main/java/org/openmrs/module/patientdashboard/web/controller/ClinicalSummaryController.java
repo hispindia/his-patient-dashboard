@@ -62,12 +62,16 @@ public class ClinicalSummaryController {
         String gpDiagnosis = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
         
         String gpProcedure = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+        //	Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552
+        String gpVisitOutcome = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
         
 		//String gpInternalReferral = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
         
 		Concept conDiagnosis  = conceptService.getConcept(gpDiagnosis);
 		
 		Concept conProcedure  = conceptService.getConcept(gpProcedure);
+//		Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552
+		Concept conOutcome  = conceptService.getConcept(gpVisitOutcome);
 		
 		List<Encounter> encounters = dashboardService.getEncounter(patient, location, labOPDType, null);
 
@@ -76,11 +80,13 @@ public class ClinicalSummaryController {
 		// command
 		String diagnosis = "";
 		String procedure="";
+		String outcome="";
 		List<Clinical> clinicalSummaries = new ArrayList<Clinical>();
 		for( Encounter enc: encounters ){
 			diagnosis = "";
 			String note ="";
 			procedure="";
+			outcome="";			
 			Clinical clinical = new Clinical();
 			for( Obs obs : enc.getAllObs()){
 				//diagnosis
@@ -105,6 +111,20 @@ public class ClinicalSummaryController {
 						procedure +=obs.getValueText()+", ";
 					}
 				}
+//				Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552
+				//visit outcome
+				if( obs.getConcept().getConceptId().equals(conOutcome.getConceptId()) ){
+//					obs.getV
+					if(obs.getValueCoded() != null){
+						outcome +=obs.getValueCoded().getName()+", ";
+					}
+					if(StringUtils.isNotBlank(obs.getValueText())){
+						outcome += obs.getValueText();
+					}
+					//System.out.println(obs.getva);
+			
+				}  
+				
 			}
 			diagnosis += note;
 			if( StringUtils.endsWith(diagnosis, ", ")){
@@ -113,6 +133,10 @@ public class ClinicalSummaryController {
 			if( StringUtils.endsWith(procedure, ", ")){
 				procedure = StringUtils.removeEnd(procedure, ", ");
 			}
+//			Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552
+			if( StringUtils.endsWith(outcome, ", ")){
+				outcome = StringUtils.removeEnd(outcome, ", ");
+			} 	
 			
 			//${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp; ${patient.familyName}
 
@@ -121,6 +145,7 @@ public class ClinicalSummaryController {
 			clinical.setId(enc.getId());
 			clinical.setDiagnosis(diagnosis);
 			clinical.setProcedures(procedure);
+			clinical.setVisitOutcomes(outcome);
 			clinicalSummaries.add(clinical);
 			
 			// set value to command object

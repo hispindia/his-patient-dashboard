@@ -30,6 +30,8 @@
 	--><th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.diagnosis"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.procedures"/></th>
+	<!-- Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552-->
+	<th><spring:message code="patientdashboard.clinicalSummary.visitOutcome"/></th>	
 	<!-- <th><spring:message code="patientdashboard.clinicalSummary.linkedVisit"/></th> -->
 </tr>
 
@@ -40,7 +42,9 @@
 	<!--<td>${clinicalSummary.typeOfVisit}</td>
 	--><td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
-	<td>${clinicalSummary.procedures}</td><!--
+	<td>${clinicalSummary.procedures}</td>
+	<!-- Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552-->
+	<td>${clinicalSummary.visitOutcomes}</td><!--
 	<td>${clinicalSummary.linkedVisit}</td>
 --></tr>
 </c:forEach>
