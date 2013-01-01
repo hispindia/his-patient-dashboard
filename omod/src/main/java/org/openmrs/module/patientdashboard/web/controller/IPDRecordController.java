@@ -57,6 +57,7 @@ public class IPDRecordController {
 			IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(patientId);
 			model.addAttribute("admitted", admitted);
 			String diagnosis = "";
+			String procedure = "";
 			List<Obs> listObsByObsGroup = Context.getObsService().findObsByGroupId(currentAdmission.getOpdObsGroup().getId());
 			
 			//get diagnosis
@@ -79,13 +80,32 @@ public class IPDRecordController {
 						}
 						//System.out.println(obs.getva);
 					}
+					//Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555					
+					//procedure
+					if( obs.getConcept().getConceptId().equals(conProcedure.getConceptId()) &&obs.getObsGroup() != null &&  obs.getObsGroup().getId() == currentAdmission.getOpdObsGroup().getId()){
+//						obs.getV
+						if(obs.getValueCoded() != null){
+							procedure +=obs.getValueCoded().getName()+"<br/>";
+						}
+						if(StringUtils.isNotBlank(obs.getValueText())){
+							procedure +=obs.getValueText()+"<br/>";
+						}
+						//System.out.println(obs.getva);
+					}
+					
+					
 					
 				}
 			}
 			if( StringUtils.endsWith(diagnosis, "<br/>")){
 				diagnosis = StringUtils.removeEnd(diagnosis, "<br/>");
 			}
-			
+			//Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555
+			if( StringUtils.endsWith(diagnosis, "<br/>")){
+				procedure = StringUtils.removeEnd(procedure, "<br/>");
+			}
+
+			/*Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555
 			String finalDiagnosis = "";
 			String finalProcedures ="";
 			if(currentAdmission.getIpdEncounter() != null && CollectionUtils.isNotEmpty(currentAdmission.getIpdEncounter().getAllObs())){
@@ -123,9 +143,10 @@ public class IPDRecordController {
 			
 			
 			model.addAttribute("finalProcedures", finalProcedures);
-			model.addAttribute("finalDiagnosis", finalDiagnosis);
-			model.addAttribute("diagnosis", diagnosis);
+			model.addAttribute("finalDiagnosis", finalDiagnosis); */
 			
+			model.addAttribute("diagnosis", diagnosis);
+			model.addAttribute("procedure", procedure);
 			
 			
 		}
