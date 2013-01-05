@@ -44,6 +44,13 @@
 			<version>1.4.10.12-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- ghanshyam date:5-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals -->
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>radiology-api</artifactId>
+			<version>1.4.9-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
