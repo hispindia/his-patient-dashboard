@@ -69,14 +69,22 @@
          <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical summary</span></a></li>
          <%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
          <li><a href="investigationReport.htm?patientId=${patient.patientId }"   title="Laboratory report"><span>Laboratory report</span></a></li>
+         <%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
+         <li><a href="radiologyRecord.htm?patientId=${patient.patientId }"   title="Radiology record"><span>Radiology record</span></a></li>
          <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD record</span></a></li>
+         <%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
+         <li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"   title="Pharmacy record"><span>Pharmacy record</span></a></li>
      </ul>
      
      <div id="OPD_entry"></div>
 	 <div id="Clinical_summary"></div>
 	 <%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
 	 <div id="Laboratory_report"></div>
+	 <%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
+	 <div id="Radiology_record"></div>
 	 <div id="IPD_record"></div>
+	 <%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
+	 <div id="Pharmacy_record"></div>
 </div>
 
 </div>
