@@ -16,8 +16,6 @@
 	<activator>@MODULE_PACKAGE@.PatientDashboardActivator</activator>
 	<require_modules>
                   <require_module>org.openmrs.module.hospitalcore</require_module>
-    <!-- ghanshyam date:5-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals -->              
-                  <require_module>org.openmrs.module.radiology</require_module>
     </require_modules>
 	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
 	<!-- /Base Module Properties -->
