@@ -17,22 +17,71 @@
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  author:ghanshyam
- *  date:8-01-2013
+ *  date:11-01-2013
+ *  issue: #556 Bangladesh
  **/
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.InventoryCommonService;
+import org.openmrs.module.hospitalcore.model.InventoryStoreDrugPatient;
+import org.openmrs.module.hospitalcore.model.InventoryStoreDrugPatientDetail;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller("PharmacyRecordController")
 @RequestMapping("/module/patientdashboard/pharmacyRecord.htm")
 public class PharmacyRecordController {
 
-	@RequestMapping(method=RequestMethod.GET)
-	public String firstView(Model model){
+	@RequestMapping(method = RequestMethod.GET)
+	public String firstView(
+			@RequestParam(value = "patientId", required = false) Integer patientId,
+			Model model) {
+		InventoryCommonService inventoryCommonService = (InventoryCommonService) Context
+				.getService(InventoryCommonService.class);
+		PatientService patientService = (PatientService) Context
+				.getService(PatientService.class);
+		Patient patient = patientService.getPatient(patientId);
+		List<InventoryStoreDrugPatient> listDate = inventoryCommonService
+				.getAllIssueDateByPatientId(patient);
+		Set<String> dates = new HashSet<String>();
+		for (InventoryStoreDrugPatient date : listDate) {
+			dates.add(Context.getDateFormat().format(date.getCreatedOn()));
+		}
+		model.addAttribute("patient", patient);
+		model.addAttribute("dates", dates);
 		return "module/patientdashboard/pharmacyRecord";
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String formSubmit(
+			@RequestParam(value = "patientId", required = false) Integer patientId,
+			@RequestParam(value = "date", required = false) String date,Model model) {
+		InventoryCommonService inventoryCommonService = (InventoryCommonService) Context
+				.getService(InventoryCommonService.class);
+		PatientService patientService = (PatientService) Context
+				.getService(PatientService.class);
+		Patient patient = patientService.getPatient(patientId);
+		List<InventoryStoreDrugPatient> listIssue = inventoryCommonService
+				.getDeatilOfInventoryStoreDrugPatient(patient, date);
+		List<InventoryStoreDrugPatientDetail> drugDetails = new ArrayList<InventoryStoreDrugPatientDetail>();
+		for (InventoryStoreDrugPatient isdpd : listIssue) {
+			List<InventoryStoreDrugPatientDetail> listDrugIssue = inventoryCommonService
+					.getDrugDetailOfPatient(isdpd);
+			drugDetails.addAll(listDrugIssue);
+		}
+		model.addAttribute("drugDetails", drugDetails);
+		return "module/patientdashboard/pharmacyRecordResult";
 	}
 }
