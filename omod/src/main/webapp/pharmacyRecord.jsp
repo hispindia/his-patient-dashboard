@@ -25,7 +25,7 @@
 <form id="pharmacyRecordForm" action="pharmacyRecord.htm?patientId=${patient.patientId}" method="post">
 <table width="100%" >
 	<tr valign="top">
-		<td width="60%" id="resultContainer">
+		<td width="60%" id="pharmacyResultContainer">
 		</td>
 		<td width="30%">
 		Date:
