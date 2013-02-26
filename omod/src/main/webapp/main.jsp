@@ -1,4 +1,5 @@
- <%--
+
+<%--
  *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
@@ -17,77 +18,96 @@
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
 --%>
-<%@page import="org.openmrs.ConceptName" %>
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<openmrs:require privilege="View PatientDashboard" otherwise="/login.htm" redirect="index.htm" />
-<%@ include file="/WEB-INF/template/header.jsp" %>
-<%@ include file="includes/js_css.jsp" %>
-<input type="hidden" id="pageId" value="patientDashboard"/>
+<%@page import="org.openmrs.ConceptName"%>
+<%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:require privilege="View PatientDashboard"
+	otherwise="/login.htm" redirect="index.htm" />
+<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="includes/js_css.jsp"%>
+<input type="hidden" id="pageId" value="patientDashboard" />
 
 <b class="boxHeader">Dashboard</b>
-<div  class="box">
-<table  cellspacing="10" width="100%">
-	<tr>
-		<td width="40%"><b>Patient ID:</b> ${patient.patientIdentifier.identifier}</td>
-		<td width="30%">
-			<c:if test="${not empty admittedStatus }">
-				<span style="background-color:red; color:white">Admitted patient</span>				
-			</c:if>
-		</td>
-		<td width="30%"><b>Location:</b> ${opd.name } </td>
-	</tr>
-	<tr>
-		<td width="40%"><b>Name:</b> ${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp; ${patient.familyName}</td>
-		<td width="30%"><b>Age:</b> ${age }</td>
-		<td width="30%"><b>Gender:</b> ${patient.gender }</td>
-	</tr>
-	<!-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed-->
-	<tr>
-		<td width="40%"><b>Patient category:</b> ${patientCategory} -
-		<c:forEach items="${observation}" var="observation">
+<div class="box">
+	<table cellspacing="10" width="100%">
+		<tr>
+			<td width="40%"><b>Patient ID:</b>
+				${patient.patientIdentifier.identifier}</td>
+			<td width="30%"><c:if test="${not empty admittedStatus }">
+					<span style="background-color: red; color: white">Admitted
+						patient</span>
+				</c:if>
+			</td>
+			<td width="30%"><b>Location:</b> ${opd.name }</td>
+		</tr>
+		<tr>
+			<td width="40%"><b>Name:</b>
+				${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
+				${patient.familyName}</td>
+			<td width="30%"><b>Age:</b> ${age }</td>
+			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
+		</tr>
+		<!-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed-->
+		<tr>
+			<td width="40%"><b>Patient category:</b> ${patientCategory} - <c:forEach
+					items="${observation}" var="observation">
 			${observation.valueText} 
 		</c:forEach>
-		</td>
-		<td width="30%"><b>Age category:</b> ${ageCategory }</td>
-		<td width="30%"><b>Referral:</b>
-		<!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
-		<c:choose> 
-				<c:when test="${referredType.class.name == 'org.openmrs.ConceptName'}">
+			</td>
+			<td width="30%"><b>Age category:</b> ${ageCategory }</td>
+			<td width="30%"><b>Referral:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
+				<c:choose>
+					<c:when
+						test="${referredType.class.name == 'org.openmrs.ConceptName'}">
 					${referredType}
 				</c:when>
-				<c:otherwise>
+					<c:otherwise>
 					${referral.name }	
 				</c:otherwise>
-			</c:choose>
-		</td>
-		
-	</tr>
-</table>
-<div id="tabs">
-     <ul>
-         <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
-         <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical summary</span></a></li>
-         <%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
-         <li><a href="investigationReport.htm?patientId=${patient.patientId }"   title="Laboratory report"><span>Laboratory report</span></a></li>
-         <%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
-         <li><a href="radiologyRecord.htm?patientId=${patient.patientId }"   title="Radiology record"><span>Radiology record</span></a></li>
-         <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD record</span></a></li>
-         <%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
-         <li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"   title="Pharmacy record"><span>Pharmacy record</span></a></li>
-     </ul>
-     
-     <div id="OPD_entry"></div>
-	 <div id="Clinical_summary"></div>
-	 <%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
-	 <div id="Laboratory_report"></div>
-	 <%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
-	 <div id="Radiology_record"></div>
-	 <div id="IPD_record"></div>
-	 <%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
-	 <div id="Pharmacy_record"></div>
-</div>
+				</c:choose>
+			</td>
+
+		</tr>
+	</table>
+	<div id="tabs">
+		<ul>
+			<li><a
+				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"
+				title="OPD entry"><span> OPD entry</span> </a></li>
+			<li><a
+				href="clinicalSummary.htm?patientId=${patient.patientId }"
+				title="Clinical summary"><span>Clinical summary</span> </a></li>
+			<%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
+			<%-- ghanshyam,date:26-02-2013 Support #964[Patient Dashboard]change in the Dashboard Tab 'Laboratory report' to 'Laboratory record' for Bangladesh module
+ --%>
+			<li><a
+				href="investigationReport.htm?patientId=${patient.patientId }"
+				title="Laboratory record"><span>Laboratory record</span> </a></li>
+			<%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
+			<li><a
+				href="radiologyRecord.htm?patientId=${patient.patientId }"
+				title="Radiology record"><span>Radiology record</span> </a></li>
+			<li><a
+				href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"
+				title="IPD record"><span>IPD record</span> </a></li>
+			<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
+			<li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"
+				title="Pharmacy record"><span>Pharmacy record</span> </a></li>
+		</ul>
+
+		<div id="OPD_entry"></div>
+		<div id="Clinical_summary"></div>
+		<%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
+		<%-- ghanshyam,date:26-02-2013 Support #964[Patient Dashboard]change in the Dashboard Tab 'Laboratory report' to 'Laboratory record' for Bangladesh module
+ --%>
+		<div id="Laboratory_record"></div>
+		<%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
+		<div id="Radiology_record"></div>
+		<div id="IPD_record"></div>
+		<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
+		<div id="Pharmacy_record"></div>
+	</div>
 
 </div>
 
 
-<%@ include file="/WEB-INF/template/footer.jsp" %> 
+<%@ include file="/WEB-INF/template/footer.jsp"%>
