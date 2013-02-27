@@ -46,13 +46,16 @@
 			<td width="30%"><b>Age:</b> ${age }</td>
 			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 		</tr>
-		<!-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed-->
+		<%-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed --%>
+		<%-- ghanshyam 27-02-2013 Feedback #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module(remove category from registration,OPD,IPD,Inventory) --%>
 		<tr>
+			<%--
 			<td width="40%"><b>Patient category:</b> ${patientCategory} - <c:forEach
 					items="${observation}" var="observation">
 			${observation.valueText} 
 		</c:forEach>
 			</td>
+			--%>
 			<td width="30%"><b>Age category:</b> ${ageCategory }</td>
 			<td width="30%"><b>Referral:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
 				<c:choose>
