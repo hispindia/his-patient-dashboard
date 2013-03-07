@@ -1,3 +1,10 @@
+1.3.8
+- #964               change in the Dashboard Tab 'Laboratory report' to 'Laboratory record' for Bangladesh module
+- #556               Add Pharmacy record of patient in OPD for all Bangladesh Hospitals
+- #555               Add procedure done and admission outcome column in IPD Record for all Bangladesh Hospitals
+- #553               Add Laboratory report of patient in OPD for all Bangladesh Hospitals
+- #552               Add Visit outcome column in Clinical summary for all Bangladesh Hospitals
+
 1.3.7
 New Requirement #314: [OPD] Advanced Search in Search Patient in System
 
