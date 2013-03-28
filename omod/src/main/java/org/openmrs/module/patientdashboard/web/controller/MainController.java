@@ -45,8 +45,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.patientdashboard.util.PatientDashboardUtil;
@@ -89,8 +91,18 @@ public class MainController {
 		
 		// get Date of OPD Patient queue
 		PatientQueueService pqs = Context.getService(PatientQueueService.class);
+		//ghanshyam 26-march-2013 Bug #1230 Error in BD IPD Module(below two line commented and line added upto Date createdOn)
+		/*
 		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
 		Date createdOn = opdPatientQueue.getCreatedOn();
+		*/
+		IpdService ipdService=Context.getService(IpdService.class);
+		IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(queueId);
+		IpdPatientAdmissionLog pali=ipdPatientAdmitted.getPatientAdmissionLog();
+		OpdPatientQueueLog opql=pali.getOpdLog();
+		Integer id=opql.getId();
+		OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(id);
+		Date createdOn=opdPatientQueueLog.getCreatedOn();
 		
 		// get Encounter by date
 		Encounter encounter = null;
@@ -151,8 +163,6 @@ public class MainController {
 		insertPropertiesUnlessExist();
 		
 		// get admitted status of patient
-		
-		IpdService ipdService = Context.getService(IpdService.class);
 		
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(patientId);
 		
