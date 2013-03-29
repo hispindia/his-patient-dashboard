@@ -70,7 +70,6 @@ public class MainController {
 	public String firstView(@RequestParam("patientId") Integer patientId, @RequestParam("opdId") Integer opdId,
 	                        @RequestParam(value = "queueId", required = false) Integer queueId,
 	                        //ghanshyam 23-oct-2012 Bug #423 [IPD][0.9.7] Error Screen on clicking patiend ID in Admitted patient Index
-							
 	                        @RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
 	                        @RequestParam("referralId") Integer referralId, Model model) {
 		PatientService ps = Context.getPatientService();
