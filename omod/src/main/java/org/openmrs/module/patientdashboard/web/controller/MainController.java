@@ -69,6 +69,8 @@ public class MainController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstView(@RequestParam("patientId") Integer patientId, @RequestParam("opdId") Integer opdId,
 	                        @RequestParam(value = "queueId", required = false) Integer queueId,
+	                        //ghanshyam 26-march-2013 Bug #1230 Error in BD IPD Module
+	                        @RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
 	                        @RequestParam("referralId") Integer referralId, Model model) {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
@@ -91,18 +93,25 @@ public class MainController {
 		
 		// get Date of OPD Patient queue
 		PatientQueueService pqs = Context.getService(PatientQueueService.class);
-		//ghanshyam 26-march-2013 Bug #1230 Error in BD IPD Module(below two line commented and line added upto Date createdOn)
+		//ghanshyam 26-march-2013 Bug #1230 Error in BD IPD Module(below two line commented and line added upto else condition)
 		/*
 		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
 		Date createdOn = opdPatientQueue.getCreatedOn();
 		*/
 		IpdService ipdService=Context.getService(IpdService.class);
-		IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(queueId);
-		IpdPatientAdmissionLog pali=ipdPatientAdmitted.getPatientAdmissionLog();
-		OpdPatientQueueLog opql=pali.getOpdLog();
-		Integer id=opql.getId();
-		OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(id);
-		Date createdOn=opdPatientQueueLog.getCreatedOn();
+		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
+		Date createdOn = null;
+		if(queueId!=null){
+			createdOn = opdPatientQueue.getCreatedOn();
+		}
+		else{
+			IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(ipdAdmittedId);
+			IpdPatientAdmissionLog pali=ipdPatientAdmitted.getPatientAdmissionLog();
+			OpdPatientQueueLog opql=pali.getOpdLog();
+			Integer id=opql.getId();
+			OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(id);
+			createdOn=opdPatientQueueLog.getCreatedOn();
+		}
 		
 		// get Encounter by date
 		Encounter encounter = null;
