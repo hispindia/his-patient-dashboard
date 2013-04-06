@@ -45,3 +45,5 @@
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/page-actions.js" ></script>
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/page-utils.js" ></script>
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/lists.js" ></script>
+
+<script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/string-utils.js" ></script>
