@@ -23,6 +23,7 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,10 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.RadiologyCommonService;
+import org.openmrs.module.hospitalcore.RadiologyService;
+import org.openmrs.module.hospitalcore.concept.TestTree;
+import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.model.RadiologyTest;
-import org.openmrs.module.hospitalcore.util.RadiologyConstants;
 import org.openmrs.module.hospitalcore.util.RadiologyUtil;
 import org.openmrs.module.hospitalcore.util.TestModel;
 import org.springframework.stereotype.Controller;
@@ -126,14 +129,35 @@ public class RadiologyRecordController {
 		Patient patient = patientService.getPatient(patientId);
 		if (subtest != null) {
 			Concept concept = conceptService.getConceptByName(subtest);
+			/*
 			Map<Concept, Set<Concept>> testTreeMap = (Map<Concept, Set<Concept>>) request
 			.getSession().getAttribute(
 					RadiologyConstants.SESSION_TEST_TREE_MAP);
+			*/
+			Map<Concept, Set<Concept>> testTreeMap = generateTestTreeMap();
 			List<RadiologyTest> radiologyTests = radiologyCommonService
 					.getAllSubTest(patient, date, concept);
 			List<TestModel> tests = RadiologyUtil.generateModelsFromTests(radiologyTests, testTreeMap);
 			model.addAttribute("radiologytests", tests);
 		}
 		return "module/patientdashboard/radiologyRecordResult";
+	}
+	
+	private Map<Concept, Set<Concept>> generateTestTreeMap() {
+		RadiologyService rs = (RadiologyService) Context
+				.getService(RadiologyService.class);
+		RadiologyDepartment department = rs.getCurrentRadiologyDepartment();
+		Map<Concept, Set<Concept>> investigationTests = new HashMap<Concept, Set<Concept>>();
+		if (department != null) {
+			Set<Concept> investigations = department.getInvestigations();
+			for (Concept investigation : investigations) {
+				TestTree tree = new TestTree(investigation);
+				if (tree.getRootNode() != null) {
+					investigationTests.put(tree.getRootNode().getConcept(),
+							tree.getConceptSet());
+				}
+			}			
+		}
+		return investigationTests;
 	}
 }
