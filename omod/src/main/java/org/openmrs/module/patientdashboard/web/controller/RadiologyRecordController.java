@@ -1,5 +1,5 @@
 /**
- *  Copyright 2012 Society for Health Information Systems Programmes, India (HISP India)
+ *  Copyright 2013 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
  *
