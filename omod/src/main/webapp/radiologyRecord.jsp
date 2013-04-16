@@ -103,8 +103,7 @@ jQuery.ajax({
 });
 }
 </script>
-<form id="radiologyRecordForm"
-	action="radiologyRecord.htm?patientId=${patientId}" method="post">
+<form id="radiologyRecordForm">
 	<table width="100%">
 		<tr valign="top">
 			<td id="radiologyResultContainer" style="text-align: left;"></td>
