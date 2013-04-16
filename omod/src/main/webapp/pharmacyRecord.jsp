@@ -22,22 +22,45 @@
  * issue: #556 Bangladesh
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
-<form id="pharmacyRecordForm" action="pharmacyRecord.htm?patientId=${patient.patientId}" method="post">
+<script type="text/javascript">
+// get context path in order to build controller url
+	function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+<script type="text/javascript">
+function date(){
+        var patientId = ${patient.patientId};
+		var date = jQuery("#drugIssuedDate").val();
+jQuery.ajax({
+				type : "POST",
+				url : getContextPath() + "/module/patientdashboard/pharmacyRecord.htm",
+				data : ({
+					patientId			: patientId,
+					date			    : date
+				}),
+				success : function(data) {
+					jQuery("#pharmacyResultContainer").html(data);	
+				}
+});
+}
+</script>
+<form id="pharmacyRecordForm">
 <table width="100%" >
 	<tr valign="top">
-		<td width="60%" id="pharmacyResultContainer">
-		</td>
-		<td width="30%">
+	    <td id="pharmacyResultContainer" style="text-align: left;"></td>
+		<td id="pharmacyFormContainer" style="text-align: right;">
 		Date:
-		<select name="date" id="date">
-			<option value="all">--All--</option>
+		<select name="drugIssuedDate" id="drugIssuedDate" onchange="date();">
+		    <option selected="selected" value="null">Select</option>
+			<option value="all">All</option>
 			<c:forEach var="date" items="${dates}">
 				<option value="${date}">${date}</option>
 			</c:forEach>
 		</select>
-		<input type="submit"
-			class="ui-button ui-widget ui-state-default ui-corner-all"
-			value="View" />
 			</td>
 	</table>
 </form>

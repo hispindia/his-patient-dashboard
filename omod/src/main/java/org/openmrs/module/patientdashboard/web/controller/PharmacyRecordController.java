@@ -72,6 +72,7 @@ public class PharmacyRecordController {
 				.getService(InventoryCommonService.class);
 		PatientService patientService = (PatientService) Context
 				.getService(PatientService.class);
+		if(!date.equals("null")){
 		Patient patient = patientService.getPatient(patientId);
 		List<InventoryStoreDrugPatient> listIssue = inventoryCommonService
 				.getDeatilOfInventoryStoreDrugPatient(patient, date);
@@ -82,6 +83,7 @@ public class PharmacyRecordController {
 			drugDetails.addAll(listDrugIssue);
 		}
 		model.addAttribute("drugDetails", drugDetails);
+		}
 		return "module/patientdashboard/pharmacyRecordResult";
 	}
 }

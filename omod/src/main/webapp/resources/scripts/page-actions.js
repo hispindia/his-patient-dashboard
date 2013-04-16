@@ -151,11 +151,6 @@ var CHECK =
 					});
 				}
 				
-				     //ghanshyam date:11-01-2013 New Requirement #556 Add Pharmacy record of patient in OPD for all Bangladesh Hospitals
-					// PHARMACY RECORD
-					$('#pharmacyRecordForm').ajaxForm({
-						target: '#pharmacyResultContainer'
-					});
 				
              }
              });
