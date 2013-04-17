@@ -19,7 +19,7 @@
  *  author:ghanshyam
  *  date:10-april-2013
  *  issue:#1302 Radiology record
---%> 
+--%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <script type="text/javascript">
 MODEL = {
@@ -50,6 +50,7 @@ jQuery(document).ready(function() {
 function date(){
         var patientId = ${patientId};
 		var date = jQuery("#testDate").val();
+if (date!="null") {		
 jQuery.ajax({
 				type : "GET",
 				url : getContextPath() + "/module/patientdashboard/radiologyRecord.htm",
@@ -58,9 +59,24 @@ jQuery.ajax({
 					date			    : date
 				}),
 				success : function(data) {
-					jQuery("#radiologyFormContainer").html(data);	
+					jQuery("#radiologyFormContainer").html(data);
+					jQuery("#radiologyResultContainer").remove();		
 				}
-});
+          });
+  }
+else{
+jQuery.ajax({
+				type : "GET",
+				url : getContextPath() + "/module/patientdashboard/radiologyRecord.htm",
+				data : ({
+					patientId			: patientId
+				}),
+				success : function(data) {
+					jQuery("#radiologyFormContainer").html(data);
+					jQuery("#radiologyResultContainer").remove();	
+				}
+          });
+   }
 }
 </script>
 <script type="text/javascript">
@@ -68,6 +84,7 @@ function testr(){
         var patientId = ${patientId};
 		var date = jQuery("#testDate").val();
 		var test = jQuery("#test").val();
+if (test!="null") {				
 jQuery.ajax({
 				type : "GET",
 				url : getContextPath() + "/module/patientdashboard/radiologyRecord.htm",
@@ -79,7 +96,21 @@ jQuery.ajax({
 				success : function(data) {
 					jQuery("#radiologyFormContainer").html(data);	
 				}
-});
+          });
+  }
+else{
+jQuery.ajax({
+				type : "GET",
+				url : getContextPath() + "/module/patientdashboard/radiologyRecord.htm",
+				data : ({
+					patientId			: patientId,
+					date			    : date
+				}),
+				success : function(data) {
+					jQuery("#radiologyFormContainer").html(data);	
+				}
+          });
+   }
 }
 </script>
 <script type="text/javascript">
@@ -109,14 +140,14 @@ jQuery.ajax({
 			<td id="radiologyResultContainer" style="text-align: left;"></td>
 			<td id="radiologyFormContainer" style="text-align: right;">
 				Date: <select name="testDate" id="testDate" onchange="date();">
-					<option selected="selected">Select</option>
+					<option selected="selected" value="null">Select</option>
 					<c:forEach var="date" items="${dates}">
 						<option value="${date}">${date}</option>
 					</c:forEach>
 			</select> <c:choose>
 					<c:when test="${not empty tests}">
 		Test<select name="test" id="test" onchange="testr();">
-		          <option selected="selected">Select</option>
+							<option selected="selected" value="null">Select</option>
 							<c:forEach var="test" items="${tests}">
 								<option value="${test}">${test}</option>
 							</c:forEach>
@@ -125,13 +156,12 @@ jQuery.ajax({
 				</c:choose> <c:choose>
 					<c:when test="${not empty subtests}">
 		SubTest<select name="subTest" id="subTest" onchange="subtest();">
-		          <option selected="selected">Select</option>
+							<option selected="selected">Select</option>
 							<c:forEach var="subtest" items="${subtests}">
 								<option value="${subtest}">${subtest}</option>
 							</c:forEach>
 						</select>
 					</c:when>
-				</c:choose> 
-		  </td>
+				</c:choose></td>
 	</table>
 </form>
