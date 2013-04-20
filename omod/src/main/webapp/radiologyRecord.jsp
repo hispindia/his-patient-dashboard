@@ -47,7 +47,7 @@ jQuery(document).ready(function() {
 	}
 </script>
 <script type="text/javascript">
-function date(){
+function dater(){
         var patientId = ${patientId};
 		var date = jQuery("#testDate").val();
 if (date!="null") {		
@@ -139,7 +139,7 @@ jQuery.ajax({
 		<tr valign="top">
 			<td id="radiologyResultContainer" style="text-align: left;"></td>
 			<td id="radiologyFormContainer" style="text-align: right;">
-				Date: <select name="testDate" id="testDate" onchange="date();">
+				Date: <select name="testDate" id="testDate" onchange="dater();">
 					<option selected="selected" value="null">Select</option>
 					<c:forEach var="date" items="${dates}">
 						<option value="${date}">${date}</option>
