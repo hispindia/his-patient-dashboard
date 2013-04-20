@@ -23,29 +23,47 @@
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <style>
-.rsTable{ margin:5px 5px;text-align:center; border-style:1px  solid black; border-collapse: collapse;}
-.rsCell { padding:3px 3px;}
+.rsTable {
+	margin: 5px 5px;
+	text-align: center;
+	border-style: 1px solid black;
+	border-collapse: collapse;
+}
+
+.rsCell {
+	padding: 3px 3px;
+}
 </style>
-<span class="boxHeader">Issue drugs detail</span>
-<div class="box">
-<table width="100%" class="rsTable" cellspacing="3" border="1"  cellpadding="3">
-	<tr align="center">
-	<th>#</th>
-	<th>Category</th>
-	<th>Drug</th>
-	<th>Formulation</th>
-	<th>Issue date</th>
-	<th>Quantity</th>
-	</tr>
-<c:forEach items="${drugDetails}" var="detail" varStatus="varStatus">
-	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-		<td><c:out value="${varStatus.count }"/></td>
-		<td>${detail.transactionDetail.drug.category.name} </td>	
-		<td>${detail.transactionDetail.drug.name} </td>	
-		<td>${detail.transactionDetail.formulation.name}-${detail.transactionDetail.formulation.dozage}</td>
-		<td><openmrs:formatDate date="${detail.transactionDetail.createdOn}" type="textbox"/></td>
-		<td>${detail.quantity }</td>
-		</tr>
-</c:forEach>
-</table>
-</div>
+<c:choose>
+	<c:when test="${ not empty drugDetails }">
+		<span class="boxHeader">Issue drugs detail</span>
+		<div class="box">
+			<table width="100%" class="rsTable" cellspacing="3" border="1"
+				cellpadding="3">
+				<tr align="center">
+					<th>#</th>
+					<th>Category</th>
+					<th>Drug</th>
+					<th>Formulation</th>
+					<th>Issue date</th>
+					<th>Quantity</th>
+				</tr>
+				<c:forEach items="${drugDetails}" var="detail" varStatus="varStatus">
+					<tr align="center"
+						class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
+						<td><c:out value="${varStatus.count }" /></td>
+						<td>${detail.transactionDetail.drug.category.name}</td>
+						<td>${detail.transactionDetail.drug.name}</td>
+						<td>${detail.transactionDetail.formulation.name}-${detail.transactionDetail.formulation.dozage}</td>
+						<td><openmrs:formatDate
+								date="${detail.transactionDetail.createdOn}" type="textbox" />
+						</td>
+						<td>${detail.quantity }</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
+	</c:when>
+	<c:otherwise>
+	</c:otherwise>
+</c:choose>

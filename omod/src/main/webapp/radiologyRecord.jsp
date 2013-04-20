@@ -134,34 +134,39 @@ jQuery.ajax({
 });
 }
 </script>
-<form id="radiologyRecordForm">
-	<table width="100%">
-		<tr valign="top">
-			<td id="radiologyResultContainer" style="text-align: left;"></td>
-			<td id="radiologyFormContainer" style="text-align: right;">
-				Date: <select name="testDate" id="testDate" onchange="dater();">
-					<option selected="selected" value="null">Select</option>
-					<c:forEach var="date" items="${dates}">
-						<option value="${date}">${date}</option>
-					</c:forEach>
-			</select> <c:choose>
-					<c:when test="${not empty tests}">
-		Test<select name="test" id="test" onchange="testr();">
+<c:choose>
+	<c:when test="${ not empty dates }">
+		<form id="radiologyRecordForm">
+			<table width="100%">
+				<tr valign="top">
+					<td id="radiologyResultContainer" style="text-align: left;"></td>
+					<td id="radiologyFormContainer" style="text-align: right;">
+						Date: <select name="testDate" id="testDate" onchange="dater();">
 							<option selected="selected" value="null">Select</option>
-							<c:forEach var="test" items="${tests}">
-								<option value="${test}">${test}</option>
+							<c:forEach var="date" items="${dates}">
+								<option value="${date}">${date}</option>
 							</c:forEach>
-						</select>
-					</c:when>
-				</c:choose> <c:choose>
-					<c:when test="${not empty subtests}">
+					</select> <c:choose>
+							<c:when test="${not empty tests}">
+		Test<select name="test" id="test" onchange="testr();">
+									<option selected="selected" value="null">Select</option>
+									<c:forEach var="test" items="${tests}">
+										<option value="${test}">${test}</option>
+									</c:forEach>
+								</select>
+							</c:when>
+						</c:choose> <c:choose>
+							<c:when test="${not empty subtests}">
 		SubTest<select name="subTest" id="subTest" onchange="subtest();">
-							<option selected="selected">Select</option>
-							<c:forEach var="subtest" items="${subtests}">
-								<option value="${subtest}">${subtest}</option>
-							</c:forEach>
-						</select>
-					</c:when>
-				</c:choose></td>
-	</table>
-</form>
+									<option selected="selected">Select</option>
+									<c:forEach var="subtest" items="${subtests}">
+										<option value="${subtest}">${subtest}</option>
+									</c:forEach>
+								</select>
+							</c:when>
+						</c:choose></td>
+			</table>
+		</form>
+	</c:when>
+	<c:otherwise>No Radiology record found</c:otherwise>
+</c:choose>
