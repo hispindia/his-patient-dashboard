@@ -48,6 +48,8 @@ jQuery.ajax({
 });
 }
 </script>
+<c:choose>
+<c:when test="${ not empty dates }">
 <form id="pharmacyRecordForm">
 <table width="100%" >
 	<tr valign="top">
@@ -64,3 +66,6 @@ jQuery.ajax({
 			</td>
 	</table>
 </form>
+</c:when>
+<c:otherwise>No Pharmacy record found</c:otherwise>
+</c:choose>
