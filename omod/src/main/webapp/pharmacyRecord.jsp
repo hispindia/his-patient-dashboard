@@ -32,8 +32,8 @@
 	}
 </script>
 <script type="text/javascript">
-function date(){
-        var patientId = ${patient.patientId};
+function datep(){
+        var patientId = ${patientId};
 		var date = jQuery("#drugIssuedDate").val();
 jQuery.ajax({
 				type : "POST",
@@ -54,7 +54,7 @@ jQuery.ajax({
 	    <td id="pharmacyResultContainer" style="text-align: left;"></td>
 		<td id="pharmacyFormContainer" style="text-align: right;">
 		Date:
-		<select name="drugIssuedDate" id="drugIssuedDate" onchange="date();">
+		<select name="drugIssuedDate" id="drugIssuedDate" onchange="datep();">
 		    <option selected="selected" value="null">Select</option>
 			<option value="all">All</option>
 			<c:forEach var="date" items="${dates}">

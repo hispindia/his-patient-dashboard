@@ -59,7 +59,7 @@ public class PharmacyRecordController {
 		for (InventoryStoreDrugPatient date : listDate) {
 			dates.add(Context.getDateFormat().format(date.getCreatedOn()));
 		}
-		model.addAttribute("patient", patient);
+		model.addAttribute("patientId", patientId);
 		model.addAttribute("dates", dates);
 		return "module/patientdashboard/pharmacyRecord";
 	}
