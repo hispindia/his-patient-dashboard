@@ -34,7 +34,7 @@
 	<th>Category</th>
 	<th>Drug</th>
 	<th>Formulation</th>
-	<th >Issue date</th>
+	<th>Issue date</th>
 	<th>Quantity</th>
 	</tr>
 <c:forEach items="${drugDetails}" var="detail" varStatus="varStatus">

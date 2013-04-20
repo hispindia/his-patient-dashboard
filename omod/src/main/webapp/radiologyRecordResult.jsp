@@ -37,15 +37,12 @@
 	}
 </script>
 <table width="100%" class="rsTable" cellspacing="3" border="1"  cellpadding="3">
-	<thead>
 		<tr align="center"> 
-			<th align="center">Sr.No.</th>
-			<th align="center">Results</th>
-			<th align="center">Date</th>
-			<th align="center">SubTest</th>
+			<th>Sr.No.</th>
+			<th>Results</th>
+			<th>Date</th>
+			<th>SubTest</th>
 		</tr>
-	</thead>
-	<tbody>
 		<c:forEach var="test" items="${radiologytests}" varStatus="varStatus">
 	    <tr align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 		<td><c:out value="${varStatus.count }"/></td>
@@ -67,5 +64,4 @@
 		<td>${test.testName}</td>
 		</tr>
 		</c:forEach>
-	</tbody>
 </table>
