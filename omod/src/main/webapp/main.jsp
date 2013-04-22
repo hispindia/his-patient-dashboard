@@ -67,7 +67,10 @@
      <ul>
          <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
          <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical summary</span></a></li>
-         <li><a href="investigationReport.htm?patientId=${patient.patientId }"  title="Investigation report"><span >Investigation report</span></a></li>
+         <%-- ghanshyam,date:22-april-2013 Support #1408 change in the Dashboard Tab 'Investigation report' to 'Laboratory record' for all hospital of india module
+              renamed title and tab name from "Investigation report" to "Laboratory record"
+         --%>
+         <li><a href="investigationReport.htm?patientId=${patient.patientId }"  title="Laboratory record"><span >Laboratory record</span></a></li>
          <%-- ghanshyam,date:10-april-2013 New Requirement #1302[PatientDashboard] Add Radiology record of patient in patientdashboard(india module) --%>
          <li><a href="radiologyRecord.htm?patientId=${patient.patientId }" title="Radiology record"><span>Radiology record</span> </a></li>
          <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD record</span></a></li>
@@ -77,7 +80,10 @@
      
      <div id="OPD_entry"></div>
 	 <div id="Clinical_summary"></div>
-	 <div id="Investigation_report"></div>
+	 <%-- ghanshyam,date:22-april-2013 Support #1408 change in the Dashboard Tab 'Investigation report' to 'Laboratory record' for all hospital of india module
+          renamed div id from "Investigation report" to "Laboratory record"
+     --%>
+	 <div id="Laboratory_record"></div>
 	 <%-- ghanshyam,date:10-april-2013 New Requirement #1302[PatientDashboard] Add Radiology record of patient in patientdashboard(india module) --%>
 	 <div id="Radiology_record"></div>
 	 <div id="IPD_record"></div>
