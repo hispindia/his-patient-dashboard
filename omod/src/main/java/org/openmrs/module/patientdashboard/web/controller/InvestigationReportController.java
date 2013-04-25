@@ -21,6 +21,7 @@
 package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -77,7 +78,8 @@ public class InvestigationReportController {
 	        
 			List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, date);
 			
-			Set<String> dates = new HashSet<String>();
+			//ghanshyam,date:25-april-2013 Feedback #1429 Wrong Result Generated in Laboratory record(below written LinkedHashSet at the place of HashSet)
+			Set<String> dates = new LinkedHashSet<String>();
 			if( encounters != null && encounters.size() > 0 )
 			{
 				Set<Obs> listObs = null;

@@ -98,7 +98,7 @@ public class RadiologyRecordController {
 
 		List<RadiologyTest> radiologyTests = radiologyCommonService
 				.getAllTest(patient);
-		//ghanshyam,date:25-april-2013 Feedback #1302 Add Radiology record of patient in patientdashboard(below written LinkedHashSet at the place HashSet)
+		//ghanshyam,date:25-april-2013 Feedback #1302 Add Radiology record of patient in patientdashboard(below written LinkedHashSet at the place of HashSet)
 		Set<String> dates = new LinkedHashSet<String>();
 		for (RadiologyTest radiologyTest : radiologyTests) {
 			dates.add(Context.getDateFormat().format(radiologyTest.getDate()));
@@ -139,7 +139,7 @@ public class RadiologyRecordController {
 			Map<Concept, Set<Concept>> testTreeMap = generateTestTreeMap();
 			List<RadiologyTest> radiologyTests = radiologyCommonService
 					.getAllSubTest(patient, date, concept);
-			//ghanshyam,date:25-april-2013 Feedback #1302 Add Radiology record of patient in patientdashboard(below written RadiologyDashboardUtil at the place RadiologyUtil)
+			//ghanshyam,date:25-april-2013 Feedback #1302 Add Radiology record of patient in patientdashboard(below written RadiologyDashboardUtil at the place of RadiologyUtil)
 			List<TestModel> tests = RadiologyDashboardUtil.generateModelsFromTests(radiologyTests, testTreeMap);
 			model.addAttribute("radiologytests", tests);
 		}
