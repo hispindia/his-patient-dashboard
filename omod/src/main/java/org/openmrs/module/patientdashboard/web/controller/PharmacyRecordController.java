@@ -24,10 +24,9 @@
 package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
@@ -55,7 +54,8 @@ public class PharmacyRecordController {
 		Patient patient = patientService.getPatient(patientId);
 		List<InventoryStoreDrugPatient> listDate = inventoryCommonService
 				.getAllIssueDateByPatientId(patient);
-		Set<String> dates = new HashSet<String>();
+		//ghanshyam,date:25-april-2013 Feedback #1391 Add Pharmacy record of patient in Dashboard(written below LinkedHashSet at the place of HashSet)
+		Set<String> dates = new LinkedHashSet<String>();
 		for (InventoryStoreDrugPatient date : listDate) {
 			dates.add(Context.getDateFormat().format(date.getCreatedOn()));
 		}

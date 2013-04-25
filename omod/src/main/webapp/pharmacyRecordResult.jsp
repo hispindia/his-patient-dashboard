@@ -22,6 +22,7 @@
  *  issue: #1391 India module
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style>
 .rsTable {
 	margin: 5px 5px;
@@ -55,9 +56,11 @@
 						<td>${detail.transactionDetail.drug.category.name}</td>
 						<td>${detail.transactionDetail.drug.name}</td>
 						<td>${detail.transactionDetail.formulation.name}-${detail.transactionDetail.formulation.dozage}</td>
-						<td><openmrs:formatDate
-								date="${detail.transactionDetail.createdOn}" type="textbox" />
-						</td>
+						 <%--
+						<td><openmrs:formatDate date="${detail.transactionDetail.createdOn}" type="textbox" /></td>
+						--%>
+						<%-- ghanshyam,date:25-april-2013 Feedback #1391 Add Pharmacy record of patient in Dashboard --%>
+						<td><fmt:formatDate type="both" value="${detail.transactionDetail.createdOn}" /></td>
 						<td>${detail.quantity }</td>
 					</tr>
 				</c:forEach>
