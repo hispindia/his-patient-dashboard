@@ -40,8 +40,9 @@ public class Node implements Comparable<Node> {
 		public Node(Integer id, String name) {
 			this.id = id;
 			this.name = name;
-			children = new HashSet<Node>();
-			results = new HashSet<Node>();
+			//ghanshyam 25-april-2013 Bug #1429 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:at the place of HashSet written TreeSet)
+			children = new TreeSet<Node>();
+			results = new TreeSet<Node>();
 		}
 		
 		public Node(String name) {
@@ -167,7 +168,8 @@ public class Node implements Comparable<Node> {
 		
 		public void addResultToSet(Node node){
 			if( results == null ){
-				results = new HashSet<Node>();
+				//ghanshyam 25-april-2013 Bug #1429 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:at the place of HashSet written TreeSet)
+				results = new TreeSet<Node>();
 			}
 			results.add(node);
 		}
