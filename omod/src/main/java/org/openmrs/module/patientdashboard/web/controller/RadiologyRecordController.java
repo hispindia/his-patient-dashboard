@@ -25,6 +25,7 @@ package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +43,7 @@ import org.openmrs.module.hospitalcore.RadiologyService;
 import org.openmrs.module.hospitalcore.concept.TestTree;
 import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.model.RadiologyTest;
-import org.openmrs.module.hospitalcore.util.RadiologyUtil;
+import org.openmrs.module.hospitalcore.util.RadiologyDashboardUtil;
 import org.openmrs.module.hospitalcore.util.TestModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,7 +98,8 @@ public class RadiologyRecordController {
 
 		List<RadiologyTest> radiologyTests = radiologyCommonService
 				.getAllTest(patient);
-		Set<String> dates = new HashSet<String>();
+		//ghanshyam,date:25-april-2013 Feedback #1302 Add Radiology record of patient in patientdashboard(below written LinkedHashSet at the place HashSet)
+		Set<String> dates = new LinkedHashSet<String>();
 		for (RadiologyTest radiologyTest : radiologyTests) {
 			dates.add(Context.getDateFormat().format(radiologyTest.getDate()));
 			model.addAttribute("dates", dates);
@@ -137,7 +139,8 @@ public class RadiologyRecordController {
 			Map<Concept, Set<Concept>> testTreeMap = generateTestTreeMap();
 			List<RadiologyTest> radiologyTests = radiologyCommonService
 					.getAllSubTest(patient, date, concept);
-			List<TestModel> tests = RadiologyUtil.generateModelsFromTests(radiologyTests, testTreeMap);
+			//ghanshyam,date:25-april-2013 Feedback #1302 Add Radiology record of patient in patientdashboard(below written RadiologyDashboardUtil at the place RadiologyUtil)
+			List<TestModel> tests = RadiologyDashboardUtil.generateModelsFromTests(radiologyTests, testTreeMap);
 			model.addAttribute("radiologytests", tests);
 		}
 		return "module/patientdashboard/radiologyRecordResult";
