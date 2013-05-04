@@ -129,7 +129,14 @@ public class RadiologyRecordController {
 		ConceptService conceptService = (ConceptService) Context
 				.getService(ConceptService.class);
 		Patient patient = patientService.getPatient(patientId);
-		if (subtest != null) {
+		if(date.equals("all")){
+			Map<Concept, Set<Concept>> testTreeMap = generateTestTreeMap();
+			List<RadiologyTest> radiologyTests = radiologyCommonService
+					.getAllTest(patient);
+			List<TestModel> tests = RadiologyDashboardUtil.generateModelsFromTests(radiologyTests, testTreeMap);
+			model.addAttribute("radiologytests", tests);
+		}
+		else if (subtest != null) {
 			Concept concept = conceptService.getConceptByName(subtest);
 			/*
 			Map<Concept, Set<Concept>> testTreeMap = (Map<Concept, Set<Concept>>) request
