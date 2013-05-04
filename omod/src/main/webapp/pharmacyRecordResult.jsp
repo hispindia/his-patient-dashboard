@@ -23,24 +23,11 @@
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<style>
-.rsTable {
-	margin: 5px 5px;
-	text-align: center;
-	border-style: 1px solid black;
-	border-collapse: collapse;
-}
-
-.rsCell {
-	padding: 3px 3px;
-}
-</style>
 <c:choose>
 	<c:when test="${ not empty drugDetails }">
 		<span class="boxHeader">Issue drugs detail</span>
 		<div class="box">
-			<table width="100%" class="rsTable" cellspacing="3" border="1"
-				cellpadding="3">
+			<table width="100%" class="rsTable">
 				<tr align="center">
 					<th>#</th>
 					<th>Category</th>
