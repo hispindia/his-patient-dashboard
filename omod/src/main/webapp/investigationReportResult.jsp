@@ -23,8 +23,10 @@
 .rsCell { padding:3px 3px;}
 </style>
 <c:choose>
-	<c:when test="${not empty nodes}">
-		<c:forEach items="${nodes }" var="node">
+<%-- ghanshyam 07-may-2013 ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added nodes1
+and nodes2 condition)--%>
+	<c:when test="${not empty nodes1 or nodes2}">
+		<c:forEach items="${nodes1 }" var="node">
 			<table class="rsTable" cellspacing="3" border="1"  cellpadding="3">
 				<tr>
 					<td><span style="display:block"><b>${node.name }</b></span>
@@ -35,17 +37,6 @@
 							<table class="rsTable" cellspacing="3" cellpadding="3" border="1" >
 								<tr>
 									<td><span style="display:block"><b>${child.name }</b></span></td>
-								</tr>
-								<tr>
-									<td>
-										<table class="rsTable" cellspacing="3" cellpadding="3" border="1" >
-											<c:forEach items="${child.results }" var="result">
-												<tr>
-													<td>${result.date }  |  ${result.result }</td>
-												</tr>
-											</c:forEach>
-										</table>
-									</td>
 								</tr>
 								
 								<c:if test="${not empty child.children}"> 
@@ -74,6 +65,48 @@
 				</tr>
 			</table>
 		</c:forEach>
+		
+		
+		<c:forEach items="${nodes2 }" var="node">
+			<table class="rsTable" cellspacing="3" border="1"  cellpadding="3">
+				<tr>
+					<td><span style="display:block"><b>${node.name }</b></span>
+				</tr>
+				<tr>
+					<td>
+						<c:forEach items="${node.children }" var="child">
+							<table class="rsTable" cellspacing="3" cellpadding="3" border="1" >
+								<tr>
+									<td><span style="display:block"><b>${child.name }</b></span></td>
+								</tr>
+								
+								<c:if test="${not empty child.children}"> 
+									<td>
+										<table class="rsTable"  cellspacing="3" cellpadding="3" border="1" >
+											<tr>
+												<th></th>
+												<c:forEach items="${child.children}" var="leaf">
+													<th><span style="display:block"><b>${leaf.name} </b></th>
+												</c:forEach>
+											</tr>		
+												<c:forEach items="${child.dates}" var="date">
+													<tr>
+														<td>${date}</td>
+														<c:forEach items="${child.mapResult[date]}" var="test">
+															<td class="rsCell">${test.result}</td>
+														</c:forEach>
+													</tr>
+												</c:forEach>
+										</table>
+									</td>
+								</c:if>
+							</table>
+						</c:forEach>
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
+		
 	</c:when>
 	<c:otherwise>
 	No result.

@@ -20,6 +20,7 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -92,10 +93,8 @@ public class InvestigationReportController {
 						for( Obs obs : listObs ){
 							// result 
 							obsConcept = obs.getConcept();
-//							System.out.println("con: "+obsConcept.getDisplayString()+"=======================================================");
 							
 							orderConcept = obs.getOrder().getConcept();
-//							System.out.println("orderConcept: "+orderConcept.getDisplayString() + " - "+orderConcept.getConceptId());
 							
 							if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Test")){
 								Node node = new Node(obsConcept.getConceptId(), obsConcept.getName().toString());
@@ -111,7 +110,6 @@ public class InvestigationReportController {
 					}
 				}// end for encounter
 			}
-//			System.out.println("nodes : "+nodes);
 			model.addAttribute("nodes", nodes);
 			model.addAttribute("dates",dates);
 			model.addAttribute("patientId",patientId);
@@ -121,7 +119,8 @@ public class InvestigationReportController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String formSubmit(InvestigationCommand investigationCommand , Model model){
-//		System.out.println("submit form investigation");
+		//ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below line)
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		try{
 		// get list encounter
 		PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
@@ -150,7 +149,9 @@ public class InvestigationReportController {
 		Set<String> dates = new TreeSet<String>(); // tree for dates
 		if( encounters != null ){
 			Set<Obs> listObs = null;
-			Set<Node> nodes = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+			//ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
+			Set<Node> nodes1 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+			Set<Node> nodes2 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
 			Concept orderConcept = null;
 			Concept obsConcept  = null;
 			for( Encounter enc : encounters)
@@ -164,10 +165,8 @@ public class InvestigationReportController {
 						if(!checkSubmitTest(obsConcept.getConceptId(), investigationCommand.getTests())){
 							continue;
 						}
-//						System.out.println("con: "+obsConcept.getDisplayString()+"=======================================================");
 						// matched the concept
 						orderConcept = obs.getOrder().getConcept();
-//						System.out.println("orderConcept: "+orderConcept.getDisplayString() + " - "+orderConcept.getConceptId());
 						/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
 						String value = "";
 						if( obs.getValueCoded() == null)
@@ -175,47 +174,37 @@ public class InvestigationReportController {
 						else
 							value = obs.getValueAsString(Context.getLocale());
 						if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Test")){
-							Node node = getNode(obsConcept.getId(), nodes);
-							if( node == null ){
-								node = new Node(obsConcept.getId(), obsConcept.getName().getName());
-								addNode(node, nodes, obsConcept, listParent);
-							}
-							// node <name of obs, dateCreatedon> become an information for node
-							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
-//							Node result = new Node(obsConcept.getName().getName(),Context.getDateFormat().format(obs.getDateCreated()),
-//									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(obsConcept));
-							Node result = new Node(obsConcept.getName().getName(),Context.getDateFormat().format(obs.getDateCreated()),
-								value +"  " + getUnitStringFromConcept(obsConcept));
-							node.addResultToSet(result);
+							//ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added fresh code in if condition)
+							Node resultNode = new Node(obsConcept.getName().getName(), formatter.format(obs.getDateCreated()),
+									value +"  " + getUnitStringFromConcept(obsConcept));
+								
+							Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
+								
+							nodes1 = addNodeAndChild(nodes1, orderConcept, childNode, resultNode, listParent, true);
 						}else if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Labset")){
 							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
-							Node resultNode = new Node(obsConcept.getName().getName(), Context.getDateFormat().format(obs.getDateCreated()),
+							//ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added date formatting)
+							Node resultNode = new Node(obsConcept.getName().getName(), formatter.format(obs.getDateCreated()),
 								value +"  " + getUnitStringFromConcept(obsConcept));
 							
 							Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
 							
-//							System.out.println("child node to add : "+childNode);
-							nodes = addNodeAndChild(nodes, orderConcept, childNode, resultNode, listParent, true);
+							nodes2 = addNodeAndChild(nodes2, orderConcept, childNode, resultNode, listParent, true);
 						}
 //						 add date
 						dates.add(Context.getDateFormat().format(obs.getDateCreated())); // datecreatedOn in to dateTree
 					}
 				}
 			}// end for encounter
-//						if( !con.getConceptId().equals(orderConcept.getConceptId())){
-//							orderNode.getResults().add(new Node(Context.getDateFormat().format(obs.getDateCreated()),
-//									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(con)));
-//						}
-						
 				
-//			System.out.println("nodes: "+nodes);
-			model.addAttribute("nodes", nodes);
+			//ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
+			model.addAttribute("nodes1", nodes1);
+			model.addAttribute("nodes2", nodes2);
 		}
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-//		System.out.println("out form investigation");
 		return "module/patientdashboard/investigationReportResult";
 	}
 	
@@ -263,31 +252,22 @@ public class InvestigationReportController {
 		
 		 for( Concept pa : listParent ){
 				for(  ConceptAnswer answer : pa.getAnswers()){
-//					System.out.println("answer: "+answer.getAnswerConcept().getName() );
 					if( answer.getAnswerConcept().getId().equals(concept.getConceptId())){
-//						System.out.println("orderConcept in parent : 	"+ orderConcept.getDisplayString());
-//						System.out.println("nodes: "+nodes + " - pa : "+pa.getDisplayString() + "- "+pa.getId());
 						Node parentNode =  getNode(pa.getConceptId(), nodes);
-//						System.out.println("parentNod1e: "+parentNode);
 						if( parentNode == null ){
-//							System.out.println("add parent node : "+pa.getName().toString());
 							parentNode = new Node(pa.getConceptId(), pa.getName().toString());
 							nodes.add(parentNode);
 						}
-//						System.out.println("nodes: "+nodes);
 						// add orderNode to parent
-//							System.out.println("add result to pa : "+node );
 							parentNode.addChild(node);
 					}
 				}
 					
 				//find parent of order concept : Labset  case
 				List<Concept> set = Context.getConceptService().getConceptsByConceptSet(pa);
-//				System.out.println("set: "+set);
 				if( set != null && set.size() > 0){
 					if ( set.contains(concept)){
 						Node parentNode =  getNode(pa.getConceptId(), nodes);
-//								System.out.println("parentNode2: "+parentNode);
 						if( parentNode == null ){
 							parentNode = new Node(pa.getConceptId(), pa.getName().toString());
 							nodes.add(parentNode);
@@ -301,10 +281,7 @@ public class InvestigationReportController {
 	 }
 	 
 	 private Set<Node>  addNodeAndChild(Set<Node>  nodes , Concept pa, Node childNode, Node resultNode, Set<Concept> listParent, boolean result) {
-//		 System.out.println("addNodeAndChild================================");
-//		 System.out.println("pa: "+pa +" -- child: "+childNode );
 		 Node paNode = getNode(pa.getConceptId(), nodes);
-//		 System.out.println("paNode : "+paNode);
 		 if( paNode == null ){
 			Node node = new Node(pa.getConceptId(), pa.getName().toString());
 			paNode =  addNode(node, nodes, pa, listParent);
@@ -316,7 +293,6 @@ public class InvestigationReportController {
 			 paNode.getChildren().add(childNode);
 			 paNode.addResultToMap(resultNode);
 		 }
-//		 System.out.println("panodechild : "+paNode.getChildren());
 		 return nodes;
 	 }
 }
