@@ -22,6 +22,7 @@ package org.openmrs.module.patientdashboard.web.controller.global;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -198,18 +199,9 @@ public class Node implements Comparable<Node> {
 		
 		public void addDates(String date){
 			if( dates == null ){
-				dates = new TreeSet<String>();
+			//ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:at the place of TreeSet written LinkedHashSet)
+			dates = new LinkedHashSet<String>();
 			}
 			dates.add(date);
 		}
-		
-//		public String toString(){
-//			return  "\n"+id + "- " +
-//			 name + "- " +
-//			date+ "- " +
-//			result+ "- " +
-//			children+ "- " +
-//			results+ "- " +
-//			 isChild ;
-//		}
 }
