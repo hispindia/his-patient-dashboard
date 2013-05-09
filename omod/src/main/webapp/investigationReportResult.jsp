@@ -23,13 +23,12 @@
 .rsCell { padding:3px 3px;}
 </style>
 <c:choose>
-<%-- ghanshyam 07-may-2013 ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added nodes1
-and nodes2 condition)--%>
-	<c:when test="${not empty nodes1 or nodes2}">
+<%-- ghanshyam 07-may-2013 Bug #1429 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added nodes1 and nodes2 condition)--%>
+	<c:when test="${not empty nodes1 or not empty nodes2}">
 		<c:forEach items="${nodes1 }" var="node">
 			<table class="rsTable" cellspacing="3" border="1"  cellpadding="3">
 				<tr>
-					<td><span style="display:block"><b>${node.name }</b></span>
+					<td bgcolor="#3BB9FF"><span style="display:block"><b>${node.name }</b></span></td>
 				</tr>
 				<tr>
 					<td>
@@ -70,7 +69,7 @@ and nodes2 condition)--%>
 		<c:forEach items="${nodes2 }" var="node">
 			<table class="rsTable" cellspacing="3" border="1"  cellpadding="3">
 				<tr>
-					<td><span style="display:block"><b>${node.name }</b></span>
+					<td bgcolor="#3BB9FF"><span style="display:block"><b>${node.name }</b></span></td>
 				</tr>
 				<tr>
 					<td>
@@ -108,7 +107,8 @@ and nodes2 condition)--%>
 		</c:forEach>
 		
 	</c:when>
+<%-- ghanshyam 09-may-2013 Support #1496 [Patient Dashboard]UI Change in Laboratory Record in Patient Dashboard --%>
 	<c:otherwise>
-	No result.
+	PLEASE SELECT THE TESTS.
 	</c:otherwise>
 </c:choose>
