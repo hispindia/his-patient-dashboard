@@ -63,11 +63,38 @@ DASHBOARD={
 				}
 			}
 		},
+		
+		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		onChangeInvestigation : function(id)
+		{
+			var text = jQuery("#"+id).val();
+			if(text != null && text != ''){
+				if(SESSION.checkSession()){
+					var data = jQuery.ajax(
+							{
+								type:"GET"
+								,url: "comboboxInvestigation.htm"
+								,data: ({text: text})	
+								,async: false
+								, cache : false
+							}).responseText;
+					if(data != undefined  && data != null && data != ''){
+						jQuery("#divAvailableInvestigationList").html("");
+						jQuery("#divAvailableInvestigationList").html(data);
+					}
+				}
+			}
+		},
+		
 		submitOpdEntry : function(){
 				jQuery('#selectedDiagnosisList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
 				jQuery('#selectedProcedureList option').each(function(i) {  
+					 jQuery(this).attr("selected", "selected");  
+				}); 
+				//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+				jQuery('#selectedInvestigationList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
 				jQuery("#opdEntryForm").submit();
@@ -163,7 +190,45 @@ DASHBOARD={
 					}
 				}
 			}
+			
+			//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		if(container == 'investigation'){
+				var exists = false;
+				jQuery('#selectedInvestigationList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				if(exists){
+					alert('It\'s existed!');
+					return false;
+				}
+				exists = false;
+				jQuery('#availableInvestigationList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				jQuery("#investigation").val("");
+				if(exists){
+					jQuery("#availableInvestigationList option[value=" +id+ "]").appendTo("#selectedInvestigationList");
+					jQuery("#availableInvestigationList option[value=" +id+ "]").remove();
+				}else{
+					jQuery('#selectedInvestigationList').append('<option value="' + id + '">' + name + '</option>');
+					if(confirm("Do you want also add this investigation to opd investigation?"))
+					{
+						jQuery.ajax({
+							  type: 'POST',
+							  url: 'addConceptToWard.htm',
+							  data: {opdId: jQuery("#"+container).attr("title"), conceptId: id, typeConcept: 3}
+							});
+					}
+				}
+			}
 		},
+		
 		onChangeRadio : function(thiz)
 		{
 			var text = jQuery(thiz).val();

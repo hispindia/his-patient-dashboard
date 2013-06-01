@@ -117,6 +117,16 @@ public class AutoCompleteController {
 		return "/module/patientdashboard/autocomplete/comboboxDianosis";
 	}
 	
+	//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+	@RequestMapping(value="/module/patientdashboard/comboboxInvestigation.htm", method=RequestMethod.GET)
+	public String comboboxInvestigation(@RequestParam(value="text",required=false) String text, Model model) {
+		List<Concept> investigation = new ArrayList<Concept>();
+		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+		investigation = dashboardService.searchInvestigation(text);
+		model.addAttribute("investigation", investigation);
+		return "/module/patientdashboard/autocomplete/comboboxInvestigation";
+	}
+	
 	@RequestMapping(value="/module/patientdashboard/detailClinical.htm", method=RequestMethod.GET)
 	public String detailClinical(@RequestParam(value="id",required=false) Integer id, Model model) {
 		if(id != null){
@@ -200,6 +210,14 @@ public class AutoCompleteController {
 		
 		model.addAttribute("procedures",procedures);
 		return "module/patientdashboard/autocomplete/autoCompleteProcedure";
+	}
+	
+	//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+	@RequestMapping(value="/module/patientdashboard/autoCompleteInvestigation.htm", method=RequestMethod.GET)
+	public String autoCompleteInvestigation(@RequestParam(value="q",required=false) String name, Model model) {
+		List<Concept> investigations = Context.getService(PatientDashboardService.class).searchInvestigation(name);
+		model.addAttribute("investigations",investigations);
+		return "module/patientdashboard/autocomplete/autoCompleteInvestigation";
 	}
 	
 }

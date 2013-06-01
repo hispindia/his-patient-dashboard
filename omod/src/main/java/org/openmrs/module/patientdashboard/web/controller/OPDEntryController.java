@@ -48,6 +48,7 @@ import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
+import org.openmrs.module.hospitalcore.model.OpdOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
@@ -101,6 +102,13 @@ public class OPDEntryController {
 			Collections.sort(procedures, new ConceptComparator());
 		}
 		model.addAttribute("listProcedures", procedures);
+		
+		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		List<Concept> investigations = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
+		if(CollectionUtils.isNotEmpty(investigations)){
+			Collections.sort(investigations, new ConceptComparator());
+		}
+		model.addAttribute("listInvestigations", investigations);
 		
 		model.addAttribute("opd", opdConcept);
 		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
@@ -165,6 +173,8 @@ public class OPDEntryController {
 		ConceptService conceptService = Context.getConceptService();
 		GlobalProperty gpDiagnosis = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
 		GlobalProperty procedure = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		GlobalProperty investigationn = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
 		GlobalProperty internalReferral = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
 		GlobalProperty externalReferral = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
 		
@@ -217,6 +227,27 @@ public class OPDEntryController {
 				obsDiagnosis.setEncounter(encounter);
 				obsDiagnosis.setPatient(patient);
 				encounter.addObs(obsDiagnosis);
+			}
+		
+		}
+		
+		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		//investigation
+		if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
+			Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
+			if( coninvt == null ){
+				throw new Exception("Investigation concept null");
+			}
+			for( Integer pId : command.getSelectedInvestigationList()){
+				Obs obsInvestigation = new Obs();
+				obsInvestigation.setObsGroup(obsGroup);
+				obsInvestigation.setConcept(coninvt);
+				obsInvestigation.setValueCoded(conceptService.getConcept(pId));
+				obsInvestigation.setCreator(user);
+				obsInvestigation.setDateCreated(date);
+				obsInvestigation.setEncounter(encounter);
+				obsInvestigation.setPatient(patient);
+				encounter.addObs(obsInvestigation);
 			}
 		
 		}
@@ -363,6 +394,47 @@ public class OPDEntryController {
 			patientAdmission.setPatientIdentifier(patient.getPatientIdentifier().getIdentifier());
 			patientAdmission.setPatientName(patient.getGivenName()+" "+patient.getMiddleName() + " "+ patient.getFamilyName());
 			patientAdmission = ipdService.saveIpdPatientAdmission(patientAdmission);
+		}
+		
+		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		//procedure
+		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
+		if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
+			Concept conpro = conceptService.getConceptByName(procedure.getPropertyValue());
+			if( conpro == null ){
+				throw new Exception("Post for procedure concept null");
+			}
+			for( Integer pId : command.getSelectedProcedureList()){
+				OpdOrder opdOrder = new OpdOrder();
+				opdOrder.setPatient(patient);
+				opdOrder.setEncounter(encounter);
+				opdOrder.setConcept(conpro);
+				opdOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
+				opdOrder.setValueCoded(conceptService.getConcept(pId));
+				opdOrder.setCreator(user);
+				opdOrder.setCreatedOn(date);
+				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+			}
+		
+		}
+		//investigation
+		if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
+			Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
+			if( coninvt == null ){
+				throw new Exception("Investigation concept null");
+			}
+			for( Integer pId : command.getSelectedInvestigationList()){
+				OpdOrder opdOrder = new OpdOrder();
+				opdOrder.setPatient(patient);
+				opdOrder.setEncounter(encounter);
+				opdOrder.setConcept(coninvt);
+				opdOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
+				opdOrder.setValueCoded(conceptService.getConcept(pId));
+				opdOrder.setCreator(user);
+				opdOrder.setCreatedOn(date);
+				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+			}
+		
 		}
 		
 		return "redirect:/module/patientqueue/main.htm?opdId="+opdPatientLog.getOpdConcept().getId();

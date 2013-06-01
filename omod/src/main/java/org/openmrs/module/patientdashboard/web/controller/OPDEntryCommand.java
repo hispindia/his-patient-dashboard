@@ -26,6 +26,8 @@ public class OPDEntryCommand {
 	
 	private Integer[] selectedDiagnosisList;
 	private Integer[] selectedProcedureList;
+	//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+	private Integer[] selectedInvestigationList;
 	private Integer patientId;
 	private Integer internalReferral;
 	private Integer externalReferral;
@@ -104,6 +106,14 @@ public class OPDEntryCommand {
 		this.selectedProcedureList = selectedProcedureList;
 	}
 	
+	//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+	public Integer[] getSelectedInvestigationList() {
+		return selectedInvestigationList;
+	}
+	public void setSelectedInvestigationList(Integer[] selectedInvestigationList) {
+		this.selectedInvestigationList = selectedInvestigationList;
+	}
+	
 	public String getRadio_f() {
 		return radio_f;
 	}
@@ -122,7 +132,10 @@ public class OPDEntryCommand {
 		return "OPDEntryCommand [selectedDiagnosisList="
 				+ Arrays.toString(selectedDiagnosisList)
 				+ ", selectedProcedureList="
-				+ Arrays.toString(selectedProcedureList) + ", patientId="
+				+ Arrays.toString(selectedProcedureList)
+				//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+				+ ", selectedInvestigationList="
+				+ Arrays.toString(selectedInvestigationList) + ", patientId="
 				+ patientId + ", internalReferral=" + internalReferral
 				+ ", externalReferral=" + externalReferral + ", note=" + note
 				+ ", admit=" + admit + ", outCome=" + outCome

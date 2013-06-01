@@ -92,6 +92,14 @@
 			Post for procedure concept name
 		</description>
 	</globalProperty>
+	<!-- ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing -->
+	<globalProperty>
+		<property>@MODULE_ID@.investigationConcept</property>
+		<defaultValue>investigation</defaultValue>
+		<description>
+			investigation concept name
+		</description>
+	</globalProperty>
 	<globalProperty>
 		<property>@MODULE_ID@.internalReferralConcept</property>
 		<defaultValue>Internal referral</defaultValue>

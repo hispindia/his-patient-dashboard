@@ -111,6 +111,34 @@ var CHECK =
 						}).result(function(event, item) {
 							DASHBOARD.onChangeDiagnosis('procedure',item.value, item.text);
 						});
+						
+						
+						//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+						jQuery("#investigation").autocomplete('autoCompleteInvestigation.htm', {
+						delay:1000,
+						scroll: true,
+						 parse: function(xml){
+				                var results = [];
+				                $(xml).find('item').each(function() {
+				                    var text = $.trim($(this).find('text').text());
+				                    var value = $.trim($(this).find('value').text());
+				                    results[results.length] = { 'data': { text: text, value: value },
+				                        'result': text, 'value': value
+				                    };
+				                });
+				                return results;
+
+						 },
+						formatItem: function(data) {
+							  return data.text;
+						},
+						formatResult: function(data) {
+						      return data.text;
+						}
+						  
+						}).result(function(event, item) {
+							DASHBOARD.onChangeDiagnosis('investigation',item.value, item.text);
+						});
 		
 					
 					jQuery('.date-pick').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,minDate:'0'});
@@ -229,6 +257,34 @@ var CHECK =
 			}).result(function(event, item) {
 				DASHBOARD.onChangeDiagnosis('procedure',item.value, item.text);
 			});
+			
+			//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+			jQuery("#investigation").autocomplete('autoCompleteInvestigation.htm', {
+			delay:1000,
+			scroll: true,
+			 parse: function(xml){
+	                var results = [];
+	                $(xml).find('item').each(function() {
+	                    var text = $.trim($(this).find('text').text());
+	                    var value = $.trim($(this).find('value').text());
+	                    results[results.length] = { 'data': { text: text, value: value },
+	                        'result': text, 'value': value
+	                    };
+	                });
+	                return results;
+
+			 },
+			formatItem: function(data) {
+				  return data.text;
+			},
+			formatResult: function(data) {
+			      return data.text;
+			}
+			  
+			}).result(function(event, item) {
+				DASHBOARD.onChangeDiagnosis('investigation',item.value, item.text);
+			});
+			
 	}
 	
 };
