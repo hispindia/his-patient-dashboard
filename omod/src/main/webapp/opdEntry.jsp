@@ -21,7 +21,47 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="View PatientDashboard"
 	otherwise="/login.htm" redirect="index.htm" />
-<style>
+<style type="text/css">
+.drug-order {
+	width: 100%;
+}
+
+.drugs {
+	width: 20%;
+	height: 10%;
+	float: left;
+}
+
+.formulation {
+	width: 20%;
+	height: 10%;
+	float: left;
+}
+
+.frequency {
+	width: 13%;
+	height: 10%;
+	float: left;
+}
+
+.no-of-days {
+	width: 13%;
+	height: 10%;
+	float: left;
+}
+
+.commentsTitle {
+	width: 7%;
+	height: 10%;
+	float: left;
+}
+
+.comments {
+	width: 18%;
+	height: 10%;
+	float: left;
+}
+
 .ui-button {
 	margin-left: -1px;
 }
@@ -204,6 +244,38 @@
 				style="min-width:25em;height:5em"
 				ondblclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList' )">
 			</select>
+			</td>
+		</tr>
+		<!-- ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard -->
+		<tr>
+			<td colspan="3">
+				<div class="drug-order">
+					<div class="drugs" class="ui-widget">
+						<strong>Drugs:</strong> <input title="${opd.conceptId}"
+							id="drugName" name="drugName" onblur="ISSUE.onBlur(this);" />
+					</div>
+					<div class="formulation" id="divFormulation">
+						<select id="formulation" name="formulation">
+							<option value="">
+								<spring:message code="patientdashboard.SelectFormulation" />
+							</option>
+						</select>
+					</div>
+					<div class="frequency">
+						<select id="frequency" name="frequency">
+							<option value="">Select Frequency</option>
+						</select>
+					</div>
+					<div class="no-of-days">
+						<strong>No Of Days:</strong> <input type="text" id="noOfDays" name="noOfDays" size="7">
+					</div>
+					<div class="commentsTitle">
+					<strong>Comments:</strong>
+					</div>
+					<div class="comments">
+						<TEXTAREA id="comments" name="comments" rows=2 cols=20></TEXTAREA>
+					</div>
+				</div>
 			</td>
 		</tr>
 		<tr>

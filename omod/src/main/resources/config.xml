@@ -100,6 +100,14 @@
 			investigation concept name
 		</description>
 	</globalProperty>
+	<!-- ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard -->
+	<globalProperty>
+		<property>@MODULE_ID@.drugConcept</property>
+		<defaultValue>drug</defaultValue>
+		<description>
+			drug concept name
+		</description>
+	</globalProperty>
 	<globalProperty>
 		<property>@MODULE_ID@.internalReferralConcept</property>
 		<defaultValue>Internal referral</defaultValue>

@@ -139,6 +139,33 @@ var CHECK =
 						}).result(function(event, item) {
 							DASHBOARD.onChangeDiagnosis('investigation',item.value, item.text);
 						});
+						
+						//ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+						jQuery("#drugName").autocomplete('autoCompleteDrug.htm', {
+						delay:1000,
+						scroll: true,
+						 parse: function(xml){
+				                var results = [];
+				                $(xml).find('item').each(function() {
+				                    var text = $.trim($(this).find('text').text());
+				                    var value = $.trim($(this).find('value').text());
+				                    results[results.length] = { 'data': { text: text, value: value },
+				                        'result': text, 'value': value
+				                    };
+				                });
+				                return results;
+
+						 },
+						formatItem: function(data) {
+							  return data.text;
+						},
+						formatResult: function(data) {
+						      return data.text;
+						}
+						  
+						}).result(function(event, item) {
+							DASHBOARD.onChangeDiagnosis('drug',item.value, item.text);
+						});
 		
 					
 					jQuery('.date-pick').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,minDate:'0'});
@@ -283,6 +310,33 @@ var CHECK =
 			  
 			}).result(function(event, item) {
 				DASHBOARD.onChangeDiagnosis('investigation',item.value, item.text);
+			});
+			
+			//ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+			jQuery("#drugName").autocomplete('autoCompleteDrug.htm', {
+			delay:1000,
+			scroll: true,
+			 parse: function(xml){
+	                var results = [];
+	                $(xml).find('item').each(function() {
+	                    var text = $.trim($(this).find('text').text());
+	                    var value = $.trim($(this).find('value').text());
+	                    results[results.length] = { 'data': { text: text, value: value },
+	                        'result': text, 'value': value
+	                    };
+	                });
+	                return results;
+
+			 },
+			formatItem: function(data) {
+				  return data.text;
+			},
+			formatResult: function(data) {
+			      return data.text;
+			}
+			  
+			}).result(function(event, item) {
+				DASHBOARD.onChangeDiagnosis('drug',item.value, item.text);
 			});
 			
 	}
