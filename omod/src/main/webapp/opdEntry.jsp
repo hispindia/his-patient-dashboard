@@ -57,7 +57,13 @@
 }
 
 .comments {
-	width: 18%;
+	width: 15%;
+	height: 10%;
+	float: left;
+}
+
+.add {
+	width: 7%;
 	height: 10%;
 	float: left;
 }
@@ -274,6 +280,9 @@
 					</div>
 					<div class="comments">
 						<TEXTAREA id="comments" name="comments" rows=2 cols=20></TEXTAREA>
+					</div>
+					<div class="add">
+						<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Add" />
 					</div>
 				</div>
 			</td>
