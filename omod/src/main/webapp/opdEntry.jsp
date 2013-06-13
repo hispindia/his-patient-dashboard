@@ -85,16 +85,18 @@
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value;
    var formulation=document.getElementById('formulation').value;
+   var formulationArr=formulation.split("."); 
    var frequency=document.getElementById('frequency').value;
    var noOfDays=document.getElementById('noOfDays').value;
    var comments=document.getElementById('comments').value;
    var deleteString = 'deleteInput(\"'+drugName+'\")';
    var htmlText =  "<div id='com_"+drugName+"_div'>"
 	       	 +"<input id='"+drugName+"_name'  name='"+drugName+"_name' type='text' size='20' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_formulation'  name='"+drugName+"_formulation' type='text' size='20' value='"+formulation+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_formulationname'  name='"+drugName+"_formulationname' type='text' size='20' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_frequency'  name='"+drugName+"_frequency' type='text' size='7' value='"+frequency+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='8' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='20' value='"+comments+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_formulationid'  name='"+drugName+"_formulationid' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
 	       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
 	       	 +"</div>";
 	       	
