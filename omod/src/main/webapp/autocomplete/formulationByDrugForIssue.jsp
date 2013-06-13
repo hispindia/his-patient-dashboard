@@ -22,7 +22,7 @@
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
 
-<select name="formulation" id="formulation"  onchange="ISSUE.formulationOnChange(this);"  style="width: 200px;">
+<select name="formulation" id="formulation"  style="width: 200px;">
 	<option value=""><spring:message code="patientdashboard.SelectFormulation"/></option>
        <c:forEach items="${formulations}" var="formulation">
            <option value="${formulation.name}-${formulation.dozage}.${formulation.id}" <c:if test="${formulation.id == formulationId }">selected</c:if> >${formulation.name}-${formulation.dozage}</option>

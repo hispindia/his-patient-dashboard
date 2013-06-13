@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -122,7 +124,9 @@ public class OPDEntryController {
 		return "module/patientdashboard/opdEntry";
 	}
 	@RequestMapping(method=RequestMethod.POST)
-	public String formSummit(OPDEntryCommand command) throws Exception{
+	public String formSummit(OPDEntryCommand command,
+			HttpServletRequest request,
+			@RequestParam("drugOrder") String[] drugOrder) throws Exception{
 		User user =Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(command.getPatientId());
@@ -441,6 +445,22 @@ public class OPDEntryController {
 				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
 			}
 		
+		}
+		
+		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+		Integer formulationId;
+		Integer frequencyId;
+		Integer noOfDays;
+		String comments;
+		for (String conceptName : drugOrder) {
+			Concept con = conceptService.getConceptByName(conceptName);
+			formulationId = Integer.parseInt(request.getParameter(conceptName
+					+ "_formulationId"));
+			frequencyId = Integer.parseInt(request.getParameter(conceptName
+					+ "_frequencyId"));
+			noOfDays = Integer.parseInt(request.getParameter(conceptName
+					+ "_noOfDays"));
+			comments = request.getParameter(conceptName + "_comments");
 		}
 		
 		return "redirect:/module/patientqueue/main.htm?opdId="+opdPatientLog.getOpdConcept().getId();

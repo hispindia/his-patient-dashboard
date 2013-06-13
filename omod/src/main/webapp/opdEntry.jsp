@@ -92,13 +92,13 @@ function addDrugOrder() {
    var comments=document.getElementById('comments').value;
    var deleteString = 'deleteInput(\"'+drugName+'\")';
    var htmlText =  "<div id='com_"+drugName+"_div'>"
-	       	 +"<input id='"+drugName+"_name'  name='"+drugName+"_name' type='text' size='20' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_formulationname'  name='"+drugName+"_formulationname' type='text' size='20' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_frequencyname'  name='"+drugName+"_frequencyname' type='text' size='7' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_name'  name='drugOrder' type='text' size='20' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_formulationName'  name='"+drugName+"_formulatioNname' type='text' size='20' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_frequencyName'  name='"+drugName+"_frequencyName' type='text' size='7' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='8' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='20' value='"+comments+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_formulationid'  name='"+drugName+"_formulationid' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_frequencyid'  name='"+drugName+"_frequencyid' type='hidden' value='"+frequencyArr[1]+"'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_formulationId'  name='"+drugName+"_formulationId' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_frequencyId'  name='"+drugName+"_frequencyId' type='hidden' value='"+frequencyArr[1]+"'/>&nbsp;"
 	       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
 	       	 +"</div>";
 	       	
