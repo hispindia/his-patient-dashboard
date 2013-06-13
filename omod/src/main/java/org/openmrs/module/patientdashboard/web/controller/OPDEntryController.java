@@ -43,6 +43,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
+import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
@@ -83,6 +84,7 @@ public class OPDEntryController {
 		model.addAttribute("listIpd", ipdConcept!= null ?  new ArrayList<ConceptAnswer>(ipdConcept.getAnswers()) : null);
 		
 		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
+		InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
 		Concept opdConcept =  Context.getConceptService().getConcept(opdId);
 		/*
 		//list diagnosis need rewrtie CHUYEN
@@ -109,6 +111,10 @@ public class OPDEntryController {
 			Collections.sort(investigations, new ConceptComparator());
 		}
 		model.addAttribute("listInvestigations", investigations);
+		
+		//ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+		List<Concept> drugFrequencyConcept= inventoryCommonService.getDrugFrequency();
+		model.addAttribute("drugFrequencyList", drugFrequencyConcept);
 		
 		model.addAttribute("opd", opdConcept);
 		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));

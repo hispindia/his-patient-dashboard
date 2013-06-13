@@ -303,6 +303,9 @@ function deleteInput(drugName) {
 					<div class="frequency">
 						<select id="frequency" name="frequency">
 							<option value="">Select Frequency</option>
+							<c:forEach items="${drugFrequencyList}" var="dfl">
+								<option value="${dfl.name}">${dfl.name}</option>
+							</c:forEach>
 						</select>
 					</div>
 					<div class="no-of-days">
