@@ -81,6 +81,37 @@
 	padding: 0.48em 0 0.47em 0.45em;
 }
 </style>
+<script type="text/javascript">
+function addDrugOrder() {
+   var drugName=document.getElementById('drugName').value;
+   var formulation=document.getElementById('formulation').value;
+   var frequency=document.getElementById('frequency').value;
+   var noOfDays=document.getElementById('noOfDays').value;
+   var comments=document.getElementById('comments').value;
+   var deleteString = 'deleteInput(\"'+drugName+'\")';
+   var htmlText =  "<div id='com_"+drugName+"_div'>"
+	       	 +"<input id='"+drugName+"_name'  name='"+drugName+"_name' type='text' size='20' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_formulation'  name='"+drugName+"_formulation' type='text' size='20' value='"+formulation+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_frequency'  name='"+drugName+"_frequency' type='text' size='7' value='"+frequency+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='8' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='20' value='"+comments+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
+	       	 +"</div>";
+	       	
+   var newElement = document.createElement('div');
+   newElement.setAttribute("id", drugName);   
+   newElement.innerHTML = htmlText;
+   var fieldsArea = document.getElementById('headerValue');
+   fieldsArea.appendChild(newElement);
+}
+
+function deleteInput(drugName) {
+   var parentDiv = 'headerValue';
+   var child = document.getElementById(drugName);
+   var parent = document.getElementById(parentDiv);
+   parent.removeChild(child); 
+}
+</script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
 
@@ -282,10 +313,31 @@
 						<TEXTAREA id="comments" name="comments" rows=2 cols=20></TEXTAREA>
 					</div>
 					<div class="add">
-						<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Add" />
+						<input type="button"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							value="Add" onClick="addDrugOrder();" />
 					</div>
 				</div>
 			</td>
+		</tr>
+			<tr>
+			<td colspan="2">
+				<div id="headerName"
+					style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+					<input type='text' id="drug" name="drug" value='Drugs' size="20"
+						readonly="readonly" />&nbsp; <input type='text' id="formulation"
+						name='formulation' value="Formulation" size="20"
+						readonly="readonly" />&nbsp; <input type='text' id='frequency'
+						name='frequency' value='Frequency' size="7" readonly="readonly" />&nbsp;
+						<input type='text' id='noOfDays'
+						name='noOfDays' value='No Of Days' size="8" readonly="readonly" />&nbsp;
+						<input type='text' id='comments'
+						name='comments' value='Comments' size="20" readonly="readonly" />&nbsp;
+					<b>
+				</div>
+				<div id="headerValue"
+					style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+				</div></td>
 		</tr>
 		<tr>
 			<td colspan="3">Internal referral: <select id="internalReferral"
