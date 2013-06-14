@@ -50,8 +50,10 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
+import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
-import org.openmrs.module.hospitalcore.model.OpdOrder;
+import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
+import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
@@ -415,15 +417,15 @@ public class OPDEntryController {
 				throw new Exception("Post for procedure concept null");
 			}
 			for( Integer pId : command.getSelectedProcedureList()){
-				OpdOrder opdOrder = new OpdOrder();
-				opdOrder.setPatient(patient);
-				opdOrder.setEncounter(encounter);
-				opdOrder.setConcept(conpro);
-				opdOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
-				opdOrder.setValueCoded(conceptService.getConcept(pId));
-				opdOrder.setCreator(user);
-				opdOrder.setCreatedOn(date);
-				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+				OpdTestOrder opdTestOrder = new OpdTestOrder();
+				opdTestOrder.setPatient(patient);
+				opdTestOrder.setEncounter(encounter);
+				opdTestOrder.setConcept(conpro);
+				opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
+				opdTestOrder.setValueCoded(conceptService.getConcept(pId));
+				opdTestOrder.setCreator(user);
+				opdTestOrder.setCreatedOn(date);
+				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		
 		}
@@ -434,15 +436,15 @@ public class OPDEntryController {
 				throw new Exception("Investigation concept null");
 			}
 			for( Integer pId : command.getSelectedInvestigationList()){
-				OpdOrder opdOrder = new OpdOrder();
-				opdOrder.setPatient(patient);
-				opdOrder.setEncounter(encounter);
-				opdOrder.setConcept(coninvt);
-				opdOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
-				opdOrder.setValueCoded(conceptService.getConcept(pId));
-				opdOrder.setCreator(user);
-				opdOrder.setCreatedOn(date);
-				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+				OpdTestOrder opdTestOrder = new OpdTestOrder();
+				opdTestOrder.setPatient(patient);
+				opdTestOrder.setEncounter(encounter);
+				opdTestOrder.setConcept(coninvt);
+				opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
+				opdTestOrder.setValueCoded(conceptService.getConcept(pId));
+				opdTestOrder.setCreator(user);
+				opdTestOrder.setCreatedOn(date);
+				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		
 		}
@@ -453,6 +455,7 @@ public class OPDEntryController {
 		Integer noOfDays;
 		String comments;
 		for (String conceptName : drugOrder) {
+			InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
 			Concept con = conceptService.getConceptByName(conceptName);
 			formulationId = Integer.parseInt(request.getParameter(conceptName
 					+ "_formulationId"));
@@ -461,6 +464,20 @@ public class OPDEntryController {
 			noOfDays = Integer.parseInt(request.getParameter(conceptName
 					+ "_noOfDays"));
 			comments = request.getParameter(conceptName + "_comments");
+			InventoryDrugFormulation inventoryDrugFormulation = inventoryCommonService.getDrugFormulationById(formulationId);
+			Concept freCon = conceptService.getConcept(frequencyId);
+			
+			OpdDrugOrder opdDrugOrder = new OpdDrugOrder();
+			opdDrugOrder.setPatient(patient);
+			opdDrugOrder.setEncounter(encounter);
+			opdDrugOrder.setDrug(con);
+			opdDrugOrder.setInventoryDrugFormulation(inventoryDrugFormulation);
+			opdDrugOrder.setFrequency(freCon);
+			opdDrugOrder.setNoOfDays(noOfDays);
+			opdDrugOrder.setComments(comments);
+			opdDrugOrder.setCreator(user);
+			opdDrugOrder.setCreatedOn(date);
+			patientDashboardService.saveOrUpdateOpdDrugOrder(opdDrugOrder);
 		}
 		
 		return "redirect:/module/patientqueue/main.htm?opdId="+opdPatientLog.getOpdConcept().getId();
