@@ -133,9 +133,9 @@ public class AutoCompleteController {
 	//ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
 	@RequestMapping(value="/module/patientdashboard/comboboxDrug.htm", method=RequestMethod.GET)
 	public String comboboxDrug(@RequestParam(value="text",required=false) String text, Model model) {
-		List<Concept> drugs = new ArrayList<Concept>();
+		List<InventoryDrug> drugs = new ArrayList<InventoryDrug>();
 		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
-		drugs = dashboardService.searchDrug(text);
+		drugs = dashboardService.findDrug(text);
 		model.addAttribute("drugs", drugs);
 		return "/module/patientdashboard/autocomplete/comboboxDrug";
 	}
@@ -236,7 +236,7 @@ public class AutoCompleteController {
 	//ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
 	@RequestMapping(value="/module/patientdashboard/autoCompleteDrug.htm", method=RequestMethod.GET)
 	public String autoCompleteDrug(@RequestParam(value="q",required=false) String name, Model model) {
-		List<Concept> drugs = Context.getService(PatientDashboardService.class).searchDrug(name);
+		List<InventoryDrug> drugs = Context.getService(PatientDashboardService.class).findDrug(name);
 		model.addAttribute("drugs",drugs);
 		return "module/patientdashboard/autocomplete/autoCompleteDrug";
 	}
