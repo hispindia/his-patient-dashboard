@@ -50,6 +50,7 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
+import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
@@ -454,23 +455,24 @@ public class OPDEntryController {
 		Integer frequencyId;
 		Integer noOfDays;
 		String comments;
-		for (String conceptName : drugOrder) {
+		for (String drugName : drugOrder) {
 			InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
-			Concept con = conceptService.getConceptByName(conceptName);
-			formulationId = Integer.parseInt(request.getParameter(conceptName
+			InventoryDrug inventoryDrug = inventoryCommonService.getDrugByName(drugName);
+			if(inventoryDrug!=null){
+			formulationId = Integer.parseInt(request.getParameter(drugName
 					+ "_formulationId"));
-			frequencyId = Integer.parseInt(request.getParameter(conceptName
+			frequencyId = Integer.parseInt(request.getParameter(drugName
 					+ "_frequencyId"));
-			noOfDays = Integer.parseInt(request.getParameter(conceptName
+			noOfDays = Integer.parseInt(request.getParameter(drugName
 					+ "_noOfDays"));
-			comments = request.getParameter(conceptName + "_comments");
+			comments = request.getParameter(drugName + "_comments");
 			InventoryDrugFormulation inventoryDrugFormulation = inventoryCommonService.getDrugFormulationById(formulationId);
 			Concept freCon = conceptService.getConcept(frequencyId);
 			
 			OpdDrugOrder opdDrugOrder = new OpdDrugOrder();
 			opdDrugOrder.setPatient(patient);
 			opdDrugOrder.setEncounter(encounter);
-			opdDrugOrder.setDrug(con);
+			opdDrugOrder.setInventoryDrug(inventoryDrug);
 			opdDrugOrder.setInventoryDrugFormulation(inventoryDrugFormulation);
 			opdDrugOrder.setFrequency(freCon);
 			opdDrugOrder.setNoOfDays(noOfDays);
@@ -478,6 +480,7 @@ public class OPDEntryController {
 			opdDrugOrder.setCreator(user);
 			opdDrugOrder.setCreatedOn(date);
 			patientDashboardService.saveOrUpdateOpdDrugOrder(opdDrugOrder);
+			}
 		}
 		
 		return "redirect:/module/patientqueue/main.htm?opdId="+opdPatientLog.getOpdConcept().getId();
