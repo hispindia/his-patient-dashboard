@@ -129,7 +129,7 @@ public class OPDEntryController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String formSummit(OPDEntryCommand command,
 			HttpServletRequest request,
-			@RequestParam("drugOrder") String[] drugOrder) throws Exception{
+			@RequestParam(value="drugOrder",required=false) String[] drugOrder) throws Exception{
 		User user =Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(command.getPatientId());
@@ -455,6 +455,7 @@ public class OPDEntryController {
 		Integer frequencyId;
 		Integer noOfDays;
 		String comments;
+		if(drugOrder!=null){
 		for (String drugName : drugOrder) {
 			InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
 			InventoryDrug inventoryDrug = inventoryCommonService.getDrugByName(drugName);
@@ -481,6 +482,7 @@ public class OPDEntryController {
 			opdDrugOrder.setCreatedOn(date);
 			patientDashboardService.saveOrUpdateOpdDrugOrder(opdDrugOrder);
 			}
+		  }
 		}
 		
 		return "redirect:/module/patientqueue/main.htm?opdId="+opdPatientLog.getOpdConcept().getId();
