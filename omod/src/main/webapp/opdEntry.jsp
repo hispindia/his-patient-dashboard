@@ -27,43 +27,25 @@
 }
 
 .drugs {
-	width: 20%;
+	width: 16%;
 	height: 10%;
 	float: left;
 }
 
 .formulation {
-	width: 20%;
+	width: 23%;
 	height: 10%;
 	float: left;
 }
 
 .frequency {
-	width: 13%;
+	width: 23%;
 	height: 10%;
 	float: left;
 }
 
 .no-of-days {
 	width: 13%;
-	height: 10%;
-	float: left;
-}
-
-.commentsTitle {
-	width: 7%;
-	height: 10%;
-	float: left;
-}
-
-.comments {
-	width: 15%;
-	height: 10%;
-	float: left;
-}
-
-.add {
-	width: 7%;
 	height: 10%;
 	float: left;
 }
@@ -92,11 +74,11 @@ function addDrugOrder() {
    var comments=document.getElementById('comments').value;
    var deleteString = 'deleteInput(\"'+drugName+'\")';
    var htmlText =  "<div id='com_"+drugName+"_div'>"
-	       	 +"<input id='"+drugName+"_name'  name='drugOrder' type='text' size='20' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_formulationName'  name='"+drugName+"_formulatioNname' type='text' size='20' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_name'  name='drugOrder' type='text' size='16' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_formulationName'  name='"+drugName+"_formulatioNname' type='text' size='16' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_frequencyName'  name='"+drugName+"_frequencyName' type='text' size='7' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='8' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='20' value='"+comments+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='17' value='"+comments+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_formulationId'  name='"+drugName+"_formulationId' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_frequencyId'  name='"+drugName+"_frequencyId' type='hidden' value='"+frequencyArr[1]+"'/>&nbsp;"
 	       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
@@ -290,10 +272,18 @@ function deleteInput(drugName) {
 		<!-- ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard -->
 		<tr>
 			<td colspan="3">
-				<div class="drug-order">
+				<div class="ui-widget">
+					<strong>Drug:</strong>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="1">
+				<div class="drug-order" id="drugOrder"
+					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 10em;">
 					<div class="drugs" class="ui-widget">
-						<strong>Drugs:</strong> <input title="${opd.conceptId}"
-							id="drugName" name="drugName" onblur="ISSUE.onBlur(this);" />
+						<input title="${opd.conceptId}" id="drugName" name="drugName"
+							placeholder="Search for drugs" onblur="ISSUE.onBlur(this);" />
 					</div>
 					<div class="formulation" id="divFormulation">
 						<select id="formulation" name="formulation">
@@ -311,39 +301,38 @@ function deleteInput(drugName) {
 						</select>
 					</div>
 					<div class="no-of-days">
-						<strong>No Of Days:</strong> <input type="text" id="noOfDays" name="noOfDays" size="7">
-					</div>
-					<div class="commentsTitle">
-					<strong>Comments:</strong>
+						<input type="text" id="noOfDays" name="noOfDays"
+							placeholder="No Of Days" size="7">
 					</div>
 					<div class="comments">
-						<TEXTAREA id="comments" name="comments" rows=2 cols=20></TEXTAREA>
-					</div>
-					<div class="add">
-						<input type="button"
-							class="ui-button ui-widget ui-state-default ui-corner-all"
-							value="Add" onClick="addDrugOrder();" />
+						<TEXTAREA id="comments" name="comments" placeholder="Comments"
+							rows=1 cols=15></TEXTAREA>
 					</div>
 				</div>
 			</td>
-		</tr>
-			<tr>
-			<td colspan="2">
+
+			<td><div class="add">
+					<input type="button"
+						class="ui-button ui-widget ui-state-default ui-corner-all"
+						value="Add" onClick="addDrugOrder();" />
+				</div></td>
+
+			<td>
 				<div id="headerName"
-					style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-					<input type='text' id="drug" name="drug" value='Drugs' size="20"
+					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 10em;">
+
+					<input type='text' id="drug" name="drug" value='Drugs' size="16"
 						readonly="readonly" />&nbsp; <input type='text' id="formulation"
-						name='formulation' value="Formulation" size="20"
+						name='formulation' value="Formulation" size="16"
 						readonly="readonly" />&nbsp; <input type='text' id='frequency'
 						name='frequency' value='Frequency' size="7" readonly="readonly" />&nbsp;
-						<input type='text' id='noOfDays'
-						name='noOfDays' value='No Of Days' size="8" readonly="readonly" />&nbsp;
-						<input type='text' id='comments'
-						name='comments' value='Comments' size="20" readonly="readonly" />&nbsp;
-					<b>
-				</div>
-				<div id="headerValue"
-					style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+					<input type='text' id='noOfDays' name='noOfDays' value='No Of Days'
+						size="8" readonly="readonly" />&nbsp; <input type='text'
+						id='comments' name='comments' value='Comments' size="17"
+						readonly="readonly" />&nbsp;
+					<div id="headerValue"
+						style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+					</div>
 				</div></td>
 		</tr>
 		<tr>
