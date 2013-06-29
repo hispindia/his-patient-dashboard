@@ -95,7 +95,7 @@
 	<!-- ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing -->
 	<globalProperty>
 		<property>@MODULE_ID@.investigationConcept</property>
-		<defaultValue>investigation</defaultValue>
+		<defaultValue>INVESTIGATION</defaultValue>
 		<description>
 			investigation concept name
 		</description>
@@ -103,7 +103,7 @@
 	<!-- ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard -->
 	<globalProperty>
 		<property>@MODULE_ID@.drugConcept</property>
-		<defaultValue>drug</defaultValue>
+		<defaultValue>DRUG</defaultValue>
 		<description>
 			drug concept name
 		</description>
