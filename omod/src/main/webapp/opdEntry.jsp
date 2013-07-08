@@ -66,11 +66,33 @@
 <script type="text/javascript">
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value;
+   if(drugName==null || drugName==""){
+   alert("Please enter drug name");
+   return false;
+   }else{
    var formulation=document.getElementById('formulation').value;
+   if(formulation==null || formulation==""){
+   alert("Please select formulation");
+   return false;
+   }
    var formulationArr=formulation.split("."); 
    var frequency=document.getElementById('frequency').value;
+   if(frequency==null || frequency==""){
+   alert("Please select frequency");
+   return false;
+   }
    var frequencyArr=frequency.split("."); 
    var noOfDays=document.getElementById('noOfDays').value;
+   if(noOfDays==null || noOfDays==""){
+   alert("Please enter no of days");
+   return false;
+   }
+   if (noOfDays!=null || noOfDays!=""){
+    if(isNaN(noOfDays)){
+    alert("Please enter no of days in correct format");
+    return false;
+    }
+   }
    var comments=document.getElementById('comments').value;
    var deleteString = 'deleteInput(\"'+drugName+'\")';
    var htmlText =  "<div id='com_"+drugName+"_div'>"
@@ -89,6 +111,12 @@ function addDrugOrder() {
    newElement.innerHTML = htmlText;
    var fieldsArea = document.getElementById('headerValue');
    fieldsArea.appendChild(newElement);
+   jQuery("#drugName").val("");
+   jQuery("#formulation").val("");
+   jQuery("#frequency").val("");
+   jQuery("#noOfDays").val("");
+   jQuery("#comments").val("");
+   }
 }
 
 function deleteInput(drugName) {
@@ -108,6 +136,7 @@ function deleteInput(drugName) {
 
 
 	<table cellspacing="5">
+		<!--  
 		<tr align="right">
 			<td colspan="3"><c:if test="${not empty queueId }">
 					<input type="submit" value="Conclude visit"
@@ -118,6 +147,7 @@ function deleteInput(drugName) {
 						value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
 				</c:if></td>
 		</tr>
+	 -->
 		<tr>
 			<td colspan="3"><strong>Provisional Diagnosis:</strong><em>*</em>
 				<input class="ui-autocomplete-input ui-widget-content ui-corner-all"
@@ -128,7 +158,7 @@ function deleteInput(drugName) {
 			<td>
 				<!-- List of all available DataElements -->
 				<div id="divAvailableDiagnosisList">
-					<select size="8" style="width: 550px" id="availableDiagnosisList"
+					<select size="4" style="width: 550px" id="availableDiagnosisList"
 						name="availableDiagnosisList" multiple="multiple"
 						style="min-width:25em;height:10em"
 						ondblclick="moveSelectedById( 'availableDiagnosisList', 'selectedDiagnosisList');">
@@ -144,7 +174,8 @@ function deleteInput(drugName) {
 				<input type="button" value="&lt;"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				style="width: 50px"
-				onclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList');" /><br />
+				onclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList');" />
+				<!-- 
 				<input type="button" value="&gt;&gt;"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				style="width: 50px"
@@ -153,23 +184,15 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				style="width: 50px"
 				onclick="moveAllById( 'selectedDiagnosisList', 'availableDiagnosisList' );" />
+				 -->
 			</td>
 			<td>
 				<!-- List of all selected DataElements --> <select
-				id="selectedDiagnosisList" size="8" style="width: 550px"
+				id="selectedDiagnosisList" size="4" style="width: 550px"
 				name="selectedDiagnosisList" multiple="multiple"
 				style="min-width:25em;height:10em"
 				ondblclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList' );">
 			</select></td>
-		</tr>
-		<tr>
-			<td colspan="3">Add note: <input type="text" id="note"
-				name="note" size="50" style="width: 480px" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3"><strong>Management plan: </strong>
-			</td>
 		</tr>
 		<tr>
 			<td colspan="3">
@@ -184,7 +207,7 @@ function deleteInput(drugName) {
 			<td>
 				<!-- List of all available DataElements -->
 				<div id="divAvailableProcedureList">
-					<select size="7" style="width: 550px" id="availableProcedureList"
+					<select size="4" style="width: 550px" id="availableProcedureList"
 						name="availableProcedureList" multiple="multiple"
 						style="min-width:25em;height:5em"
 						ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');">
@@ -200,7 +223,8 @@ function deleteInput(drugName) {
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;" style="width: 50px"
-				onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList');" /><br />
+				onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList');" />
+				<!--  
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;&gt;" style="width: 50px"
@@ -209,9 +233,10 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
 				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' );" />
+				-->
 			</td>
 			<td>
-				<!-- List of all selected DataElements --> <select size="7"
+				<!-- List of all selected DataElements --> <select size="4"
 				style="width: 550px" id="selectedProcedureList"
 				name="selectedProcedureList" multiple="multiple"
 				style="min-width:25em;height:5em"
@@ -233,7 +258,7 @@ function deleteInput(drugName) {
 			<td>
 				<!-- List of all available Tests -->
 				<div id="divAvailableInvestigationList">
-					<select size="7" style="width: 550px"
+					<select size="4" style="width: 550px"
 						id="availableInvestigationList" name="availableInvestigationList"
 						multiple="multiple" style="min-width:25em;height:5em"
 						ondblclick="moveSelectedById( 'availableInvestigationList', 'selectedInvestigationList');">
@@ -250,7 +275,8 @@ function deleteInput(drugName) {
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;" style="width: 50px"
-				onclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList');" /><br />
+				onclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList');" />
+				<!--  
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;&gt;" style="width: 50px"
@@ -259,9 +285,10 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
 				onclick="moveAllById( 'selectedInvestigationList', 'availableInvestigationList' );" />
+				-->
 			</td>
 			<td>
-				<!-- List of all selected DataElements --> <select size="7"
+				<!-- List of all selected DataElements --> <select size="4"
 				style="width: 550px" id="selectedInvestigationList"
 				name="selectedInvestigationList" multiple="multiple"
 				style="min-width:25em;height:5em"
@@ -280,7 +307,7 @@ function deleteInput(drugName) {
 		<tr>
 			<td colspan="1">
 				<div class="drug-order" id="drugOrder"
-					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 10em;">
+					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 5em;">
 					<div class="drugs" class="ui-widget">
 						<input title="${opd.conceptId}" id="drugName" name="drugName"
 							placeholder="Search for drugs" onblur="ISSUE.onBlur(this);" />
@@ -319,7 +346,7 @@ function deleteInput(drugName) {
 
 			<td>
 				<div id="headerName"
-					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 10em;">
+					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 5em;">
 
 					<input type='text' id="drug" name="drug" value='Drugs' size="16"
 						readonly="readonly" />&nbsp; <input type='text' id="formulation"
@@ -334,6 +361,14 @@ function deleteInput(drugName) {
 						style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 					</div>
 				</div></td>
+		</tr>
+		<!-- ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard -->
+		<tr>
+			<td colspan="3"><strong>Other Instructions:</strong> <input
+				type="text" id="note" name="note" size="200"
+				style="width: 1035px; height: 50px"
+				class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input" />
+			</td>
 		</tr>
 		<tr>
 			<td colspan="3">Internal referral: <select id="internalReferral"

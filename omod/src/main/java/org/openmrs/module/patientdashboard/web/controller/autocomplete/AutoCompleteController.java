@@ -155,10 +155,14 @@ public class AutoCompleteController {
 			String external = "";
 			String visitOutCome = "";
 			String otherValueOfVisit = "";
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			String otherInstructions = "";
 			
 			Concept conInternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
 			Concept conExternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
 			Concept conVisiteOutCome  = conceptService.getConcept(gpVisiteOutCome);
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
 			try {
 				if(encounter != null){
 					for( Obs obs : encounter.getAllObs()){
@@ -190,6 +194,10 @@ public class AutoCompleteController {
 								}
 							}
 						}
+						//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+						if( obs.getConcept().getConceptId().equals(conOtherInstructions.getConceptId()) ){
+							otherInstructions = obs.getValueText();
+						}
 					}
 					
 					
@@ -204,6 +212,8 @@ public class AutoCompleteController {
 			model.addAttribute("external", external);
 			model.addAttribute("visitOutCome", visitOutCome);
 			model.addAttribute("otherValueOfVisit", otherValueOfVisit);
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			model.addAttribute("otherInstructions", otherInstructions);
 			
 			
 		}

@@ -192,6 +192,8 @@ public class OPDEntryController {
 		GlobalProperty externalReferral = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
 		
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis.getPropertyValue());
+		//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+		Concept cOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
 		
 		if( cDiagnosis == null ){
 			throw new Exception("Diagnosis concept null");
@@ -214,7 +216,8 @@ public class OPDEntryController {
 			
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			obsDiagnosis.setConcept(cDiagnosis);
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			obsDiagnosis.setConcept(cOtherInstructions);
 			obsDiagnosis.setValueText(command.getNote());
 			obsDiagnosis.setCreator(user );
 			obsDiagnosis.setDateCreated(date);

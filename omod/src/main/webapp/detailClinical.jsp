@@ -31,4 +31,8 @@
 	<tr>
 	<td><strong>VisitOutCome:</strong>  ${visitOutCome} <c:if test="${not empty otherValueOfVisit}">- ${otherValueOfVisit}</c:if></td>
 	</tr>
+	<!-- ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard -->
+	<tr>
+	<td><strong>Other Instructions:</strong>  ${otherInstructions}</td>
+	</tr>
 </table>
