@@ -20,7 +20,9 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -77,7 +79,8 @@ public class InvestigationReportController {
 	        
 			List<Encounter> encounters = dashboardService.getEncounter(patient, location, labEncType, date);
 			
-			Set<String> dates = new HashSet<String>();
+			//ghanshyam,date:10-july-2013 Bug #1936 Wrong Result Generated in Laboratory record(below written LinkedHashSet at the place of HashSet)
+			Set<String> dates = new LinkedHashSet<String>();
 			if( encounters != null && encounters.size() > 0 )
 			{
 				Set<Obs> listObs = null;
@@ -119,7 +122,8 @@ public class InvestigationReportController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String formSubmit(InvestigationCommand investigationCommand , Model model){
-//		System.out.println("submit form investigation");
+		//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below line)
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 		try{
 		// get list encounter
 		PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
@@ -148,7 +152,9 @@ public class InvestigationReportController {
 		Set<String> dates = new TreeSet<String>(); // tree for dates
 		if( encounters != null ){
 			Set<Obs> listObs = null;
-			Set<Node> nodes = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+			//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
+			Set<Node> nodes1 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
+			Set<Node> nodes2 = new TreeSet<Node>(); // tree of node <conceptId, conceptName>
 			Concept orderConcept = null;
 			Concept obsConcept  = null;
 			for( Encounter enc : encounters)
@@ -173,41 +179,32 @@ public class InvestigationReportController {
 						else
 							value = obs.getValueAsString(Context.getLocale());
 						if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Test")){
-							Node node = getNode(obsConcept.getId(), nodes);
-							if( node == null ){
-								node = new Node(obsConcept.getId(), obsConcept.getName().getName());
-								addNode(node, nodes, obsConcept, listParent);
-							}
-							// node <name of obs, dateCreatedon> become an information for node
-							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
-//							Node result = new Node(obsConcept.getName().getName(),Context.getDateFormat().format(obs.getDateCreated()),
-//									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(obsConcept));
-							Node result = new Node(obsConcept.getName().getName(),Context.getDateFormat().format(obs.getDateCreated()),
-								value +"  " + getUnitStringFromConcept(obsConcept));
-							node.addResultToSet(result);
+							//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added fresh code in if condition)
+							Node resultNode = new Node(obsConcept.getName().getName(), formatter.format(obs.getDateCreated()),
+									value +"  " + getUnitStringFromConcept(obsConcept));
+								
+							Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
+								
+							nodes1 = addNodeAndChild(nodes1, orderConcept, childNode, resultNode, listParent, true);
 						}else if( orderConcept.getConceptClass().getName().equalsIgnoreCase("Labset")){
 							/*23/06 /2012 Kesavulu:Investigations of patients in OPD patient dashboard values are comeing now Bug #233, Bug #144, Bug #122 */
-							Node resultNode = new Node(obsConcept.getName().getName(), Context.getDateFormat().format(obs.getDateCreated()),
+							//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added date formatting)
+							Node resultNode = new Node(obsConcept.getName().getName(), formatter.format(obs.getDateCreated()),
 								value +"  " + getUnitStringFromConcept(obsConcept));
 							
 							Node childNode = new Node(obsConcept.getId(), obsConcept.getName().getName());
 							
-//							System.out.println("child node to add : "+childNode);
-							nodes = addNodeAndChild(nodes, orderConcept, childNode, resultNode, listParent, true);
+							nodes2 = addNodeAndChild(nodes2, orderConcept, childNode, resultNode, listParent, true);
 						}
 //						 add date
 						dates.add(Context.getDateFormat().format(obs.getDateCreated())); // datecreatedOn in to dateTree
 					}
 				}
 			}// end for encounter
-//						if( !con.getConceptId().equals(orderConcept.getConceptId())){
-//							orderNode.getResults().add(new Node(Context.getDateFormat().format(obs.getDateCreated()),
-//									obs.getValueAsString(Context.getLocale())+"  " + getUnitStringFromConcept(con)));
-//						}
-						
 				
-//			System.out.println("nodes: "+nodes);
-			model.addAttribute("nodes", nodes);
+			//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:added below two line)
+			model.addAttribute("nodes1", nodes1);
+			model.addAttribute("nodes2", nodes2);
 		}
 		}catch (Exception e) {
 			// TODO: handle exception

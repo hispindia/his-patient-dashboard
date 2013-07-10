@@ -22,6 +22,7 @@ package org.openmrs.module.patientdashboard.web.controller.global;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,8 +41,9 @@ public class Node implements Comparable<Node> {
 		public Node(Integer id, String name) {
 			this.id = id;
 			this.name = name;
-			children = new HashSet<Node>();
-			results = new HashSet<Node>();
+			//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:at the place of HashSet written TreeSet)
+			children = new TreeSet<Node>();
+			results = new TreeSet<Node>();
 		}
 		
 		public Node(String name) {
@@ -167,7 +169,8 @@ public class Node implements Comparable<Node> {
 		
 		public void addResultToSet(Node node){
 			if( results == null ){
-				results = new HashSet<Node>();
+				//ghanshyam 10-july-2013 Bug #1936 [Patient Dashboard] Wrong Result Generated in Laboratory record(note:at the place of HashSet written TreeSet)
+				results = new TreeSet<Node>();
 			}
 			results.add(node);
 		}
@@ -196,18 +199,9 @@ public class Node implements Comparable<Node> {
 		
 		public void addDates(String date){
 			if( dates == null ){
-				dates = new TreeSet<String>();
+				//ghanshyam 10-july-2013 Bug #1936 Feedback [Patient Dashboard] Wrong Result Generated in Laboratory record(note:at the place of TreeSet written LinkedHashSet)
+				dates = new LinkedHashSet<String>();
 			}
 			dates.add(date);
 		}
-		
-//		public String toString(){
-//			return  "\n"+id + "- " +
-//			 name + "- " +
-//			date+ "- " +
-//			result+ "- " +
-//			children+ "- " +
-//			results+ "- " +
-//			 isChild ;
-//		}
 }
