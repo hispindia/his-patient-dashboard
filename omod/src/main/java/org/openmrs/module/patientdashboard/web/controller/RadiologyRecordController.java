@@ -25,6 +25,7 @@ package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +43,7 @@ import org.openmrs.module.hospitalcore.RadiologyService;
 import org.openmrs.module.hospitalcore.concept.TestTree;
 import org.openmrs.module.hospitalcore.model.RadiologyDepartment;
 import org.openmrs.module.hospitalcore.model.RadiologyTest;
-import org.openmrs.module.hospitalcore.util.RadiologyUtil;
+import org.openmrs.module.hospitalcore.util.RadiologyDashboardUtil;
 import org.openmrs.module.hospitalcore.util.TestModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,7 +98,7 @@ public class RadiologyRecordController {
 
 		List<RadiologyTest> radiologyTests = radiologyCommonService
 				.getAllTest(patient);
-		Set<String> dates = new HashSet<String>();
+		Set<String> dates = new LinkedHashSet<String>();
 		for (RadiologyTest radiologyTest : radiologyTests) {
 			dates.add(Context.getDateFormat().format(radiologyTest.getDate()));
 			model.addAttribute("dates", dates);
@@ -127,7 +128,14 @@ public class RadiologyRecordController {
 		ConceptService conceptService = (ConceptService) Context
 				.getService(ConceptService.class);
 		Patient patient = patientService.getPatient(patientId);
-		if (subtest != null) {
+		if(date.equals("all")){
+			Map<Concept, Set<Concept>> testTreeMap = generateTestTreeMap();
+			List<RadiologyTest> radiologyTests = radiologyCommonService
+					.getAllTest(patient);
+			List<TestModel> tests = RadiologyDashboardUtil.generateModelsFromTests(radiologyTests, testTreeMap);
+			model.addAttribute("radiologytests", tests);
+		}
+		else if (subtest != null) {
 			Concept concept = conceptService.getConceptByName(subtest);
 			/*
 			Map<Concept, Set<Concept>> testTreeMap = (Map<Concept, Set<Concept>>) request
@@ -137,7 +145,7 @@ public class RadiologyRecordController {
 			Map<Concept, Set<Concept>> testTreeMap = generateTestTreeMap();
 			List<RadiologyTest> radiologyTests = radiologyCommonService
 					.getAllSubTest(patient, date, concept);
-			List<TestModel> tests = RadiologyUtil.generateModelsFromTests(radiologyTests, testTreeMap);
+			List<TestModel> tests = RadiologyDashboardUtil.generateModelsFromTests(radiologyTests, testTreeMap);
 			model.addAttribute("radiologytests", tests);
 		}
 		return "module/patientdashboard/radiologyRecordResult";

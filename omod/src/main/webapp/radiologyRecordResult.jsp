@@ -21,10 +21,6 @@
  *  issue:#554 Radiology record
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
-<style>
-.rsTable{ margin:5px 5px;text-align:center; border-style:1px  solid black; border-collapse: collapse;}
-.rsCell { padding:3px 3px;}
-</style>
 <script type="text/javascript">
 //  reenter result for a test
 	function reEnterResult(testId){
@@ -36,7 +32,7 @@
 		tb_show("testing", "getDefaultXRayFormm.form?modal=true&height=600&width=800&mode=edit&radiologyTestId=" + testId);	
 	}
 </script>
-<table width="100%" class="rsTable" cellspacing="3" border="1"  cellpadding="3">
+<table width="100%" class="rsTable">
 		<tr align="center"> 
 			<th>Sr.No.</th>
 			<th>Results</th>

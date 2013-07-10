@@ -50,7 +50,22 @@ jQuery(document).ready(function() {
 function dater(){
         var patientId = ${patientId};
 		var date = jQuery("#testDate").val();
-if (date!="null") {		
+if (date=="all") {		
+jQuery.ajax({
+				type : "POST",
+				url : getContextPath() + "/module/patientdashboard/radiologyRecord.htm",
+				data : ({
+					patientId			: patientId,
+					date			    : date
+				}),
+				success : function(data) {
+					jQuery("#radiologyResultContainer").html(data);
+					jQuery("#tests").hide();
+					jQuery("#subTests").hide();
+				}
+          });
+  }
+else if (date!="null") {		
 jQuery.ajax({
 				type : "GET",
 				url : getContextPath() + "/module/patientdashboard/radiologyRecord.htm",
@@ -131,42 +146,46 @@ jQuery.ajax({
 				success : function(data) {
 					jQuery("#radiologyResultContainer").html(data);	
 				}
-          });
+});
 }
 </script>
 <c:choose>
-<c:when test="${ not empty dates }">
-<form id="radiologyRecordForm">
-	<table width="100%">
-		<tr valign="top">
-			<td id="radiologyResultContainer" style="text-align: left;"></td>
-			<td id="radiologyFormContainer" style="text-align: right;">
-				Date: <select name="testDate" id="testDate" onchange="dater();">
-					<option selected="selected" value="null">Select</option>
-					<c:forEach var="date" items="${dates}">
-						<option value="${date}">${date}</option>
-					</c:forEach>
-			</select> <c:choose>
-					<c:when test="${not empty tests}">
-		Test<select name="test" id="test" onchange="testr();">
-							<option selected="selected" value="null">Select</option>
-							<c:forEach var="test" items="${tests}">
-								<option value="${test}">${test}</option>
-							</c:forEach>
-						</select>
-					</c:when>
-				</c:choose> <c:choose>
-					<c:when test="${not empty subtests}">
-		SubTest<select name="subTest" id="subTest" onchange="subtest();">
-							<option selected="selected">Select</option>
-							<c:forEach var="subtest" items="${subtests}">
-								<option value="${subtest}">${subtest}</option>
-							</c:forEach>
-						</select>
-					</c:when>
-				</c:choose></td>
-	</table>
-</form>
-</c:when>
-<c:otherwise>No Radiology record found</c:otherwise>
+	<c:when test="${ not empty dates }">
+		<form id="radiologyRecordForm">
+			<table width="100%">
+				<tr valign="top">
+					<td id="radiologyResultContainer" style="text-align: left;"></td>
+					<td id="radiologyFormContainer" style="text-align: right;"><b
+						id="dates"> Date: <select name="testDate" id="testDate"
+							onchange="dater();">
+								<option selected="selected" value="null">Select</option>
+								<option value="all">All</option>
+								<c:forEach var="date" items="${dates}">
+									<option value="${date}">${date}</option>
+								</c:forEach>
+						</select> </b> <c:choose>
+							<c:when test="${not empty tests}">
+								<b id="tests"> Test<select name="test" id="test"
+									onchange="testr();">
+										<option selected="selected" value="null">Select</option>
+										<c:forEach var="test" items="${tests}">
+											<option value="${test}">${test}</option>
+										</c:forEach>
+								</select> </b>
+							</c:when>
+						</c:choose> <c:choose>
+							<c:when test="${not empty subtests}">
+								<b id="subTests"> SubTest<select name="subTest" id="subTest"
+									onchange="subtest();">
+										<option selected="selected">Select</option>
+										<c:forEach var="subtest" items="${subtests}">
+											<option value="${subtest}">${subtest}</option>
+										</c:forEach>
+								</select> </b>
+							</c:when>
+						</c:choose></td>
+			</table>
+		</form>
+	</c:when>
+	<c:otherwise>No Radiology record found</c:otherwise>
 </c:choose>

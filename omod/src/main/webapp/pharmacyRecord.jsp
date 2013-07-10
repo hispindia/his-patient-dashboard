@@ -49,23 +49,23 @@ jQuery.ajax({
 }
 </script>
 <c:choose>
-<c:when test="${ not empty dates }">
-<form id="pharmacyRecordForm">
-<table width="100%" >
-	<tr valign="top">
-	    <td id="pharmacyResultContainer" style="text-align: left;"></td>
-		<td id="pharmacyFormContainer" style="text-align: right;">
-		Date:
-		<select name="drugIssuedDate" id="drugIssuedDate" onchange="datep();">
-		    <option selected="selected" value="null">Select</option>
-			<option value="all">All</option>
-			<c:forEach var="date" items="${dates}">
-				<option value="${date}">${date}</option>
-			</c:forEach>
-		</select>
-			</td>
-	</table>
-</form>
-</c:when>
-<c:otherwise>No Pharmacy record found</c:otherwise>
+	<c:when test="${ not empty dates }">
+		<form id="pharmacyRecordForm">
+			<table width="100%">
+				<tr valign="top">
+					<td id="pharmacyResultContainer" style="text-align: left;"></td>
+					<td id="pharmacyFormContainer" style="text-align: right;">
+						Date: <select name="drugIssuedDate" id="drugIssuedDate"
+						onchange="datep();">
+							<option selected="selected" value="null">Select</option>
+							<option value="all">All</option>
+							<c:forEach var="date" items="${dates}">
+								<option value="${date}">${date}</option>
+							</c:forEach>
+					</select>
+					</td>
+			</table>
+		</form>
+	</c:when>
+	<c:otherwise>No Pharmacy record found</c:otherwise>
 </c:choose>

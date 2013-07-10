@@ -25,6 +25,7 @@ package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -55,7 +56,7 @@ public class PharmacyRecordController {
 		Patient patient = patientService.getPatient(patientId);
 		List<InventoryStoreDrugPatient> listDate = inventoryCommonService
 				.getAllIssueDateByPatientId(patient);
-		Set<String> dates = new HashSet<String>();
+		Set<String> dates = new LinkedHashSet<String>();
 		for (InventoryStoreDrugPatient date : listDate) {
 			dates.add(Context.getDateFormat().format(date.getCreatedOn()));
 		}
