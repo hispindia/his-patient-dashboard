@@ -44,11 +44,13 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
@@ -421,6 +423,8 @@ public class OPDEntryController {
 				throw new Exception("Post for procedure concept null");
 			}
 			for( Integer pId : command.getSelectedProcedureList()){
+				BillingService billingService = Context.getService(BillingService.class);
+				BillableService billableService = billingService.getServiceByConceptId(pId);
 				OpdTestOrder opdTestOrder = new OpdTestOrder();
 				opdTestOrder.setPatient(patient);
 				opdTestOrder.setEncounter(encounter);
@@ -429,6 +433,7 @@ public class OPDEntryController {
 				opdTestOrder.setValueCoded(conceptService.getConcept(pId));
 				opdTestOrder.setCreator(user);
 				opdTestOrder.setCreatedOn(date);
+				opdTestOrder.setBillableService(billableService);
 				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		
@@ -439,15 +444,18 @@ public class OPDEntryController {
 			if( coninvt == null ){
 				throw new Exception("Investigation concept null");
 			}
-			for( Integer pId : command.getSelectedInvestigationList()){
+			for( Integer iId : command.getSelectedInvestigationList()){
+				BillingService billingService = Context.getService(BillingService.class);
+				BillableService billableService = billingService.getServiceByConceptId(iId);
 				OpdTestOrder opdTestOrder = new OpdTestOrder();
 				opdTestOrder.setPatient(patient);
 				opdTestOrder.setEncounter(encounter);
 				opdTestOrder.setConcept(coninvt);
 				opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
-				opdTestOrder.setValueCoded(conceptService.getConcept(pId));
+				opdTestOrder.setValueCoded(conceptService.getConcept(iId));
 				opdTestOrder.setCreator(user);
 				opdTestOrder.setCreatedOn(date);
+				opdTestOrder.setBillableService(billableService);
 				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		
