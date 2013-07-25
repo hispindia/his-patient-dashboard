@@ -96,11 +96,11 @@ function addDrugOrder() {
    var comments=document.getElementById('comments').value;
    var deleteString = 'deleteInput(\"'+drugName+'\")';
    var htmlText =  "<div id='com_"+drugName+"_div'>"
-	       	 +"<input id='"+drugName+"_name'  name='drugOrder' type='text' size='16' value='"+drugName+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_formulationName'  name='"+drugName+"_formulatioNname' type='text' size='16' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_frequencyName'  name='"+drugName+"_frequencyName' type='text' size='7' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='8' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='17' value='"+comments+"'  readonly='readonly'/>&nbsp;"
+	       	 +"<input id='"+drugName+"_name'  name='drugOrder' type='text' size='14' value='"+drugName+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+drugName+"_formulationName'  name='"+drugName+"_formulatioNname' type='text' size='14' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+drugName+"_frequencyName'  name='"+drugName+"_frequencyName' type='text' size='6' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='7' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='17' value='"+comments+"'  readonly='readonly'/>&nbsp;&nbsp;"
 	       	 +"<input id='"+drugName+"_formulationId'  name='"+drugName+"_formulationId' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
 	       	 +"<input id='"+drugName+"_frequencyId'  name='"+drugName+"_frequencyId' type='hidden' value='"+frequencyArr[1]+"'/>&nbsp;"
 	       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
@@ -152,7 +152,8 @@ function deleteInput(drugName) {
 			<td colspan="3"><strong>Provisional Diagnosis:</strong><em>*</em>
 				<input class="ui-autocomplete-input ui-widget-content ui-corner-all"
 				id="diagnosis" title="${opd.conceptId}" style="width: 380px"
-				name="diagnosis" /></td>
+				name="diagnosis" />
+			</td>
 		</tr>
 		<tr>
 			<td>
@@ -166,7 +167,8 @@ function deleteInput(drugName) {
 							<option value="${diagnosis.id}">${diagnosis.name}</option>
 						</c:forEach>
 					</select>
-				</div></td>
+				</div>
+			</td>
 			<td><input type="button" value="&gt;"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				style="width: 50px"
@@ -184,15 +186,15 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				style="width: 50px"
 				onclick="moveAllById( 'selectedDiagnosisList', 'availableDiagnosisList' );" />
-				 -->
-			</td>
+				 --></td>
 			<td>
 				<!-- List of all selected DataElements --> <select
 				id="selectedDiagnosisList" size="4" style="width: 550px"
 				name="selectedDiagnosisList" multiple="multiple"
 				style="min-width:25em;height:10em"
 				ondblclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList' );">
-			</select></td>
+			</select>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="3">
@@ -201,7 +203,8 @@ function deleteInput(drugName) {
 						class="ui-autocomplete-input ui-widget-content ui-corner-all"
 						title="${opd.conceptId }" id="procedure" style="width: 420px"
 						name="procedure" />
-				</div></td>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td>
@@ -215,7 +218,8 @@ function deleteInput(drugName) {
 							<option value="${procedure.conceptId}">${procedure.name}</option>
 						</c:forEach>
 					</select>
-				</div></td>
+				</div>
+			</td>
 			<td><input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;" style="width: 50px"
@@ -233,15 +237,15 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
 				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' );" />
-				-->
-			</td>
+				--></td>
 			<td>
 				<!-- List of all selected DataElements --> <select size="4"
 				style="width: 550px" id="selectedProcedureList"
 				name="selectedProcedureList" multiple="multiple"
 				style="min-width:25em;height:5em"
 				ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' )">
-			</select></td>
+			</select>
+			</td>
 		</tr>
 		<!-- ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing -->
 		<tr>
@@ -251,8 +255,7 @@ function deleteInput(drugName) {
 						class="ui-autocomplete-input ui-widget-content ui-corner-all"
 						title="${opd.conceptId}" id="investigation" style="width: 420px"
 						name="investigation" />
-				</div>
-			</td>
+				</div></td>
 		</tr>
 		<tr>
 			<td>
@@ -266,8 +269,7 @@ function deleteInput(drugName) {
 							<option value="${investigation.conceptId}">${investigation.name}</option>
 						</c:forEach>
 					</select>
-				</div>
-			</td>
+				</div></td>
 			<td><input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;" style="width: 50px"
@@ -285,24 +287,21 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
 				onclick="moveAllById( 'selectedInvestigationList', 'availableInvestigationList' );" />
-				-->
-			</td>
+				--></td>
 			<td>
 				<!-- List of all selected DataElements --> <select size="4"
 				style="width: 550px" id="selectedInvestigationList"
 				name="selectedInvestigationList" multiple="multiple"
 				style="min-width:25em;height:5em"
 				ondblclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList' )">
-			</select>
-			</td>
+			</select></td>
 		</tr>
 		<!-- ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard -->
 		<tr>
 			<td colspan="3">
 				<div class="ui-widget">
 					<strong>Drug:</strong>
-				</div>
-			</td>
+				</div></td>
 		</tr>
 		<tr>
 			<td colspan="1">
@@ -335,31 +334,27 @@ function deleteInput(drugName) {
 						<TEXTAREA id="comments" name="comments" placeholder="Comments"
 							rows=1 cols=15></TEXTAREA>
 					</div>
-				</div>
-			</td>
+				</div></td>
 
 			<td><div class="add">
 					<input type="button"
 						class="ui-button ui-widget ui-state-default ui-corner-all"
 						value="Add" onClick="addDrugOrder();" />
-				</div></td>
+				</div>
+			</td>
 
 			<td>
-				<div id="headerName"
-					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 5em;">
-
-					<input type='text' id="drug" name="drug" value='Drugs' size="16"
+				<div id="headerValue"
+					style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+					<input type='text' id="drug" name="drug" value='Drugs' size="14"
 						readonly="readonly" />&nbsp; <input type='text' id="formulation"
-						name='formulation' value="Formulation" size="16"
+						name='formulation' value="Formulation" size="14"
 						readonly="readonly" />&nbsp; <input type='text' id='frequency'
-						name='frequency' value='Frequency' size="7" readonly="readonly" />&nbsp;
+						name='frequency' value='Frequency' size="6" readonly="readonly" />&nbsp;
 					<input type='text' id='noOfDays' name='noOfDays' value='No Of Days'
-						size="8" readonly="readonly" />&nbsp; <input type='text'
+						size="7" readonly="readonly" />&nbsp; <input type='text'
 						id='comments' name='comments' value='Comments' size="17"
 						readonly="readonly" />&nbsp;
-					<div id="headerValue"
-						style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-					</div>
 				</div></td>
 		</tr>
 		<!-- ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard -->
@@ -383,10 +378,12 @@ function deleteInput(drugName) {
 					<c:forEach items="${listExternalReferral}" var="externalReferral">
 						<option value="${externalReferral.answerConcept.id}">${externalReferral.answerConcept.name}</option>
 					</c:forEach>
-			</select></td>
+			</select>
+			</td>
 		</tr>
 		<tr>
-			<td colspan="3"><strong>OPD Visit Outcome:</strong><em>*</em></td>
+			<td colspan="3"><strong>OPD Visit Outcome:</strong><em>*</em>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2"><input type="radio" name="radio_f"
@@ -404,7 +401,8 @@ function deleteInput(drugName) {
 					test="${empty admitted}">
 					<input type="radio" name="radio_f" value="admit"
 						onclick="DASHBOARD.onChangeRadio(this);">Admit
-  		</c:if></td>
+  		</c:if>
+			</td>
 			<td align="left" class="tdIpdWard" style='display: none;'><select
 				id="ipdWard" name="ipdWard">
 					<option value="">--Select--</option>
@@ -413,7 +411,8 @@ function deleteInput(drugName) {
 							<option value="${ipd.answerConcept.id}">${ipd.answerConcept.name}</option>
 						</c:forEach>
 					</c:if>
-			</select></td>
+			</select>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="3"><c:if test="${not empty queueId }">
@@ -423,7 +422,8 @@ function deleteInput(drugName) {
 					<input type="submit"
 						class="ui-button ui-widget ui-state-default ui-corner-all"
 						value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
-				</c:if></td>
+				</c:if>
+			</td>
 		</tr>
 	</table>
 </form>
