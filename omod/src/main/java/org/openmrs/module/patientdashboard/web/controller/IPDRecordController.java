@@ -70,27 +70,25 @@ public class IPDRecordController {
 			if(CollectionUtils.isNotEmpty(listObsByObsGroup)){
 				for( Obs obs : listObsByObsGroup){
 					//diagnosis
-					if( obs.getConcept().getConceptId().equals(conDiagnosis.getConceptId()) &&obs.getObsGroup() != null &&  obs.getObsGroup().getId() == currentAdmission.getOpdObsGroup().getId()){
-//						obs.getV
+					//ghanshyam 7-august-2013 code review bug
+					if( obs.getConcept().getConceptId().equals(conDiagnosis.getConceptId()) &&obs.getObsGroup() != null &&  obs.getObsGroup().getId().equals(currentAdmission.getOpdObsGroup().getId())){
 						if(obs.getValueCoded() != null){
 							diagnosis +=obs.getValueCoded().getName()+"<br/>";
 						}
 						if(StringUtils.isNotBlank(obs.getValueText())){
 							diagnosis +=obs.getValueText()+"<br/>";
 						}
-						//System.out.println(obs.getva);
 					}
 					//Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555					
 					//procedure
-					if( obs.getConcept().getConceptId().equals(conProcedure.getConceptId()) &&obs.getObsGroup() != null &&  obs.getObsGroup().getId() == currentAdmission.getOpdObsGroup().getId()){
-//						obs.getV
+					//ghanshyam 7-august-2013 code review bug
+					if( obs.getConcept().getConceptId().equals(conProcedure.getConceptId()) &&obs.getObsGroup() != null &&  obs.getObsGroup().getId().equals(currentAdmission.getOpdObsGroup().getId())){
 						if(obs.getValueCoded() != null){
 							procedure +=obs.getValueCoded().getName()+"<br/>";
 						}
 						if(StringUtils.isNotBlank(obs.getValueText())){
 							procedure +=obs.getValueText()+"<br/>";
 						}
-						//System.out.println(obs.getva);
 					}
 					
 					
