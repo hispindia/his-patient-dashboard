@@ -1,3 +1,9 @@
+1.3.9
+- #1963              Redesign patient dashboard
+- #1936              Wrong Result Generated in Laboratory record
+- #1635              User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+- #1633              User must be able to send investigation orders from dashboard to billing
+
 1.3.8
 - #964               change in the Dashboard Tab 'Laboratory report' to 'Laboratory record' for Bangladesh module
 - #556               Add Pharmacy record of patient in OPD for all Bangladesh Hospitals
