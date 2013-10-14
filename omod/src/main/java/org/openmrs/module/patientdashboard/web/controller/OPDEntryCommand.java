@@ -41,6 +41,9 @@ public class OPDEntryCommand {
 	private Integer ipdWard;
 	private Integer referralId;
 	private Integer queueId;
+	//Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+	private String OTscheduleDateUp;
+	private String time;
 	
 	
 	public Integer getIpdWard() {
@@ -159,6 +162,18 @@ public class OPDEntryCommand {
 	}
 	public void setQueueId(Integer queueId) {
 		this.queueId = queueId;
+	}
+	public String getOTscheduleDateUp() {
+		return OTscheduleDateUp;
+	}
+	public void setOTscheduleDateUp(String oTscheduleDateUp) {
+		OTscheduleDateUp = oTscheduleDateUp;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
 	

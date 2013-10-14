@@ -264,4 +264,46 @@ public class AutoCompleteController {
 		return "/module/patientdashboard/autocomplete/formulationByDrugForIssue";
 	}
 	
+	//Abhishek-Ankur Date: 06th Oct 2013 New Requirement: OT procedure summary
+	@RequestMapping(value="/module/patientdashboard/detailProcedure.htm", method=RequestMethod.GET)
+	public String detailProcedure(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if (id != null){
+			ConceptService conceptService = Context.getConceptService();
+			
+			EncounterService encounterService = Context.getEncounterService();
+			AdministrationService administrationService = Context.getAdministrationService();
+			String gpVisiteOutCome = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
+			Encounter encounter = encounterService.getEncounter(id);
+			
+			Concept conProcedure = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE));
+			Concept conVisiteOutCome  = conceptService.getConcept(gpVisiteOutCome);
+			
+			String procedure = "";
+			String observations = "";
+			String visitOutCome = "";
+			
+			try {
+				if (encounter != null){
+					for (Obs obs : encounter.getAllObs()){
+						if (obs.getConcept().getConceptId().equals(conProcedure.getConceptId())) {
+							procedure = obs.getValueCoded().getName()+"";
+							String observ = obs.getComment()+"";
+							if (!observ.equals("null"))
+								observations = observ;
+						}
+						if( obs.getConcept().getConceptId().equals(conVisiteOutCome.getConceptId()) ){
+							visitOutCome = obs.getValueText();
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("procedure", procedure);
+			model.addAttribute("observations", observations);
+			model.addAttribute("visitOutCome", visitOutCome);
+		}
+		return "module/patientdashboard/detailProcedure";
+	}
 }

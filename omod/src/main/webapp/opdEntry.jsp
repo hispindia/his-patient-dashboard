@@ -125,6 +125,12 @@ function deleteInput(drugName) {
    var parent = document.getElementById(parentDiv);
    parent.removeChild(child); 
 }
+
+<!-- Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface -->
+var array = new Array();
+<c:forEach items="${allMinorOTProcedures}" var="item">
+			array.push("${item}");
+</c:forEach>
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
@@ -196,6 +202,8 @@ function deleteInput(drugName) {
 			</select>
 			</td>
 		</tr>
+	</table>
+	<table cellspacing="5">
 		<tr>
 			<td colspan="3">
 				<div class="ui-widget">
@@ -213,7 +221,7 @@ function deleteInput(drugName) {
 					<select size="4" style="width: 550px" id="availableProcedureList"
 						name="availableProcedureList" multiple="multiple"
 						style="min-width:25em;height:5em"
-						ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');">
+						ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList'); showHideOTDatepicker();">
 						<c:forEach items="${listProcedures}" var="procedure">
 							<option value="${procedure.conceptId}">${procedure.name}</option>
 						</c:forEach>
@@ -223,28 +231,54 @@ function deleteInput(drugName) {
 			<td><input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;" style="width: 50px"
-				onclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');" /><br />
+				onclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList'); showHideOTDatepicker();" /><br />
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;" style="width: 50px"
-				onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList');" />
+				onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList'); showHideOTDatepicker();" />
 				<!--  
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;&gt;" style="width: 50px"
-				onclick="moveAllById( 'availableProcedureList', 'selectedProcedureList' );" /><br />
+				onclick="moveAllById( 'availableProcedureList', 'selectedProcedureList' ); showHideOTDatepicker();" /><br />
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
-				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' );" />
+				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' ); showHideOTDatepicker();" />
 				--></td>
 			<td>
 				<!-- List of all selected DataElements --> <select size="4"
 				style="width: 550px" id="selectedProcedureList"
 				name="selectedProcedureList" multiple="multiple"
 				style="min-width:25em;height:5em"
-				ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' )">
+				ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' ); showHideOTDatepicker();">
 			</select>
+			</td>
+			
+			<!-- Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface -->
+			<td>
+				<div id="OTschedule" style="display:none">
+					<table>
+						<tr> <strong> Schedule the Patient</strong> <em>*</em> </tr> 
+						<tr> 
+							<td> Date </td> 
+							<td> <input type="text" class="date-pick left" size="14" readonly="readonly"
+								ondblclick="this.value='';" name="OTscheduleDateUp" id="OTscheduleDateUp"> 
+							</td>
+						</tr>
+						<br>
+						<tr> 
+							<td> Time </td> 
+							<td> <input type="text" id="time" name="time" size="14" readonly="readonly">
+								<script type="text/javascript">
+									$(document).ready(function () {
+										$('#time').ptTimeSelect();
+									});		
+								</script>
+							</td> 
+						</tr>
+					</table>
+				</div>
 			</td>
 		</tr>
 		<!-- ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing -->

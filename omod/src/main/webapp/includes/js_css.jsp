@@ -23,6 +23,8 @@
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/jquery/css/jquery.multiselect.css" />
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/jquery/css/jquery.autocomplete.css" />
 
+<%-- Abhishek-Ankur 30-August-2013 added the below two css resources for timepicker --%>
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/jquery/jquery.ptTimeSelect.css" />
 
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/paging.css" />
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
@@ -47,3 +49,6 @@
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/lists.js" ></script>
 
 <script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/string-utils.js" ></script>
+
+<%-- Abhishek-Ankur 30-August-2013 added the below three javascript resources for timepicker --%>
+<script type="text/javascript"  src="${pageContext.request.contextPath}/moduleResources/patientdashboard/scripts/jquery/jquery.ptTimeSelect.js" ></script>

@@ -189,6 +189,8 @@ DASHBOARD={
 							});
 					}
 				}
+				//Abhishek-Ankur 06-Sep-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+				showHideOTDatepicker();
 			}
 			
 			//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
@@ -245,6 +247,15 @@ DASHBOARD={
 		onClickFollowDate : function(thiz)
 		{
 			jQuery('input#input_follow').attr('checked', true);
+		},
+		
+		//Abhishek-Ankur Date: 06th Oct 2013 New Requirement: OT procedure summary
+		detailProcedure : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "detailProcedure.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				tb_show(" ",url,false);
+			}
 		}
 		
 };

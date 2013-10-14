@@ -21,7 +21,9 @@
 package org.openmrs.module.patientdashboard.web.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -56,9 +58,9 @@ import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
-import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -111,6 +113,20 @@ public class OPDEntryController {
 			Collections.sort(procedures, new ConceptComparator());
 		}
 		model.addAttribute("listProcedures", procedures);
+		
+		//Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+		Concept concept = Context.getConceptService().getConcept("MINOR OT PROCEDURE");
+		
+		Collection<ConceptAnswer> allMinorOTProcedures = null;
+		List<Integer> id = new ArrayList<Integer>();
+		if( concept != null )
+		{
+			allMinorOTProcedures = concept.getAnswers();
+			for (ConceptAnswer c: allMinorOTProcedures){
+				id.add(c.getAnswerConcept().getId());
+			}
+		}
+		model.addAttribute("allMinorOTProcedures", id);
 		
 		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
 		List<Concept> investigations = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
@@ -422,6 +438,22 @@ public class OPDEntryController {
 			if( conpro == null ){
 				throw new Exception("Post for procedure concept null");
 			}
+			
+			//Abhishek-Ankur 07-Sep-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+			Concept concept = Context.getConceptService().getConcept("MINOR OT PROCEDURE");
+			Collection<ConceptAnswer> allMinorOTProcedures = null;
+			List<Integer> id = new ArrayList<Integer>();
+			if( concept != null )
+			{
+				allMinorOTProcedures = concept.getAnswers();
+				for (ConceptAnswer c: allMinorOTProcedures){
+					id.add(c.getAnswerConcept().getId());
+				}
+			}
+			String OTscheduleDate = command.getOTscheduleDateUp();
+			String OTscheduleTime = command.getTime();
+			int Id;
+			
 			for( Integer pId : command.getSelectedProcedureList()){
 				BillingService billingService = Context.getService(BillingService.class);
 				BillableService billableService = billingService.getServiceByConceptId(pId);
@@ -434,6 +466,15 @@ public class OPDEntryController {
 				opdTestOrder.setCreator(user);
 				opdTestOrder.setCreatedOn(date);
 				opdTestOrder.setBillableService(billableService);
+				
+				//Abhishek-Ankur 07-Sep-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+				Id = conceptService.getConcept(pId).getId();
+				if (!OTscheduleDate.isEmpty() && !OTscheduleTime.isEmpty() && id.contains(Id)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
+					Date scheduleDate = sdf.parse(OTscheduleDate+" "+OTscheduleTime);
+					opdTestOrder.setOtschedule(scheduleDate);
+				}
+				
 				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		

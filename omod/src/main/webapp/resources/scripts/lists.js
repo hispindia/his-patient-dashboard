@@ -416,3 +416,51 @@ function sortList( id, type ) {
         obj.options[i] = new Option(o[i].text, o[i].value);
     }
 }
+
+//Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+function showHideOTDatepicker() {
+	var selectedLen = selectedProcedureList.length;
+		var minorOtLen = array.length;
+		var i,j;
+		var minorExist=0;
+		for(i=selectedLen-1; i>=0; i--) 
+		{
+			for(j=0; j<minorOtLen; j++)
+			{
+				if ( array[j] == selectedProcedureList.options[i].value)
+				{
+					minorExist=1;
+					break;
+				}
+			}
+			if(minorExist==1)
+				break;
+		}
+		var mydiv = document.getElementById("OTschedule");
+
+		if(minorExist==1)
+		{
+			mydiv.style.display ="block";
+
+			//date
+			$("#OTscheduleDateUp").attr("required", "true");
+			$('label[for="OTscheduleDateUp"]').show ();
+
+			//time
+			$("#time").attr("required", "true");
+			$('label[for="time"]').show ();
+		}
+		else
+		{
+			mydiv.style.display ="none";
+
+			//date
+			$("#OTscheduleDateUp").removeAttr("required");
+			$('label[for="OTscheduleDateUp"]').hide ();
+
+			//time
+			$("#time").removeAttr("required");
+			$('label[for="time"]').hide ();
+		} 
+		
+}
