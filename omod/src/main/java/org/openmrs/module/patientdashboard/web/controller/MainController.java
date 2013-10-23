@@ -180,7 +180,14 @@ public class MainController {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
 		
-		return "module/patientdashboard/main";
+		//ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
+		Boolean dead = patient.getDead();
+		if(dead.equals(false)){
+			return "module/patientdashboard/main";
+		}
+		else{
+			return "module/patientdashboard/mainOfDeadPatient";
+		}
 	}
 	
 	private void insertPropertiesUnlessExist() {
