@@ -122,9 +122,12 @@
   	  </td>
   </tr>
   <tr><td colspan="2">
+        <!-- ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient -->
+        <c:if test ="${empty admitted}">
   		<input type="radio" name="radio_f" id="input_follow" value="follow" onclick="DASHBOARD.onChangeRadio(this);">Follow up <input type="text" class="date-pick left" readonly="readonly"  ondblclick="this.value='';" name="dateFollowUp" id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">
   		<input type="radio" name="radio_f" value="cured" onclick="DASHBOARD.onChangeRadio(this);">Cured
   		<input type="radio" name="radio_f" value="died"  onclick="DASHBOARD.onChangeRadio(this);">Died
+  		</c:if>
   		<input type="radio" name="radio_f" value="reviewed"  onclick="DASHBOARD.onChangeRadio(this);">Reviewed
   		<c:if test ="${empty admitted}">
   			<input type="radio" name="radio_f" value="admit" onclick="DASHBOARD.onChangeRadio(this);">Admit

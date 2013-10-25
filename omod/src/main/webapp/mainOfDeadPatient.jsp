@@ -30,9 +30,7 @@
 	<tr>
 		<td width="40%"><b>Patient ID:</b> ${patient.patientIdentifier.identifier}</td>
 		<td width="30%">
-			<c:if test="${not empty admittedStatus }">
-				<span style="background-color:red; color:white">Admitted patient</span>				
-			</c:if>
+				<span style="background-color:red; color:white">Dead Patient</span>				
 		</td>
 		<td width="30%"><b>Location:</b> ${opd.name } </td>
 	</tr>
