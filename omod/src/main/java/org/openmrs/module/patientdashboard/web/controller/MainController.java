@@ -99,19 +99,23 @@ public class MainController {
 		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
 		Date createdOn = opdPatientQueue.getCreatedOn();
 		*/
+		//ghanshyam,11-nov-2013,Feedback #2937 Dealing with Dead Patient
 		IpdService ipdService=Context.getService(IpdService.class);
 		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
 		Date createdOn = null;
 		if(queueId!=null){
 			createdOn = opdPatientQueue.getCreatedOn();
 		}
-		else{
+		else if(ipdAdmittedId!=null){
 			IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(ipdAdmittedId);
 			IpdPatientAdmissionLog pali=ipdPatientAdmitted.getPatientAdmissionLog();
 			OpdPatientQueueLog opql=pali.getOpdLog();
 			Integer id=opql.getId();
 			OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(id);
 			createdOn=opdPatientQueueLog.getCreatedOn();
+		}
+		else{
+			createdOn = new Date();
 		}
 		
 		// get Encounter by date
