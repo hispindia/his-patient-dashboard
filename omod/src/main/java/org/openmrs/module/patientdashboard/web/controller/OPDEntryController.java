@@ -128,6 +128,20 @@ public class OPDEntryController {
 		}
 		model.addAttribute("allMinorOTProcedures", id);
 		
+		//Abhishek-Ankur 14-Dec-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+		Concept concept2 = Context.getConceptService().getConcept("MAJOR OT PROCEDURE");
+		
+		Collection<ConceptAnswer> allMajorOTProcedures = null;
+		List<Integer> id2 = new ArrayList<Integer>();
+		if( concept2 != null )
+		{
+			allMajorOTProcedures = concept2.getAnswers();
+			for (ConceptAnswer c: allMajorOTProcedures){
+				id2.add(c.getAnswerConcept().getId());
+			}
+		}
+		model.addAttribute("allMajorOTProcedures", id2);
+		
 		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
 		List<Concept> investigations = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
 		if(CollectionUtils.isNotEmpty(investigations)){
@@ -452,6 +466,22 @@ public class OPDEntryController {
 			}
 			String OTscheduleDate = command.getOTscheduleDateUp();
 			String OTscheduleTime = command.getTime();
+			
+			
+			//Abhishek-Ankur 14-Dec-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+			Concept concept2 = Context.getConceptService().getConcept("MAJOR OT PROCEDURE");
+			Collection<ConceptAnswer> allMajorOTProcedures = null;
+			List<Integer> id2 = new ArrayList<Integer>();
+			if( concept2 != null )
+			{
+				allMajorOTProcedures = concept2.getAnswers();
+				for (ConceptAnswer c: allMajorOTProcedures){
+					id2.add(c.getAnswerConcept().getId());
+				}
+			}
+			String OTscheduleDate2 = command.getOTscheduleDateUp();
+			String OTscheduleTime2 = command.getTime();
+
 			int Id;
 			
 			for( Integer pId : command.getSelectedProcedureList()){
@@ -472,6 +502,13 @@ public class OPDEntryController {
 				if (!OTscheduleDate.isEmpty() && !OTscheduleTime.isEmpty() && id.contains(Id)) {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
 					Date scheduleDate = sdf.parse(OTscheduleDate+" "+OTscheduleTime);
+					opdTestOrder.setOtschedule(scheduleDate);
+				}
+				
+				//Abhishek-Ankur 14-Dec-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
+				if (!OTscheduleDate2.isEmpty() && !OTscheduleTime2.isEmpty() && id2.contains(Id)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
+					Date scheduleDate = sdf.parse(OTscheduleDate2+" "+OTscheduleTime2);
 					opdTestOrder.setOtschedule(scheduleDate);
 				}
 				

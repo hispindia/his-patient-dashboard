@@ -131,6 +131,9 @@ var array = new Array();
 <c:forEach items="${allMinorOTProcedures}" var="item">
 			array.push("${item}");
 </c:forEach>
+<c:forEach items="${allMajorOTProcedures}" var="item">
+			array.push("${item}");
+</c:forEach>
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
