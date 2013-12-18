@@ -512,6 +512,9 @@ public class OPDEntryController {
 					opdTestOrder.setOtschedule(scheduleDate);
 				}
 				
+				//Abhishek-Ankur 14-Dec-2013 New Requirement # Redirecting all indoor patient bills to indoor billing queue
+				int indoorStatus = patientDashboardService.getIndoorStatus(patient);
+				opdTestOrder.setIndoorStatus(indoorStatus);
 				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		
@@ -534,6 +537,9 @@ public class OPDEntryController {
 				opdTestOrder.setCreator(user);
 				opdTestOrder.setCreatedOn(date);
 				opdTestOrder.setBillableService(billableService);
+				//Abhishek-Ankur 14-Dec-2013 New Requirement # Redirecting all indoor patient bills to indoor billing queue
+				int indoorStatus = patientDashboardService.getIndoorStatus(patient);
+				opdTestOrder.setIndoorStatus(indoorStatus);
 				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		
