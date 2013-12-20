@@ -420,25 +420,47 @@ function sortList( id, type ) {
 //Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface
 function showHideOTDatepicker() {
 	var selectedLen = selectedProcedureList.length;
-		var minorOtLen = array.length;
+			
+		var minorOtLen = minorOTProcedures.length;
+		var majorOtLen = majorOTProcedures.length;
+		
 		var i,j;
+		
 		var minorExist=0;
+		var majorExist=0;
+		
 		for(i=selectedLen-1; i>=0; i--) 
 		{
 			for(j=0; j<minorOtLen; j++)
 			{
-				if ( array[j] == selectedProcedureList.options[i].value)
+				if ( minorOTProcedures[j] == selectedProcedureList.options[i].value)
 				{
 					minorExist=1;
 					break;
 				}
 			}
+			
 			if(minorExist==1)
 				break;
 		}
+		
+		for(i=selectedLen-1; i>=0; i--) 
+		{
+			for(j=0; j<majorOtLen; j++)
+			{
+				if ( majorOTProcedures[j] == selectedProcedureList.options[i].value)
+				{
+					majorExist=1;
+					break;
+				}
+			}
+			if(majorExist=1)
+				break;
+		}
+		
 		var mydiv = document.getElementById("OTschedule");
 
-		if(minorExist==1)
+		if(minorExist==1 || majorExist==1 )
 		{
 			mydiv.style.display ="block";
 
@@ -461,6 +483,32 @@ function showHideOTDatepicker() {
 			//time
 			$("#time").removeAttr("required");
 			$('label[for="time"]').hide ();
-		} 
+		}
 		
+		var admitBtn = document.getElementById("admit");
+		
+		if(majorExist==1 )
+		{
+			//admitRadio
+			$("#admit").attr("required", "true");
+			admitBtn.checked = true;
+			jQuery(".tdIpdWard").show();
+			document.getElementById("input_follow").disabled=true;
+			document.getElementById("dateFollowUp").disabled=true;
+			document.getElementById("cured").disabled=true;
+			document.getElementById("died").disabled=true;
+			document.getElementById("reviewed").disabled=true;
+		}
+		else
+		{
+			//admitRadio
+			$("#admit").removeAttr("required");
+			admitBtn.checked = false;
+			jQuery(".tdIpdWard").hide();
+			document.getElementById("input_follow").disabled=false;
+			document.getElementById("dateFollowUp").disabled=false;
+			document.getElementById("cured").disabled=false;
+			document.getElementById("died").disabled=false;
+			document.getElementById("reviewed").disabled=false;
+		}
 }

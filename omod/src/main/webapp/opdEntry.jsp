@@ -127,12 +127,14 @@ function deleteInput(drugName) {
 }
 
 <!-- Abhishek-Ankur 23-Aug-2013 New Requirement # User must be able to schedule the procedure using the Calendar interface -->
-var array = new Array();
+var minorOTProcedures = new Array();
 <c:forEach items="${allMinorOTProcedures}" var="item">
-			array.push("${item}");
+			minorOTProcedures.push("${item}");
 </c:forEach>
+
+var majorOTProcedures = new Array();
 <c:forEach items="${allMajorOTProcedures}" var="item">
-			array.push("${item}");
+			majorOTProcedures.push("${item}");
 </c:forEach>
 </script>
 <b class="boxHeader">Opd Form</b>
@@ -424,19 +426,19 @@ var array = new Array();
 		</tr>
 		<tr>
 			<td colspan="2"><input type="radio" name="radio_f"
-				id="input_follow" value="follow"
+				id="input_follow" value="follow" id="follow"
 				onclick="DASHBOARD.onChangeRadio(this);">Follow up <input
 				type="text" class="date-pick left" readonly="readonly"
 				ondblclick="this.value='';" name="dateFollowUp" id="dateFollowUp"
 				onclick="DASHBOARD.onClickFollowDate(this);"> <input
-				type="radio" name="radio_f" value="cured"
+				type="radio" name="radio_f" value="cured" id="cured"
 				onclick="DASHBOARD.onChangeRadio(this);">Cured <input
-				type="radio" name="radio_f" value="died"
+				type="radio" name="radio_f" value="died" id="died"
 				onclick="DASHBOARD.onChangeRadio(this);">Died <input
-				type="radio" name="radio_f" value="reviewed"
+				type="radio" name="radio_f" value="reviewed" id="reviewed"
 				onclick="DASHBOARD.onChangeRadio(this);">Reviewed <c:if
 					test="${empty admitted}">
-					<input type="radio" name="radio_f" value="admit"
+					<input type="radio" name="radio_f" value="admit" id="admit"
 						onclick="DASHBOARD.onChangeRadio(this);">Admit
   		</c:if>
 			</td>
