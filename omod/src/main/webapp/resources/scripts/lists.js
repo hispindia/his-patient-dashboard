@@ -454,7 +454,7 @@ function showHideOTDatepicker() {
 					break;
 				}
 			}
-			if(majorExist=1)
+			if(majorExist==1)
 				break;
 		}
 		
