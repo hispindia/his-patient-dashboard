@@ -20,9 +20,9 @@
 
 package org.openmrs.module.patientdashboard.extension.html;
 
-import org.openmrs.module.Extension;
+import org.openmrs.module.web.extension.LinkExt;
 
-public class PatientDashboardHeader extends Extension {
+public class PatientDashboardHeader extends LinkExt {
 
 	public MEDIA_TYPE getMediaType() {
 		return MEDIA_TYPE.html;
