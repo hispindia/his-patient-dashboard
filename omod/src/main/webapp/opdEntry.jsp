@@ -149,9 +149,16 @@ function deleteInput(drugName) {
 		</tr>
 	 -->
 		<tr>
+			<td colspan="3"><strong>History of Present Illness:</strong> <input
+				type="text" id="history" name="history" size="200"
+				style="width: 1000px; height: 50px"
+				class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input" />
+			</td>
+		</tr>
+		<tr>
 			<td colspan="3"><strong>Provisional Diagnosis:</strong><em>*</em>
 				<input class="ui-autocomplete-input ui-widget-content ui-corner-all"
-				id="diagnosis" title="${opd.conceptId}" style="width: 380px"
+				id="diagnosis" title="${opd.conceptId}" style="width: 390px"
 				name="diagnosis" />
 			</td>
 		</tr>
@@ -253,7 +260,7 @@ function deleteInput(drugName) {
 				<div class="ui-widget">
 					<strong>Investigation:</strong> <input
 						class="ui-autocomplete-input ui-widget-content ui-corner-all"
-						title="${opd.conceptId}" id="investigation" style="width: 420px"
+						title="${opd.conceptId}" id="investigation" style="width: 450px"
 						name="investigation" />
 				</div></td>
 		</tr>

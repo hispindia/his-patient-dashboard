@@ -23,6 +23,9 @@
 <span class="boxHeader">Visit Detail</span>
 <table class="box" >
 	<tr>
+	<td><strong>History of Present Illness:</strong>  ${illnessHistory}</td>
+	</tr>
+	<tr>
 	<td><strong>Internal referral:</strong> ${internal}</td>
 	</tr>
 	<tr>

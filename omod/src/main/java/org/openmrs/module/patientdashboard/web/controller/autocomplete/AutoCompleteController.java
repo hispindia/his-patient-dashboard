@@ -157,12 +157,15 @@ public class AutoCompleteController {
 			String otherValueOfVisit = "";
 			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
 			String otherInstructions = "";
+			String illnessHistory = "";
 			
 			Concept conInternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
 			Concept conExternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
 			Concept conVisiteOutCome  = conceptService.getConcept(gpVisiteOutCome);
 			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
 			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
+			
+			Concept conIllnessHistory = conceptService.getConceptByName("History of Present Illness");
 			try {
 				if(encounter != null){
 					for( Obs obs : encounter.getAllObs()){
@@ -198,6 +201,11 @@ public class AutoCompleteController {
 						if( obs.getConcept().getConceptId().equals(conOtherInstructions.getConceptId()) ){
 							otherInstructions = obs.getValueText();
 						}
+
+						if( obs.getConcept().getConceptId().equals(conIllnessHistory.getConceptId()) ){
+							illnessHistory = obs.getValueText();
+						}
+
 					}
 					
 					
@@ -214,7 +222,7 @@ public class AutoCompleteController {
 			model.addAttribute("otherValueOfVisit", otherValueOfVisit);
 			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
 			model.addAttribute("otherInstructions", otherInstructions);
-			
+			model.addAttribute("illnessHistory", illnessHistory);
 			
 		}
 		return "module/patientdashboard/detailClinical";

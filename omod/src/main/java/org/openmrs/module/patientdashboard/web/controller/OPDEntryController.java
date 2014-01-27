@@ -196,6 +196,7 @@ public class OPDEntryController {
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis.getPropertyValue());
 		//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
 		Concept cOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
+		Concept illnessHistory = conceptService.getConceptByName("History of Present Illness");
 		
 		if( cDiagnosis == null ){
 			throw new Exception("Diagnosis concept null");
@@ -210,7 +211,6 @@ public class OPDEntryController {
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
 			obsDiagnosis.setPatient(patient);
-			
 			encounter.addObs(obsDiagnosis);
 		}
 		//note
@@ -221,6 +221,21 @@ public class OPDEntryController {
 			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
 			obsDiagnosis.setConcept(cOtherInstructions);
 			obsDiagnosis.setValueText(command.getNote());
+			obsDiagnosis.setCreator(user );
+			obsDiagnosis.setDateCreated(date);
+			obsDiagnosis.setEncounter(encounter);
+			obsDiagnosis.setPatient(patient);
+			encounter.addObs(obsDiagnosis);
+		}
+		
+		//illness history
+		if(StringUtils.isNotBlank(command.getHistory())){
+			
+			Obs obsDiagnosis = new Obs();
+			obsDiagnosis.setObsGroup(obsGroup);
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			obsDiagnosis.setConcept(illnessHistory);
+			obsDiagnosis.setValueText(command.getHistory());
 			obsDiagnosis.setCreator(user );
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
