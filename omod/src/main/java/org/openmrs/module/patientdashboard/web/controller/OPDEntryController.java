@@ -138,9 +138,13 @@ public class OPDEntryController {
 		
 		// harsh 14/6/2012 setting death date to today's date and dead variable to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")){
+			
+			ConceptService conceptService = Context.getConceptService();
+			Concept causeOfDeath = conceptService.getConceptByName("NONE");
+			
 			patient.setDead(true);
 			patient.setDeathDate(new Date());
-		
+			patient.setCauseOfDeath(causeOfDeath);
 			ps.savePatient(patient);
 		}
 		
@@ -315,7 +319,12 @@ public class OPDEntryController {
 	        queue.setPatientIdentifier(patient.getPatientIdentifier().getIdentifier());
 	        queue.setOpdConcept(internalReferralConcept);
 	        queue.setOpdConceptName(internalReferralConcept.getName().getName());
+	        if(patient.getMiddleName()!=null){
 	        queue.setPatientName(patient.getGivenName()+" "+patient.getMiddleName() + " "+ patient.getFamilyName());
+	        }
+	        else{
+	        	queue.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());	        	
+	        }
 	        queue.setReferralConcept(currentOpd);
 	        queue.setReferralConceptName(currentOpd.getName().getName());
 	        queue.setSex(patient.getGender());
@@ -425,7 +434,12 @@ public class OPDEntryController {
 			patientAdmission.setOpdLog(opdPatientLog);
 			patientAdmission.setPatient(patient);
 			patientAdmission.setPatientIdentifier(patient.getPatientIdentifier().getIdentifier());
+			if(patient.getMiddleName()!=null){
 			patientAdmission.setPatientName(patient.getGivenName()+" "+patient.getMiddleName() + " "+ patient.getFamilyName());
+			}
+			else{
+				patientAdmission.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());
+			}
 			patientAdmission = ipdService.saveIpdPatientAdmission(patientAdmission);
 		}
 		
