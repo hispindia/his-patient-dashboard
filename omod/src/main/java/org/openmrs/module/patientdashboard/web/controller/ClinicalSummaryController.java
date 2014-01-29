@@ -140,7 +140,15 @@ public class ClinicalSummaryController {
 			
 			//${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp; ${patient.familyName}
 
-			clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
+			if(enc.getCreator().getPerson().getMiddleName()!=null)
+			{	
+				clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
+			}
+			else
+			{
+				clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getFamilyName());
+			}
+
 			clinical.setDateOfVisit(enc.getDateCreated());
 			clinical.setId(enc.getId());
 			clinical.setDiagnosis(diagnosis);
