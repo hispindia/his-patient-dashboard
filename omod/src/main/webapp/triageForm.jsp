@@ -22,6 +22,28 @@
 	redirect="index.htm" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="includes/js_css.jsp"%>
+<script type="text/javascript">
+	jQuery(document).ready(
+			function() {
+				jQuery('#lastMenstrualPeriod').datepicker({
+					yearRange : 'c-100:c+100',
+					dateFormat : 'dd/mm/yy',
+					changeMonth : true,
+					changeYear : true
+				});
+				jQuery("#calendarButton").click(function() {
+					jQuery("#lastMenstrualPeriod").datepicker("show");
+				});
+});
+</script>
+<script type="text/javascript">
+function validate(){
+if (StringUtils.isBlank(jQuery("#opd").val())) {
+				alert("Please select Room to visit");
+				return false;
+			}
+}
+</script>
 <b class="boxHeader">Triage Form</b>
 <div class="box">
 	<table cellspacing="10" width="100%">
@@ -31,8 +53,7 @@
 			<td width="30%"><c:if test="${not empty admittedStatus }">
 					<span style="background-color: red; color: white">Admitted
 						patient</span>
-				</c:if>
-			</td>
+				</c:if></td>
 			<td width="30%"><b>Location:</b> ${opd.name }</td>
 		</tr>
 		<tr>
@@ -62,109 +83,101 @@
 					<c:otherwise>
 					${referral.name }	
 				</c:otherwise>
-				</c:choose>
-			</td>
+				</c:choose></td>
 
 		</tr>
 	</table>
-	<form id="unitActivateForm" method="POST"
+	<form id="triageForm" method="POST"
 		onsubmit="javascript:return validate();">
 		<table>
 			<tr>
 				<td>Weight (Kg)</td>
-				<td><input type="text" id="weight" name="weight" size="5">
+				<td><input type="text" id="weight" name="weight" size="8">
 				</td>
 			</tr>
 			<tr>
 				<td>Height (cm)</td>
-				<td><input type="text" id="height" name="height" size="5">
+				<td><input type="text" id="height" name="height" size="8">
 				</td>
 			</tr>
 			<tr>
 				<td>Temperature (degree C)</td>
 				<td><input type="text" id="temperature" name="temperature"
-					size="5">
-				</td>
+					size="8"></td>
 			</tr>
 			<tr>
 				<td>Systolic B.P</td>
-				<td><input type="text" id="sbp" name="sbp" size="5">
-				</td>
+				<td><input type="text" id="sbp" name="sbp" size="8"></td>
 			</tr>
 			<tr>
 				<td>Diastolic B.P</td>
-				<td><input type="text" id="dbp" name="dbp" size="5">
-				</td>
+				<td><input type="text" id="dbp" name="dbp" size="8"></td>
 			</tr>
 			<tr>
 				<td>Respiratory Rate</td>
-				<td><input type="text" id="resRate" name="resRate" size="5">
+				<td><input type="text" id="resRate" name="resRate" size="8">
 				</td>
 			</tr>
 			<tr>
 				<td>Pulse Rate</td>
-				<td><input type="text" id="pulseRate" name="pulseRate" size="5">
+				<td><input type="text" id="pulseRate" name="pulseRate" size="8">
 				</td>
 			</tr>
 			<tr>
 				<td>Blood Group</td>
 				<td><select id="bloodGroup" name="bloodGroup"
-					style="width: 200px;">
+					style="width: 278px;">
+						<option value="NotEntered">-Please select-</option>
 						<option value="O">O</option>
 						<option value="A">A</option>
 						<option value="B">B</option>
 						<option value="AB">AB</option>
 						<option value="Not Known">Not Known</option>
-				</select>
-				</td>
+				</select></td>
 			</tr>
 			<tr>
 				<td>Last Menstrual Period</td>
 				<td><input type="text" id="lastMenstrualPeriod"
-					name="lastMenstrualPeriod" size="5">
-				</td>
-				<td>
-				 <img
-							id="calendarButton"
-							src="moduleResources/patientdashboard/calendar.gif" />
+					name="lastMenstrualPeriod" size="8"> <img
+					id="calendarButton"
+					src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
 				</td>
 			</tr>
 			<tr>
 				<td>Rhesus Factor</td>
 				<td><select id="rhesusFactor" name="rhesusFactor"
-					style="width: 200px;">
+					style="width: 278px;">
+						<option value="NotEntered">-Please select-</option>
 						<option value="+">Positive (+)</option>
 						<option value="-">Negative (-)</option>
 						<option value="Not Known">Not Known</option>
-				</select>
-				</td>
+				</select></td>
 			</tr>
 			<tr>
 				<td>PITCT</td>
-				<td><select id="pitct" name="pitct" style="width: 200px;">
+				<td><select id="pitct" name="pitct" style="width: 278px;">
+						<option value="NotEntered">-Please select-</option>
 						<option value="Reactive">Reactive</option>
 						<option value="NonReactive">Non-Reactive</option>
 						<option value="NotKnown">Not Known</option>
-				</select>
-				</td>
+				</select></td>
 			</tr>
 			<tr>
-				<td>Room to Visit:</td>
-				<td><select id="opd" name="opd"><option value="0">-Please
-							select-</option>
+				<td>Room to Visit(*):</td>
+				<td><select id="opd" name="opd" style="width: 278px;"><option
+							value="">-Please select-</option>
 						<c:forEach items="${listOPD}" var="opd">
 							<option value="${opd.answerConcept.id }"
 								<c:if test="${opdId == opd.answerConcept.id  }">selected="selected"</c:if>>${opd.answerConcept.name}</option>
 						</c:forEach>
-				</select></td>
+				</select>
+				</td>
 			</tr>
 			<tr></tr>
 			<tr>
-				<td><input type="submit" value="Save">
-				</td>
+				<td><input type="submit" value="Save"></td>
 				<td><input type="button" value="Reset"
-					onclick="window.location.href=window.location.href">
-				</td>
+					onclick="window.location.href=window.location.href"></td>
 			</tr>
 		</table>
 	</form>

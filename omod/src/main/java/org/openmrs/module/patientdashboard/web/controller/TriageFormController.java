@@ -214,6 +214,7 @@ public class TriageFormController {
 			@RequestParam(value = "resRate", required = false) Integer resRate,
 			@RequestParam(value = "pulseRate", required = false) Integer pulseRate,
 			@RequestParam(value = "bloodGroup", required = false) String bloodGroup,
+			@RequestParam(value = "lastMenstrualPeriod", required = false) Date lastMenstrualPeriod,
 			@RequestParam(value = "rhesusFactor", required = false) String rhesusFactor,
 			@RequestParam(value = "pitct", required = false) String pitct,
 			@RequestParam(value = "opd", required = false) Integer opd,
@@ -262,6 +263,7 @@ public class TriageFormController {
 		tpd.setRespiratoryRate(resRate);
 		tpd.setPulsRate(pulseRate);
 		tpd.setBloodGroup(bloodGroup);
+		tpd.setLastMenstrualDate(lastMenstrualPeriod);
 		tpd.setRhesusFactor(rhesusFactor);
 		tpd.setPitct(pitct);
 		tpd.setCreatedOn(date);
