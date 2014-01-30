@@ -142,11 +142,21 @@ public class ClinicalSummaryController {
 
 			if(enc.getCreator().getPerson().getMiddleName()!=null)
 			{	
-				clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
+				if(enc.getCreator().getPerson().getFamilyName()!=null){
+					clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
+				}
+				else{
+					clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName());
+				}
 			}
 			else
 			{
-				clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getFamilyName());
+				if(enc.getCreator().getPerson().getFamilyName()!=null){
+					clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getFamilyName());
+				}
+				else{
+					clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName());
+				}
 			}
 
 			clinical.setDateOfVisit(enc.getDateCreated());
