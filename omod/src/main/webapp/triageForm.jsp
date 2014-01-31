@@ -40,6 +40,10 @@
                 else{
               jQuery("#rhesusFactor").removeAttr("disabled");
 			}
+			    if("${patient.gender }"=="M"){
+			    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
+			    jQuery("#calendarButton").hide();
+			    }
 });
 </script>
 <script type="text/javascript">
@@ -101,6 +105,7 @@ if (StringUtils.isBlank(jQuery("#opd").val())) {
 			}
 			
 jQuery("#rhesusFactor").removeAttr("disabled");
+jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 }
 </script>
 <script type="text/javascript">
