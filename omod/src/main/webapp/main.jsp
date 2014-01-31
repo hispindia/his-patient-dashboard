@@ -57,7 +57,7 @@
 			</td>
 			--%>
 			<td width="30%"><b>Age category:</b> ${ageCategory }</td>
-			<td width="30%"><b>Referral:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
+			<td width="30%"><b>Visit Status:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
 				<c:choose>
 					<c:when
 						test="${referredType.class.name == 'org.openmrs.ConceptName'}">
