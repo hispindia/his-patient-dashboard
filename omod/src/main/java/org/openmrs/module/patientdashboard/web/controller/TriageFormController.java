@@ -1,5 +1,5 @@
 /**
- *  Copyright 2010 Society for Health Information Systems Programmes, India (HISP India)
+ *  Copyright 2014 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
  *
@@ -262,10 +262,25 @@ public class TriageFormController {
 		tpd.setDaistolic(dbp);
 		tpd.setRespiratoryRate(resRate);
 		tpd.setPulsRate(pulseRate);
+		if(bloodGroup.equals("")){
+		tpd.setBloodGroup(null);
+		}
+		else{
 		tpd.setBloodGroup(bloodGroup);
+		}
 		tpd.setLastMenstrualDate(lastMenstrualPeriod);
+		if(rhesusFactor.equals("")){
+		tpd.setRhesusFactor(null);
+		}
+		else{
 		tpd.setRhesusFactor(rhesusFactor);
+		}
+		if(pitct.equals("")){
+		tpd.setPitct(null);
+		}
+		else{
 		tpd.setPitct(pitct);
+		}
 		tpd.setCreatedOn(date);
 		TriagePatientData triagePatientData=queueService.saveTriagePatientData(tpd);
 		Concept opdConcept = Context.getConceptService().getConcept("OPD WARD");

@@ -1,20 +1,20 @@
 <%--
- *  Copyright 2012 Society for Health Information Systems Programmes, India (HISP India)
+ *  Copyright 2014 Society for Health Information Systems Programmes, India (HISP India)
  *
- *  This file is part of Dms module.
+ *  This file is part of Patient-dashboard module.
  *
- *  Dms module is free software: you can redistribute it and/or modify
+ *  Patient-dashboard module is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
 
- *  Dms module is distributed in the hope that it will be useful,
+ *  Patient-dashboard module is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Dms module.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
@@ -34,14 +34,88 @@
 				jQuery("#calendarButton").click(function() {
 					jQuery("#lastMenstrualPeriod").datepicker("show");
 				});
+				if (StringUtils.isBlank(jQuery("#bloodGroup").val())) {
+				jQuery("#rhesusFactor").attr("disabled", "disabled");
+				}
+                else{
+              jQuery("#rhesusFactor").removeAttr("disabled");
+			}
 });
 </script>
 <script type="text/javascript">
 function validate(){
+var intRegex=/^(?:[1-9]\d*(?:\.\d\d?)?|0\.[1-9]\d?|0\.0[1-9])$/;
+
+if(!StringUtils.isBlank(jQuery("#weight").val())) {
+      if (!jQuery("#weight").val().match(intRegex)) {
+	  alert("Please enter weight in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#height").val())) {
+      if (!jQuery("#height").val().match(intRegex)) {
+	  alert("Please enter height in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#temperature").val())) {
+      if (!jQuery("#temperature").val().match(intRegex)) {
+	  alert("Please enter temperature in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#sbp").val())) {
+      if (!jQuery("#sbp").val().match(intRegex)) {
+	  alert("Please enter Systolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#dbp").val())) {
+      if (!jQuery("#dbp").val().match(intRegex)) {
+	  alert("Please enter Diastolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#resRate").val())) {
+      if (!jQuery("#resRate").val().match(intRegex)) {
+	  alert("Please enter Respiratory Rate in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#pulseRate").val())) {
+      if (!jQuery("#pulseRate").val().match(intRegex)) {
+	  alert("Please enter Pulse Rate in correct format");
+	  return false;
+	  }
+}
+
 if (StringUtils.isBlank(jQuery("#opd").val())) {
 				alert("Please select Room to visit");
 				return false;
 			}
+			
+jQuery("#rhesusFactor").removeAttr("disabled");
+}
+</script>
+<script type="text/javascript">
+function enableAndDisable(){
+jQuery("#bloodGroup").click(function() {
+				if (StringUtils.isBlank(jQuery("#bloodGroup").val())) {
+				jQuery("#rhesusFactor").attr("disabled", "disabled");
+				}
+				else if (jQuery("#bloodGroup").val()=="Not Known"){
+				jQuery("#rhesusFactor").attr("disabled", "disabled");
+				}
+                else{
+              jQuery("#rhesusFactor").removeAttr("disabled");
+			}
+		});
 }
 </script>
 <b class="boxHeader">Triage Form</b>
@@ -63,16 +137,6 @@ if (StringUtils.isBlank(jQuery("#opd").val())) {
 			<td width="30%"><b>Age:</b> ${age }</td>
 			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 		</tr>
-		<%-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed --%>
-		<%-- ghanshyam 27-02-2013 Feedback #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module(remove category from registration,OPD,IPD,Inventory) --%>
-		<tr>
-			<%--
-			<td width="40%"><b>Patient category:</b> ${patientCategory} - <c:forEach
-					items="${observation}" var="observation">
-			${observation.valueText} 
-		</c:forEach>
-			</td>
-			--%>
 			<td width="30%"><b>Age category:</b> ${ageCategory }</td>
 			<td width="30%"><b>Referral:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
 				<c:choose>
@@ -126,12 +190,22 @@ if (StringUtils.isBlank(jQuery("#opd").val())) {
 			<tr>
 				<td>Blood Group</td>
 				<td><select id="bloodGroup" name="bloodGroup"
-					style="width: 278px;">
-						<option value="NotEntered">-Please select-</option>
+					style="width: 278px;" onclick="enableAndDisable();">
+						<option value="">-Please select-</option>
 						<option value="O">O</option>
 						<option value="A">A</option>
 						<option value="B">B</option>
 						<option value="AB">AB</option>
+						<option value="Not Known">Not Known</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>Rhesus Factor</td>
+				<td><select id="rhesusFactor" name="rhesusFactor"
+					style="width: 278px;">
+						<option value="">-Please select-</option>
+						<option value="+">Positive (+)</option>
+						<option value="-">Negative (-)</option>
 						<option value="Not Known">Not Known</option>
 				</select></td>
 			</tr>
@@ -144,26 +218,16 @@ if (StringUtils.isBlank(jQuery("#opd").val())) {
 				</td>
 			</tr>
 			<tr>
-				<td>Rhesus Factor</td>
-				<td><select id="rhesusFactor" name="rhesusFactor"
-					style="width: 278px;">
-						<option value="NotEntered">-Please select-</option>
-						<option value="+">Positive (+)</option>
-						<option value="-">Negative (-)</option>
-						<option value="Not Known">Not Known</option>
-				</select></td>
-			</tr>
-			<tr>
 				<td>PITCT</td>
 				<td><select id="pitct" name="pitct" style="width: 278px;">
-						<option value="NotEntered">-Please select-</option>
+						<option value="">-Please select-</option>
 						<option value="Reactive">Reactive</option>
 						<option value="NonReactive">Non-Reactive</option>
 						<option value="NotKnown">Not Known</option>
 				</select></td>
 			</tr>
 			<tr>
-				<td>Room to Visit(*):</td>
+				<td>Room to Visit *:</td>
 				<td><select id="opd" name="opd" style="width: 278px;"><option
 							value="">-Please select-</option>
 						<c:forEach items="${listOPD}" var="opd">
