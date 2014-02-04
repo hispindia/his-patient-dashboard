@@ -125,6 +125,9 @@ public class OPDEntryController {
 		
 		model.addAttribute("opd", opdConcept);
 		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		OpdPatientQueue opdPatientQueue=queueService.getOpdPatientQueueById(queueId);
+		model.addAttribute("opdPatientQueue", opdPatientQueue);
 		
 		return "module/patientdashboard/opdEntry";
 	}
@@ -328,6 +331,7 @@ public class OPDEntryController {
 	        queue.setReferralConcept(currentOpd);
 	        queue.setReferralConceptName(currentOpd.getName().getName());
 	        queue.setSex(patient.getGender());
+	        queue.setTriageDataId(null);
 	        PatientQueueService queueService = Context.getService(PatientQueueService.class);
 	        queueService.saveOpdPatientQueue(queue);
 			
@@ -418,6 +422,12 @@ public class OPDEntryController {
         queueLog.setStatus("processed");
         queueLog.setBirthDate(patient.getBirthdate());
         queueLog.setEncounter(encounter);
+        if(queue.getTriageDataId()!=null){
+        queueLog.setTriageDataId(queue.getTriageDataId());
+        }
+        else{
+        queueLog.setTriageDataId(null);	
+        }
         OpdPatientQueueLog opdPatientLog = queueService.saveOpdPatientQueueLog(queueLog);
         queueService.deleteOpdPatientQueue(queue);
         //done queue
