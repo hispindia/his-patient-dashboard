@@ -59,6 +59,7 @@ import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -137,7 +138,9 @@ public class OPDEntryController {
 			@RequestParam(value="drugOrder",required=false) String[] drugOrder) throws Exception{
 		User user =Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
+		HospitalCoreService hcs = (HospitalCoreService) Context.getService(HospitalCoreService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
+		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
 		
 		// harsh 14/6/2012 setting death date to today's date and dead variable to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")){
@@ -149,13 +152,14 @@ public class OPDEntryController {
 			patient.setDeathDate(new Date());
 			patient.setCauseOfDeath(causeOfDeath);
 			ps.savePatient(patient);
+			patientSearch.setDead(true);
+			hcs.savePatientSearch(patientSearch);
 		}
 		
 		
 		Date date = new Date();
 		//create obs group only for internal referral and admit
 		Obs obsGroup = null;
-		HospitalCoreService hcs = (HospitalCoreService) Context.getService(HospitalCoreService.class);
 		obsGroup = hcs.getObsGroupCurrentDate(patient.getPersonId());
 		if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit") || (command.getInternalReferral() != null && command.getInternalReferral() > 0)){
 			if(obsGroup == null){

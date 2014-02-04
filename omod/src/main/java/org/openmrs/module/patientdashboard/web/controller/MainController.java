@@ -104,13 +104,16 @@ public class MainController {
 		if(queueId!=null){
 			createdOn = opdPatientQueue.getCreatedOn();
 		}
-		else{
+		else if(ipdAdmittedId!=null){
 			IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(ipdAdmittedId);
 			IpdPatientAdmissionLog pali=ipdPatientAdmitted.getPatientAdmissionLog();
 			OpdPatientQueueLog opql=pali.getOpdLog();
 			Integer id=opql.getId();
 			OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(id);
 			createdOn=opdPatientQueueLog.getCreatedOn();
+		}
+		else{
+			createdOn = new Date();
 		}
 		
 		// get Encounter by date
@@ -179,7 +182,13 @@ public class MainController {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
 		
-		return "module/patientdashboard/main";
+		Boolean dead = patient.getDead();
+		if(dead.equals(false)){
+			return "module/patientdashboard/main";
+		}
+		else{
+			return "module/patientdashboard/mainOfDeadPatient";
+		}
 	}
 	
 	private void insertPropertiesUnlessExist() {
