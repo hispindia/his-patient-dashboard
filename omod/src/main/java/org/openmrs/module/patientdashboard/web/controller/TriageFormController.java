@@ -106,20 +106,10 @@ public class TriageFormController {
 
 		PatientQueueService pqs = Context.getService(PatientQueueService.class);
 		IpdService ipdService = Context.getService(IpdService.class);
-		OpdPatientQueue opdPatientQueue = pqs.getOpdPatientQueueById(queueId);
+		TriagePatientQueue triagePatientQueue = pqs.getTriagePatientQueueById(queueId);
 		Date createdOn = null;
 		if (queueId != null) {
-			createdOn = opdPatientQueue.getCreatedOn();
-		} else {
-			IpdPatientAdmitted ipdPatientAdmitted = ipdService
-					.getIpdPatientAdmitted(ipdAdmittedId);
-			IpdPatientAdmissionLog pali = ipdPatientAdmitted
-					.getPatientAdmissionLog();
-			OpdPatientQueueLog opql = pali.getOpdLog();
-			Integer id = opql.getId();
-			OpdPatientQueueLog opdPatientQueueLog = pqs
-					.getOpdPatientQueueLogById(id);
-			createdOn = opdPatientQueueLog.getCreatedOn();
+			createdOn = triagePatientQueue.getCreatedOn();
 		}
 
 		// get Encounter by date
