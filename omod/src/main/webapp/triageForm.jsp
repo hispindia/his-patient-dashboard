@@ -142,7 +142,7 @@ jQuery("#bloodGroup").click(function() {
 			<td width="30%"><b>Age:</b> ${age }</td>
 			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 		</tr>
-			<td width="30%"><b>Age category:</b> ${ageCategory }</td>
+			<td width="40%"><b>Age category:</b> ${ageCategory }</td>
 			<td width="30%"><b>Visit Status:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
 				<c:choose>
 					<c:when
@@ -153,6 +153,7 @@ jQuery("#bloodGroup").click(function() {
 					${referral.name }	
 				</c:otherwise>
 				</c:choose></td>
+			<td width="30%"><b>Follow up:</b> <openmrs:formatDate date="${ob.valueDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
 
 		</tr>
 	</table>

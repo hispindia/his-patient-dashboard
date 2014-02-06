@@ -52,7 +52,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
@@ -190,6 +189,13 @@ public class TriageFormController {
 			Collections.sort(oList, new ConceptAnswerComparator());
 		}
 		model.addAttribute("listOPD", oList);
+		
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Encounter enc=queueService.getLastOPDEncounter(patient);
+		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
+		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
+		model.addAttribute("ob", ob);
 
 		return "module/patientdashboard/triageForm";
 	}

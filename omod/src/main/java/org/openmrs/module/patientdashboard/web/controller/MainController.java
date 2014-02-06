@@ -182,6 +182,13 @@ public class MainController {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
 		
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Encounter enc=queueService.getLastOPDEncounter(patient);
+		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
+		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
+		model.addAttribute("ob", ob);
+		
 		Boolean dead = patient.getDead();
 		if(dead.equals(false)){
 			return "module/patientdashboard/main";
