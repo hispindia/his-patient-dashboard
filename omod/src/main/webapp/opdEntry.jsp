@@ -462,67 +462,67 @@ function deleteInput(drugName) {
 				<table>
 					<tr>
 						<td>Weight (Kg)</td>
-						<td><input type="text" id="weight" name="weight" size="8"
-							value="${opdPatientQueue.triageDataId.weight}">
+						<td><input type="text" id="weight" name="weight" size="11"
+							value="${opdPatientQueue.triageDataId.weight}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Height (cm)</td>
-						<td><input type="text" id="height" name="height" size="8"
-							value="${opdPatientQueue.triageDataId.height}">
+						<td><input type="text" id="height" name="height" size="11"
+							value="${opdPatientQueue.triageDataId.height}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Temperature (degree C)</td>
 						<td><input type="text" id="temperature" name="temperature"
-							size="8" value="${opdPatientQueue.triageDataId.temperature}">
+							size="11" value="${opdPatientQueue.triageDataId.temperature}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Systolic B.P</td>
-						<td><input type="text" id="sbp" name="sbp" size="8"
-							value="${opdPatientQueue.triageDataId.systolic}"></td>
+						<td><input type="text" id="sbp" name="sbp" size="11"
+							value="${opdPatientQueue.triageDataId.systolic}" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Diastolic B.P</td>
-						<td><input type="text" id="dbp" name="dbp" size="8"
-							value="${opdPatientQueue.triageDataId.daistolic}"></td>
+						<td><input type="text" id="dbp" name="dbp" size="11"
+							value="${opdPatientQueue.triageDataId.daistolic}" readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Respiratory Rate</td>
-						<td><input type="text" id="resRate" name="resRate" size="8"
-							value="${opdPatientQueue.triageDataId.respiratoryRate}">
+						<td><input type="text" id="resRate" name="resRate" size="11"
+							value="${opdPatientQueue.triageDataId.respiratoryRate}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Pulse Rate</td>
 						<td><input type="text" id="pulseRate" name="pulseRate"
-							size="8" value="${opdPatientQueue.triageDataId.pulsRate}">
+							size="11" value="${opdPatientQueue.triageDataId.pulsRate}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Blood Group</td>
 						<td><input type="text" id="bloodGroup" name="bloodGroup"
-							size="8" value="${opdPatientQueue.triageDataId.bloodGroup}">
+							size="11" value="${opdPatientQueue.triageDataId.bloodGroup}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Rhesus Factor</td>
 						<td><input type="text" id="rhesusFactor" name="rhesusFactor"
-							size="8" value="${opdPatientQueue.triageDataId.rhesusFactor}">
+							size="11" value="${opdPatientQueue.triageDataId.rhesusFactor}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>Last Menstrual Period</td>
 						<td><input type="text" id="lastMenstrualPeriod"
-							name="lastMenstrualPeriod" size="8"
-							value="${opdPatientQueue.triageDataId.lastMenstrualDate}">
+							name="lastMenstrualPeriod" size="11"
+							value="${da}" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td>PITCT</td>
-						<td><input type="text" id="pitct" name="pitct" size="8"
-							value="${opdPatientQueue.triageDataId.pitct}">
+						<td><input type="text" id="pitct" name="pitct" size="11"
+							value="${opdPatientQueue.triageDataId.pitct}" readonly="readonly">
 						</td>
 					</tr>
 				</table>

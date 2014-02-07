@@ -210,8 +210,8 @@ jQuery("#bloodGroup").click(function() {
 				<td><select id="rhesusFactor" name="rhesusFactor"
 					style="width: 278px;">
 						<option value="">-Please select-</option>
-						<option value="+">Positive (+)</option>
-						<option value="-">Negative (-)</option>
+						<option value="Positive (+)">Positive (+)</option>
+						<option value="Negative (-)">Negative (-)</option>
 						<option value="Not Known">Not Known</option>
 				</select></td>
 			</tr>
@@ -228,8 +228,8 @@ jQuery("#bloodGroup").click(function() {
 				<td><select id="pitct" name="pitct" style="width: 278px;">
 						<option value="">-Please select-</option>
 						<option value="Reactive">Reactive</option>
-						<option value="NonReactive">Non-Reactive</option>
-						<option value="NotKnown">Not Known</option>
+						<option value="Non-Reactive">Non-Reactive</option>
+						<option value="Not Known">Not Known</option>
 				</select></td>
 			</tr>
 			<tr>

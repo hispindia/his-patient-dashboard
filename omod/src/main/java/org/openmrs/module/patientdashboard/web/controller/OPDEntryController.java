@@ -21,6 +21,7 @@
 package org.openmrs.module.patientdashboard.web.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -128,6 +129,12 @@ public class OPDEntryController {
 		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		OpdPatientQueue opdPatientQueue=queueService.getOpdPatientQueueById(queueId);
+		SimpleDateFormat formatterExt = new SimpleDateFormat("dd-MM-yyyy");
+		Date dat=opdPatientQueue.getTriageDataId().getLastMenstrualDate();
+		if(dat!=null){
+		String da = formatterExt.format(dat);
+		model.addAttribute("da", da);
+		}
 		model.addAttribute("opdPatientQueue", opdPatientQueue);
 		
 		return "module/patientdashboard/opdEntry";
