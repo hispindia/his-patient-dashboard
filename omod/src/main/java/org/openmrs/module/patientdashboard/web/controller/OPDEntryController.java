@@ -373,7 +373,7 @@ public class OPDEntryController {
 		try {
 			obsOutcome.setValueText(command.getRadio_f());
 			//TODO if
-			if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "follow")){
+			if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")){
 				obsOutcome.setValueDatetime(Context.getDateFormat().parse(command.getDateFollowUp()));
 			}
 			

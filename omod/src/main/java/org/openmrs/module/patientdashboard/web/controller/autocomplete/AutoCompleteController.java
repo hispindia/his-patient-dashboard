@@ -177,7 +177,7 @@ public class AutoCompleteController {
 						}
 						if( obs.getConcept().getConceptId().equals(conVisiteOutCome.getConceptId()) ){
 							visitOutCome = obs.getValueText();
-							if("follow".equalsIgnoreCase(visitOutCome)){
+							if("Follow-up".equalsIgnoreCase(visitOutCome)){
 								try {
 									otherValueOfVisit = formatter.format(obs.getValueDatetime());
 								} catch (Exception e) {

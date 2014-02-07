@@ -416,7 +416,7 @@ function deleteInput(drugName) {
 					<tr>
 						<td colspan="2"><c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" id="input_follow"
-									value="follow" onclick="DASHBOARD.onChangeRadio(this);">Follow up <input
+									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this);">Follow up <input
 									type="text" class="date-pick left" readonly="readonly"
 									ondblclick="this.value='';" name="dateFollowUp"
 									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">

@@ -182,7 +182,7 @@ var CHECK =
 									"dateFollowUp" : {
 							            required: {
 							                depends: function() {
-							                    return (jQuery("input[name='radio_f']:checked").val() == 'follow'? true : false);
+							                    return (jQuery("input[name='radio_f']:checked").val() == 'Follow-up'? true : false);
 							                }
 							            }
 							        },
