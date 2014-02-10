@@ -61,6 +61,7 @@ import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -130,10 +131,13 @@ public class OPDEntryController {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		OpdPatientQueue opdPatientQueue=queueService.getOpdPatientQueueById(queueId);
 		SimpleDateFormat formatterExt = new SimpleDateFormat("dd-MM-yyyy");
-		Date dat=opdPatientQueue.getTriageDataId().getLastMenstrualDate();
+		TriagePatientData triagePatientData=opdPatientQueue.getTriageDataId();
+		if(triagePatientData!=null){
+		Date dat=triagePatientData.getLastMenstrualDate();
 		if(dat!=null){
 		String da = formatterExt.format(dat);
 		model.addAttribute("da", da);
+		 }
 		}
 		model.addAttribute("opdPatientQueue", opdPatientQueue);
 		
