@@ -68,7 +68,11 @@
 				</c:otherwise>
 				</c:choose>
 			</td>
-			<td width="30%"><b>Follow up:</b> <openmrs:formatDate date="${ob.valueDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
+			<td width="30%"><b>Follow up:</b> 
+			<c:if test="${not empty ob }">
+			<openmrs:formatDate date="${ob.valueDatetime }" /> at ${opdPatientQueueLog.opdConceptName}
+			</c:if>
+			</td>
 
 		</tr>
 	</table>
