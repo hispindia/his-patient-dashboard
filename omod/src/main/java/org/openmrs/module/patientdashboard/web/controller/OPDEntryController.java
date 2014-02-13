@@ -172,11 +172,13 @@ public class OPDEntryController {
 		//create obs group only for internal referral and admit
 		Obs obsGroup = null;
 		obsGroup = hcs.getObsGroupCurrentDate(patient.getPersonId());
+		/*
 		if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit") || (command.getInternalReferral() != null && command.getInternalReferral() > 0)){
 			if(obsGroup == null){
 				obsGroup = hcs.createObsGroup(patient, HospitalCoreConstants.PROPERTY_OBSGROUP);
 			}
 		}
+		*/
 		
 		
 		//===================Comment this if we want to save===========================
