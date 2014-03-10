@@ -20,6 +20,7 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,17 +54,19 @@ import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
+import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
+import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
-import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
-import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +74,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 @Controller("OPDEntryController")
 @RequestMapping("/module/patientdashboard/opdEntry.htm")
 public class OPDEntryController {
@@ -467,6 +471,7 @@ public class OPDEntryController {
 			else{
 				patientAdmission.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());
 			}
+			patientAdmission.setAcceptStatus(0);
 			patientAdmission = ipdService.saveIpdPatientAdmission(patientAdmission);
 		}
 		
@@ -494,26 +499,91 @@ public class OPDEntryController {
 			}
 		
 		}
-		//investigation
-		if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
-			Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
-			if( coninvt == null ){
-				throw new Exception("Investigation concept null");
+		
+		IpdService ipdService=Context.getService(IpdService.class);
+		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command.getPatientId());
+		if (admitted != null) {
+			BillingService billingService = Context.getService(BillingService.class);
+			IndoorPatientServiceBill bill = new IndoorPatientServiceBill();
+			
+			bill.setCreatedDate(new Date());
+			bill.setPatient(patient);
+			bill.setCreator(Context.getAuthenticatedUser());
+			
+			IndoorPatientServiceBillItem item;
+			BillableService service;
+			BigDecimal amount = new BigDecimal(0);
+			
+			Integer[] al1=command.getSelectedProcedureList();
+			Integer[] al2=command.getSelectedInvestigationList();	
+			Integer[] merge=null;
+			if(al1!=null && al2!=null){
+			merge = new Integer[al1.length + al2.length];
+			int j = 0, k = 0, l = 0;
+			int max = Math.max(al1.length, al2.length);
+			for (int i = 0; i < max; i++) {
+		        if (j < al1.length)
+		            merge[l++] = al1[j++];
+		        if (k < al2.length)
+		            merge[l++] = al2[k++];
+		    }
 			}
-			for( Integer iId : command.getSelectedInvestigationList()){
-				BillingService billingService = Context.getService(BillingService.class);
-				BillableService billableService = billingService.getServiceByConceptId(iId);
-				OpdTestOrder opdTestOrder = new OpdTestOrder();
-				opdTestOrder.setPatient(patient);
-				opdTestOrder.setEncounter(encounter);
-				opdTestOrder.setConcept(coninvt);
-				opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
-				opdTestOrder.setValueCoded(conceptService.getConcept(iId));
-				opdTestOrder.setCreator(user);
-				opdTestOrder.setCreatedOn(date);
-				opdTestOrder.setBillableService(billableService);
-				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+			else if(al1!=null){
+				merge=command.getSelectedProcedureList();	
 			}
+			else if(al2!=null){
+				merge=command.getSelectedInvestigationList();	
+			}
+			
+			if(merge!=null){
+			for( Integer iId : merge){
+			Concept c=conceptService.getConcept(iId);
+			service = billingService.getServiceByConceptId(c.getConceptId());
+			amount=service.getPrice();
+			item = new IndoorPatientServiceBillItem();
+			item.setCreatedDate(new Date());
+			item.setName(service.getName());
+			item.setIndoorPatientServiceBill(bill);
+			item.setQuantity(1);
+			item.setService(service);
+			item.setUnitPrice(service.getPrice());
+			item.setAmount(amount);
+			item.setActualAmount(amount);
+			bill.addBillItem(item);
+            }
+			bill.setAmount(amount);
+			bill.setActualAmount(amount);
+			bill.setEncounter(admitted.getPatientAdmissionLog().getIpdEncounter());	
+			bill = billingService.saveIndoorPatientServiceBill(bill);
+			
+			IndoorPatientServiceBill indoorPatientServiceBill = billingService.getIndoorPatientServiceBillById(bill.getIndoorPatientServiceBillId());
+			if (indoorPatientServiceBill != null) {
+				billingService.saveBillEncounterAndOrderForIndoorPatient(indoorPatientServiceBill);
+			}
+		  }
+			
+		 }
+		else{
+			if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
+				Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
+				if( coninvt == null ){
+					throw new Exception("Investigation concept null");
+				}
+				for( Integer iId : command.getSelectedInvestigationList()){
+					BillingService billingService = Context.getService(BillingService.class);
+					BillableService billableService = billingService.getServiceByConceptId(iId);
+					OpdTestOrder opdTestOrder = new OpdTestOrder();
+					opdTestOrder.setPatient(patient);
+					opdTestOrder.setEncounter(encounter);
+					opdTestOrder.setConcept(coninvt);
+					opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[2]);
+					opdTestOrder.setValueCoded(conceptService.getConcept(iId));
+					opdTestOrder.setCreator(user);
+					opdTestOrder.setCreatedOn(date);
+					opdTestOrder.setBillableService(billableService);
+					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+				}	
+		   }
 		
 		}
 		
