@@ -171,7 +171,8 @@ var CHECK =
 					jQuery(function() {
 					var date = new Date();
                     var currentMonth = date.getMonth();
-                    var currentDate = date.getDate()+1;
+                    //var currentDate = date.getDate()+1;
+                    var currentDate = date.getDate();
                     var currentYear = date.getFullYear();
 					jQuery('.date-pick').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,minDate: new Date(currentYear, currentMonth, currentDate)});
 					});

@@ -416,3 +416,94 @@ function sortList( id, type ) {
         obj.options[i] = new Option(o[i].text, o[i].value);
     }
 }
+
+function showHideOTDatepicker() {
+var selectedLen = selectedProcedureList.length;
+var minorOtLen = minorOTProcedures.length;
+var majorOtLen = majorOTProcedures.length;
+var i,j;
+var minorExist=0;
+var majorExist=0;
+for(i=selectedLen-1; i>=0; i--)
+{
+for(j=0; j<minorOtLen; j++)
+{
+if ( minorOTProcedures[j] == selectedProcedureList.options[i].value)
+{
+minorExist=1;
+break;
+}
+}
+if(minorExist==1)
+break;
+}
+
+for(i=selectedLen-1; i>=0; i--)
+{
+for(j=0; j<majorOtLen; j++)
+{
+if ( majorOTProcedures[j] == selectedProcedureList.options[i].value)
+{
+majorExist=1;
+break;
+}
+}
+if(majorExist==1)
+break;
+}
+
+var mydiv = document.getElementById("OTschedule");
+
+if(minorExist==1 || majorExist==1 )
+{
+mydiv.style.display ="block";
+
+//date
+$("#OTscheduleDateUp").attr("required", "true");
+$('label[for="OTscheduleDateUp"]').show ();
+
+//time
+$("#time").attr("required", "true");
+$('label[for="time"]').show ();
+}
+else
+{
+mydiv.style.display ="none";
+
+//date
+$("#OTscheduleDateUp").removeAttr("required");
+$('label[for="OTscheduleDateUp"]').hide ();
+
+//time
+$("#time").removeAttr("required");
+$('label[for="time"]').hide ();
+}
+
+var admitBtn = document.getElementById("admit");
+
+	if(majorExist==1 )
+{
+//admitRadio
+$("#admit").attr("required", "true");
+admitBtn.checked = true;
+jQuery(".tdIpdWard").show();
+document.getElementById("input_follow").disabled=true;
+document.getElementById("dateFollowUp").disabled=true;
+document.getElementById("cured").disabled=true;
+document.getElementById("died").disabled=true;
+document.getElementById("reviewed").disabled=true;
+}
+else
+{
+//admitRadio
+$("#admit").removeAttr("required");
+admitBtn.checked = false;
+jQuery(".tdIpdWard").hide();
+document.getElementById("input_follow").disabled=false;
+document.getElementById("dateFollowUp").disabled=false;
+document.getElementById("cured").disabled=false;
+document.getElementById("died").disabled=false;
+document.getElementById("reviewed").disabled=false;
+}
+
+}

@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -84,6 +85,7 @@ public class OPDEntryController {
 			@RequestParam("patientId") Integer patientId, 
 			@RequestParam("opdId") Integer opdId ,
 			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+			@RequestParam(value="opdLogId" ,required=false) Integer opdLogId ,
 			@RequestParam("referralId") Integer referralId, Model model){
 		
 		Concept opdWardConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPDWARD));
@@ -93,6 +95,7 @@ public class OPDEntryController {
 		model.addAttribute("patientId", patientId );
 		IpdService ipds = (IpdService) Context.getService(IpdService.class);
 		model.addAttribute("queueId", queueId);
+		model.addAttribute("opdLogId", opdLogId);
 		model.addAttribute("admitted", ipds.getAdmittedByPatientId(patientId));
 		Concept ipdConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_IPDWARD));
 		model.addAttribute("listIpd", ipdConcept!= null ?  new ArrayList<ConceptAnswer>(ipdConcept.getAnswers()) : null);
@@ -119,6 +122,32 @@ public class OPDEntryController {
 		}
 		model.addAttribute("listProcedures", procedures);
 		
+		Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
+
+		Collection<ConceptAnswer> allMinorOTProcedures = null;
+		List<Integer> id = new ArrayList<Integer>();
+		if( concept != null )
+		{
+		allMinorOTProcedures = concept.getAnswers();
+		for (ConceptAnswer c: allMinorOTProcedures){
+		id.add(c.getAnswerConcept().getId());
+		}
+		}
+		model.addAttribute("allMinorOTProcedures", id);
+		
+		Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
+
+		Collection<ConceptAnswer> allMajorOTProcedures = null;
+		List<Integer> id2 = new ArrayList<Integer>();
+		if( concept2 != null )
+		{
+		allMajorOTProcedures = concept2.getAnswers();
+		for (ConceptAnswer c: allMajorOTProcedures){
+		id2.add(c.getAnswerConcept().getId());
+		}
+		}
+		model.addAttribute("allMajorOTProcedures", id2);
+		
 		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
 		List<Concept> investigations = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
 		if(CollectionUtils.isNotEmpty(investigations)){
@@ -133,7 +162,9 @@ public class OPDEntryController {
 		model.addAttribute("opd", opdConcept);
 		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-		OpdPatientQueue opdPatientQueue=queueService.getOpdPatientQueueById(queueId);
+		OpdPatientQueue opdPatientQueue=new OpdPatientQueue();
+		if(queueId!=null){
+		opdPatientQueue=queueService.getOpdPatientQueueById(queueId);
 		SimpleDateFormat formatterExt = new SimpleDateFormat("dd-MM-yyyy");
 		TriagePatientData triagePatientData=opdPatientQueue.getTriageDataId();
 		if(triagePatientData!=null){
@@ -143,17 +174,28 @@ public class OPDEntryController {
 		model.addAttribute("da", da);
 		 }
 		}
-		model.addAttribute("opdPatientQueue", opdPatientQueue);
+	}
+		if(opdLogId!=null){
+			//OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(Context.getEncounterService().getEncounter(encounterId));
+			OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogById(opdLogId);
+			model.addAttribute("opdPatientQueue", opdPatientQueueLog);
+		}
+		else{
+			model.addAttribute("opdPatientQueue", opdPatientQueue);
+		}
 		
 		return "module/patientdashboard/opdEntry";
 	}
 	@RequestMapping(method=RequestMethod.POST)
 	public String formSummit(OPDEntryCommand command,
 			HttpServletRequest request,
-			@RequestParam(value="drugOrder",required=false) String[] drugOrder) throws Exception{
+			@RequestParam(value="drugOrder",required=false) String[] drugOrder,
+			@RequestParam(value="opdLogId" ,required=false) Integer opdLogId) throws Exception{
+			//@RequestParam(value="encounterId" ,required=false) Integer encounterId) throws Exception{
 		User user =Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
 		HospitalCoreService hcs = (HospitalCoreService) Context.getService(HospitalCoreService.class);
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
 		
@@ -206,12 +248,18 @@ public class OPDEntryController {
 		EncounterType encounterType = Context.getEncounterService().getEncounterType(gpOPDEncounterType.getPropertyValue());
 		Encounter encounter = new Encounter();
 		Location location = new Location( 1 );
+		if(opdLogId!=null){
+			OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogById(opdLogId);
+			encounter=opdPatientQueueLog.getEncounter();
+		}
+		else{
 		encounter.setPatient(patient);
 		encounter.setCreator( user);
 		encounter.setProvider(user );
 		encounter.setEncounterDatetime( date);
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation( location );
+		}
 		
 		ConceptService conceptService = Context.getConceptService();
 		GlobalProperty gpDiagnosis = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
@@ -353,7 +401,6 @@ public class OPDEntryController {
 	        queue.setReferralConceptName(currentOpd.getName().getName());
 	        queue.setSex(patient.getGender());
 	        queue.setTriageDataId(null);
-	        PatientQueueService queueService = Context.getService(PatientQueueService.class);
 	        queueService.saveOpdPatientQueue(queue);
 			
 		}
@@ -427,7 +474,8 @@ public class OPDEntryController {
 		
 		
 		//delele opd queue , create opd log queue
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		OpdPatientQueueLog opdPatientLog;
+		if(command.getQueueId()!=null){
 		OpdPatientQueue queue = queueService.getOpdPatientQueueById(command.getQueueId());
 		OpdPatientQueueLog queueLog = new OpdPatientQueueLog();		
 		queueLog.setOpdConcept(queue.getOpdConcept());
@@ -449,12 +497,14 @@ public class OPDEntryController {
         else{
         queueLog.setTriageDataId(null);	
         }
-        OpdPatientQueueLog opdPatientLog = queueService.saveOpdPatientQueueLog(queueLog);
+        opdPatientLog = queueService.saveOpdPatientQueueLog(queueLog);
         queueService.deleteOpdPatientQueue(queue);
         //done queue
 		
 		if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")){
 			
+			opdPatientLog.setVisitOutCome("admit");
+			queueService.saveOpdPatientQueueLog(opdPatientLog);
 			IpdService  ipdService = (IpdService)Context.getService(IpdService.class);
 			IpdPatientAdmission patientAdmission = new IpdPatientAdmission();
 			patientAdmission.setAdmissionDate(date);
@@ -474,36 +524,17 @@ public class OPDEntryController {
 			patientAdmission.setAcceptStatus(0);
 			patientAdmission = ipdService.saveIpdPatientAdmission(patientAdmission);
 		}
-		
-		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
-		//procedure
-		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
-		if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
-			Concept conpro = conceptService.getConceptByName(procedure.getPropertyValue());
-			if( conpro == null ){
-				throw new Exception("Post for procedure concept null");
-			}
-			for( Integer pId : command.getSelectedProcedureList()){
-				BillingService billingService = Context.getService(BillingService.class);
-				BillableService billableService = billingService.getServiceByConceptId(pId);
-				OpdTestOrder opdTestOrder = new OpdTestOrder();
-				opdTestOrder.setPatient(patient);
-				opdTestOrder.setEncounter(encounter);
-				opdTestOrder.setConcept(conpro);
-				opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
-				opdTestOrder.setValueCoded(conceptService.getConcept(pId));
-				opdTestOrder.setCreator(user);
-				opdTestOrder.setCreatedOn(date);
-				opdTestOrder.setBillableService(billableService);
-				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
-			}
-		
 		}
+		else{
+			opdPatientLog = queueService.getOpdPatientQueueLogById(command.getOpdLogId());
+		}
+		
+		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
+		BillingService billingService = Context.getService(BillingService.class);
 		
 		IpdService ipdService=Context.getService(IpdService.class);
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command.getPatientId());
 		if (admitted != null) {
-			BillingService billingService = Context.getService(BillingService.class);
 			IndoorPatientServiceBill bill = new IndoorPatientServiceBill();
 			
 			bill.setCreatedDate(new Date());
@@ -562,15 +593,139 @@ public class OPDEntryController {
 			}
 		  }
 			
+			
+			if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
+				Concept conpro = conceptService.getConceptByName(procedure.getPropertyValue());
+				if( conpro == null ){
+					throw new Exception("Post for procedure concept null");
+				}
+				Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
+				Collection<ConceptAnswer> allMinorOTProcedures = null;
+				List<Integer> id = new ArrayList<Integer>();
+				if( concept != null )
+				{
+				allMinorOTProcedures = concept.getAnswers();
+				for (ConceptAnswer c: allMinorOTProcedures){
+				id.add(c.getAnswerConcept().getId());
+				}
+				}
+				String OTscheduleDate = command.getOTscheduleDateUp();
+				String OTscheduleTime = command.getTime();
+				
+				Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
+				Collection<ConceptAnswer> allMajorOTProcedures = null;
+				List<Integer> id2 = new ArrayList<Integer>();
+				if( concept2 != null )
+				{
+				allMajorOTProcedures = concept2.getAnswers();
+				for (ConceptAnswer c: allMajorOTProcedures){
+				id2.add(c.getAnswerConcept().getId());
+				}
+				}
+				String OTscheduleDate2 = command.getOTscheduleDateUp();
+				String OTscheduleTime2 = command.getTime();
+				
+				int conId;
+				for( Integer pId : command.getSelectedProcedureList()){
+					BillableService billableService = billingService.getServiceByConceptId(pId);
+					OpdTestOrder opdTestOrder = new OpdTestOrder();
+					opdTestOrder.setPatient(patient);
+					opdTestOrder.setEncounter(encounter);
+					opdTestOrder.setConcept(conpro);
+					opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
+					opdTestOrder.setValueCoded(conceptService.getConcept(pId));
+					opdTestOrder.setCreator(user);
+					opdTestOrder.setCreatedOn(date);
+					opdTestOrder.setBillingStatus(1);
+					opdTestOrder.setBillableService(billableService);
+					
+					conId = conceptService.getConcept(pId).getId();
+					if (!OTscheduleDate.isEmpty() && !OTscheduleTime.isEmpty() && id.contains(conId)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
+					Date scheduleDate = sdf.parse(OTscheduleDate+" "+OTscheduleTime);
+					opdTestOrder.setScheduleDate(scheduleDate);
+					}
+					
+					if (!OTscheduleDate2.isEmpty() && !OTscheduleTime2.isEmpty() && id2.contains(conId)) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
+						Date scheduleDate = sdf.parse(OTscheduleDate2+" "+OTscheduleTime2);
+						opdTestOrder.setScheduleDate(scheduleDate);
+						}
+					opdTestOrder.setIndoorStatus(1);
+					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+				}
+			
+			}
+			
 		 }
 		else{
+			if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
+				Concept conpro = conceptService.getConceptByName(procedure.getPropertyValue());
+				if( conpro == null ){
+					throw new Exception("Post for procedure concept null");
+				}
+				Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
+				Collection<ConceptAnswer> allMinorOTProcedures = null;
+				List<Integer> id = new ArrayList<Integer>();
+				if( concept != null )
+				{
+				allMinorOTProcedures = concept.getAnswers();
+				for (ConceptAnswer c: allMinorOTProcedures){
+				id.add(c.getAnswerConcept().getId());
+				}
+				}
+				String OTscheduleDate = command.getOTscheduleDateUp();
+				String OTscheduleTime = command.getTime();
+				
+				Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
+				Collection<ConceptAnswer> allMajorOTProcedures = null;
+				List<Integer> id2 = new ArrayList<Integer>();
+				if( concept2 != null )
+				{
+				allMajorOTProcedures = concept2.getAnswers();
+				for (ConceptAnswer c: allMajorOTProcedures){
+				id2.add(c.getAnswerConcept().getId());
+				}
+				}
+				String OTscheduleDate2 = command.getOTscheduleDateUp();
+				String OTscheduleTime2 = command.getTime();
+				
+				int conId;
+				for( Integer pId : command.getSelectedProcedureList()){
+					BillableService billableService = billingService.getServiceByConceptId(pId);
+					OpdTestOrder opdTestOrder = new OpdTestOrder();
+					opdTestOrder.setPatient(patient);
+					opdTestOrder.setEncounter(encounter);
+					opdTestOrder.setConcept(conpro);
+					opdTestOrder.setTypeConcept(DepartmentConcept.TYPES[1]);
+					opdTestOrder.setValueCoded(conceptService.getConcept(pId));
+					opdTestOrder.setCreator(user);
+					opdTestOrder.setCreatedOn(date);
+					opdTestOrder.setBillableService(billableService);
+					
+					conId = conceptService.getConcept(pId).getId();
+					if (!OTscheduleDate.isEmpty() && !OTscheduleTime.isEmpty() && id.contains(conId)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
+					Date scheduleDate = sdf.parse(OTscheduleDate+" "+OTscheduleTime);
+					opdTestOrder.setScheduleDate(scheduleDate);
+					}
+					
+					if (!OTscheduleDate2.isEmpty() && !OTscheduleTime2.isEmpty() && id2.contains(conId)) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
+						Date scheduleDate = sdf.parse(OTscheduleDate2+" "+OTscheduleTime2);
+						opdTestOrder.setScheduleDate(scheduleDate);
+						}
+					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+				}
+			
+			}
+			
 			if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
 				Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
 				if( coninvt == null ){
 					throw new Exception("Investigation concept null");
 				}
 				for( Integer iId : command.getSelectedInvestigationList()){
-					BillingService billingService = Context.getService(BillingService.class);
 					BillableService billableService = billingService.getServiceByConceptId(iId);
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
@@ -581,6 +736,7 @@ public class OPDEntryController {
 					opdTestOrder.setCreator(user);
 					opdTestOrder.setCreatedOn(date);
 					opdTestOrder.setBillableService(billableService);
+					opdTestOrder.setScheduleDate(date);
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 				}	
 		   }

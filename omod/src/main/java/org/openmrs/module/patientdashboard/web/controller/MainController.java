@@ -69,6 +69,7 @@ public class MainController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstView(@RequestParam("patientId") Integer patientId, @RequestParam("opdId") Integer opdId,
 	                        @RequestParam(value = "queueId", required = false) Integer queueId,
+	                        @RequestParam(value = "opdLogId", required = false) Integer opdLogId,
 	                        //ghanshyam 26-march-2013 Bug #1230 Error in BD IPD Module
 	                        @RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
 	                        @RequestParam("referralId") Integer referralId, Model model) {
@@ -103,6 +104,10 @@ public class MainController {
 		Date createdOn = null;
 		if(queueId!=null){
 			createdOn = opdPatientQueue.getCreatedOn();
+		}
+		else if(opdLogId!=null){
+			OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(opdLogId);
+			createdOn=opdPatientQueueLog.getCreatedOn();	
 		}
 		else if(ipdAdmittedId!=null){
 			IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(ipdAdmittedId);
@@ -159,6 +164,7 @@ public class MainController {
 		model.addAttribute("patientCategory", PatientUtils.getPatientCategory(patient));
 		
 		model.addAttribute("queueId", queueId);
+		model.addAttribute("opdLogId", opdLogId);
 		// issue #108
 		//		model.addAttribute("age",
 		//		    PatientDashboardUtil.getAgeFromBirthDate(patient.getBirthdate(), patient.getBirthdateEstimated()));
@@ -190,11 +196,16 @@ public class MainController {
 		model.addAttribute("ob", ob);
 		
 		Boolean dead = patient.getDead();
-		if(dead.equals(false)){
-			return "module/patientdashboard/main";
+		if(dead.equals(true)){
+			//return "module/patientdashboard/main";
+			return "module/patientdashboard/mainOfDeadPatient";
+		}
+		else if(opdLogId!=null){
+			return "module/patientdashboard/admittedPatient";
 		}
 		else{
-			return "module/patientdashboard/mainOfDeadPatient";
+			//return "module/patientdashboard/mainOfDeadPatient";
+			return "module/patientdashboard/main";
 		}
 	}
 	

@@ -90,10 +90,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AjaxController {
 	
 	@RequestMapping(value = "/module/patientdashboard/backToOpdQueue.htm", method = RequestMethod.GET)
-	public String backToOpdQueue(@RequestParam("queueId") Integer queueId, Map<String, Object> model,
+	public String backToOpdQueue(@RequestParam(value="queueId",required = false) Integer queueId,
+			@RequestParam(value="opdLogId",required = false) Integer opdLogId,Map<String, Object> model,
 	                             HttpServletRequest request) {
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		OpdPatientQueue queue = queueService.getOpdPatientQueueById(queueId);
+		OpdPatientQueueLog queueLog = queueService.getOpdPatientQueueLogById(opdLogId);
 		Integer opdId = 0;
 		if (queue != null) {
 			try {
@@ -105,6 +107,9 @@ public class AjaxController {
 				e.printStackTrace();
 			}
 			
+		}
+		else if(queueLog!=null){
+			opdId = queueLog.getOpdConcept().getId();
 		}
 		
 		return "redirect:/module/patientqueue/main.htm?opdId=" + opdId;

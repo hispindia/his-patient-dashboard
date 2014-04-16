@@ -42,6 +42,9 @@ public class OPDEntryCommand {
 	private Integer ipdWard;
 	private Integer referralId;
 	private Integer queueId;
+	private String OTscheduleDateUp;
+	private String time;
+	private Integer opdLogId;
 	
 	
 	public Integer getIpdWard() {
@@ -168,8 +171,23 @@ public class OPDEntryCommand {
 	public void setQueueId(Integer queueId) {
 		this.queueId = queueId;
 	}
-	
-	
-	
-	
+	public String getOTscheduleDateUp() {
+		return OTscheduleDateUp;
+	}
+	public void setOTscheduleDateUp(String oTscheduleDateUp) {
+		OTscheduleDateUp = oTscheduleDateUp;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public Integer getOpdLogId() {
+		return opdLogId;
+	}
+	public void setOpdLogId(Integer opdLogId) {
+		this.opdLogId = opdLogId;
+	}
+		
 }

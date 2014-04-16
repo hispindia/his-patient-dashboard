@@ -139,6 +139,14 @@ function deleteInput(drugName) {
    var parent = document.getElementById(parentDiv);
    parent.removeChild(child); 
 }
+
+var minorOTProcedures = new Array();
+<c:forEach items="${allMinorOTProcedures}" var="item">
+minorOTProcedures.push("${item}");
+</c:forEach>
+<c:forEach items="${allMajorOTProcedures}" var="item">
+var majorOTProcedures = new Array();
+</c:forEach>
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
@@ -147,6 +155,8 @@ function deleteInput(drugName) {
 		type="hidden" name="opdId" value="${opd.conceptId }" /> <input
 		type="hidden" name="queueId" id="queueId" value="${queueId }" /> <input
 		type="hidden" name="referralId" value="${referral.conceptId }" />
+		<input
+		type="hidden" name="opdLogId" id="opdLogId" value="${opdLogId }" />
 
 
 	<div class="container">
@@ -177,8 +187,7 @@ function deleteInput(drugName) {
 							<input
 							class="ui-autocomplete-input ui-widget-content ui-corner-all"
 							id="diagnosis" title="${opd.conceptId}" style="width: 390px"
-							name="diagnosis" />
-						</td>
+							name="diagnosis" /></td>
 					</tr>
 					<tr>
 						<td>
@@ -192,8 +201,7 @@ function deleteInput(drugName) {
 										<option value="${diagnosis.id}">${diagnosis.name}</option>
 									</c:forEach>
 								</select>
-							</div>
-						</td>
+							</div></td>
 						<td><input type="button" value="&gt;"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							style="width: 50px"
@@ -211,16 +219,18 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				style="width: 50px"
 				onclick="moveAllById( 'selectedDiagnosisList', 'availableDiagnosisList' );" />
-				 --></td>
+				 -->
+						</td>
 						<td>
 							<!-- List of all selected DataElements --> <select
 							id="selectedDiagnosisList" size="4" style="width: 550px"
 							name="selectedDiagnosisList" multiple="multiple"
 							style="min-width:25em;height:10em"
 							ondblclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList' );">
-						</select>
-						</td>
+						</select></td>
 					</tr>
+				</table>
+				<table cellspacing="5">
 					<tr>
 						<td colspan="3">
 							<div class="ui-widget">
@@ -228,8 +238,7 @@ function deleteInput(drugName) {
 									class="ui-autocomplete-input ui-widget-content ui-corner-all"
 									title="${opd.conceptId }" id="procedure" style="width: 420px"
 									name="procedure" />
-							</div>
-						</td>
+							</div></td>
 					</tr>
 					<tr>
 						<td>
@@ -238,39 +247,63 @@ function deleteInput(drugName) {
 								<select size="4" style="width: 550px"
 									id="availableProcedureList" name="availableProcedureList"
 									multiple="multiple" style="min-width:25em;height:5em"
-									ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');">
+									ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList'); showHideOTDatepicker();">
 									<c:forEach items="${listProcedures}" var="procedure">
 										<option value="${procedure.conceptId}">${procedure.name}</option>
 									</c:forEach>
 								</select>
-							</div>
-						</td>
+							</div></td>
 						<td><input type="button"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							value="&gt;" style="width: 50px"
-							onclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');" /><br />
+							onclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList'); showHideOTDatepicker();" /><br />
 							<input type="button"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							value="&lt;" style="width: 50px"
-							onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList');" />
+							onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList'); showHideOTDatepicker();" />
 							<!--  
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;&gt;" style="width: 50px"
-				onclick="moveAllById( 'availableProcedureList', 'selectedProcedureList' );" /><br />
+				onclick="moveAllById( 'availableProcedureList', 'selectedProcedureList' ); showHideOTDatepicker();" /><br />
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
-				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' );" />
-				--></td>
+				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' ); showHideOTDatepicker();" />
+				-->
+						</td>
 						<td>
 							<!-- List of all selected DataElements --> <select size="4"
 							style="width: 550px" id="selectedProcedureList"
 							name="selectedProcedureList" multiple="multiple"
 							style="min-width:25em;height:5em"
-							ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' )">
-						</select>
-						</td>
+							ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' ); showHideOTDatepicker();">
+						</select></td>
+						<td>
+							<div id="OTschedule" style="display: none">
+								<table>
+									<tr>
+										<strong> Schedule the Patient</strong>
+										<em>*</em>
+									</tr>
+									<tr>
+										<td>Date</td>
+										<td><input type="text" class="date-pick left" size="14"
+											readonly="readonly" ondblclick="this.value='';"
+											name="OTscheduleDateUp" id="OTscheduleDateUp"></td>
+									</tr>
+									<br>
+									<tr>
+										<td>Time</td>
+										<td><input type="text" id="time" name="time" size="14"
+											readonly="readonly"> <script type="text/javascript">
+$(document).ready(function () {
+$('#time').ptTimeSelect();
+});
+</script></td>
+									</tr>
+								</table>
+							</div></td>
 					</tr>
 					<!-- ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing -->
 					<tr>
@@ -280,7 +313,8 @@ function deleteInput(drugName) {
 									class="ui-autocomplete-input ui-widget-content ui-corner-all"
 									title="${opd.conceptId}" id="investigation"
 									style="width: 450px" name="investigation" />
-							</div></td>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -295,7 +329,8 @@ function deleteInput(drugName) {
 										<option value="${investigation.conceptId}">${investigation.name}</option>
 									</c:forEach>
 								</select>
-							</div></td>
+							</div>
+						</td>
 						<td><input type="button"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							value="&gt;" style="width: 50px"
@@ -313,21 +348,24 @@ function deleteInput(drugName) {
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
 				onclick="moveAllById( 'selectedInvestigationList', 'availableInvestigationList' );" />
-				--></td>
+				-->
+						</td>
 						<td>
 							<!-- List of all selected DataElements --> <select size="4"
 							style="width: 550px" id="selectedInvestigationList"
 							name="selectedInvestigationList" multiple="multiple"
 							style="min-width:25em;height:5em"
 							ondblclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList' )">
-						</select></td>
+						</select>
+						</td>
 					</tr>
 					<!-- ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard -->
 					<tr>
 						<td colspan="3">
 							<div class="ui-widget">
 								<strong>Drug:</strong>
-							</div></td>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="1">
@@ -360,14 +398,14 @@ function deleteInput(drugName) {
 									<TEXTAREA id="comments" name="comments" placeholder="Comments"
 										rows=1 cols=15></TEXTAREA>
 								</div>
-							</div></td>
+							</div>
+						</td>
 
 						<td><div class="add">
 								<input type="button"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Add" onClick="addDrugOrder();" />
-							</div>
-						</td>
+							</div></td>
 
 						<td>
 							<div id="headerValue"
@@ -381,7 +419,8 @@ function deleteInput(drugName) {
 									name='noOfDays' value='No Of Days' size="7" readonly="readonly" />&nbsp;
 								<input type='text' id='comments' name='comments'
 									value='Comments' size="17" readonly="readonly" />&nbsp;
-							</div></td>
+							</div>
+						</td>
 					</tr>
 					<!-- ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard -->
 					<tr>
@@ -406,8 +445,7 @@ function deleteInput(drugName) {
 									var="externalReferral">
 									<option value="${externalReferral.answerConcept.id}">${externalReferral.answerConcept.name}</option>
 								</c:forEach>
-						</select>
-						</td>
+						</select></td>
 					</tr>
 					<tr>
 						<td colspan="3"><strong>OPD Visit Outcome:</strong><em>*</em>
@@ -420,17 +458,16 @@ function deleteInput(drugName) {
 									type="text" class="date-pick left" readonly="readonly"
 									ondblclick="this.value='';" name="dateFollowUp"
 									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">
-								<input type="radio" name="radio_f" value="cured"
+								<input type="radio" name="radio_f" value="cured" id="cured"
 									onclick="DASHBOARD.onChangeRadio(this);">Cured
-   <input type="radio" name="radio_f" value="died"
+   <input type="radio" name="radio_f" value="died" id="died"
 									onclick="DASHBOARD.onChangeRadio(this);">Died
-   </c:if> <input type="radio" name="radio_f" value="reviewed"
+   </c:if> <input type="radio" name="radio_f" value="reviewed" id="reviewed"
 							onclick="DASHBOARD.onChangeRadio(this);">Reviewed <c:if
 								test="${empty admitted}">
-								<input type="radio" name="radio_f" value="admit"
+								<input type="radio" name="radio_f" value="admit" id="admit"
 									onclick="DASHBOARD.onChangeRadio(this);">Admit
-   </c:if>
-						</td>
+   </c:if></td>
 						<td align="left" class="tdIpdWard" style='display: none;'><select
 							id="ipdWard" name="ipdWard">
 								<option value="">--Select--</option>
@@ -439,11 +476,10 @@ function deleteInput(drugName) {
 										<option value="${ipd.answerConcept.id}">${ipd.answerConcept.name}</option>
 									</c:forEach>
 								</c:if>
-						</select>
-						</td>
+						</select></td>
 					</tr>
 					<tr>
-						<td colspan="3"><c:if test="${not empty queueId }">
+						<td colspan="3"><c:if test="${not empty queueId}">
 								<input type="submit" value="Conclude visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.submitOpdEntry();" />
@@ -451,7 +487,14 @@ function deleteInput(drugName) {
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
 							</c:if>
-						</td>
+							<c:if test="${not empty opdLogId}">
+								<input type="submit" value="Conclude visit"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									onclick="DASHBOARD.submitOpdEntry();" />
+								<input type="submit"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									value="Back" onclick="DASHBOARD.backToOpdQueue('${opdLogId}');" />
+							</c:if></td>
 					</tr>
 				</table>
 			</tr>
@@ -463,61 +506,64 @@ function deleteInput(drugName) {
 					<tr>
 						<td>Weight (Kg)</td>
 						<td><input type="text" id="weight" name="weight" size="11"
-							value="${opdPatientQueue.triageDataId.weight}" readonly="readonly">
-						</td>
+							value="${opdPatientQueue.triageDataId.weight}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Height (cm)</td>
 						<td><input type="text" id="height" name="height" size="11"
-							value="${opdPatientQueue.triageDataId.height}" readonly="readonly">
-						</td>
+							value="${opdPatientQueue.triageDataId.height}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Temperature (degree C)</td>
 						<td><input type="text" id="temperature" name="temperature"
-							size="11" value="${opdPatientQueue.triageDataId.temperature}" readonly="readonly">
-						</td>
+							size="11" value="${opdPatientQueue.triageDataId.temperature}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Systolic B.P</td>
 						<td><input type="text" id="sbp" name="sbp" size="11"
-							value="${opdPatientQueue.triageDataId.systolic}" readonly="readonly"></td>
+							value="${opdPatientQueue.triageDataId.systolic}"
+							readonly="readonly">
+						</td>
 					</tr>
 					<tr>
 						<td>Diastolic B.P</td>
 						<td><input type="text" id="dbp" name="dbp" size="11"
-							value="${opdPatientQueue.triageDataId.daistolic}" readonly="readonly"></td>
+							value="${opdPatientQueue.triageDataId.daistolic}"
+							readonly="readonly">
+						</td>
 					</tr>
 					<tr>
 						<td>Respiratory Rate</td>
 						<td><input type="text" id="resRate" name="resRate" size="11"
-							value="${opdPatientQueue.triageDataId.respiratoryRate}" readonly="readonly">
-						</td>
+							value="${opdPatientQueue.triageDataId.respiratoryRate}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Pulse Rate</td>
 						<td><input type="text" id="pulseRate" name="pulseRate"
-							size="11" value="${opdPatientQueue.triageDataId.pulsRate}" readonly="readonly">
-						</td>
+							size="11" value="${opdPatientQueue.triageDataId.pulsRate}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Blood Group</td>
 						<td><input type="text" id="bloodGroup" name="bloodGroup"
-							size="11" value="${opdPatientQueue.triageDataId.bloodGroup}" readonly="readonly">
-						</td>
+							size="11" value="${opdPatientQueue.triageDataId.bloodGroup}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Rhesus Factor</td>
 						<td><input type="text" id="rhesusFactor" name="rhesusFactor"
-							size="11" value="${opdPatientQueue.triageDataId.rhesusFactor}" readonly="readonly">
-						</td>
+							size="11" value="${opdPatientQueue.triageDataId.rhesusFactor}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>Last Menstrual Period</td>
 						<td><input type="text" id="lastMenstrualPeriod"
-							name="lastMenstrualPeriod" size="11"
-							value="${da}" readonly="readonly">
-						</td>
+							name="lastMenstrualPeriod" size="11" value="${da}"
+							readonly="readonly"></td>
 					</tr>
 					<tr>
 						<td>PITCT</td>

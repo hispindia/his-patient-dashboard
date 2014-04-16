@@ -189,6 +189,7 @@ DASHBOARD={
 							});
 					}
 				}
+				showHideOTDatepicker();
 			}
 			
 			//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
@@ -242,10 +243,21 @@ DASHBOARD={
 		{
 			ACT.go('backToOpdQueue.htm?queueId='+queueId);
 		},
+		backToOpdQueue : function(opdLogId)
+		{
+			ACT.go('backToOpdQueue.htm?opdLogId='+opdLogId);
+		},
 		onClickFollowDate : function(thiz)
 		{
 			jQuery('input#input_follow').attr('checked', true);
-		}
+		},
+		detailProcedure : function(id)
+        {
+        if(SESSION.checkSession()){
+        url = "detailProcedure.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+        tb_show(" ",url,false);
+               }
+        }
 		
 };
 
