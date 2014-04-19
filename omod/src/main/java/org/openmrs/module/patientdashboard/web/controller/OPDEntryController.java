@@ -640,15 +640,15 @@ public class OPDEntryController {
 					opdTestOrder.setBillableService(billableService);
 					
 					conId = conceptService.getConcept(pId).getId();
-					if (!OTscheduleDate.isEmpty() && !OTscheduleTime.isEmpty() && id.contains(conId)) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
-					Date scheduleDate = sdf.parse(OTscheduleDate+" "+OTscheduleTime);
+					if (!OTscheduleDate.isEmpty() && id.contains(conId)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					Date scheduleDate = sdf.parse(OTscheduleDate);
 					opdTestOrder.setScheduleDate(scheduleDate);
 					}
 					
-					if (!OTscheduleDate2.isEmpty() && !OTscheduleTime2.isEmpty() && id2.contains(conId)) {
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
-						Date scheduleDate = sdf.parse(OTscheduleDate2+" "+OTscheduleTime2);
+					if (!OTscheduleDate2.isEmpty() && id2.contains(conId)) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						Date scheduleDate = sdf.parse(OTscheduleDate2);
 						opdTestOrder.setScheduleDate(scheduleDate);
 						}
 					opdTestOrder.setIndoorStatus(1);
@@ -704,15 +704,15 @@ public class OPDEntryController {
 					opdTestOrder.setBillableService(billableService);
 					
 					conId = conceptService.getConcept(pId).getId();
-					if (!OTscheduleDate.isEmpty() && !OTscheduleTime.isEmpty() && id.contains(conId)) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
-					Date scheduleDate = sdf.parse(OTscheduleDate+" "+OTscheduleTime);
+					if (!OTscheduleDate.isEmpty() && id.contains(conId)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					Date scheduleDate = sdf.parse(OTscheduleDate);
 					opdTestOrder.setScheduleDate(scheduleDate);
 					}
 					
-					if (!OTscheduleDate2.isEmpty() && !OTscheduleTime2.isEmpty() && id2.contains(conId)) {
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a");
-						Date scheduleDate = sdf.parse(OTscheduleDate2+" "+OTscheduleTime2);
+					if (!OTscheduleDate2.isEmpty() && id2.contains(conId)) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						Date scheduleDate = sdf.parse(OTscheduleDate2);
 						opdTestOrder.setScheduleDate(scheduleDate);
 						}
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);

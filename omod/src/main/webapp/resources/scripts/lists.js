@@ -463,8 +463,8 @@ $("#OTscheduleDateUp").attr("required", "true");
 $('label[for="OTscheduleDateUp"]').show ();
 
 //time
-$("#time").attr("required", "true");
-$('label[for="time"]').show ();
+//$("#time").attr("required", "true");
+//$('label[for="time"]').show ();
 }
 else
 {
@@ -475,8 +475,8 @@ $("#OTscheduleDateUp").removeAttr("required");
 $('label[for="OTscheduleDateUp"]').hide ();
 
 //time
-$("#time").removeAttr("required");
-$('label[for="time"]').hide ();
+//$("#time").removeAttr("required");
+//$('label[for="time"]').hide ();
 }
 
 var admitBtn = document.getElementById("admit");

@@ -144,8 +144,9 @@ var minorOTProcedures = new Array();
 <c:forEach items="${allMinorOTProcedures}" var="item">
 minorOTProcedures.push("${item}");
 </c:forEach>
-<c:forEach items="${allMajorOTProcedures}" var="item">
 var majorOTProcedures = new Array();
+<c:forEach items="${allMajorOTProcedures}" var="item">
+majorOTProcedures.push("${item}");
 </c:forEach>
 </script>
 <b class="boxHeader">Opd Form</b>
@@ -292,6 +293,7 @@ var majorOTProcedures = new Array();
 											readonly="readonly" ondblclick="this.value='';"
 											name="OTscheduleDateUp" id="OTscheduleDateUp"></td>
 									</tr>
+									<!--
 									<br>
 									<tr>
 										<td>Time</td>
@@ -302,6 +304,7 @@ $('#time').ptTimeSelect();
 });
 </script></td>
 									</tr>
+-->
 								</table>
 							</div></td>
 					</tr>
