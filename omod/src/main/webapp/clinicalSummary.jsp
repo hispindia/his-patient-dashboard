@@ -42,7 +42,6 @@
 	<!--<td>${clinicalSummary.typeOfVisit}</td>
 	--><td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
-	<td>${clinicalSummary.procedures}</td>
 	<td><a href="#" onclick="DASHBOARD.detailProcedure('${clinicalSummary.id}');">${clinicalSummary.procedures}</a></td>
 	<!-- Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552-->
 	<td>${clinicalSummary.visitOutcomes}</td><!--
