@@ -18,6 +18,7 @@
  *
 */
 var NS4 = (navigator.appName == "Netscape" && parseInt(navigator.appVersion) < 5);
+var pl;
 
 function addValue( theSel, theText, theValue ) {
     var newOpt = new Option( theText, theValue );
@@ -41,6 +42,7 @@ function deleteValue( theSel, theIndex ) {
 function moveSelectedById( fromListId, targetListId ) {
     var fromList = document.getElementById( fromListId );
     var targetList = document.getElementById( targetListId );
+    pl=targetListId;
     moveSelected( fromList, targetList );
 }
 
@@ -66,6 +68,13 @@ function moveSelected( fromList, targetList ) {
             if(fromList.options[i].selected) {
                 selectedText[selectedCount] = fromList.options[i].text;
                 selectedValues[selectedCount] = fromList.options[i].value;
+                if(pl=="availableProcedureList"){
+	            var sv=selectedValues[selectedCount];
+                var svts=sv.toString();
+                var svtswh="#".concat(svts); 
+                var svtswhrid=svtswh.concat("rid"); 
+	            $(svtswhrid).remove();
+                }
                 deleteValue(fromList, i);
                 selectedCount++;
             }
@@ -75,6 +84,10 @@ function moveSelected( fromList, targetList ) {
             addValue(targetList, selectedText[i], selectedValues[i]);
         }
 
+        if(pl=="selectedProcedureList"){
+        addSchedule();
+        }
+        
         if(NS4) history.go(0)
     }
 }
@@ -417,93 +430,21 @@ function sortList( id, type ) {
     }
 }
 
-function showHideOTDatepicker() {
-var selectedLen = selectedProcedureList.length;
-var minorOtLen = minorOTProcedures.length;
-var majorOtLen = majorOTProcedures.length;
-var i,j;
-var minorExist=0;
-var majorExist=0;
-for(i=selectedLen-1; i>=0; i--)
-{
-for(j=0; j<minorOtLen; j++)
-{
-if ( minorOTProcedures[j] == selectedProcedureList.options[i].value)
-{
-minorExist=1;
-break;
+function addSchedule(){
+var procedId = new Array();
+var procedName = new Array();
+var selLen = selectedProcedureList.length;
+var i;
+$('#tableSchedule').empty();
+for(i=selLen-1; i>=0; i--){
+procedId.push(selectedProcedureList.options[i].value);
+procedName.push(selectedProcedureList.options[i].text);
+var spl=selectedProcedureList.options[i].value;
+var splts=spl.toString();
+var spltswhs="#".concat(splts); 
+var spltswhswimg=spltswhs.concat("imgId");
+var splt=selectedProcedureList.options[i].text;
+			
+$('#tableSchedule').append('<tr id='+splts+'rid><td>'+splt+'</td><td><input type="text" id='+splts+' name='+splts+'></td></tr>');
 }
-}
-if(minorExist==1)
-break;
-}
-
-for(i=selectedLen-1; i>=0; i--)
-{
-for(j=0; j<majorOtLen; j++)
-{
-if ( majorOTProcedures[j] == selectedProcedureList.options[i].value)
-{
-majorExist=1;
-break;
-}
-}
-if(majorExist==1)
-break;
-}
-
-var mydiv = document.getElementById("OTschedule");
-
-if(minorExist==1 || majorExist==1 )
-{
-mydiv.style.display ="block";
-
-//date
-$("#OTscheduleDateUp").attr("required", "true");
-$('label[for="OTscheduleDateUp"]').show ();
-
-//time
-//$("#time").attr("required", "true");
-//$('label[for="time"]').show ();
-}
-else
-{
-mydiv.style.display ="none";
-
-//date
-$("#OTscheduleDateUp").removeAttr("required");
-$('label[for="OTscheduleDateUp"]').hide ();
-
-//time
-//$("#time").removeAttr("required");
-//$('label[for="time"]').hide ();
-}
-
-var admitBtn = document.getElementById("admit");
-
-	if(majorExist==1 )
-{
-//admitRadio
-$("#admit").attr("required", "true");
-admitBtn.checked = true;
-jQuery(".tdIpdWard").show();
-document.getElementById("input_follow").disabled=true;
-document.getElementById("dateFollowUp").disabled=true;
-document.getElementById("cured").disabled=true;
-document.getElementById("died").disabled=true;
-document.getElementById("reviewed").disabled=true;
-}
-else
-{
-//admitRadio
-$("#admit").removeAttr("required");
-admitBtn.checked = false;
-jQuery(".tdIpdWard").hide();
-document.getElementById("input_follow").disabled=false;
-document.getElementById("dateFollowUp").disabled=false;
-document.getElementById("cured").disabled=false;
-document.getElementById("died").disabled=false;
-document.getElementById("reviewed").disabled=false;
-}
-
 }

@@ -279,6 +279,20 @@ function tb_remove() {
 	return false;
 }
 
+function tb_cancel() {
+ 	parent.$("#TB_imageOff").unbind("click");
+	parent.$("#TB_closeWindowButton").unbind("click");
+	parent.$("#TB_window").fadeOut("fast",function(){parent.$('#TB_window,#TB_overlay,#TB_HideSelect').trigger("unload").unbind().remove();});
+	parent.$("#TB_load").remove();
+	if (typeof document.body.style.maxHeight == "undefined") {//if IE 6
+		parent.$("body","html").css({height: "auto", width: "auto"});
+		parent.$("html").css("overflow","");
+	}
+	parent.document.onkeydown = "";
+	parent.document.onkeyup = "";
+	return false;
+}
+
 function tb_position() {
 $("#TB_window").css({marginLeft: '-' + parseInt((TB_WIDTH / 2),10) + 'px', width: TB_WIDTH + 'px'});
 	if ( !(jQuery.browser.msie && jQuery.browser.version < 7)) { // take away IE6

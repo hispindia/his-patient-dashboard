@@ -122,32 +122,6 @@ public class OPDEntryController {
 		}
 		model.addAttribute("listProcedures", procedures);
 		
-		Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
-
-		Collection<ConceptAnswer> allMinorOTProcedures = null;
-		List<Integer> id = new ArrayList<Integer>();
-		if( concept != null )
-		{
-		allMinorOTProcedures = concept.getAnswers();
-		for (ConceptAnswer c: allMinorOTProcedures){
-		id.add(c.getAnswerConcept().getId());
-		}
-		}
-		model.addAttribute("allMinorOTProcedures", id);
-		
-		Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
-
-		Collection<ConceptAnswer> allMajorOTProcedures = null;
-		List<Integer> id2 = new ArrayList<Integer>();
-		if( concept2 != null )
-		{
-		allMajorOTProcedures = concept2.getAnswers();
-		for (ConceptAnswer c: allMajorOTProcedures){
-		id2.add(c.getAnswerConcept().getId());
-		}
-		}
-		model.addAttribute("allMajorOTProcedures", id2);
-		
 		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
 		List<Concept> investigations = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
 		if(CollectionUtils.isNotEmpty(investigations)){
@@ -609,8 +583,7 @@ public class OPDEntryController {
 				id.add(c.getAnswerConcept().getId());
 				}
 				}
-				String OTscheduleDate = command.getOTscheduleDateUp();
-				String OTscheduleTime = command.getTime();
+				
 				
 				Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
 				Collection<ConceptAnswer> allMajorOTProcedures = null;
@@ -622,12 +595,12 @@ public class OPDEntryController {
 				id2.add(c.getAnswerConcept().getId());
 				}
 				}
-				String OTscheduleDate2 = command.getOTscheduleDateUp();
-				String OTscheduleTime2 = command.getTime();
 				
 				int conId;
 				for( Integer pId : command.getSelectedProcedureList()){
 					BillableService billableService = billingService.getServiceByConceptId(pId);
+					String OTscheduleDate=request.getParameter(pId.toString());
+					System.out.println("ooooooooooooooooooo"+pId.toString());
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -640,15 +613,15 @@ public class OPDEntryController {
 					opdTestOrder.setBillableService(billableService);
 					
 					conId = conceptService.getConcept(pId).getId();
-					if (!OTscheduleDate.isEmpty() && id.contains(conId)) {
+					if (id.contains(conId)) {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					Date scheduleDate = sdf.parse(OTscheduleDate);
 					opdTestOrder.setScheduleDate(scheduleDate);
 					}
 					
-					if (!OTscheduleDate2.isEmpty() && id2.contains(conId)) {
+					if (id2.contains(conId)) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-						Date scheduleDate = sdf.parse(OTscheduleDate2);
+						Date scheduleDate = sdf.parse(OTscheduleDate);
 						opdTestOrder.setScheduleDate(scheduleDate);
 						}
 					opdTestOrder.setIndoorStatus(1);
@@ -674,8 +647,6 @@ public class OPDEntryController {
 				id.add(c.getAnswerConcept().getId());
 				}
 				}
-				String OTscheduleDate = command.getOTscheduleDateUp();
-				String OTscheduleTime = command.getTime();
 				
 				Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
 				Collection<ConceptAnswer> allMajorOTProcedures = null;
@@ -687,12 +658,12 @@ public class OPDEntryController {
 				id2.add(c.getAnswerConcept().getId());
 				}
 				}
-				String OTscheduleDate2 = command.getOTscheduleDateUp();
-				String OTscheduleTime2 = command.getTime();
 				
 				int conId;
 				for( Integer pId : command.getSelectedProcedureList()){
 					BillableService billableService = billingService.getServiceByConceptId(pId);
+					String OTscheduleDate=request.getParameter(pId.toString());
+					System.out.println("pppppppppppppppppppppp"+pId.toString());
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -704,15 +675,15 @@ public class OPDEntryController {
 					opdTestOrder.setBillableService(billableService);
 					
 					conId = conceptService.getConcept(pId).getId();
-					if (!OTscheduleDate.isEmpty() && id.contains(conId)) {
+					if (id.contains(conId)) {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					Date scheduleDate = sdf.parse(OTscheduleDate);
 					opdTestOrder.setScheduleDate(scheduleDate);
 					}
 					
-					if (!OTscheduleDate2.isEmpty() && id2.contains(conId)) {
+					if (id2.contains(conId)) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-						Date scheduleDate = sdf.parse(OTscheduleDate2);
+						Date scheduleDate = sdf.parse(OTscheduleDate);
 						opdTestOrder.setScheduleDate(scheduleDate);
 						}
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);

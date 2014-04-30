@@ -140,14 +140,10 @@ function deleteInput(drugName) {
    parent.removeChild(child); 
 }
 
-var minorOTProcedures = new Array();
-<c:forEach items="${allMinorOTProcedures}" var="item">
-minorOTProcedures.push("${item}");
-</c:forEach>
-var majorOTProcedures = new Array();
-<c:forEach items="${allMajorOTProcedures}" var="item">
-majorOTProcedures.push("${item}");
-</c:forEach>
+function showSchedule(){
+var url = "#TB_inline?height=300&width=300&inlineId=scheduleDiv";
+tb_show("Schedule the procedues",url,false);
+}
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
@@ -248,7 +244,7 @@ majorOTProcedures.push("${item}");
 								<select size="4" style="width: 550px"
 									id="availableProcedureList" name="availableProcedureList"
 									multiple="multiple" style="min-width:25em;height:5em"
-									ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList'); showHideOTDatepicker();">
+									ondblclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');">
 									<c:forEach items="${listProcedures}" var="procedure">
 										<option value="${procedure.conceptId}">${procedure.name}</option>
 									</c:forEach>
@@ -257,20 +253,20 @@ majorOTProcedures.push("${item}");
 						<td><input type="button"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							value="&gt;" style="width: 50px"
-							onclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList'); showHideOTDatepicker();" /><br />
+							onclick="moveSelectedById( 'availableProcedureList', 'selectedProcedureList');" /><br />
 							<input type="button"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							value="&lt;" style="width: 50px"
-							onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList'); showHideOTDatepicker();" />
+							onclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList');" />
 							<!--  
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&gt;&gt;" style="width: 50px"
-				onclick="moveAllById( 'availableProcedureList', 'selectedProcedureList' ); showHideOTDatepicker();" /><br />
+				onclick="moveAllById( 'availableProcedureList', 'selectedProcedureList' );" /><br />
 				<input type="button"
 				class="ui-button ui-widget ui-state-default ui-corner-all"
 				value="&lt;&lt;" style="width: 50px"
-				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' ); showHideOTDatepicker();" />
+				onclick="moveAllById( 'selectedProcedureList', 'availableProcedureList' );" />
 				-->
 						</td>
 						<td>
@@ -278,35 +274,13 @@ majorOTProcedures.push("${item}");
 							style="width: 550px" id="selectedProcedureList"
 							name="selectedProcedureList" multiple="multiple"
 							style="min-width:25em;height:5em"
-							ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' ); showHideOTDatepicker();">
+							ondblclick="moveSelectedById( 'selectedProcedureList', 'availableProcedureList' );">
 						</select></td>
 						<td>
-							<div id="OTschedule" style="display: none">
-								<table>
-									<tr>
-										<strong> Schedule the Patient</strong>
-										<em>*</em>
-									</tr>
-									<tr>
-										<td>Date</td>
-										<td><input type="text" class="date-pick left" size="14"
-											readonly="readonly" ondblclick="this.value='';"
-											name="OTscheduleDateUp" id="OTscheduleDateUp"></td>
-									</tr>
-									<!--
-									<br>
-									<tr>
-										<td>Time</td>
-										<td><input type="text" id="time" name="time" size="14"
-											readonly="readonly"> <script type="text/javascript">
-$(document).ready(function () {
-$('#time').ptTimeSelect();
-});
-</script></td>
-									</tr>
--->
-								</table>
-							</div></td>
+						<input type="button"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									value="Schedule" onclick="showSchedule();" />
+							</td>
 					</tr>
 					<!-- ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing -->
 					<tr>
@@ -578,4 +552,8 @@ $('#time').ptTimeSelect();
 			</tr>
 		</div>
 	</div>
+<div id="scheduleDiv" style="visibility:hidden;">
+<table id="tableSchedule">
+</table>
+</div>
 </form>
