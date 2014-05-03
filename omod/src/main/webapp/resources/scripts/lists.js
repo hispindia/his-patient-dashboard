@@ -445,6 +445,7 @@ var spltswhs="#".concat(splts);
 var spltswhswimg=spltswhs.concat("imgId");
 var splt=selectedProcedureList.options[i].text;
 			
-$('#tableSchedule').append('<tr id='+splts+'rid><td>'+splt+'</td><td><input type="text" id='+splts+' name='+splts+'></td></tr>');
+$('#tableSchedule').append('<tr id='+splts+'rid><td>'+splt+'</td><td><input type="text" id='+splts+' name='+splts+' class="date-pick" readonly="readonly"></td></tr>');
 }
+jQuery('.date-pick').datepicker({minDate: '-100y', dateFormat: 'dd/mm/yy'});	
 }

@@ -141,7 +141,7 @@ function deleteInput(drugName) {
 }
 
 function showSchedule(){
-var url = "#TB_inline?height=300&width=300&inlineId=scheduleDiv";
+var url = "#TB_inline?height=400&width=400&inlineId=scheduleDiv";
 tb_show("Schedule the procedues",url,false);
 }
 </script>
