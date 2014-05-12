@@ -493,6 +493,24 @@ tb_show("Schedule the procedues",url,false);
 							readonly="readonly"></td>
 					</tr>
 					<tr>
+						<td>MUA Circumference(cm)</td>
+						<td><input type="text" id="mua" name="mua" size="11"
+							value="${opdPatientQueue.triageDataId.mua}"
+							readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Chest Circumference(cm)</td>
+						<td><input type="text" id="chest" name="chest" size="11"
+							value="${opdPatientQueue.triageDataId.chest}"
+							readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Abdominal Circumference(cm)</td>
+						<td><input type="text" id="abdominal" name="abdominal" size="11"
+							value="${opdPatientQueue.triageDataId.abdominal}"
+							readonly="readonly"></td>
+					</tr>
+					<tr>
 						<td>Temperature (degree C)</td>
 						<td><input type="text" id="temperature" name="temperature"
 							size="11" value="${opdPatientQueue.triageDataId.temperature}"

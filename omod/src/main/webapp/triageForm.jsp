@@ -64,6 +64,27 @@ if(!StringUtils.isBlank(jQuery("#height").val())) {
 	  }
 }
 
+if(!StringUtils.isBlank(jQuery("#mua").val())) {
+      if (!jQuery("#mua").val().match(intRegex)) {
+	  alert("Please enter MUA Circumference in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#chest_cir").val())) {
+      if (!jQuery("#chest_cir").val().match(intRegex)) {
+	  alert("Please enter Chest Circumference in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#abdo_cir").val())) {
+      if (!jQuery("#abdo_cir").val().match(intRegex)) {
+	  alert("Please enter Chest Circumference in correct format");
+	  return false;
+	  }
+}
+
 if(!StringUtils.isBlank(jQuery("#temperature").val())) {
       if (!jQuery("#temperature").val().match(intRegex)) {
 	  alert("Please enter temperature in correct format");
@@ -171,6 +192,19 @@ jQuery("#bloodGroup").click(function() {
 				</td>
 			</tr>
 			<tr>
+				<td>MUA Circumference(cm)</td>
+				<td><input type="text" id="mua" name="mua" size="8">
+				</td>
+			</tr>
+			<tr>
+				<td>Chest Circumference(cm)</td>
+				<td><input type="text" id="chest" name="chest" size="8"></td>
+			</tr>
+			<tr>
+				<td>Abdominal Circumference(cm)</td>
+				<td><input type="text" id="abdominal" name="abdominal" size="8"></td>
+			</tr>
+			<tr>
 				<td>Temperature (degree C)</td>
 				<td><input type="text" id="temperature" name="temperature"
 					size="8"></td>
@@ -194,6 +228,14 @@ jQuery("#bloodGroup").click(function() {
 				</td>
 			</tr>
 			<tr>
+				<td>Last Menstrual Period</td>
+				<td><input type="text" id="lastMenstrualPeriod"
+					name="lastMenstrualPeriod" size="8"> <img
+					id="calendarButton"
+					src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
+				</td>
+			</tr>
+			<tr>
 				<td>Blood Group</td>
 				<td><select id="bloodGroup" name="bloodGroup"
 					style="width: 278px;" onclick="enableAndDisable();">
@@ -214,14 +256,6 @@ jQuery("#bloodGroup").click(function() {
 						<option value="Negative (-)">Negative (-)</option>
 						<option value="Not Known">Not Known</option>
 				</select></td>
-			</tr>
-			<tr>
-				<td>Last Menstrual Period</td>
-				<td><input type="text" id="lastMenstrualPeriod"
-					name="lastMenstrualPeriod" size="8"> <img
-					id="calendarButton"
-					src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
-				</td>
 			</tr>
 			<tr>
 				<td>PITCT</td>

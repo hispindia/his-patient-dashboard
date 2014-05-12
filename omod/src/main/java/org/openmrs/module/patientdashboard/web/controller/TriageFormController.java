@@ -204,6 +204,11 @@ public class TriageFormController {
 	public String formSummit(@RequestParam(value = "queueId", required = false) Integer queueId,
 			@RequestParam(value = "weight", required = false) BigDecimal weight,
 			@RequestParam(value = "height", required = false) BigDecimal height,
+			
+			@RequestParam(value = "mua", required = false) BigDecimal mua,
+			@RequestParam(value = "chest", required = false) BigDecimal chest,
+			@RequestParam(value = "abdominal", required = false) BigDecimal abdominal,
+			
 			@RequestParam(value = "temperature", required = false) BigDecimal temperature,
 			@RequestParam(value = "sbp", required = false) Integer sbp,
 			@RequestParam(value = "dbp", required = false) Integer dbp,
@@ -253,6 +258,11 @@ public class TriageFormController {
 		tpd.setTriageLogId(triagePatientLog);
 		tpd.setWeight(weight);
 		tpd.setHeight(height);
+		
+		tpd.setMua(mua);
+		tpd.setChest(chest);
+		tpd.setAbdominal(abdominal);
+		
 		tpd.setTemperature(temperature);
 		tpd.setSystolic(sbp);
 		tpd.setDaistolic(dbp);
