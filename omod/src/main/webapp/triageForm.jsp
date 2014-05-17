@@ -71,15 +71,15 @@ if(!StringUtils.isBlank(jQuery("#mua").val())) {
 	  }
 }
 
-if(!StringUtils.isBlank(jQuery("#chest_cir").val())) {
-      if (!jQuery("#chest_cir").val().match(intRegex)) {
+if(!StringUtils.isBlank(jQuery("#chest").val())) {
+      if (!jQuery("#chest").val().match(intRegex)) {
 	  alert("Please enter Chest Circumference in correct format");
 	  return false;
 	  }
 }
 
-if(!StringUtils.isBlank(jQuery("#abdo_cir").val())) {
-      if (!jQuery("#abdo_cir").val().match(intRegex)) {
+if(!StringUtils.isBlank(jQuery("#abdominal").val())) {
+      if (!jQuery("#abdominal").val().match(intRegex)) {
 	  alert("Please enter Chest Circumference in correct format");
 	  return false;
 	  }
