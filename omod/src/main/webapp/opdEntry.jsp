@@ -140,6 +140,16 @@ function deleteInput(drugName) {
    parent.removeChild(child); 
 }
 
+var minorOTProcedures = new Array();
+<c:forEach items="${allMinorOTProcedures}" var="item">
+			minorOTProcedures.push("${item}");
+</c:forEach>
+
+var majorOTProcedures = new Array();
+<c:forEach items="${allMajorOTProcedures}" var="item">
+			majorOTProcedures.push("${item}");
+</c:forEach>
+
 function showSchedule(){
 var url = "#TB_inline?height=400&width=400&inlineId=scheduleDiv";
 tb_show("Schedule the procedues",url,false);

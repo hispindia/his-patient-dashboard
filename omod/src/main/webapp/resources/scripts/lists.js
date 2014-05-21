@@ -434,18 +434,34 @@ function addSchedule(){
 var procedId = new Array();
 var procedName = new Array();
 var selLen = selectedProcedureList.length;
-var i;
+var minorOtLen = minorOTProcedures.length;
+var majorOtLen = majorOTProcedures.length;
+var i,j,k;
 $('#tableSchedule').empty();
 for(i=selLen-1; i>=0; i--){
-procedId.push(selectedProcedureList.options[i].value);
-procedName.push(selectedProcedureList.options[i].text);
+
+for(j=0; j<minorOtLen; j++){
+if ( minorOTProcedures[j] == selectedProcedureList.options[i].value){
 var spl=selectedProcedureList.options[i].value;
 var splts=spl.toString();
 var spltswhs="#".concat(splts); 
 var spltswhswimg=spltswhs.concat("imgId");
-var splt=selectedProcedureList.options[i].text;
-			
+var splt=selectedProcedureList.options[i].text;		
 $('#tableSchedule').append('<tr id='+splts+'rid><td>'+splt+'</td><td><input type="text" id='+splts+' name='+splts+' class="date-pick" readonly="readonly"></td></tr>');
+}
+}
+
+for(k=0; k<majorOtLen; k++){
+if ( majorOTProcedures[k] == selectedProcedureList.options[i].value){
+var spl=selectedProcedureList.options[i].value;
+var splts=spl.toString();
+var spltswhs="#".concat(splts); 
+var spltswhswimg=spltswhs.concat("imgId");
+var splt=selectedProcedureList.options[i].text;		
+$('#tableSchedule').append('<tr id='+splts+'rid><td>'+splt+'</td><td><input type="text" id='+splts+' name='+splts+' class="date-pick" readonly="readonly"></td></tr>');
+}
+}
+
 }
 jQuery('.date-pick').datepicker({minDate: '-100y', dateFormat: 'dd/mm/yy'});	
 }

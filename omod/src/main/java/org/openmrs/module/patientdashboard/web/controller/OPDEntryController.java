@@ -158,6 +158,32 @@ public class OPDEntryController {
 			model.addAttribute("opdPatientQueue", opdPatientQueue);
 		}
 		
+        Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
+		
+		Collection<ConceptAnswer> allMinorOTProcedures = null;
+		List<Integer> id = new ArrayList<Integer>();
+		if( concept != null )
+		{
+			allMinorOTProcedures = concept.getAnswers();
+			for (ConceptAnswer c: allMinorOTProcedures){
+				id.add(c.getAnswerConcept().getId());
+			}
+		}
+		model.addAttribute("allMinorOTProcedures", id);
+		
+        Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
+		
+		Collection<ConceptAnswer> allMajorOTProcedures = null;
+		List<Integer> id2 = new ArrayList<Integer>();
+		if( concept2 != null )
+		{
+			allMajorOTProcedures = concept2.getAnswers();
+			for (ConceptAnswer c: allMajorOTProcedures){
+				id2.add(c.getAnswerConcept().getId());
+			}
+		}
+		model.addAttribute("allMajorOTProcedures", id2);
+		
 		return "module/patientdashboard/opdEntry";
 	}
 	@RequestMapping(method=RequestMethod.POST)
@@ -600,7 +626,6 @@ public class OPDEntryController {
 				for( Integer pId : command.getSelectedProcedureList()){
 					BillableService billableService = billingService.getServiceByConceptId(pId);
 					String OTscheduleDate=request.getParameter(pId.toString());
-					System.out.println("ooooooooooooooooooo"+pId.toString());
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -663,7 +688,6 @@ public class OPDEntryController {
 				for( Integer pId : command.getSelectedProcedureList()){
 					BillableService billableService = billingService.getServiceByConceptId(pId);
 					String OTscheduleDate=request.getParameter(pId.toString());
-					System.out.println("pppppppppppppppppppppp"+pId.toString());
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
