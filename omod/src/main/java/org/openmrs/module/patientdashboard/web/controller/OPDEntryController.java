@@ -392,7 +392,7 @@ public class OPDEntryController {
 	        queue.setOpdConcept(internalReferralConcept);
 	        queue.setOpdConceptName(internalReferralConcept.getName().getName());
 	        if(patient.getMiddleName()!=null){
-	        queue.setPatientName(patient.getGivenName()+" "+patient.getMiddleName() + " "+ patient.getFamilyName());
+	        queue.setPatientName(patient.getGivenName()+" "+patient.getFamilyName() + " "+ patient.getMiddleName());
 	        }
 	        else{
 	        	queue.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());	        	
@@ -516,7 +516,7 @@ public class OPDEntryController {
 			patientAdmission.setPatient(patient);
 			patientAdmission.setPatientIdentifier(patient.getPatientIdentifier().getIdentifier());
 			if(patient.getMiddleName()!=null){
-			patientAdmission.setPatientName(patient.getGivenName()+" "+patient.getMiddleName() + " "+ patient.getFamilyName());
+			patientAdmission.setPatientName(patient.getGivenName()+" "+patient.getFamilyName() + " "+ patient.getMiddleName());
 			}
 			else{
 				patientAdmission.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());
