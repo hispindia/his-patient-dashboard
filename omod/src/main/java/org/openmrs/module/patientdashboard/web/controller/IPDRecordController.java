@@ -21,6 +21,7 @@
 package org.openmrs.module.patientdashboard.web.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -58,8 +59,8 @@ public class IPDRecordController {
 			model.addAttribute("admitted", admitted);
 			String diagnosis = "";
 			String procedure = "";
-			List<Obs> listObsByObsGroup = Context.getObsService().findObsByGroupId(currentAdmission.getOpdObsGroup().getId());
-			
+			//List<Obs> listObsByObsGroup = Context.getObsService().findObsByGroupId(currentAdmission.getOpdObsGroup().getId());
+			Set<Obs> listObsByObsGroup = Context.getObsService().getObservations(currentAdmission.getOpdLog().getEncounter());
 			//get diagnosis
 			ConceptService conceptService = Context.getConceptService();
 	        AdministrationService administrationService = Context.getAdministrationService();
