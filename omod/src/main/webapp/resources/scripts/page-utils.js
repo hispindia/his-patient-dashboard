@@ -189,7 +189,6 @@ DASHBOARD={
 							});
 					}
 				}
-				showHideOTDatepicker();
 			}
 			
 			//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
