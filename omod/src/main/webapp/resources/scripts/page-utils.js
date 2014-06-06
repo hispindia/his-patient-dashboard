@@ -178,8 +178,10 @@ DASHBOARD={
 				if(exists){
 					jQuery("#availableProcedureList option[value=" +id+ "]").appendTo("#selectedProcedureList");
 					jQuery("#availableProcedureList option[value=" +id+ "]").remove();
+					addSchedule();
 				}else{
 					jQuery('#selectedProcedureList').append('<option value="' + id + '">' + name + '</option>');
+					addSchedule();
 					if(confirm("Do you want also add this procedure to opd procedure?"))
 					{
 						jQuery.ajax({

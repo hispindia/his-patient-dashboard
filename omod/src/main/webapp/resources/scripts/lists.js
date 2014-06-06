@@ -463,5 +463,10 @@ $('#tableSchedule').append('<tr id='+splts+'rid><td>'+splt+'</td><td><input type
 }
 
 }
-jQuery('.date-pick').datepicker({minDate: '-100y', dateFormat: 'dd/mm/yy'});	
+var date = new Date();
+var currentMonth = date.getMonth();
+//var currentDate = date.getDate()+1;
+var currentDate = date.getDate();
+var currentYear = date.getFullYear();
+jQuery('.date-pick').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy',minDate: new Date(currentYear, currentMonth, currentDate)});	
 }
