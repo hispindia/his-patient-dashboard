@@ -22,9 +22,52 @@
 	redirect="index.htm" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="includes/js_css.jsp"%>
+<style type="text/css">
+.classname {
+	-webkit-border-top-left-radius:4px;
+	-moz-border-radius-topleft:4px;
+	border-top-left-radius:4px;
+	-webkit-border-top-right-radius:4px;
+	-moz-border-radius-topright:4px;
+	border-top-right-radius:4px;
+	-webkit-border-bottom-right-radius:4px;
+	-moz-border-radius-bottomright:4px;
+	border-bottom-right-radius:4px;
+	-webkit-border-bottom-left-radius:4px;
+	-moz-border-radius-bottomleft:4px;
+	border-bottom-left-radius:4px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:30px;
+	line-height:30px;
+	width:150px;
+	text-decoration:none;
+	text-align:center;
+}
+.classname:hover{
+	background-color:#FFDD57;
+}
+
+.classname:active {
+	position:relative;
+	top:1px;
+	cursor : pointer;
+	background-color:#FFDD57;
+}
+</style>
+
 <script type="text/javascript">
 	jQuery(document).ready(
 			function() {
+			
+			var history = document.getElementById("patientHistory");
+history.style.display="none";
+
 				jQuery('#lastMenstrualPeriod').datepicker({
 					yearRange : 'c-100:c+100',
 					dateFormat : 'dd/mm/yy',
@@ -43,7 +86,8 @@
 			    if("${patient.gender }"=="M"){
 			    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
 			    jQuery("#calendarButton").hide();
-			    }
+			    };
+
 });
 </script>
 <script type="text/javascript">
@@ -144,8 +188,38 @@ jQuery("#bloodGroup").click(function() {
 		});
 }
 </script>
-<b class="boxHeader">Triage Form</b>
-<div class="box">
+
+<script type="text/JavaScript">
+function ShowForm () {
+var history = document.getElementById("patientHistory");
+var triage = document.getElementById("triageVitalData");
+if (history.style.display=="inline" ) {
+history.style.display="none";
+triage.style.display="inline";
+}
+else {
+history.style.display="inline";
+triage.style.display="none";
+}
+};
+
+function ShowVitalForm () {
+var history = document.getElementById("patientHistory");
+var triage = document.getElementById("triageVitalData");
+if (triage.style.display=="inline" ) {
+triage.style.display="none";
+history.style.display="inline";
+}
+else {
+triage.style.display="inline";
+history.style.display="none";
+}
+}
+
+</script>
+
+<b class="boxHeader">Patient Detail</b>
+<div class="box" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
 	<table cellspacing="10" width="100%">
 		<tr>
 			<td width="40%"><b>Patient ID:</b>
@@ -178,9 +252,16 @@ jQuery("#bloodGroup").click(function() {
 
 		</tr>
 	</table>
-	<form id="triageForm" method="POST"
-		onsubmit="javascript:return validate();">
-		<table>
+		<br><br>
+	<div id="tabs">
+	<b class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+		<input name="formVitalButton" type="button" onclick="ShowVitalForm();" value="Vital Statistics" class="classname"> 
+		<input name="formButton" type="button" onclick="ShowForm();" value="Patient History" class="classname">
+	</b>
+
+	<form id="triageForm" method="POST" onsubmit="javascript:return validate();">
+		
+		<table id="triageVitalData">
 			<tr>
 				<td>Weight (Kg)</td>
 				<td><input type="text" id="weight" name="weight" size="8">
@@ -284,7 +365,367 @@ jQuery("#bloodGroup").click(function() {
 					onclick="window.location.href=window.location.href"></td>
 			</tr>
 		</table>
-	</form>
-</div>
+		
+		<table id="patientHistory">
+				<tr><td><b><u>Past Medical and Surgical History</u></b></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Any Existing Illness/ Conditions? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="existingIllness" name="existingIllness" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="existingIllness" name="existingIllness" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is the problem?</td>
+					<td><input type="text" id="existingIllnessProblem" name="existingIllnessProblem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How long have you had it?</td>
+					<td><input type="text" id="existingIllnessLong" name="existingIllnessLong" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How is your progress?</td>
+					<td><input type="text" id="existingIllnessProgress" name="existingIllnessProgress" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where are the Medical Records?</td>
+					<td><input type="text" id="existingIllnessRecord" name="existingIllnessRecord" size="50"></td>
+				</tr>
+				
+				<tr><td>.</td></tr>
 
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Suffered from any Chronic Illness? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="chronicIllness" name="chronicIllness" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="chronicIllness" name="chronicIllness" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is the problem?</td>
+					<td><input type="text" id="chronicIllnessProblem" name="chronicIllnessProblem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When did it occur?</td>
+					<td><input type="text" id="chronicIllnessOccure" name="chronicIllnessOccure" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the outcome?</td>
+					<td><input type="text" id="chronicIllnessOutcome" name="chronicIllnessOutcome" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where are the Medical Records?</td>
+					<td><input type="text" id="chronicIllnessRecord" name="chronicIllnessRecord" size="50"></td>
+				</tr>
+				
+				<tr><td>.</td></tr>
+
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Any previous Hospital Admissions?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="previousAdmission" name="previousAdmission" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="previousAdmission" name="previousAdmission" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When was this?</td>
+					<td><input type="text" id="previousAdmissionWhen" name="previousAdmissionWhen" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the problem?</td>
+					<td><input type="text" id="previousAdmissionProblem" name="previousAdmissionProblem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the outcome?</td>
+					<td><input type="text" id="previousAdmissionOutcome" name="previousAdmissionOutcome" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where are the Medical Records?</td>
+					<td><input type="text" id="previousAdmissionRecord" name="previousAdmissionRecord" size="50"></td>
+				</tr>
+				
+				<tr><td>.</td></tr>
+
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Any previous Operations/ Investigations?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="previousInvestigation" name="previousInvestigation" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="previousInvestigation" name="previousInvestigation" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When was this?</td>
+					<td><input type="text" id="previousInvestigationWhen" name="previousInvestigationWhen" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the problem?</td>
+					<td><input type="text" id="previousInvestigationProblem" name="previousInvestigationProblem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the outcome?</td>
+					<td><input type="text" id="previousInvestigationOutcome" name="previousInvestigationOutcome" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where are the Medical Records?</td>
+					<td><input type="text" id="previousInvestigationRecord" name="previousInvestigationRecord" size="50"></td>
+				</tr>								
+
+				<tr><td>.</td></tr>
+
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Received the following vaccinations?&nbsp;&nbsp;&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BCG?</td>
+					<td><input type="radio" id="BCG" name="BCG" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="BCG" name="BCG" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="BCG" name="BCG" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 Polio Doses?</td>
+					<td><input type="radio" id="polio" name="polio" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="polio" name="polio" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="polio" name="polio" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3DPT/ Pentavalent Doses?</td>
+					<td><input type="radio" id="DPT" name="DPT" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="DPT" name="DPT" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="DPT" name="DPT" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>	
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Measles?</td>
+					<td><input type="radio" id="measles" name="measles" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="measles" name="measles" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="measles" name="measles" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+				
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pneumococcal?</td>
+					<td><input type="radio" id="pneumococcal" name="pneumococcal" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="pneumococcal" name="pneumococcal" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="pneumococcal" name="pneumococcal" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>	
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Yellow Fever?</td>
+					<td><input type="radio" id="yellowFever" name="yellowFever" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="yellowFever" name="yellowFever" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="yellowFever" name="yellowFever" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 Tetanus Doses (If Female)?</td>
+					<td><input type="radio" id="tetanusMale" name="tetanusMale" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="tetanusMale" name="tetanusMale" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="tetanusMale" name="tetanusMale" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>	
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 Tetanus Doses (If Male)?</td>
+					<td><input type="radio" id="tetanusFemale" name="tetanusFemale" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="tetanusFemale" name="tetanusFemale" value="No">No &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="tetanusFemale" name="tetanusFemale" value="Not Sure">Not Sure &nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other?</td>
+					<td><input type="text" id="otherVaccinations" name="otherVaccinations" size="50"></td>
+				</tr>								
+
+				<tr><td><b><u>Past Drug History</u></b></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Current Medications? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="currentMedication" name="currentMedication" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="currentMedication" name="currentMedication" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is the medication?</td>
+					<td><input type="text" id="medicationName" name="medicationName" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For how long it has been taken?</td>
+					<td><input type="text" id="medicationPeriod" name="medicationPeriod" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Why is it being taken?</td>
+					<td><input type="text" id="medicationReason" name="medicationReason" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where are the Medical Records?</td>
+					<td><input type="text" id="medicationRecord" name="medicationRecord" size="50"></td>
+				</tr>
+				
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Any medication you are sensitive to? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="sensitiveMedication" name="sensitiveMedication" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="sensitiveMedication" name="sensitiveMedication" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is the medication?</td>
+					<td><input type="text" id="sensitiveMedicationName" name="sensitiveMedicationName" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What are the symptoms you experience?</td>
+					<td><input type="text" id="sensitiveMedicationSymptom" name="sensitiveMedicationSymptom" size="50"></td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Are you using any invasive contraception? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="invasiveContraception" name="invasiveContraception" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="invasiveContraception" name="invasiveContraception" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is the medication?</td>
+					<td><select id="invasiveContraceptionName" name="invasiveContraceptionName">
+							<option value="Oral Pills">Oral Pills</option>
+							<option value="IUD">IUD</option>
+							<option value="Injectable Hormones">Injectable Hormones</option>
+							<option value="Gels">Gels</option>
+							<option value="Others">Others</option>
+						</select></td>
+				</tr>
+
+				<tr><td><b><u>Family History</u></b></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Status of parents? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="parentStatus" name="parentStatus" value="Alive">Alive &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="parentStatus" name="parentStatus" value="Dead">Dead
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the cause of death?</td>
+					<td><input type="text" id="parentDeathCause" name="parentDeathCause" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How old were they?</td>
+					<td><input type="text" id="parentDeathAge" name="parentDeathAge" size="50"></td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Status of siblings? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="siblingStatus" name="siblingStatus" value="Alive">Alive &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="siblingStatus" name="siblingStatus" value="Dead">Dead
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the cause of death?</td>
+					<td><input type="text" id="siblingDeathCause" name="siblingDeathCause" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How old were they?</td>
+					<td><input type="text" id="siblingDeathAge" name="siblingDeathAge" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Any family history of the following illness?</td>
+					<td><select id="familyIllnessHistory" name="familyIllnessHistory">
+							<option value="Hypertension">Hypertension</option>
+							<option value="Tuberculosis">Tuberculosis</option>
+							<option value="Stroke">Stroke</option>
+							<option value="Sudden Death">Sudden Death</option>
+							<option value="Asthma">Asthma</option>
+							<option value="Diabetes">Diabetes</option>
+							<option value="Others">Others</option>
+							<option value="None">None</option>
+						</select></td>
+				</tr>
+
+				<tr><td><b><u>Personal and Social History</u></b></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Do you smoke? &nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="smoke" name="smoke" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="smoke" name="smoke" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What do you smoke?</td>
+					<td><input type="text" id="smokeItem" name="smokeItem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is your average in a day?</td>
+					<td><input type="text" id="smokeAverage" name="smokeAverage" size="50"></td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Do you drink alcohol?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="alcohol" name="alcohol" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="alcohol" name="alcohol" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What alcohol do you drink?</td>
+					<td><input type="text" id="alcoholItem" name="alcoholItem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is your average in a day?</td>
+					<td><input type="text" id="alcoholAverage" name="alcoholAverage" size="50"></td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Do you take any recreational drugs?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="drug" name="drug" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="drug" name="drug" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What drugs do you take?</td>
+					<td><input type="text" id="drugItem" name="drugItem" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What is your average in a day?</td>
+					<td><input type="text" id="drugAverage" name="drugAverage" size="50"></td>
+				</tr>
+				
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Are you aware of your current HIV Status?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="exposedHiv" name="exposedHiv" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="exposedHiv" name="exposedHiv" value="No">No
+					</td>
+				</tr>
+				
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="hivStatus" name="hivStatus" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="hivStatus" name="hivStatus" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Which factors?</td>
+					<td><input type="text" id="exposedHivFactor" name="exposedHivFactor" size="50"></td>
+				</tr>
+
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Any close member in the family who can support during illness?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="familyHelp" name="familyHelp" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="familyHelp" name="familyHelp" value="No">No
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Who else can support you during illness?</td>
+					<td><input type="text" id="otherHelp" name="otherHelp" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Do you have a regular source of income?&nbsp;&nbsp;&nbsp;</td>
+					<td><input type="radio" id="incomeSource" name="incomeSource" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+						<input type="radio" id="incomeSource" name="incomeSource" value="No">No
+					</td>
+				</tr>
+			</table>
+	
+	</form>
+	</div>
+		
+</div>
 <%@ include file="/WEB-INF/template/footer.jsp"%>

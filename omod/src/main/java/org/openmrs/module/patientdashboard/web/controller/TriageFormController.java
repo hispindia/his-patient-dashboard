@@ -57,6 +57,10 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
+import org.openmrs.module.hospitalcore.model.PatientMedicalHistory;
+import org.openmrs.module.hospitalcore.model.PatientDrugHistory;
+import org.openmrs.module.hospitalcore.model.PatientFamilyHistory;
+import org.openmrs.module.hospitalcore.model.PatientPersonalHistory;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -148,7 +152,90 @@ public class TriageFormController {
 				referral = o; 
 								
 		}
+		
+		PatientQueueService queueService1 = Context.getService(PatientQueueService.class);
+		TriagePatientQueue queue = queueService1.getTriagePatientQueueById(queueId);
+		PatientMedicalHistory pmh = queueService1.getPatientHistoryByPatientId(queue.getPatient().getPatientId());
+		
+		if(pmh !=null)
+		{
+			model.addAttribute("existingIllness", pmh.getIllnessExisting());
+			model.addAttribute("existingIllnessProblem", pmh.getIllnessProblem());
+			model.addAttribute("existingIllnessProblem", pmh.getIllnessProblem());
+			model.addAttribute("existingIllnessLong", pmh.getIllnessLong());
+			model.addAttribute("existingIllnessProgress", pmh.getIllnessProgress());
+			model.addAttribute("existingIllnessRecord", pmh.getIllnessRecord());
+			model.addAttribute("chronicIllness", pmh.getChronicIllness());
+			model.addAttribute("chronicIllnessProblem", pmh.getChronicIllnessProblem());
+			model.addAttribute("chronicIllnessOccure", pmh.getChronicIllnessOccure());
+			model.addAttribute("chronicIllnessOutcome", pmh.getChronicIllnessOutcome());
+			model.addAttribute("chronicIllnessRecord", pmh.getChronicIllnessRecord());
+			model.addAttribute("previousAdmission", pmh.getPreviousAdmission());
+			model.addAttribute("previousAdmissionWhen", pmh.getPreviousAdmissionWhen());
+			model.addAttribute("previousAdmissionProblem", pmh.getPreviousAdmissionProblem());
+			model.addAttribute("previousAdmissionOutcome", pmh.getPreviousAdmissionOutcome());
+			model.addAttribute("previousAdmissionRecord", pmh.getPreviousAdmissionRecord());
+			model.addAttribute("previousInvestigation", pmh.getPreviousInvestigation());
+			model.addAttribute("previousInvestigationWhen", pmh.getPreviousInvestigationWhen());
+			model.addAttribute("previousInvestigationProblem", pmh.getPreviousInvestigationProblem());
+			model.addAttribute("previousInvestigationOutcome", pmh.getPreviousInvestigationOutcome());
+			model.addAttribute("previousInvestigationRecord", pmh.getPreviousInvestigationRecord());
+			model.addAttribute("BCG", pmh.getBcg());
+			model.addAttribute("polio", pmh.getPolio());
+			model.addAttribute("DPT", pmh.getDpt());
+			model.addAttribute("measles", pmh.getMeasles());
+			model.addAttribute("pneumococcal", pmh.getPneumococcal());
+			model.addAttribute("yellowFever", pmh.getYellowFever());
+			model.addAttribute("tetanusMale", pmh.getTetanusMale());
+			model.addAttribute("tetanusFemale", pmh.getTetanusFemale());
+			model.addAttribute("otherVaccinations", pmh.getOtherVaccinations());
+		}
+		
+		PatientDrugHistory pdh = queueService1.getPatientDrugHistoryByPatientId(queue.getPatient().getPatientId());
+		if(pdh != null)
+		{
+			model.addAttribute("currentMedication", pdh.getCurrentMedication());
+			model.addAttribute("medicationName", pdh.getMedicationName());
+			model.addAttribute("medicationPeriod", pdh.getMedicationPeriod());
+			model.addAttribute("medicationReason", pdh.getMedicationReason());
+			model.addAttribute("medicationRecord", pdh.getMedicationRecord());
+			model.addAttribute("sensitiveMedication", pdh.getSensitiveMedication());
+			model.addAttribute("sensitiveMedicationName", pdh.getSensitiveMedicationName());
+			model.addAttribute("sensitiveMedicationSymptom", pdh.getSensitiveMedicationSymptom());
+			model.addAttribute("invasiveContraception", pdh.getInvasiveContraception());
+			model.addAttribute("invasiveContraceptionName", pdh.getInvasiveContraceptionName());
+		}
+		
+		PatientFamilyHistory patientFamilyHistory = queueService1.getPatientFamilyHistoryByPatientId(queue.getPatient().getPatientId());
+		if(patientFamilyHistory != null)
+		{
+			model.addAttribute("parentStatus", patientFamilyHistory.getParentStatus());
+			model.addAttribute("parentDeathCause", patientFamilyHistory.getParentDeathCause());
+			model.addAttribute("parentDeathAge", patientFamilyHistory.getParentDeathCause());
+			model.addAttribute("siblingStatus", patientFamilyHistory.getSiblingStatus());
+			model.addAttribute("siblingDeathCause", patientFamilyHistory.getSiblingDeathCause());
+			model.addAttribute("siblingDeathAge", patientFamilyHistory.getSiblingDeathAge());
+			model.addAttribute("familyIllnessHistory", patientFamilyHistory.getFamilyIllnessHistory());
+		}
 
+		PatientPersonalHistory patientPersonalHistory = queueService1.getPatientPersonalHistoryByPatientId(queue.getPatient().getPatientId());
+		if(patientPersonalHistory != null){
+			model.addAttribute("smoke", patientPersonalHistory.getSmoke());
+			model.addAttribute("smokeItem", patientPersonalHistory.getSmokeItem());
+			model.addAttribute("smokeAverage", patientPersonalHistory.getSmokeAverage());
+			model.addAttribute("alcohol", patientPersonalHistory.getAlcohol());
+			model.addAttribute("alcoholItem", patientPersonalHistory.getAlcoholItem());
+			model.addAttribute("alcoholAverage", patientPersonalHistory.getAlcoholAverage());
+			model.addAttribute("drug", patientPersonalHistory.getDrug());
+			model.addAttribute("drugItem", patientPersonalHistory.getDrugItem());
+			model.addAttribute("drugAverage", patientPersonalHistory.getDrugAverage());
+			model.addAttribute("hivStatus", patientPersonalHistory.getHivStatus());
+			model.addAttribute("exposedHiv", patientPersonalHistory.getExposedHiv());
+			model.addAttribute("exposedHivFactor", patientPersonalHistory.getExposedHivFactor());
+			model.addAttribute("familyHelp", patientPersonalHistory.getFamilyHelp());
+			model.addAttribute("otherHelp", patientPersonalHistory.getOtherHelp());
+			model.addAttribute("incomeSource", patientPersonalHistory.getIncomeSource());
+		}
 		
 		Date birthday = patient.getBirthdate();
 
@@ -219,6 +306,72 @@ public class TriageFormController {
 			@RequestParam(value = "rhesusFactor", required = false) String rhesusFactor,
 			@RequestParam(value = "pitct", required = false) String pitct,
 			@RequestParam(value = "opd", required = false) Integer opd,
+			
+			@RequestParam(value = "existingIllness", required = false) String existingIllness,
+			@RequestParam(value = "existingIllnessProblem", required = false) String existingIllnessProblem,
+			@RequestParam(value = "existingIllnessLong", required = false) String existingIllnessLong,
+			@RequestParam(value = "existingIllnessProgress", required = false) String existingIllnessProgress,
+			@RequestParam(value = "existingIllnessRecord", required = false) String existingIllnessRecord,
+			
+			@RequestParam(value = "chronicIllness", required = false) String chronicIllness,
+			@RequestParam(value = "chronicIllnessProblem", required = false) String chronicIllnessProblem,
+			@RequestParam(value = "chronicIllnessOccure", required = false) String chronicIllnessOccure,
+			@RequestParam(value = "chronicIllnessOutcome", required = false) String chronicIllnessOutcome,
+			@RequestParam(value = "chronicIllnessRecord", required = false) String chronicIllnessRecord,
+			@RequestParam(value = "previousAdmission", required = false) String previousAdmission,
+			@RequestParam(value = "previousAdmissionWhen", required = false) String previousAdmissionWhen,
+			@RequestParam(value = "previousAdmissionProblem", required = false) String previousAdmissionProblem,
+			@RequestParam(value = "previousAdmissionOutcome", required = false) String previousAdmissionOutcome,
+			@RequestParam(value = "previousAdmissionRecord", required = false) String previousAdmissionRecord,
+			@RequestParam(value = "previousInvestigation", required = false) String previousInvestigation,
+			@RequestParam(value = "previousInvestigationWhen", required = false) String previousInvestigationWhen,
+			@RequestParam(value = "previousInvestigationProblem", required = false) String previousInvestigationProblem,
+			@RequestParam(value = "previousInvestigationOutcome", required = false) String previousInvestigationOutcome,
+			@RequestParam(value = "previousInvestigationRecord", required = false) String previousInvestigationRecord,
+			@RequestParam(value = "BCG", required = false) String bcg,
+			@RequestParam(value = "polio", required = false) String polio,
+			@RequestParam(value = "DPT", required = false) String dpt,
+			@RequestParam(value = "measles", required = false) String measles,
+			@RequestParam(value = "pneumococcal", required = false) String pneumococcal,
+			@RequestParam(value = "yellowFever", required = false) String yellowFever,
+			@RequestParam(value = "tetanusMale", required = false) String tetanusMale,
+			@RequestParam(value = "tetanusFemale", required = false) String tetanusFemale,
+			@RequestParam(value = "otherVaccinations", required = false) String otherVaccinations,
+			
+			@RequestParam(value = "currentMedication", required = false) String currentMedication,
+			@RequestParam(value = "medicationName", required = false) String medicationName,
+			@RequestParam(value = "medicationPeriod", required = false) String medicationPeriod,
+			@RequestParam(value = "medicationReason", required = false) String medicationReason,
+			@RequestParam(value = "medicationRecord", required = false) String medicationRecord,
+			@RequestParam(value = "sensitiveMedication", required = false) String sensitiveMedication,
+			@RequestParam(value = "sensitiveMedicationName", required = false) String sensitiveMedicationName,
+			@RequestParam(value = "sensitiveMedicationSymptom", required = false) String sensitiveMedicationSymptom,
+			@RequestParam(value = "invasiveContraception", required = false) String invasiveContraception,
+			@RequestParam(value = "invasiveContraceptionName", required = false) String invasiveContraceptionName,
+
+			@RequestParam(value = "parentStatus", required = false) String parentStatus,
+			@RequestParam(value = "parentDeathCause", required = false) String parentDeathCause,
+			@RequestParam(value = "parentDeathAge", required = false) String parentDeathAge,
+			@RequestParam(value = "siblingStatus", required = false) String siblingStatus,
+			@RequestParam(value = "siblingDeathCause", required = false) String siblingDeathCause,
+			@RequestParam(value = "siblingDeathAge", required = false) String siblingDeathAge,
+			@RequestParam(value = "familyIllnessHistory", required = false) String familyIllnessHistory,
+			@RequestParam(value = "smoke", required = false) String smoke,
+			@RequestParam(value = "smokeItem", required = false) String smokeItem,
+			@RequestParam(value = "smokeAverage", required = false) String smokeAverage,
+			@RequestParam(value = "alcohol", required = false) String alcohol,
+			@RequestParam(value = "alcoholItem", required = false) String alcoholItem,
+			@RequestParam(value = "alcoholAverage", required = false) String alcoholAverage,
+			@RequestParam(value = "drug", required = false) String drug,
+			@RequestParam(value = "drugItem", required = false) String drugItem,
+			@RequestParam(value = "drugAverage", required = false) String drugAverage,
+			@RequestParam(value = "hivStatus", required = false) String hivStatus,
+			@RequestParam(value = "exposedHiv", required = false) String exposedHiv,
+			@RequestParam(value = "exposedHivFactor", required = false) String exposedHivFactor,
+			@RequestParam(value = "familyHelp", required = false) String familyHelp,
+			@RequestParam(value = "incomeSource", required = false) String incomeSource,
+			@RequestParam(value = "otherHelp", required = false) String otherHelp,
+		
 			HttpServletRequest request) throws Exception {
 		User user = Context.getAuthenticatedUser();
 		//PatientService ps = Context.getPatientService();
@@ -288,6 +441,101 @@ public class TriageFormController {
 		tpd.setPitct(pitct);
 		}
 		tpd.setCreatedOn(date);
+
+		PatientQueueService queueService1 = Context.getService(PatientQueueService.class);
+		PatientMedicalHistory patientMedicalHistory1 = queueService1.getPatientHistoryByPatientId(queue.getPatient().getPatientId());	
+		
+		PatientMedicalHistory pmh = new PatientMedicalHistory(); 
+		pmh.setPatientId(queue.getPatient().getPatientId());
+		pmh.setTriageLogId(triagePatientLog);
+		pmh.setIllnessExisting(existingIllness);
+		pmh.setIllnessProblem(existingIllnessProblem);
+		pmh.setIllnessLong(existingIllnessLong);
+		pmh.setIllnessProgress(existingIllnessProgress);
+		pmh.setIllnessRecord(existingIllnessRecord);
+		pmh.setCreatedOn(date);
+		pmh.setChronicIllness(chronicIllness);
+		pmh.setChronicIllnessProblem(chronicIllnessProblem);
+		pmh.setChronicIllnessOccure(chronicIllnessOccure);
+		pmh.setChronicIllnessOutcome(chronicIllnessOutcome);
+		pmh.setChronicIllnessRecord(chronicIllnessRecord);
+		pmh.setPreviousAdmission(previousAdmission);
+		pmh.setPreviousAdmissionWhen(previousAdmissionWhen);
+		pmh.setPreviousAdmissionProblem(previousAdmissionProblem);
+		pmh.setPreviousAdmissionOutcome(previousAdmissionOutcome);
+		pmh.setPreviousAdmissionRecord(previousAdmissionRecord);
+		pmh.setPreviousInvestigation(previousInvestigation);
+		pmh.setPreviousInvestigationWhen(previousInvestigationWhen);
+		pmh.setPreviousInvestigationWhen(previousInvestigationWhen);
+		pmh.setPreviousInvestigationProblem(previousInvestigationProblem);
+		pmh.setPreviousInvestigationOutcome(previousInvestigationOutcome);
+		pmh.setPreviousInvestigationRecord(previousInvestigationRecord);
+		pmh.setBcg(bcg);
+		pmh.setDpt(dpt);
+		pmh.setYellowFever(yellowFever);
+		pmh.setPneumococcal(pneumococcal);
+		pmh.setPolio(polio);
+		pmh.setTetanusFemale(tetanusFemale);
+		pmh.setTetanusMale(tetanusMale);
+		pmh.setMeasles(measles);
+		pmh.setOtherVaccinations(otherVaccinations);
+
+		
+		PatientDrugHistory pdh = new PatientDrugHistory(); 
+		pdh.setPatientId(queue.getPatient().getPatientId());
+		pdh.setTriageLogId(triagePatientLog);
+		pdh.setCurrentMedication(currentMedication);
+		pdh.setMedicationName(sensitiveMedicationName);
+		pdh.setMedicationPeriod(medicationPeriod);
+		pdh.setMedicationReason(medicationReason);
+		pdh.setMedicationRecord(medicationRecord);
+		pdh.setSensitiveMedication(sensitiveMedication);
+		pdh.setSensitiveMedicationName(sensitiveMedicationName);
+		pdh.setSensitiveMedicationSymptom(sensitiveMedicationSymptom);
+		pdh.setInvasiveContraception(invasiveContraception);
+		pdh.setInvasiveContraceptionName(invasiveContraceptionName);
+		pdh.setCreatedOn(date);
+		
+		
+		PatientFamilyHistory pfh = new PatientFamilyHistory(); 
+		pfh.setPatientId(queue.getPatient().getPatientId());
+		pfh.setTriageLogId(triagePatientLog);
+		pfh.setParentStatus(parentStatus);
+		pfh.setParentDeathCause(parentDeathCause);
+		pfh.setParentDeathAge(parentDeathAge);
+		pfh.setSiblingStatus(siblingStatus);
+		pfh.setSiblingDeathCause(siblingDeathCause);
+		pfh.setSiblingDeathAge(siblingDeathAge);
+		pfh.setFamilyIllnessHistory(familyIllnessHistory);
+		pfh.setCreatedOn(date);
+
+		PatientPersonalHistory pph = new PatientPersonalHistory(); 
+		pph.setPatientId(queue.getPatient().getPatientId());
+		pph.setTriageLogId(triagePatientLog);
+		pph.setSmoke(smoke);
+		pph.setSmokeItem(smokeItem);
+		pph.setSmokeAverage(smokeAverage);
+		pph.setAlcohol(alcohol);
+		pph.setAlcoholItem(alcoholItem);
+		pph.setAlcoholAverage(alcoholAverage);
+		pph.setDrug(drug);
+		pph.setDrugItem(drugItem);
+		pph.setDrugAverage(drugAverage);
+		pph.setExposedHiv(exposedHiv);
+		pph.setExposedHivFactor(exposedHivFactor);
+		pph.setHivStatus(hivStatus);
+		pph.setFamilyHelp(familyHelp);
+		pph.setOtherHelp(otherHelp);
+		pph.setIncomeSource(incomeSource);
+		pph.setCreatedOn(date);
+
+		if(patientMedicalHistory1 ==null){
+			PatientMedicalHistory patientMedicalHistory = queueService.savePatientMedicalHistory(pmh);
+			PatientDrugHistory patientDrugHistory = queueService.savePatientDrugHistory(pdh);
+			PatientFamilyHistory patientFamilyHistory = queueService.savePatientFamilyHistory(pfh);
+			PatientPersonalHistory patientPersonalHistory = queueService.savePatientPersonalHistory(pph);
+		}
+		
 		TriagePatientData triagePatientData=queueService.saveTriagePatientData(tpd);
 		Concept opdConcept = Context.getConceptService().getConcept("OPD WARD");
 		Concept selectedOPDConcept = Context.getConceptService().getConcept(opd);

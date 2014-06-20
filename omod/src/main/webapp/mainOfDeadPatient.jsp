@@ -79,6 +79,9 @@
 			<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
 			<li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"
 				title="Pharmacy record"><span>Pharmacy record</span> </a></li>
+			<li><a href="patientHistory.htm?patientId=${patient.patientId }"
+				title="Patient history"><span>Patient history</span> </a></li>
+
 		</ul>
 
 		<div id="OPD_entry"></div>
@@ -92,6 +95,7 @@
 		<div id="IPD_record"></div>
 		<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
 		<div id="Pharmacy_record"></div>
+		<div id="Patient_history"></div>
 	</div>
 
 </div>
