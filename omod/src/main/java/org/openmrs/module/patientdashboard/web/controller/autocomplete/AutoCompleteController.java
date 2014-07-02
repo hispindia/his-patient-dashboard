@@ -111,6 +111,16 @@ public class AutoCompleteController {
 		model.addAttribute("procedures", procedures);
 		return "module/patientdashboard/autocomplete/comboboxProcedure";
 	}
+	
+	@RequestMapping(value="/module/patientdashboard/comboboxSymptom.htm", method=RequestMethod.GET)
+	public String comboboxSymptom(@RequestParam(value="text",required=false) String text, Model model) {
+		List<Concept> symptom = new ArrayList<Concept>();
+		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+		symptom = dashboardService.searchSymptom(text);
+		model.addAttribute("symptom", symptom);
+		return "/module/patientdashboard/autocomplete/comboboxSymptom";
+	}
+	
 	@RequestMapping(value="/module/patientdashboard/comboboxDianosis.htm", method=RequestMethod.GET)
 	public String comboboxDianosis(@RequestParam(value="text",required=false) String text, Model model) {
 		List<Concept> diagnosis = new ArrayList<Concept>();
@@ -226,6 +236,13 @@ public class AutoCompleteController {
 			
 		}
 		return "module/patientdashboard/detailClinical";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/autoCompleteSymptom.htm", method=RequestMethod.GET)
+	public String autoCompleteSymptom(@RequestParam(value="q",required=false) String name, Model model) {
+		List<Concept> symptom = Context.getService(PatientDashboardService.class).searchSymptom(name);
+		model.addAttribute("symptom",symptom);
+		return "module/patientdashboard/autocomplete/autoCompleteSymptom";
 	}
 	
 	@RequestMapping(value="/module/patientdashboard/autoCompleteDiagnosis.htm", method=RequestMethod.GET)

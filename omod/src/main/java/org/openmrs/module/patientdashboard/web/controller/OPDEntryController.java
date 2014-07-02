@@ -53,6 +53,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
@@ -66,6 +67,8 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.hospitalcore.model.Question;
+import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -80,131 +83,165 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/module/patientdashboard/opdEntry.htm")
 public class OPDEntryController {
 
-	@RequestMapping(method=RequestMethod.GET)
-	public String firstView(@ModelAttribute("opdCommand") OPDEntryCommand command,
-			@RequestParam("patientId") Integer patientId, 
-			@RequestParam("opdId") Integer opdId ,
-			@RequestParam(value="queueId" ,required=false) Integer queueId ,
-			@RequestParam(value="opdLogId" ,required=false) Integer opdLogId ,
-			@RequestParam("referralId") Integer referralId, Model model){
-		
-		Concept opdWardConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_OPDWARD));
-		model.addAttribute("listInternalReferral", opdWardConcept!= null ?  new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
-		Concept hospitalConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_HOSPITAL));
-		model.addAttribute("listExternalReferral", hospitalConcept!= null ?  new ArrayList<ConceptAnswer>(hospitalConcept.getAnswers()) : null);
-		model.addAttribute("patientId", patientId );
+	@RequestMapping(method = RequestMethod.GET)
+	public String firstView(
+			@ModelAttribute("opdCommand") OPDEntryCommand command,
+			@RequestParam("patientId") Integer patientId,
+			@RequestParam("opdId") Integer opdId,
+			@RequestParam(value = "queueId", required = false) Integer queueId,
+			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
+			@RequestParam("referralId") Integer referralId, Model model) {
+
+		Concept opdWardConcept = Context.getConceptService().getConceptByName(
+				Context.getAdministrationService().getGlobalProperty(
+						PatientDashboardConstants.PROPERTY_OPDWARD));
+		model.addAttribute("listInternalReferral",
+				opdWardConcept != null ? new ArrayList<ConceptAnswer>(
+						opdWardConcept.getAnswers()) : null);
+		Concept hospitalConcept = Context.getConceptService().getConceptByName(
+				Context.getAdministrationService().getGlobalProperty(
+						PatientDashboardConstants.PROPERTY_HOSPITAL));
+		model.addAttribute("listExternalReferral",
+				hospitalConcept != null ? new ArrayList<ConceptAnswer>(
+						hospitalConcept.getAnswers()) : null);
+		model.addAttribute("patientId", patientId);
 		IpdService ipds = (IpdService) Context.getService(IpdService.class);
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("opdLogId", opdLogId);
 		model.addAttribute("admitted", ipds.getAdmittedByPatientId(patientId));
-		Concept ipdConcept = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_IPDWARD));
-		model.addAttribute("listIpd", ipdConcept!= null ?  new ArrayList<ConceptAnswer>(ipdConcept.getAnswers()) : null);
-		
-		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
-		InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
-		Concept opdConcept =  Context.getConceptService().getConcept(opdId);
+		Concept ipdConcept = Context.getConceptService().getConceptByName(
+				Context.getAdministrationService().getGlobalProperty(
+						PatientDashboardConstants.PROPERTY_IPDWARD));
+		model.addAttribute(
+				"listIpd",
+				ipdConcept != null ? new ArrayList<ConceptAnswer>(ipdConcept
+						.getAnswers()) : null);
+
+		PatientDashboardService patientDashboardService = Context
+				.getService(PatientDashboardService.class);
+		InventoryCommonService inventoryCommonService = Context
+				.getService(InventoryCommonService.class);
+		Concept opdConcept = Context.getConceptService().getConcept(opdId);
 		/*
-		//list diagnosis need rewrtie CHUYEN
-		List<Concept> diagnosis = new ArrayList<Concept>(patientDashboardService.listDiagnosisByOpd(opdId));
-		if(!CollectionUtils.isEmpty(diagnosis)){
-			Collections.sort(diagnosis, new ConceptComparator());
-		}*/
-		List<Concept> diagnosisList = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[0]);
-		if(CollectionUtils.isNotEmpty(diagnosisList)){
+		 * //list diagnosis need rewrtie CHUYEN List<Concept> diagnosis = new
+		 * ArrayList
+		 * <Concept>(patientDashboardService.listDiagnosisByOpd(opdId));
+		 * if(!CollectionUtils.isEmpty(diagnosis)){ Collections.sort(diagnosis,
+		 * new ConceptComparator()); }
+		 */
+		List<Concept> diagnosisList = patientDashboardService
+				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[0]);
+		if (CollectionUtils.isNotEmpty(diagnosisList)) {
 			Collections.sort(diagnosisList, new ConceptComparator());
 		}
 		model.addAttribute("diagnosisList", diagnosisList);
-		
-		//model.addAttribute("listDiagnosis", diagnosis);
-		List<Concept> procedures = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[1]);
-		if(CollectionUtils.isNotEmpty(procedures)){
+
+		// model.addAttribute("listDiagnosis", diagnosis);
+		List<Concept> procedures = patientDashboardService
+				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[1]);
+		if (CollectionUtils.isNotEmpty(procedures)) {
 			Collections.sort(procedures, new ConceptComparator());
 		}
 		model.addAttribute("listProcedures", procedures);
-		
-		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
-		List<Concept> investigations = patientDashboardService.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
-		if(CollectionUtils.isNotEmpty(investigations)){
+
+		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		List<Concept> investigations = patientDashboardService
+				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
+		if (CollectionUtils.isNotEmpty(investigations)) {
 			Collections.sort(investigations, new ConceptComparator());
 		}
 		model.addAttribute("listInvestigations", investigations);
-		
-		//ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
-		List<Concept> drugFrequencyConcept= inventoryCommonService.getDrugFrequency();
+
+		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+		List<Concept> drugFrequencyConcept = inventoryCommonService
+				.getDrugFrequency();
 		model.addAttribute("drugFrequencyList", drugFrequencyConcept);
-		
+
 		model.addAttribute("opd", opdConcept);
-		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-		OpdPatientQueue opdPatientQueue=new OpdPatientQueue();
-		if(queueId!=null){
-		opdPatientQueue=queueService.getOpdPatientQueueById(queueId);
-		SimpleDateFormat formatterExt = new SimpleDateFormat("dd-MM-yyyy");
-		TriagePatientData triagePatientData=opdPatientQueue.getTriageDataId();
-		if(triagePatientData!=null){
-		Date dat=triagePatientData.getLastMenstrualDate();
-		if(dat!=null){
-		String da = formatterExt.format(dat);
-		model.addAttribute("da", da);
-		 }
+		model.addAttribute("referral",
+				Context.getConceptService().getConcept(referralId));
+		PatientQueueService queueService = Context
+				.getService(PatientQueueService.class);
+		OpdPatientQueue opdPatientQueue = new OpdPatientQueue();
+		if (queueId != null) {
+			opdPatientQueue = queueService.getOpdPatientQueueById(queueId);
+			SimpleDateFormat formatterExt = new SimpleDateFormat("dd-MM-yyyy");
+			TriagePatientData triagePatientData = opdPatientQueue
+					.getTriageDataId();
+			if (triagePatientData != null) {
+				Date dat = triagePatientData.getLastMenstrualDate();
+				if (dat != null) {
+					String da = formatterExt.format(dat);
+					model.addAttribute("da", da);
+				}
+			}
 		}
-	}
-		if(opdLogId!=null){
-			//OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(Context.getEncounterService().getEncounter(encounterId));
-			OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogById(opdLogId);
+		if (opdLogId != null) {
+			// OpdPatientQueueLog
+			// opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(Context.getEncounterService().getEncounter(encounterId));
+			OpdPatientQueueLog opdPatientQueueLog = queueService
+					.getOpdPatientQueueLogById(opdLogId);
 			model.addAttribute("opdPatientQueue", opdPatientQueueLog);
-		}
-		else{
+		} else {
 			model.addAttribute("opdPatientQueue", opdPatientQueue);
 		}
-		
-        Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
-		
+
+		Concept concept = Context.getConceptService().getConcept(
+				"MINOR OPERATION");
+
 		Collection<ConceptAnswer> allMinorOTProcedures = null;
 		List<Integer> id = new ArrayList<Integer>();
-		if( concept != null )
-		{
+		if (concept != null) {
 			allMinorOTProcedures = concept.getAnswers();
-			for (ConceptAnswer c: allMinorOTProcedures){
+			for (ConceptAnswer c : allMinorOTProcedures) {
 				id.add(c.getAnswerConcept().getId());
 			}
 		}
 		model.addAttribute("allMinorOTProcedures", id);
-		
-        Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
-		
+
+		Concept concept2 = Context.getConceptService().getConcept(
+				"MAJOR OPERATION");
+
 		Collection<ConceptAnswer> allMajorOTProcedures = null;
 		List<Integer> id2 = new ArrayList<Integer>();
-		if( concept2 != null )
-		{
+		if (concept2 != null) {
 			allMajorOTProcedures = concept2.getAnswers();
-			for (ConceptAnswer c: allMajorOTProcedures){
+			for (ConceptAnswer c : allMajorOTProcedures) {
 				id2.add(c.getAnswerConcept().getId());
 			}
 		}
 		model.addAttribute("allMajorOTProcedures", id2);
-		
+
 		return "module/patientdashboard/opdEntry";
 	}
-	@RequestMapping(method=RequestMethod.POST)
-	public String formSummit(OPDEntryCommand command,
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String formSummit(
+			OPDEntryCommand command,
 			HttpServletRequest request,
-			@RequestParam(value="drugOrder",required=false) String[] drugOrder,
-			@RequestParam(value="opdLogId" ,required=false) Integer opdLogId) throws Exception{
-			//@RequestParam(value="encounterId" ,required=false) Integer encounterId) throws Exception{
-		User user =Context.getAuthenticatedUser();
+			@RequestParam(value = "syptomIdList", required = false) String[] syptomIdList,
+			@RequestParam(value = "drugOrder", required = false) String[] drugOrder,
+			@RequestParam(value = "opdLogId", required = false) Integer opdLogId)
+			throws Exception {
+		// @RequestParam(value="encounterId" ,required=false) Integer
+		// encounterId) throws Exception{
+		User user = Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
-		HospitalCoreService hcs = (HospitalCoreService) Context.getService(HospitalCoreService.class);
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		HospitalCoreService hcs = (HospitalCoreService) Context
+				.getService(HospitalCoreService.class);
+		PatientQueueService queueService = Context
+				.getService(PatientQueueService.class);
+		PatientDashboardService patientDashboardService = Context
+				.getService(PatientDashboardService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
-		
+
 		// harsh 14/6/2012 setting death date to today's date and dead variable to true when "died" is selected
-		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")){
-			
+		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")) {
+
 			ConceptService conceptService = Context.getConceptService();
 			Concept causeOfDeath = conceptService.getConceptByName("NONE");
-			
+
 			patient.setDead(true);
 			patient.setDeathDate(new Date());
 			patient.setCauseOfDeath(causeOfDeath);
@@ -212,121 +249,192 @@ public class OPDEntryController {
 			patientSearch.setDead(true);
 			hcs.savePatientSearch(patientSearch);
 		}
-		
-		
+
 		Date date = new Date();
-		//create obs group only for internal referral and admit
+		// create obs group only for internal referral and admit
 		Obs obsGroup = null;
 		obsGroup = hcs.getObsGroupCurrentDate(patient.getPersonId());
 		/*
-		if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit") || (command.getInternalReferral() != null && command.getInternalReferral() > 0)){
-			if(obsGroup == null){
-				obsGroup = hcs.createObsGroup(patient, HospitalCoreConstants.PROPERTY_OBSGROUP);
+		 * if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit") ||
+		 * (command.getInternalReferral() != null &&
+		 * command.getInternalReferral() > 0)){ if(obsGroup == null){ obsGroup =
+		 * hcs.createObsGroup(patient, HospitalCoreConstants.PROPERTY_OBSGROUP);
+		 * } }
+		 */
+
+		// ===================Comment this if we want to
+		// save===========================
+		/*
+		 * if(true){ return
+		 * "redirect:/module/patientdashboard/main.htm?patientId="
+		 * +command.getPatientId(); }
+		 */
+		// ===================End Comment this if we want to
+		// save===========================
+		AdministrationService administrationService = Context
+				.getAdministrationService();
+
+		/**
+		 * Save opd info 1. Get OPD Encounter type 2. Create encounter 3. Create
+		 * Obs for each of those concept : diagnosis, procedure, internal
+		 * referral, external referral, outcome 4. Get value from the submmited
+		 * from, set them to corresponding obs 5. Set all obs to encoutner 6.
+		 * Save encounter
+		 */
+
+		GlobalProperty gpOPDEncounterType = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
+		EncounterType encounterType = Context.getEncounterService()
+				.getEncounterType(gpOPDEncounterType.getPropertyValue());
+		Encounter encounter = new Encounter();
+		Location location = new Location(1);
+		if (opdLogId != null) {
+			OpdPatientQueueLog opdPatientQueueLog = queueService
+					.getOpdPatientQueueLogById(opdLogId);
+			encounter = opdPatientQueueLog.getEncounter();
+		} else {
+			encounter.setPatient(patient);
+			encounter.setCreator(user);
+			encounter.setProvider(user);
+			encounter.setEncounterDatetime(date);
+			encounter.setEncounterType(encounterType);
+			encounter.setLocation(location);
+		}
+
+		ConceptService conceptService = Context.getConceptService();
+		GlobalProperty gpDiagnosis = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
+		GlobalProperty procedure = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
+		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		GlobalProperty investigationn = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
+		GlobalProperty internalReferral = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
+		GlobalProperty externalReferral = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
+
+		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis
+				.getPropertyValue());
+		// ghanshyam 8-july-2013 New Requirement #1963 Redesign patientdashboard
+		Concept cOtherInstructions = conceptService
+				.getConceptByName("OTHER INSTRUCTIONS");
+		Concept illnessHistory = conceptService
+				.getConceptByName("History of Present Illness");
+
+		Symptom symptom = new Symptom();
+		Question question = new Question();
+		Answer answer = new Answer();
+		for (String syptomId : syptomIdList) {
+			String sypId = request.getParameter(syptomId);
+			if (sypId != null) {
+			symptom.setEncounter(encounter);
+			symptom.setSymptomConcept(Context.getConceptService().getConcept(
+					Integer.parseInt(syptomId)));
+			symptom.setCreatedDate(new Date());
+			symptom.setCreator(Context.getAuthenticatedUser());
+			Symptom sym = patientDashboardService.saveSymptom(symptom);
+			Collection<ConceptAnswer> conceptAnswers = Context
+					.getConceptService().getConcept(Integer.parseInt(syptomId))
+					.getAnswers();
+
+			for (ConceptAnswer conceptAnswer : conceptAnswers) {
+				if (conceptAnswer.getAnswerConcept().getDatatype().isCoded()) {
+					String aa = request.getParameter(syptomId
+							+ ":"
+							+ conceptAnswer.getAnswerConcept().getConceptId()
+									.toString() + ":" + "radioOption");
+					if (aa != null) {
+						question.setSymptom(sym);
+						question.setQuestionConcept(conceptAnswer
+								.getAnswerConcept());
+						Question que = patientDashboardService
+								.saveQuestion(question);
+
+						Integer ghi = Integer.parseInt(aa);
+						answer.setQuestion(que);
+						answer.setAnswerConcept(Context.getConceptService()
+								.getConcept(ghi));
+						answer.setFreeText(null);
+						patientDashboardService.saveAnswer(answer);
+					}
+				} else {
+					String jkl = request.getParameter(syptomId
+							+ ":"
+							+ conceptAnswer.getAnswerConcept().getConceptId()
+									.toString() + ":" + "textFieldQues");
+					if (!jkl.equals("")) {
+						question.setSymptom(sym);
+						question.setQuestionConcept(conceptAnswer
+								.getAnswerConcept());
+						Question que = patientDashboardService
+								.saveQuestion(question);
+
+						answer.setQuestion(que);
+						answer.setAnswerConcept(null);
+						answer.setFreeText(jkl);
+						patientDashboardService.saveAnswer(answer);
+					}
+				}
+			  }
 			}
 		}
-		*/
-		
-		
-		//===================Comment this if we want to save===========================
-		/*if(true){
-			return "redirect:/module/patientdashboard/main.htm?patientId="+command.getPatientId();
-		}*/
-		//===================End Comment this if we want to save===========================
-		AdministrationService administrationService = Context.getAdministrationService();
-		
-		/**
-		 * Save opd info
-		 * 1. Get OPD Encounter type
-		 * 2. Create encounter
-		 * 3. Create Obs for each of those concept : diagnosis, procedure, internal referral, external referral, outcome 
-		 * 4. Get value from the submmited from, set them to corresponding obs
-		 * 5. Set all obs to encoutner
-		 * 6. Save encounter
-		 */
-		
-		GlobalProperty gpOPDEncounterType = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
-		EncounterType encounterType = Context.getEncounterService().getEncounterType(gpOPDEncounterType.getPropertyValue());
-		Encounter encounter = new Encounter();
-		Location location = new Location( 1 );
-		if(opdLogId!=null){
-			OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogById(opdLogId);
-			encounter=opdPatientQueueLog.getEncounter();
-		}
-		else{
-		encounter.setPatient(patient);
-		encounter.setCreator( user);
-		encounter.setProvider(user );
-		encounter.setEncounterDatetime( date);
-		encounter.setEncounterType(encounterType);
-		encounter.setLocation( location );
-		}
-		
-		ConceptService conceptService = Context.getConceptService();
-		GlobalProperty gpDiagnosis = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-		GlobalProperty procedure = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
-		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
-		GlobalProperty investigationn = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
-		GlobalProperty internalReferral = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
-		GlobalProperty externalReferral = administrationService.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
-		
-		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis.getPropertyValue());
-		//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
-		Concept cOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
-		Concept illnessHistory = conceptService.getConceptByName("History of Present Illness");
-		
-		if( cDiagnosis == null ){
+
+		if (cDiagnosis == null) {
 			throw new Exception("Diagnosis concept null");
 		}
-		//diagnosis
-		for( Integer cId : command.getSelectedDiagnosisList()){
+		// diagnosis
+		for (Integer cId : command.getSelectedDiagnosisList()) {
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
 			obsDiagnosis.setConcept(cDiagnosis);
 			obsDiagnosis.setValueCoded(conceptService.getConcept(cId));
-			obsDiagnosis.setCreator(user );
+			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
 			obsDiagnosis.setPatient(patient);
 			encounter.addObs(obsDiagnosis);
 		}
-		//note
-		if(StringUtils.isNotBlank(command.getNote())){
-			
+		// note
+		if (StringUtils.isNotBlank(command.getNote())) {
+
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			// ghanshyam 8-july-2013 New Requirement #1963 Redesign patient
+			// dashboard
 			obsDiagnosis.setConcept(cOtherInstructions);
 			obsDiagnosis.setValueText(command.getNote());
-			obsDiagnosis.setCreator(user );
+			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
 			obsDiagnosis.setPatient(patient);
 			encounter.addObs(obsDiagnosis);
 		}
-		
-		//illness history
-		if(StringUtils.isNotBlank(command.getHistory())){
-			
+
+		// illness history
+		if (StringUtils.isNotBlank(command.getHistory())) {
+
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			// ghanshyam 8-july-2013 New Requirement #1963 Redesign patient
+			// dashboard
 			obsDiagnosis.setConcept(illnessHistory);
 			obsDiagnosis.setValueText(command.getHistory());
-			obsDiagnosis.setCreator(user );
+			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
 			obsDiagnosis.setPatient(patient);
 			encounter.addObs(obsDiagnosis);
 		}
-		
-		
-		//procedure
-		if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
-			Concept pDiagnosis = conceptService.getConceptByName(procedure.getPropertyValue());
-			if( pDiagnosis == null ){
+
+		// procedure
+		if (!ArrayUtils.isEmpty(command.getSelectedProcedureList())) {
+			Concept pDiagnosis = conceptService.getConceptByName(procedure
+					.getPropertyValue());
+			if (pDiagnosis == null) {
 				throw new Exception("Post for procedure concept null");
 			}
-			for( Integer pId : command.getSelectedProcedureList()){
+			for (Integer pId : command.getSelectedProcedureList()) {
 				Obs obsDiagnosis = new Obs();
 				obsDiagnosis.setObsGroup(obsGroup);
 				obsDiagnosis.setConcept(pDiagnosis);
@@ -337,17 +445,19 @@ public class OPDEntryController {
 				obsDiagnosis.setPatient(patient);
 				encounter.addObs(obsDiagnosis);
 			}
-		
+
 		}
-		
-		//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
-		//investigation
-		if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
-			Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
-			if( coninvt == null ){
+
+		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send
+		// investigation orders from dashboard to billing
+		// investigation
+		if (!ArrayUtils.isEmpty(command.getSelectedInvestigationList())) {
+			Concept coninvt = conceptService.getConceptByName(investigationn
+					.getPropertyValue());
+			if (coninvt == null) {
 				throw new Exception("Investigation concept null");
 			}
-			for( Integer pId : command.getSelectedInvestigationList()){
+			for (Integer pId : command.getSelectedInvestigationList()) {
 				Obs obsInvestigation = new Obs();
 				obsInvestigation.setObsGroup(obsGroup);
 				obsInvestigation.setConcept(coninvt);
@@ -358,274 +468,297 @@ public class OPDEntryController {
 				obsInvestigation.setPatient(patient);
 				encounter.addObs(obsInvestigation);
 			}
-		
+
 		}
-		
-		//internal referral
-//		System.out.println("command.getInternalReferral(): "+command.getInternalReferral());
-		if(command.getInternalReferral() != null && command.getInternalReferral() > 0){
-			Concept cInternalReferral = conceptService.getConceptByName(internalReferral.getPropertyValue());
-			if( cInternalReferral == null ){
+
+		// internal referral
+		// System.out.println("command.getInternalReferral(): "+command.getInternalReferral());
+		if (command.getInternalReferral() != null
+				&& command.getInternalReferral() > 0) {
+			Concept cInternalReferral = conceptService
+					.getConceptByName(internalReferral.getPropertyValue());
+			if (cInternalReferral == null) {
 				throw new Exception("InternalReferral concept null");
 			}
-			
-			Concept internalReferralConcept = conceptService.getConcept(command.getInternalReferral());
+
+			Concept internalReferralConcept = conceptService.getConcept(command
+					.getInternalReferral());
 			Obs obsInternalReferral = new Obs();
 			obsInternalReferral.setObsGroup(obsGroup);
 			obsInternalReferral.setConcept(cInternalReferral);
 			obsInternalReferral.setValueCoded(internalReferralConcept);
-			obsInternalReferral.setCreator(user );
+			obsInternalReferral.setCreator(user);
 			obsInternalReferral.setDateCreated(date);
 			obsInternalReferral.setEncounter(encounter);
 			obsInternalReferral.setPatient(patient);
 			encounter.addObs(obsInternalReferral);
-			
-			
-			Concept currentOpd =conceptService.getConcept(command.getOpdId());
-			
+
+			Concept currentOpd = conceptService.getConcept(command.getOpdId());
+
 			// add this patient to the queue of the referral OPD
 			OpdPatientQueue queue = new OpdPatientQueue();
-	        queue.setPatient(patient);
-	        queue.setCreatedOn(date);
-	        queue.setBirthDate(patient.getBirthdate());
-	        queue.setPatientIdentifier(patient.getPatientIdentifier().getIdentifier());
-	        queue.setOpdConcept(internalReferralConcept);
-	        queue.setOpdConceptName(internalReferralConcept.getName().getName());
-	        if(patient.getMiddleName()!=null){
-	        queue.setPatientName(patient.getGivenName()+" "+patient.getFamilyName() + " "+ patient.getMiddleName());
-	        }
-	        else{
-	        	queue.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());	        	
-	        }
-	        queue.setReferralConcept(currentOpd);
-	        queue.setReferralConceptName(currentOpd.getName().getName());
-	        queue.setSex(patient.getGender());
-	        queue.setTriageDataId(null);
-	        queueService.saveOpdPatientQueue(queue);
-			
+			queue.setPatient(patient);
+			queue.setCreatedOn(date);
+			queue.setBirthDate(patient.getBirthdate());
+			queue.setPatientIdentifier(patient.getPatientIdentifier()
+					.getIdentifier());
+			queue.setOpdConcept(internalReferralConcept);
+			queue.setOpdConceptName(internalReferralConcept.getName().getName());
+			if (patient.getMiddleName() != null) {
+				queue.setPatientName(patient.getGivenName() + " "
+						+ patient.getFamilyName() + " "
+						+ patient.getMiddleName());
+			} else {
+				queue.setPatientName(patient.getGivenName() + " "
+						+ patient.getFamilyName());
+			}
+			queue.setReferralConcept(currentOpd);
+			queue.setReferralConceptName(currentOpd.getName().getName());
+			queue.setSex(patient.getGender());
+			queue.setTriageDataId(null);
+			queueService.saveOpdPatientQueue(queue);
+
 		}
-		
-		//external referral
-//		System.out.println("command.getExternalReferral(): "+command.getExternalReferral());
-		if(command.getExternalReferral()!= null && command.getExternalReferral() > 0 ){
-		Concept cExternalReferral = conceptService.getConceptByName(externalReferral.getPropertyValue());
-		if( cExternalReferral == null ){
-			throw new Exception("ExternalReferral concept null");
+
+		// external referral
+		// System.out.println("command.getExternalReferral(): "+command.getExternalReferral());
+		if (command.getExternalReferral() != null
+				&& command.getExternalReferral() > 0) {
+			Concept cExternalReferral = conceptService
+					.getConceptByName(externalReferral.getPropertyValue());
+			if (cExternalReferral == null) {
+				throw new Exception("ExternalReferral concept null");
+			}
+			Obs obsExternalReferral = new Obs();
+			obsExternalReferral.setObsGroup(obsGroup);
+			obsExternalReferral.setConcept(cExternalReferral);
+			obsExternalReferral.setValueCoded(conceptService.getConcept(command
+					.getExternalReferral()));
+			obsExternalReferral.setCreator(user);
+			obsExternalReferral.setDateCreated(date);
+			obsExternalReferral.setEncounter(encounter);
+			obsExternalReferral.setPatient(patient);
+			encounter.addObs(obsExternalReferral);
 		}
-		Obs obsExternalReferral = new Obs();
-		obsExternalReferral.setObsGroup(obsGroup);
-		obsExternalReferral.setConcept(cExternalReferral);
-		obsExternalReferral.setValueCoded(conceptService.getConcept(command.getExternalReferral()));
-		obsExternalReferral.setCreator(user );
-		obsExternalReferral.setDateCreated(date);
-		obsExternalReferral.setEncounter(encounter);
-		obsExternalReferral.setPatient(patient);
-		encounter.addObs(obsExternalReferral);
-		}
-		
-		
-		// TODO : out come 
-		
-		Concept cOutcome = conceptService.getConceptByName(administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME));
-		if( cOutcome == null ){
+
+		// TODO : out come
+
+		Concept cOutcome = conceptService
+				.getConceptByName(administrationService
+						.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME));
+		if (cOutcome == null) {
 			throw new Exception("Visit Outcome concept =  null");
 		}
 		Obs obsOutcome = new Obs();
 		obsOutcome.setObsGroup(obsGroup);
 		obsOutcome.setConcept(cOutcome);
-		
+
 		try {
 			obsOutcome.setValueText(command.getRadio_f());
-			//TODO if
-			if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")){
-				obsOutcome.setValueDatetime(Context.getDateFormat().parse(command.getDateFollowUp()));
+			// TODO if
+			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")) {
+				obsOutcome.setValueDatetime(Context.getDateFormat().parse(
+						command.getDateFollowUp()));
 			}
-			
-			if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")){
-				//System.out.println("command.getIpdWard(): "+command.getIpdWard());
-				obsOutcome.setValueCoded(conceptService.getConcept(command.getIpdWard()));
-				//Get ipd ward that patient come .
+
+			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")) {
+				// System.out.println("command.getIpdWard(): "+command.getIpdWard());
+				obsOutcome.setValueCoded(conceptService.getConcept(command
+						.getIpdWard()));
+				// Get ipd ward that patient come .
 				/*
-				Concept ipdWard = conceptService.getConceptByName(administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_IPDWARD));
-				System.out.println("ipdWard: "+ipdWard);
-				if( ipdWard == null ){
-					throw new Exception("Ipd ward concept =  null");
-				}
-				Obs obsIpdWard = new Obs();
-				obsIpdWard.setConcept(ipdWard);
-				obsIpdWard.setValueCoded(conceptService.getConcept(command.getIpdWard()));
-				obsIpdWard.setCreator(user );
-				obsIpdWard.setDateCreated(new Date());
-				obsIpdWard.setPatient(patient);
-				obsIpdWard.setEncounter(encounter);
-				encounter.addObs(obsIpdWard);*/
-				//call service from ipd queue and add this patient to ipd queue
+				 * Concept ipdWard =
+				 * conceptService.getConceptByName(administrationService
+				 * .getGlobalProperty
+				 * (PatientDashboardConstants.PROPERTY_IPDWARD));
+				 * System.out.println("ipdWard: "+ipdWard); if( ipdWard == null
+				 * ){ throw new Exception("Ipd ward concept =  null"); } Obs
+				 * obsIpdWard = new Obs(); obsIpdWard.setConcept(ipdWard);
+				 * obsIpdWard
+				 * .setValueCoded(conceptService.getConcept(command.getIpdWard
+				 * ())); obsIpdWard.setCreator(user );
+				 * obsIpdWard.setDateCreated(new Date());
+				 * obsIpdWard.setPatient(patient);
+				 * obsIpdWard.setEncounter(encounter);
+				 * encounter.addObs(obsIpdWard);
+				 */
+				// call service from ipd queue and add this patient to ipd queue
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		obsOutcome.setCreator(user );
+		obsOutcome.setCreator(user);
 		obsOutcome.setDateCreated(date);
 		obsOutcome.setPatient(patient);
 		obsOutcome.setEncounter(encounter);
 		encounter.addObs(obsOutcome);
 		Context.getEncounterService().saveEncounter(encounter);
-		
-		
-		//delele opd queue , create opd log queue
+
+		// delele opd queue , create opd log queue
 		OpdPatientQueueLog opdPatientLog;
-		if(command.getQueueId()!=null){
-		OpdPatientQueue queue = queueService.getOpdPatientQueueById(command.getQueueId());
-		OpdPatientQueueLog queueLog = new OpdPatientQueueLog();		
-		queueLog.setOpdConcept(queue.getOpdConcept());
-		queueLog.setOpdConceptName(queue.getOpdConceptName());
-		queueLog.setPatient(queue.getPatient());
-        queueLog.setCreatedOn(queue.getCreatedOn());
-        queueLog.setPatientIdentifier(queue.getPatientIdentifier());
-        queueLog.setPatientName(queue.getPatientName());
-        queueLog.setReferralConcept(queue.getReferralConcept());
-        queueLog.setReferralConceptName(queue.getReferralConceptName());
-        queueLog.setSex(queue.getSex());
-        queueLog.setUser(Context.getAuthenticatedUser());
-        queueLog.setStatus("processed");
-        queueLog.setBirthDate(patient.getBirthdate());
-        queueLog.setEncounter(encounter);
-        if(queue.getTriageDataId()!=null){
-        queueLog.setTriageDataId(queue.getTriageDataId());
-        }
-        else{
-        queueLog.setTriageDataId(null);	
-        }
-        opdPatientLog = queueService.saveOpdPatientQueueLog(queueLog);
-        queueService.deleteOpdPatientQueue(queue);
-        //done queue
-		
-		if(StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")){
-			
-			opdPatientLog.setVisitOutCome("admit");
-			queueService.saveOpdPatientQueueLog(opdPatientLog);
-			IpdService  ipdService = (IpdService)Context.getService(IpdService.class);
-			IpdPatientAdmission patientAdmission = new IpdPatientAdmission();
-			patientAdmission.setAdmissionDate(date);
-			patientAdmission.setAdmissionWard(conceptService.getConcept(command.getIpdWard()));
-			patientAdmission.setBirthDate(patient.getBirthdate());
-			patientAdmission.setGender(patient.getGender());
-			patientAdmission.setOpdAmittedUser(user);
-			patientAdmission.setOpdLog(opdPatientLog);
-			patientAdmission.setPatient(patient);
-			patientAdmission.setPatientIdentifier(patient.getPatientIdentifier().getIdentifier());
-			if(patient.getMiddleName()!=null){
-			patientAdmission.setPatientName(patient.getGivenName()+" "+patient.getFamilyName() + " "+ patient.getMiddleName());
+		if (command.getQueueId() != null) {
+			OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
+					.getQueueId());
+			OpdPatientQueueLog queueLog = new OpdPatientQueueLog();
+			queueLog.setOpdConcept(queue.getOpdConcept());
+			queueLog.setOpdConceptName(queue.getOpdConceptName());
+			queueLog.setPatient(queue.getPatient());
+			queueLog.setCreatedOn(queue.getCreatedOn());
+			queueLog.setPatientIdentifier(queue.getPatientIdentifier());
+			queueLog.setPatientName(queue.getPatientName());
+			queueLog.setReferralConcept(queue.getReferralConcept());
+			queueLog.setReferralConceptName(queue.getReferralConceptName());
+			queueLog.setSex(queue.getSex());
+			queueLog.setUser(Context.getAuthenticatedUser());
+			queueLog.setStatus("processed");
+			queueLog.setBirthDate(patient.getBirthdate());
+			queueLog.setEncounter(encounter);
+			if (queue.getTriageDataId() != null) {
+				queueLog.setTriageDataId(queue.getTriageDataId());
+			} else {
+				queueLog.setTriageDataId(null);
 			}
-			else{
-				patientAdmission.setPatientName(patient.getGivenName()+" "+ patient.getFamilyName());
+			opdPatientLog = queueService.saveOpdPatientQueueLog(queueLog);
+			queueService.deleteOpdPatientQueue(queue);
+			// done queue
+
+			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")) {
+
+				opdPatientLog.setVisitOutCome("admit");
+				queueService.saveOpdPatientQueueLog(opdPatientLog);
+				IpdService ipdService = (IpdService) Context
+						.getService(IpdService.class);
+				IpdPatientAdmission patientAdmission = new IpdPatientAdmission();
+				patientAdmission.setAdmissionDate(date);
+				patientAdmission.setAdmissionWard(conceptService
+						.getConcept(command.getIpdWard()));
+				patientAdmission.setBirthDate(patient.getBirthdate());
+				patientAdmission.setGender(patient.getGender());
+				patientAdmission.setOpdAmittedUser(user);
+				patientAdmission.setOpdLog(opdPatientLog);
+				patientAdmission.setPatient(patient);
+				patientAdmission.setPatientIdentifier(patient
+						.getPatientIdentifier().getIdentifier());
+				if (patient.getMiddleName() != null) {
+					patientAdmission.setPatientName(patient.getGivenName()
+							+ " " + patient.getFamilyName() + " "
+							+ patient.getMiddleName());
+				} else {
+					patientAdmission.setPatientName(patient.getGivenName()
+							+ " " + patient.getFamilyName());
+				}
+				patientAdmission.setAcceptStatus(0);
+				patientAdmission = ipdService
+						.saveIpdPatientAdmission(patientAdmission);
 			}
-			patientAdmission.setAcceptStatus(0);
-			patientAdmission = ipdService.saveIpdPatientAdmission(patientAdmission);
+		} else {
+			opdPatientLog = queueService.getOpdPatientQueueLogById(command
+					.getOpdLogId());
 		}
-		}
-		else{
-			opdPatientLog = queueService.getOpdPatientQueueLogById(command.getOpdLogId());
-		}
-		
-		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
-		BillingService billingService = Context.getService(BillingService.class);
-		
-		IpdService ipdService=Context.getService(IpdService.class);
-		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command.getPatientId());
+
+		BillingService billingService = Context
+				.getService(BillingService.class);
+
+		IpdService ipdService = Context.getService(IpdService.class);
+		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command
+				.getPatientId());
 		if (admitted != null) {
 			IndoorPatientServiceBill bill = new IndoorPatientServiceBill();
-			
+
 			bill.setCreatedDate(new Date());
 			bill.setPatient(patient);
 			bill.setCreator(Context.getAuthenticatedUser());
-			
+
 			IndoorPatientServiceBillItem item;
 			BillableService service;
 			BigDecimal amount = new BigDecimal(0);
-			
-			Integer[] al1=command.getSelectedProcedureList();
-			Integer[] al2=command.getSelectedInvestigationList();	
-			Integer[] merge=null;
-			if(al1!=null && al2!=null){
-			merge = new Integer[al1.length + al2.length];
-			int j = 0, k = 0, l = 0;
-			int max = Math.max(al1.length, al2.length);
-			for (int i = 0; i < max; i++) {
-		        if (j < al1.length)
-		            merge[l++] = al1[j++];
-		        if (k < al2.length)
-		            merge[l++] = al2[k++];
-		    }
+
+			Integer[] al1 = command.getSelectedProcedureList();
+			Integer[] al2 = command.getSelectedInvestigationList();
+			Integer[] merge = null;
+			if (al1 != null && al2 != null) {
+				merge = new Integer[al1.length + al2.length];
+				int j = 0, k = 0, l = 0;
+				int max = Math.max(al1.length, al2.length);
+				for (int i = 0; i < max; i++) {
+					if (j < al1.length)
+						merge[l++] = al1[j++];
+					if (k < al2.length)
+						merge[l++] = al2[k++];
+				}
+			} else if (al1 != null) {
+				merge = command.getSelectedProcedureList();
+			} else if (al2 != null) {
+				merge = command.getSelectedInvestigationList();
 			}
-			else if(al1!=null){
-				merge=command.getSelectedProcedureList();	
+
+			if (merge != null) {
+				for (Integer iId : merge) {
+					Concept c = conceptService.getConcept(iId);
+					service = billingService.getServiceByConceptId(c
+							.getConceptId());
+					amount = service.getPrice();
+					item = new IndoorPatientServiceBillItem();
+					item.setCreatedDate(new Date());
+					item.setName(service.getName());
+					item.setIndoorPatientServiceBill(bill);
+					item.setQuantity(1);
+					item.setService(service);
+					item.setUnitPrice(service.getPrice());
+					item.setAmount(amount);
+					item.setActualAmount(amount);
+					bill.addBillItem(item);
+				}
+				bill.setAmount(amount);
+				bill.setActualAmount(amount);
+				bill.setEncounter(admitted.getPatientAdmissionLog()
+						.getIpdEncounter());
+				bill = billingService.saveIndoorPatientServiceBill(bill);
+
+				IndoorPatientServiceBill indoorPatientServiceBill = billingService
+						.getIndoorPatientServiceBillById(bill
+								.getIndoorPatientServiceBillId());
+				if (indoorPatientServiceBill != null) {
+					billingService
+							.saveBillEncounterAndOrderForIndoorPatient(indoorPatientServiceBill);
+				}
 			}
-			else if(al2!=null){
-				merge=command.getSelectedInvestigationList();	
-			}
-			
-			if(merge!=null){
-			for( Integer iId : merge){
-			Concept c=conceptService.getConcept(iId);
-			service = billingService.getServiceByConceptId(c.getConceptId());
-			amount=service.getPrice();
-			item = new IndoorPatientServiceBillItem();
-			item.setCreatedDate(new Date());
-			item.setName(service.getName());
-			item.setIndoorPatientServiceBill(bill);
-			item.setQuantity(1);
-			item.setService(service);
-			item.setUnitPrice(service.getPrice());
-			item.setAmount(amount);
-			item.setActualAmount(amount);
-			bill.addBillItem(item);
-            }
-			bill.setAmount(amount);
-			bill.setActualAmount(amount);
-			bill.setEncounter(admitted.getPatientAdmissionLog().getIpdEncounter());	
-			bill = billingService.saveIndoorPatientServiceBill(bill);
-			
-			IndoorPatientServiceBill indoorPatientServiceBill = billingService.getIndoorPatientServiceBillById(bill.getIndoorPatientServiceBillId());
-			if (indoorPatientServiceBill != null) {
-				billingService.saveBillEncounterAndOrderForIndoorPatient(indoorPatientServiceBill);
-			}
-		  }
-			
-			
-			if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
-				Concept conpro = conceptService.getConceptByName(procedure.getPropertyValue());
-				if( conpro == null ){
+
+			if (!ArrayUtils.isEmpty(command.getSelectedProcedureList())) {
+				Concept conpro = conceptService.getConceptByName(procedure
+						.getPropertyValue());
+				if (conpro == null) {
 					throw new Exception("Post for procedure concept null");
 				}
-				Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
+				Concept concept = Context.getConceptService().getConcept(
+						"MINOR OPERATION");
 				Collection<ConceptAnswer> allMinorOTProcedures = null;
 				List<Integer> id = new ArrayList<Integer>();
-				if( concept != null )
-				{
-				allMinorOTProcedures = concept.getAnswers();
-				for (ConceptAnswer c: allMinorOTProcedures){
-				id.add(c.getAnswerConcept().getId());
+				if (concept != null) {
+					allMinorOTProcedures = concept.getAnswers();
+					for (ConceptAnswer c : allMinorOTProcedures) {
+						id.add(c.getAnswerConcept().getId());
+					}
 				}
-				}
-				
-				
-				Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
+
+				Concept concept2 = Context.getConceptService().getConcept(
+						"MAJOR OPERATION");
 				Collection<ConceptAnswer> allMajorOTProcedures = null;
 				List<Integer> id2 = new ArrayList<Integer>();
-				if( concept2 != null )
-				{
-				allMajorOTProcedures = concept2.getAnswers();
-				for (ConceptAnswer c: allMajorOTProcedures){
-				id2.add(c.getAnswerConcept().getId());
+				if (concept2 != null) {
+					allMajorOTProcedures = concept2.getAnswers();
+					for (ConceptAnswer c : allMajorOTProcedures) {
+						id2.add(c.getAnswerConcept().getId());
+					}
 				}
-				}
-				
+
 				int conId;
-				for( Integer pId : command.getSelectedProcedureList()){
-					BillableService billableService = billingService.getServiceByConceptId(pId);
-					String OTscheduleDate=request.getParameter(pId.toString());
+				for (Integer pId : command.getSelectedProcedureList()) {
+					BillableService billableService = billingService
+							.getServiceByConceptId(pId);
+					String OTscheduleDate = request
+							.getParameter(pId.toString());
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -636,58 +769,62 @@ public class OPDEntryController {
 					opdTestOrder.setCreatedOn(date);
 					opdTestOrder.setBillingStatus(1);
 					opdTestOrder.setBillableService(billableService);
-					
+
 					conId = conceptService.getConcept(pId).getId();
 					if (id.contains(conId)) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					Date scheduleDate = sdf.parse(OTscheduleDate);
-					opdTestOrder.setScheduleDate(scheduleDate);
-					}
-					
-					if (id2.contains(conId)) {
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"dd/MM/yyyy");
 						Date scheduleDate = sdf.parse(OTscheduleDate);
 						opdTestOrder.setScheduleDate(scheduleDate);
-						}
+					}
+
+					if (id2.contains(conId)) {
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"dd/MM/yyyy");
+						Date scheduleDate = sdf.parse(OTscheduleDate);
+						opdTestOrder.setScheduleDate(scheduleDate);
+					}
 					opdTestOrder.setIndoorStatus(1);
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 				}
-			
+
 			}
-			
-		 }
-		else{
-			if(!ArrayUtils.isEmpty(command.getSelectedProcedureList())){
-				Concept conpro = conceptService.getConceptByName(procedure.getPropertyValue());
-				if( conpro == null ){
+
+		} else {
+			if (!ArrayUtils.isEmpty(command.getSelectedProcedureList())) {
+				Concept conpro = conceptService.getConceptByName(procedure
+						.getPropertyValue());
+				if (conpro == null) {
 					throw new Exception("Post for procedure concept null");
 				}
-				Concept concept = Context.getConceptService().getConcept("MINOR OPERATION");
+				Concept concept = Context.getConceptService().getConcept(
+						"MINOR OPERATION");
 				Collection<ConceptAnswer> allMinorOTProcedures = null;
 				List<Integer> id = new ArrayList<Integer>();
-				if( concept != null )
-				{
-				allMinorOTProcedures = concept.getAnswers();
-				for (ConceptAnswer c: allMinorOTProcedures){
-				id.add(c.getAnswerConcept().getId());
+				if (concept != null) {
+					allMinorOTProcedures = concept.getAnswers();
+					for (ConceptAnswer c : allMinorOTProcedures) {
+						id.add(c.getAnswerConcept().getId());
+					}
 				}
-				}
-				
-				Concept concept2 = Context.getConceptService().getConcept("MAJOR OPERATION");
+
+				Concept concept2 = Context.getConceptService().getConcept(
+						"MAJOR OPERATION");
 				Collection<ConceptAnswer> allMajorOTProcedures = null;
 				List<Integer> id2 = new ArrayList<Integer>();
-				if( concept2 != null )
-				{
-				allMajorOTProcedures = concept2.getAnswers();
-				for (ConceptAnswer c: allMajorOTProcedures){
-				id2.add(c.getAnswerConcept().getId());
+				if (concept2 != null) {
+					allMajorOTProcedures = concept2.getAnswers();
+					for (ConceptAnswer c : allMajorOTProcedures) {
+						id2.add(c.getAnswerConcept().getId());
+					}
 				}
-				}
-				
+
 				int conId;
-				for( Integer pId : command.getSelectedProcedureList()){
-					BillableService billableService = billingService.getServiceByConceptId(pId);
-					String OTscheduleDate=request.getParameter(pId.toString());
+				for (Integer pId : command.getSelectedProcedureList()) {
+					BillableService billableService = billingService
+							.getServiceByConceptId(pId);
+					String OTscheduleDate = request
+							.getParameter(pId.toString());
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -697,31 +834,35 @@ public class OPDEntryController {
 					opdTestOrder.setCreator(user);
 					opdTestOrder.setCreatedOn(date);
 					opdTestOrder.setBillableService(billableService);
-					
+
 					conId = conceptService.getConcept(pId).getId();
 					if (id.contains(conId)) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					Date scheduleDate = sdf.parse(OTscheduleDate);
-					opdTestOrder.setScheduleDate(scheduleDate);
-					}
-					
-					if (id2.contains(conId)) {
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"dd/MM/yyyy");
 						Date scheduleDate = sdf.parse(OTscheduleDate);
 						opdTestOrder.setScheduleDate(scheduleDate);
-						}
+					}
+
+					if (id2.contains(conId)) {
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"dd/MM/yyyy");
+						Date scheduleDate = sdf.parse(OTscheduleDate);
+						opdTestOrder.setScheduleDate(scheduleDate);
+					}
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 				}
-			
+
 			}
-			
-			if(!ArrayUtils.isEmpty(command.getSelectedInvestigationList())){
-				Concept coninvt= conceptService.getConceptByName(investigationn.getPropertyValue());
-				if( coninvt == null ){
+
+			if (!ArrayUtils.isEmpty(command.getSelectedInvestigationList())) {
+				Concept coninvt = conceptService
+						.getConceptByName(investigationn.getPropertyValue());
+				if (coninvt == null) {
 					throw new Exception("Investigation concept null");
 				}
-				for( Integer iId : command.getSelectedInvestigationList()){
-					BillableService billableService = billingService.getServiceByConceptId(iId);
+				for (Integer iId : command.getSelectedInvestigationList()) {
+					BillableService billableService = billingService
+							.getServiceByConceptId(iId);
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -733,51 +874,54 @@ public class OPDEntryController {
 					opdTestOrder.setBillableService(billableService);
 					opdTestOrder.setScheduleDate(date);
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
-				}	
-		   }
-		
+				}
+			}
+
 		}
-		
+
 		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
 		Integer formulationId;
 		Integer frequencyId;
 		Integer noOfDays;
 		String comments;
-		if(drugOrder!=null){
-		for (String drugName : drugOrder) {
-			InventoryCommonService inventoryCommonService = Context.getService(InventoryCommonService.class);
-			InventoryDrug inventoryDrug = inventoryCommonService.getDrugByName(drugName);
-			if(inventoryDrug!=null){
-			formulationId = Integer.parseInt(request.getParameter(drugName
-					+ "_formulationId"));
-			frequencyId = Integer.parseInt(request.getParameter(drugName
-					+ "_frequencyId"));
-			noOfDays = Integer.parseInt(request.getParameter(drugName
-					+ "_noOfDays"));
-			comments = request.getParameter(drugName + "_comments");
-			InventoryDrugFormulation inventoryDrugFormulation = inventoryCommonService.getDrugFormulationById(formulationId);
-			Concept freCon = conceptService.getConcept(frequencyId);
-			
-			OpdDrugOrder opdDrugOrder = new OpdDrugOrder();
-			opdDrugOrder.setPatient(patient);
-			opdDrugOrder.setEncounter(encounter);
-			opdDrugOrder.setInventoryDrug(inventoryDrug);
-			opdDrugOrder.setInventoryDrugFormulation(inventoryDrugFormulation);
-			opdDrugOrder.setFrequency(freCon);
-			opdDrugOrder.setNoOfDays(noOfDays);
-			opdDrugOrder.setComments(comments);
-			opdDrugOrder.setCreator(user);
-			opdDrugOrder.setCreatedOn(date);
-			patientDashboardService.saveOrUpdateOpdDrugOrder(opdDrugOrder);
+		if (drugOrder != null) {
+			for (String drugName : drugOrder) {
+				InventoryCommonService inventoryCommonService = Context
+						.getService(InventoryCommonService.class);
+				InventoryDrug inventoryDrug = inventoryCommonService
+						.getDrugByName(drugName);
+				if (inventoryDrug != null) {
+					formulationId = Integer.parseInt(request
+							.getParameter(drugName + "_formulationId"));
+					frequencyId = Integer.parseInt(request
+							.getParameter(drugName + "_frequencyId"));
+					noOfDays = Integer.parseInt(request.getParameter(drugName
+							+ "_noOfDays"));
+					comments = request.getParameter(drugName + "_comments");
+					InventoryDrugFormulation inventoryDrugFormulation = inventoryCommonService
+							.getDrugFormulationById(formulationId);
+					Concept freCon = conceptService.getConcept(frequencyId);
+
+					OpdDrugOrder opdDrugOrder = new OpdDrugOrder();
+					opdDrugOrder.setPatient(patient);
+					opdDrugOrder.setEncounter(encounter);
+					opdDrugOrder.setInventoryDrug(inventoryDrug);
+					opdDrugOrder
+							.setInventoryDrugFormulation(inventoryDrugFormulation);
+					opdDrugOrder.setFrequency(freCon);
+					opdDrugOrder.setNoOfDays(noOfDays);
+					opdDrugOrder.setComments(comments);
+					opdDrugOrder.setCreator(user);
+					opdDrugOrder.setCreatedOn(date);
+					patientDashboardService
+							.saveOrUpdateOpdDrugOrder(opdDrugOrder);
+				}
 			}
-		  }
 		}
-		
-		return "redirect:/module/patientqueue/main.htm?opdId="+opdPatientLog.getOpdConcept().getId();
-		
+
+		return "redirect:/module/patientqueue/main.htm?opdId="
+				+ opdPatientLog.getOpdConcept().getId();
+
 	}
-	
-	
-	
-	
+
 }

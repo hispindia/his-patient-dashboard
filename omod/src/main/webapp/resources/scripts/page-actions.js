@@ -59,6 +59,32 @@ var CHECK =
 				if( selected == 0 ){
 					// OPD ENTRY FORM
 				 	
+					jQuery("#symptom").autocomplete('autoCompleteSymptom.htm', {
+						delay:1000,
+						scroll: true,
+						 parse: function(xml){
+				                var results = [];
+				                $(xml).find('item').each(function() {
+				                    var text = $.trim($(this).find('text').text());
+				                    var value = $.trim($(this).find('value').text());
+				                    results[results.length] = { 'data': { text: text, value: value },
+				                        'result': text, 'value': value
+				                    };
+				                });
+				                return results;
+
+						 },
+						formatItem: function(data) {
+							  return data.text;
+						},
+						formatResult: function(data) {
+						      return data.text;
+						}
+						  
+						}).result(function(event, item) {
+							DASHBOARD.onChangeDiagnosis('symptom',item.value, item.text);
+						});
+					
 					jQuery("#diagnosis").autocomplete('autoCompleteDiagnosis.htm', {
 						delay:1000,
 						scroll: true,
@@ -184,6 +210,7 @@ var CHECK =
 								rules : 
 								{
 								
+									"selectedSymptomList" : { required : true},
 									"selectedDiagnosisList" : { required : true},
 									"radio_f" : { required : true},
 									"dateFollowUp" : {
@@ -238,6 +265,32 @@ var CHECK =
 						"selectedDiagnosisList" : { required : true},
 					}
 				});
+				
+		jQuery("#symptom").autocomplete('autoCompleteSymptom.htm', {
+			delay:1000,
+			scroll: true,
+			 parse: function(xml){
+	                var results = [];
+	                $(xml).find('item').each(function() {
+	                    var text = $.trim($(this).find('text').text());
+	                    var value = $.trim($(this).find('value').text());
+	                    results[results.length] = { 'data': { text: text, value: value },
+	                        'result': text, 'value': value
+	                    };
+	                });
+	                return results;
+
+			 },
+			formatItem: function(data) {
+				  return data.text;
+			},
+			formatResult: function(data) {
+			      return data.text;
+			}
+			  
+			}).result(function(event, item) {
+				DASHBOARD.onChangeDiagnosis('symptom',item.value, item.text);
+			});
 		
 		jQuery("#diagnosis").autocomplete('autoCompleteDiagnosis.htm', {
 			delay:1000,

@@ -154,6 +154,59 @@ function showSchedule(){
 var url = "#TB_inline?height=400&width=400&inlineId=scheduleDiv";
 tb_show("Schedule the procedues",url,false);
 }
+
+function getQuestion(){
+var selLen = selectedSymptomList.length;
+var i;
+var selectedSymptom = new Array();
+var dat1;
+var abc="";
+for(i=selLen-1; i>=0; i--){
+var dat1=selectedSymptomList[i].value;
+var n = dat1.toString(); 
+selectedSymptom.push(n);
+abc = abc.concat(n);
+abc = abc.concat(",");
+}
+jQuery.ajax({
+			type : "GET",	
+			url : getContextPath() + "/module/patientdashboard/getQuestion.htm",
+			data : ({
+				selectedSymptom			: abc
+			}),
+			success : function(data) {
+				jQuery("#questionDiv").html(data);	
+			}
+			});
+}
+
+function removeSymptom(){
+//alert("llllllllllllllllllllll");
+//$('#tableSchedulee').empty();
+//$('#scheduleDivv').empty();
+var selLen = selectedSymptomList.length;
+var i;
+for(i=selLen-1; i>=0; i--){
+var dat1=selectedSymptomList[i].value;
+var splts=dat1.toString();
+var spltswhs="#".concat(splts); 
+$('spltswhs').remove();
+}
+}
+
+function viewQuestion(){
+var url = "#TB_inline?height=500&width=1000&inlineId=questionDiv";
+tb_show("View Question",url,false);
+}
+</script>
+<script type="text/javascript">
+// get context path in order to build controller url
+	function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
@@ -189,6 +242,52 @@ tb_show("Schedule the procedues",url,false);
 							class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input" />
 						</td>
 					</tr>
+					
+					
+					<tr>
+						<td colspan="3"><strong>Symptom:</strong><em>*</em>
+							<input
+							class="ui-autocomplete-input ui-widget-content ui-corner-all"
+							id="symptom" title="${opd.conceptId}" style="width: 460px"
+							name="symptom" /></td>
+					</tr>
+					<tr>
+						<td>
+							<!-- List of all available DataElements -->
+							<div id="divAvailableSymptomList">
+								<select size="4" style="width: 550px"
+									id="availableSymptomList" name="availableSymptomList"
+									multiple="multiple" style="min-width:25em;height:10em"
+									ondblclick="moveSelectedById( 'availableSymptomList', 'selectedSymptomList');getQuestion();">
+									<c:forEach items="${symptomList}" var="symptom">
+										<option value="${symptom.id}">${symptom.name}</option>
+									</c:forEach>
+								</select>
+							</div></td>
+						<td><input type="button" value="&gt;"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							style="width: 50px"
+							onclick="moveSelectedById( 'availableSymptomList', 'selectedSymptomisList');" /><br />
+							<input type="button" value="&lt;"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							style="width: 50px"
+							onclick="moveSelectedById( 'selectedSymptomList', 'availableSymptomList');" />
+						</td>
+						<td>
+							<!-- List of all selected DataElements --> <select
+							id="selectedSymptomList" size="4" style="width: 550px"
+							name="selectedSymptomList" multiple="multiple"
+							style="min-width:25em;height:10em"
+							ondblclick="moveSelectedById( 'selectedSymptomList', 'availableSymptomList' );removeSymptom();">
+						</select></td>
+						<td>
+						<input type="button"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									value="View Question" onclick="viewQuestion();"/>
+							</td>
+					</tr>
+					
+					
 					<tr>
 						<td colspan="3"><strong>Provisional Diagnosis:</strong><em>*</em>
 							<input
@@ -580,6 +679,10 @@ tb_show("Schedule the procedues",url,false);
 			</tr>
 		</div>
 	</div>
+<div id="questionDiv" style="visibility:hidden;">
+<table id="tableQuestion">
+</table>
+</div>
 <div id="scheduleDiv" style="visibility:hidden;">
 <table id="tableSchedule">
 </table>

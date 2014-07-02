@@ -23,6 +23,26 @@ DASHBOARD={
 		{
 			jQuery(container).load(url);
 		},
+		onChangeSymptom : function(id)
+		{
+			var text = jQuery("#"+id).val();
+			if(text != null && text != ''){
+				if(SESSION.checkSession()){
+					var data = jQuery.ajax(
+							{
+								type:"GET"
+								,url: "comboboxSymptom.htm"
+								,data: ({text: text})	
+								,async: false
+								, cache : false
+							}).responseText;
+					if(data != undefined  && data != null && data != ''){
+						jQuery("#divAvailableSymptomList").html("");
+						jQuery("#divAvailableSymptomList").html(data);
+					}
+				}
+			}
+		},
 		onChangeDianosis : function(id)
 		{
 			var text = jQuery("#"+id).val();
@@ -87,6 +107,9 @@ DASHBOARD={
 		},
 		
 		submitOpdEntry : function(){
+			    jQuery('#selectedSymptomList option').each(function(i) {  
+					 jQuery(this).attr("selected", "selected");  
+				}); 
 				jQuery('#selectedDiagnosisList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
@@ -97,7 +120,7 @@ DASHBOARD={
 				jQuery('#selectedInvestigationList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
-				jQuery("#opdEntryForm").submit();
+				//jQuery("#opdEntryForm").submit();
 		},
 		detailClinical : function(id)
 		{
@@ -119,6 +142,44 @@ DASHBOARD={
 		},
 		onChangeDiagnosis : function(container, id, name)
 		{
+			if(container == 'symptom'){
+				var exists = false;
+				jQuery('#selectedSymptomList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				if(exists){
+					alert('The symptom has already been selected');
+					return false;
+				}
+				exists = false;
+				jQuery('#availableSymptomList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				jQuery("#symptom").val("");
+				if(exists){
+					jQuery("#availableSymptomList option[value=" +id+ "]").appendTo("#selectedSymptomList");
+					jQuery("#availableSymptomList option[value=" +id+ "]").remove();
+					getQuestion();
+				}else{
+					jQuery('#selectedSymptomList').append('<option value="' + id + '">' + name + '</option>');
+					getQuestion();
+					if(confirm("Do you want also add this symptom to opd symptom?"))
+					{
+						jQuery.ajax({
+							  type: 'POST',
+							  url: 'addConceptToWard.htm',
+							  data: {opdId: jQuery("#"+container).attr("title"), conceptId: id, typeConcept: 4}
+							});
+					}
+				}
+			}
+			
 			if(container == 'diagnosis'){
 				
 				var exists = false;
@@ -278,6 +339,9 @@ ADMITTED = {
 			tb_show("Final Result",url,false);
 		},
 		submitIpdFinalResult : function(){
+		    jQuery('#selectedSymptomList option').each(function(i) {  
+				 jQuery(this).attr("selected", "selected");  
+			}); 
 			jQuery('#selectedDiagnosisList option').each(function(i) {  
 				 jQuery(this).attr("selected", "selected");  
 			}); 
