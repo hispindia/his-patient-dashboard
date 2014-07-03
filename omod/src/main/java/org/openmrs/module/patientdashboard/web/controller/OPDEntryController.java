@@ -322,64 +322,6 @@ public class OPDEntryController {
 		Concept illnessHistory = conceptService
 				.getConceptByName("History of Present Illness");
 
-		Symptom symptom = new Symptom();
-		Question question = new Question();
-		Answer answer = new Answer();
-		for (String syptomId : syptomIdList) {
-			String sypId = request.getParameter(syptomId);
-			if (sypId != null) {
-			symptom.setEncounter(encounter);
-			symptom.setSymptomConcept(Context.getConceptService().getConcept(
-					Integer.parseInt(syptomId)));
-			symptom.setCreatedDate(new Date());
-			symptom.setCreator(Context.getAuthenticatedUser());
-			Symptom sym = patientDashboardService.saveSymptom(symptom);
-			Collection<ConceptAnswer> conceptAnswers = Context
-					.getConceptService().getConcept(Integer.parseInt(syptomId))
-					.getAnswers();
-
-			for (ConceptAnswer conceptAnswer : conceptAnswers) {
-				if (conceptAnswer.getAnswerConcept().getDatatype().isCoded()) {
-					String aa = request.getParameter(syptomId
-							+ ":"
-							+ conceptAnswer.getAnswerConcept().getConceptId()
-									.toString() + ":" + "radioOption");
-					if (aa != null) {
-						question.setSymptom(sym);
-						question.setQuestionConcept(conceptAnswer
-								.getAnswerConcept());
-						Question que = patientDashboardService
-								.saveQuestion(question);
-
-						Integer ghi = Integer.parseInt(aa);
-						answer.setQuestion(que);
-						answer.setAnswerConcept(Context.getConceptService()
-								.getConcept(ghi));
-						answer.setFreeText(null);
-						patientDashboardService.saveAnswer(answer);
-					}
-				} else {
-					String jkl = request.getParameter(syptomId
-							+ ":"
-							+ conceptAnswer.getAnswerConcept().getConceptId()
-									.toString() + ":" + "textFieldQues");
-					if (!jkl.equals("")) {
-						question.setSymptom(sym);
-						question.setQuestionConcept(conceptAnswer
-								.getAnswerConcept());
-						Question que = patientDashboardService
-								.saveQuestion(question);
-
-						answer.setQuestion(que);
-						answer.setAnswerConcept(null);
-						answer.setFreeText(jkl);
-						patientDashboardService.saveAnswer(answer);
-					}
-				}
-			  }
-			}
-		}
-
 		if (cDiagnosis == null) {
 			throw new Exception("Diagnosis concept null");
 		}
@@ -916,6 +858,65 @@ public class OPDEntryController {
 					patientDashboardService
 							.saveOrUpdateOpdDrugOrder(opdDrugOrder);
 				}
+			}
+		}
+		
+		//symptom
+		Symptom symptom = new Symptom();
+		Question question = new Question();
+		Answer answer = new Answer();
+		for (String syptomId : syptomIdList) {
+			String sypId = request.getParameter(syptomId);
+			if (sypId != null) {
+			symptom.setEncounter(encounter);
+			symptom.setSymptomConcept(Context.getConceptService().getConcept(
+					Integer.parseInt(syptomId)));
+			symptom.setCreatedDate(new Date());
+			symptom.setCreator(Context.getAuthenticatedUser());
+			Symptom sym = patientDashboardService.saveSymptom(symptom);
+			Collection<ConceptAnswer> conceptAnswers = Context
+					.getConceptService().getConcept(Integer.parseInt(syptomId))
+					.getAnswers();
+
+			for (ConceptAnswer conceptAnswer : conceptAnswers) {
+				if (conceptAnswer.getAnswerConcept().getDatatype().isCoded()) {
+					String aa = request.getParameter(syptomId
+							+ ":"
+							+ conceptAnswer.getAnswerConcept().getConceptId()
+									.toString() + ":" + "radioOption");
+					if (aa != null) {
+						question.setSymptom(sym);
+						question.setQuestionConcept(conceptAnswer
+								.getAnswerConcept());
+						Question que = patientDashboardService
+								.saveQuestion(question);
+
+						Integer ghi = Integer.parseInt(aa);
+						answer.setQuestion(que);
+						answer.setAnswerConcept(Context.getConceptService()
+								.getConcept(ghi));
+						answer.setFreeText(null);
+						patientDashboardService.saveAnswer(answer);
+					}
+				} else {
+					String jkl = request.getParameter(syptomId
+							+ ":"
+							+ conceptAnswer.getAnswerConcept().getConceptId()
+									.toString() + ":" + "textFieldQues");
+					if (!jkl.equals("")) {
+						question.setSymptom(sym);
+						question.setQuestionConcept(conceptAnswer
+								.getAnswerConcept());
+						Question que = patientDashboardService
+								.saveQuestion(question);
+
+						answer.setQuestion(que);
+						answer.setAnswerConcept(null);
+						answer.setFreeText(jkl);
+						patientDashboardService.saveAnswer(answer);
+					}
+				}
+			  }
 			}
 		}
 
