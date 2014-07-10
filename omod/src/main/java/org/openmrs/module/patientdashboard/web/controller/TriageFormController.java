@@ -444,6 +444,10 @@ public class TriageFormController {
 
 		PatientQueueService queueService1 = Context.getService(PatientQueueService.class);
 		PatientMedicalHistory patientMedicalHistory1 = queueService1.getPatientHistoryByPatientId(queue.getPatient().getPatientId());	
+		PatientDrugHistory patientDrugHistory1 = queueService1.getPatientDrugHistoryByPatientId(queue.getPatient().getPatientId());
+		PatientFamilyHistory patientFamilyHistory1 = queueService1.getPatientFamilyHistoryByPatientId(queue.getPatient().getPatientId());
+		PatientPersonalHistory patientPersonalHistory1 = queueService1.getPatientPersonalHistoryByPatientId(queue.getPatient().getPatientId());
+		
 		
 		PatientMedicalHistory pmh = new PatientMedicalHistory(); 
 		pmh.setPatientId(queue.getPatient().getPatientId());
@@ -466,7 +470,6 @@ public class TriageFormController {
 		pmh.setPreviousAdmissionRecord(previousAdmissionRecord);
 		pmh.setPreviousInvestigation(previousInvestigation);
 		pmh.setPreviousInvestigationWhen(previousInvestigationWhen);
-		pmh.setPreviousInvestigationWhen(previousInvestigationWhen);
 		pmh.setPreviousInvestigationProblem(previousInvestigationProblem);
 		pmh.setPreviousInvestigationOutcome(previousInvestigationOutcome);
 		pmh.setPreviousInvestigationRecord(previousInvestigationRecord);
@@ -485,7 +488,7 @@ public class TriageFormController {
 		pdh.setPatientId(queue.getPatient().getPatientId());
 		pdh.setTriageLogId(triagePatientLog);
 		pdh.setCurrentMedication(currentMedication);
-		pdh.setMedicationName(sensitiveMedicationName);
+		pdh.setMedicationName(medicationName);
 		pdh.setMedicationPeriod(medicationPeriod);
 		pdh.setMedicationReason(medicationReason);
 		pdh.setMedicationRecord(medicationRecord);
@@ -528,12 +531,210 @@ public class TriageFormController {
 		pph.setOtherHelp(otherHelp);
 		pph.setIncomeSource(incomeSource);
 		pph.setCreatedOn(date);
-
+		
 		if(patientMedicalHistory1 ==null){
 			PatientMedicalHistory patientMedicalHistory = queueService.savePatientMedicalHistory(pmh);
 			PatientDrugHistory patientDrugHistory = queueService.savePatientDrugHistory(pdh);
 			PatientFamilyHistory patientFamilyHistory = queueService.savePatientFamilyHistory(pfh);
 			PatientPersonalHistory patientPersonalHistory = queueService.savePatientPersonalHistory(pph);
+		}
+		
+		else {		
+			
+					if(patientMedicalHistory1.getIllnessExisting()==null || patientMedicalHistory1.getIllnessExisting().equals("")){
+						patientMedicalHistory1.setIllnessExisting(existingIllness);
+					}
+					if(patientMedicalHistory1.getIllnessProblem()==null || patientMedicalHistory1.getIllnessProblem().equals("")){
+						pmh.setIllnessProblem(existingIllnessProblem);	
+					}
+					if(patientMedicalHistory1.getIllnessLong()==null || patientMedicalHistory1.getIllnessLong().equals("")){
+						patientMedicalHistory1.setIllnessLong(existingIllnessLong);						
+					}
+					if(patientMedicalHistory1.getIllnessProgress()==null || patientMedicalHistory1.getIllnessProgress().equals("")){
+						patientMedicalHistory1.setIllnessProgress(existingIllnessProgress);
+					}
+					if(patientMedicalHistory1.getIllnessRecord()==null || patientMedicalHistory1.getIllnessRecord().equals("")){
+						patientMedicalHistory1.setIllnessRecord(existingIllnessRecord);
+					}
+					System.out.println("&&&&&&"+patientMedicalHistory1.getChronicIllness()+"########");
+					if(patientMedicalHistory1.getChronicIllness()==null || patientMedicalHistory1.getChronicIllness().equals("")){
+						patientMedicalHistory1.setChronicIllness(chronicIllness);
+					}
+					if(patientMedicalHistory1.getChronicIllnessProblem()==null || patientMedicalHistory1.getChronicIllnessProblem().equals("")){
+						patientMedicalHistory1.setChronicIllnessProblem(chronicIllnessProblem);
+					}
+					if(patientMedicalHistory1.getChronicIllnessOccure()==null || patientMedicalHistory1.getChronicIllnessOccure().equals("")){
+						patientMedicalHistory1.setChronicIllnessOccure(chronicIllnessOccure);
+					}
+					if(patientMedicalHistory1.getChronicIllnessOutcome()==null || patientMedicalHistory1.getChronicIllnessOutcome().equals("")){
+						patientMedicalHistory1.setChronicIllnessOutcome(chronicIllnessOutcome);
+					}
+					if(patientMedicalHistory1.getChronicIllnessRecord()==null || patientMedicalHistory1.getChronicIllnessRecord().equals("")){
+						patientMedicalHistory1.setChronicIllnessRecord(chronicIllnessRecord);
+					}
+					if(patientMedicalHistory1.getPreviousAdmission()==null || patientMedicalHistory1.getPreviousAdmission().equals("")){
+						patientMedicalHistory1.setPreviousAdmission(previousAdmission);
+					}
+					if(patientMedicalHistory1.getPreviousAdmissionWhen()==null || patientMedicalHistory1.getPreviousAdmissionWhen().equals("")){
+						patientMedicalHistory1.setPreviousAdmissionWhen(previousAdmissionWhen);
+					}
+					if(patientMedicalHistory1.getPreviousAdmissionProblem()==null || patientMedicalHistory1.getPreviousAdmissionProblem().equals("")){
+						patientMedicalHistory1.setPreviousAdmissionProblem(previousAdmissionProblem);
+					}
+					if(patientMedicalHistory1.getPreviousAdmissionOutcome()==null || patientMedicalHistory1.getPreviousAdmissionOutcome().equals("")){
+						patientMedicalHistory1.setPreviousAdmissionOutcome(previousAdmissionOutcome);
+					}
+					if(patientMedicalHistory1.getPreviousAdmissionRecord()==null || patientMedicalHistory1.getPreviousAdmissionRecord().equals("")){
+						patientMedicalHistory1.setPreviousAdmissionRecord(previousAdmissionRecord);
+					}
+					if(patientMedicalHistory1.getPreviousInvestigation()==null || patientMedicalHistory1.getPreviousInvestigation().equals("")){
+						patientMedicalHistory1.setPreviousInvestigation(previousInvestigation);
+					}
+					if(patientMedicalHistory1.getPreviousInvestigationWhen()==null || patientMedicalHistory1.getPreviousInvestigationWhen().equals("")){
+						patientMedicalHistory1.setPreviousInvestigationWhen(previousInvestigationWhen);
+					}
+					if(patientMedicalHistory1.getPreviousInvestigationProblem()==null || patientMedicalHistory1.getPreviousInvestigationProblem().equals("")){
+						patientMedicalHistory1.setPreviousInvestigationProblem(previousInvestigationProblem);
+					}
+					if(patientMedicalHistory1.getPreviousInvestigationOutcome()==null || patientMedicalHistory1.getPreviousInvestigationOutcome().equals("")){
+						patientMedicalHistory1.setPreviousInvestigationOutcome(previousInvestigationOutcome);						
+					}
+					if(patientMedicalHistory1.getPreviousInvestigationRecord()==null || patientMedicalHistory1.getPreviousInvestigationRecord().equals("")){
+						patientMedicalHistory1.setPreviousInvestigationRecord(previousInvestigationRecord);
+					}
+					if(patientMedicalHistory1.getBcg()==null || patientMedicalHistory1.getBcg().equals("")){
+						patientMedicalHistory1.setBcg(bcg);
+					}
+					if(patientMedicalHistory1.getDpt()==null || patientMedicalHistory1.getDpt().equals("")){
+						patientMedicalHistory1.setDpt(dpt);
+					}
+					if(patientMedicalHistory1.getYellowFever()==null || patientMedicalHistory1.getYellowFever().equals("")){
+						patientMedicalHistory1.setYellowFever(yellowFever);
+					}
+					if(patientMedicalHistory1.getPneumococcal()==null || patientMedicalHistory1.getPneumococcal().equals("")){
+						patientMedicalHistory1.setPneumococcal(pneumococcal);
+					}
+					if(patientMedicalHistory1.getPolio()==null || patientMedicalHistory1.getPolio().equals("")){
+						patientMedicalHistory1.setPolio(polio);
+					}
+					if(patientMedicalHistory1.getTetanusFemale()==null || patientMedicalHistory1.getTetanusFemale().equals("")){
+						patientMedicalHistory1.setTetanusFemale(tetanusFemale);
+					}
+					if(patientMedicalHistory1.getTetanusMale()==null || patientMedicalHistory1.getTetanusMale().equals("")){
+						patientMedicalHistory1.setTetanusMale(tetanusMale);
+					}
+					if(patientMedicalHistory1.getMeasles()==null || patientMedicalHistory1.getMeasles().equals("")){
+						patientMedicalHistory1.setMeasles(measles);
+					}
+					if(patientMedicalHistory1.getOtherVaccinations()==null || patientMedicalHistory1.getOtherVaccinations().equals("")){
+						patientMedicalHistory1.setOtherVaccinations(otherVaccinations);
+					}
+				queueService.savePatientMedicalHistory(patientMedicalHistory1);
+
+				if(patientDrugHistory1.getCurrentMedication()==null || patientDrugHistory1.getCurrentMedication().equals("")){
+					patientDrugHistory1.setCurrentMedication(currentMedication);
+				}
+				if(patientDrugHistory1.getMedicationName()==null || patientDrugHistory1.getMedicationName().equals("")){
+					patientDrugHistory1.setMedicationName(medicationName);					
+				}
+				if(patientDrugHistory1.getMedicationPeriod()==null || patientDrugHistory1.getMedicationPeriod().equals("")){
+					patientDrugHistory1.setMedicationPeriod(medicationPeriod);
+				}
+				if(patientDrugHistory1.getMedicationReason()==null || patientDrugHistory1.getMedicationReason().equals("")){
+					patientDrugHistory1.setMedicationReason(medicationReason);
+				}
+				if(patientDrugHistory1.getMedicationRecord()==null || patientDrugHistory1.getMedicationRecord().equals("")){
+					patientDrugHistory1.setMedicationRecord(medicationRecord);
+				}
+				if(patientDrugHistory1.getSensitiveMedication()==null || patientDrugHistory1.getSensitiveMedication().equals("")){
+					patientDrugHistory1.setSensitiveMedication(sensitiveMedication);
+				}
+				if(patientDrugHistory1.getSensitiveMedicationName()==null || patientDrugHistory1.getSensitiveMedicationName().equals("")){
+					patientDrugHistory1.setSensitiveMedicationName(sensitiveMedicationName);
+				}
+				if(patientDrugHistory1.getSensitiveMedicationSymptom()==null || patientDrugHistory1.getSensitiveMedicationSymptom().equals("")){
+					patientDrugHistory1.setSensitiveMedicationSymptom(sensitiveMedicationSymptom);
+				}
+				if(patientDrugHistory1.getInvasiveContraception()==null || patientDrugHistory1.getInvasiveContraception().equals("")){
+					patientDrugHistory1.setInvasiveContraception(invasiveContraception);
+				}
+				if(patientDrugHistory1.getInvasiveContraceptionName()==null || patientDrugHistory1.getInvasiveContraceptionName().equals("")){
+					patientDrugHistory1.setInvasiveContraceptionName(invasiveContraceptionName);
+				}
+				
+				queueService.savePatientDrugHistory(patientDrugHistory1);
+				
+				if(patientFamilyHistory1.getParentStatus()==null || patientFamilyHistory1.getParentStatus().equals("")){
+					patientFamilyHistory1.setParentStatus(parentStatus);					
+				}
+				if(patientFamilyHistory1.getParentDeathCause()==null || patientFamilyHistory1.getParentDeathCause().equals("")){
+					patientFamilyHistory1.setParentDeathCause(parentDeathCause);					
+				}
+				if(patientFamilyHistory1.getParentDeathAge()==null || patientFamilyHistory1.getParentDeathAge().equals("")){
+					patientFamilyHistory1.setParentDeathAge(parentDeathAge);					
+				}
+				if(patientFamilyHistory1.getSiblingStatus()==null || patientFamilyHistory1.getSiblingStatus().equals("")){
+					patientFamilyHistory1.setSiblingStatus(siblingStatus);
+				}
+				if(patientFamilyHistory1.getSiblingDeathCause()==null || patientFamilyHistory1.getSiblingDeathCause().equals("")){
+					patientFamilyHistory1.setSiblingDeathCause(siblingDeathCause);
+				}
+				if(patientFamilyHistory1.getSiblingDeathAge()==null || patientFamilyHistory1.getSiblingDeathAge().equals("")){
+					patientFamilyHistory1.setSiblingDeathAge(siblingDeathAge);
+				}
+				if(patientFamilyHistory1.getFamilyIllnessHistory()==null || patientFamilyHistory1.getFamilyIllnessHistory().equals("")){
+					patientFamilyHistory1.setFamilyIllnessHistory(familyIllnessHistory);
+				}
+				
+				queueService.savePatientFamilyHistory(patientFamilyHistory1);
+				
+				if(patientPersonalHistory1.getSmoke()==null || patientPersonalHistory1.getSmoke().equals("")){
+					patientPersonalHistory1.setSmoke(smoke);
+				}
+				if(patientPersonalHistory1.getSmokeItem()==null || patientPersonalHistory1.getSmokeItem().equals("")){
+					patientPersonalHistory1.setSmokeItem(smokeItem);
+				}
+				if(patientPersonalHistory1.getSmokeAverage()==null || patientPersonalHistory1.getSmokeAverage().equals("")){
+					patientPersonalHistory1.setSmokeAverage(smokeAverage);
+				}
+				if(patientPersonalHistory1.getAlcohol()==null || patientPersonalHistory1.getAlcohol().equals("")){
+					patientPersonalHistory1.setAlcohol(alcohol);
+				}
+				if(patientPersonalHistory1.getAlcoholItem()==null || patientPersonalHistory1.getAlcoholItem().equals("")){
+					patientPersonalHistory1.setAlcoholItem(alcoholItem);
+				}
+				if(patientPersonalHistory1.getAlcoholAverage()==null || patientPersonalHistory1.getAlcoholAverage().equals("")){
+					patientPersonalHistory1.setAlcoholAverage(alcoholAverage);
+				}
+				if(patientPersonalHistory1.getDrug()==null || patientPersonalHistory1.getDrug().equals("")){
+					patientPersonalHistory1.setDrug(drug);
+				}
+				if(patientPersonalHistory1.getDrugItem()==null || patientPersonalHistory1.getDrugItem().equals("")){
+					patientPersonalHistory1.setDrugItem(drugItem);
+				}
+				if(patientPersonalHistory1.getDrugAverage()==null || patientPersonalHistory1.getDrugAverage().equals("")){
+					patientPersonalHistory1.setDrugAverage(drugAverage);
+				}
+				if(patientPersonalHistory1.getExposedHiv()==null || patientPersonalHistory1.getExposedHiv().equals("")){
+					patientPersonalHistory1.setExposedHiv(exposedHiv);
+				}
+				if(patientPersonalHistory1.getExposedHivFactor()==null || patientPersonalHistory1.getExposedHivFactor().equals("")){
+					patientPersonalHistory1.setExposedHivFactor(exposedHivFactor);
+				}
+				if(patientPersonalHistory1.getHivStatus()==null || patientPersonalHistory1.getHivStatus().equals("")){
+					patientPersonalHistory1.setHivStatus(hivStatus);
+				}
+				if(patientPersonalHistory1.getFamilyHelp()==null || patientPersonalHistory1.getFamilyHelp().equals("")){
+					patientPersonalHistory1.setFamilyHelp(familyHelp);
+				}
+				if(patientPersonalHistory1.getOtherHelp()==null || patientPersonalHistory1.getOtherHelp().equals("")){
+					patientPersonalHistory1.setOtherHelp(otherHelp);
+				}
+				if(patientPersonalHistory1.getIncomeSource()==null || patientPersonalHistory1.getIncomeSource().equals("")){
+					patientPersonalHistory1.setIncomeSource(incomeSource);
+				}
+				
+				queueService.savePatientPersonalHistory(patientPersonalHistory1);
 		}
 		
 		TriagePatientData triagePatientData=queueService.saveTriagePatientData(tpd);
