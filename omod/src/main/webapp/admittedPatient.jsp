@@ -41,8 +41,8 @@
 		</tr>
 		<tr>
 			<td width="40%"><b>Name:</b>
-				${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
-				${patient.familyName}</td>
+				${patient.givenName}&nbsp;${patient.familyName}&nbsp;${patient.middleName}&nbsp;&nbsp;
+				</td>
 			<td width="30%"><b>Age:</b> ${age }</td>
 			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 		</tr>

@@ -41,8 +41,8 @@
 		</tr>
 		<tr>
 			<td width="40%"><b>Name:</b>
-				${patient.givenName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;
-				${patient.familyName}</td>
+				${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}
+				</td>
 			<td width="30%"><b>Age:</b> ${age }</td>
 			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 		</tr>
