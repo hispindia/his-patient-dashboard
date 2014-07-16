@@ -198,6 +198,76 @@ function viewQuestion(){
 var url = "#TB_inline?height=500&width=1000&inlineId=questionDiv";
 tb_show("View Question",url,false);
 }
+
+// Print the slip
+function print(){
+
+var history = document.getElementById('history').value;
+jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
+
+var selSymLen = selectedSymptomList.length;
+var symList="";
+for(i=selSymLen-1; i>=0; i--){
+var sym=selectedSymptomList[i].text;
+symList=symList.concat(sym);
+if(i!=0){
+symList=symList.concat(",");
+}
+}
+jQuery("#printableSymptom").append("<span style='margin:5px;'>" + symList + "</span>");
+
+var selDiagLen = selectedDiagnosisList.length;
+var diagList="";
+for(i=selDiagLen-1; i>=0; i--){
+var diag=selectedDiagnosisList[i].text;
+diagList=diagList.concat(diag);
+if(i!=0){
+diagList=diagList.concat(",");
+}
+}
+jQuery("#printableProvisionalDiagnosis").append("<span style='margin:5px;'>" + diagList + "</span>");
+
+var selProLen = selectedProcedureList.length;
+var proList="";
+for(i=selProLen-1; i>=0; i--){
+var pro=selectedProcedureList[i].text;
+proList=proList.concat(pro);
+if(i!=0){
+proList=proList.concat(",");
+}
+}
+jQuery("#printablePostForProcedure").append("<span style='margin:5px;'>" + proList + "</span>");
+
+var selInvgLen = selectedInvestigationList.length;
+var invgList="";
+for(i=selInvgLen-1; i>=0; i--){
+var invg=selectedInvestigationList[i].text;
+invgList=invgList.concat(invg);
+if(i!=0){
+invgList=invgList.concat(",");
+}
+}
+jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + invgList + "</span>");
+
+var noteValue = document.getElementById('note').value;
+jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + noteValue + "</span>");
+
+var internalReferral = document.getElementById('internalReferral').value;
+jQuery("#printableInternalReferral").append("<span style='margin:5px;'>" + internalReferral + "</span>");
+
+var externalReferral = document.getElementById('externalReferral').value;
+jQuery("#printableExternalReferral").append("<span style='margin:5px;'>" + externalReferral + "</span>");
+
+var val = $('input:radio[name=radio_f]:checked').val();
+jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + val + "</span>");
+ 
+if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0){
+jQuery("#printOPDSlip").printArea({
+mode : "popup",
+popClose : true
+});
+	}
+}
 </script>
 <script type="text/javascript">
 // get context path in order to build controller url
@@ -538,7 +608,8 @@ tb_show("View Question",url,false);
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2"><c:if test="${empty admitted}">
+					
+						<td colspan="2"><div id="abcd"><c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" id="input_follow"
 									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this);">Follow up <input
 									type="text" class="date-pick left" readonly="readonly"
@@ -553,7 +624,7 @@ tb_show("View Question",url,false);
 								test="${empty admitted}">
 								<input type="radio" name="radio_f" value="admit" id="admit"
 									onclick="DASHBOARD.onChangeRadio(this);">Admit
-   </c:if></td>
+   </c:if></div></td>
 						<td align="left" class="tdIpdWard" style='display: none;'><select
 							id="ipdWard" name="ipdWard">
 								<option value="">--Select--</option>
@@ -568,7 +639,7 @@ tb_show("View Question",url,false);
 						<td colspan="3"><c:if test="${not empty queueId}">
 								<input type="submit" value="Conclude visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
-									onclick="DASHBOARD.submitOpdEntry();" />
+									onclick="DASHBOARD.submitOpdEntry();print();" />
 								<input type="submit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
@@ -576,7 +647,7 @@ tb_show("View Question",url,false);
 							<c:if test="${not empty opdLogId}">
 								<input type="submit" value="Conclude visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
-									onclick="DASHBOARD.submitOpdEntry();" />
+									onclick="DASHBOARD.submitOpdEntry();print();" />
 								<input type="submit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Back" onclick="DASHBOARD.backToOpdQueue('${opdLogId}');" />
@@ -686,5 +757,38 @@ tb_show("View Question",url,false);
 <div id="scheduleDiv" style="visibility:hidden;">
 <table id="tableSchedule">
 </table>
+</div>
+<div id="printOPDSlip">
+<div class="box">
+<table>
+<tr>
+<center>
+<h3>${hospitalName}</h3></center></tr>
+<tr><td>Receipt No</td></tr>
+<tr><td>Date/Time:${currentDateTime}</td></tr>
+<tr><td>Name:${patientName}</td></tr>
+<tr><td>Identifier:${patient.patientIdentifier.identifier}</td></tr>
+<tr><td>Patient Category:${selectedCategory}</td></tr>
+<tr><td>Waiver/ Exemption No:${exemptionNumber} ${nhifCardNumber} ${waiverNumber}</td></tr>
+<tr><td>Treating doctor:${user.personName}</td></tr>
+</table>
+</div>
+<div class="box">
+<table>
+<tr><td><div id="printableHistoryOfPresentIllness">History of present illness:</div></td></tr>
+<tr><td><div id="printableSymptom">Symptom:</div></td></tr>
+<tr><td><div id="printableProvisionalDiagnosis">Provisional Diagnosis:</div></td></tr>
+<tr><td><div id="printablePostForProcedure">Post for procedure:</div></td></tr>
+<tr><td><div id="printableInvestigation">Investigation:</div></td></tr>
+</table>
+</div>
+<div class="box">
+<table>
+<tr><td><div id="printableOtherInstructions">Other instructions:</div></td></tr>
+<tr><td><div id="printableInternalReferral">Internal referral:</div></td></tr>
+<tr><td><div id="printableExternalReferral">External referral:</div></td></tr>
+<tr><td><div id="printableOPDVisitOutCome">OPD visit outcome:</div></td></tr>
+</table>
+</div>
 </div>
 </form>

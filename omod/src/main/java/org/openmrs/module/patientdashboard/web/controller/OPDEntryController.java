@@ -42,6 +42,8 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
@@ -211,6 +213,45 @@ public class OPDEntryController {
 			}
 		}
 		model.addAttribute("allMajorOTProcedures", id2);
+		
+		String hospitalName = Context.getAdministrationService()
+		.getGlobalProperty("hospital.location_user");
+		model.addAttribute("hospitalName", hospitalName);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy kk:mm");
+		model.addAttribute("currentDateTime", sdf.format(new Date()));
+		Patient patient=Context.getPatientService().getPatient(patientId);
+		patient.getPatientIdentifier();
+		String patientName;
+		if( patient.getMiddleName() !=null){
+		patientName=patient.getGivenName() + " " + patient.getFamilyName() + " " + patient.getMiddleName();
+		}
+		else{
+		patientName=patient.getGivenName() + " " + patient.getFamilyName();
+		}
+		
+		model.addAttribute("patient",patient);
+		model.addAttribute("patientName",patientName);
+		
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		 for (PersonAttribute pa : pas) {
+			 PersonAttributeType attributeType = pa.getAttributeType(); 
+			 if(attributeType.getPersonAttributeTypeId()==14){
+				 model.addAttribute("selectedCategory",pa.getValue()); 
+			 }
+			 if(attributeType.getPersonAttributeTypeId()==36){
+				 model.addAttribute("exemptionNumber",pa.getValue()); 
+			 }
+			 if(attributeType.getPersonAttributeTypeId()==33){
+				 model.addAttribute("nhifCardNumber",pa.getValue()); 
+			 }
+			 if(attributeType.getPersonAttributeTypeId()==32){
+				 model.addAttribute("waiverNumber",pa.getValue()); 
+			 }
+			User user = Context.getAuthenticatedUser();
+			model.addAttribute("user",user); 
+		 }
 
 		return "module/patientdashboard/opdEntry";
 	}
