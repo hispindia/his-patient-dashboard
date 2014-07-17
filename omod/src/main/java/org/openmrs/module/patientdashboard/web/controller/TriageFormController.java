@@ -976,7 +976,7 @@ public class TriageFormController {
 			queue.setOpdConcept(selectedOPDConcept);
 			queue.setOpdConceptName(selectedOPDConcept.getName().getName());
 			if( patient.getMiddleName() !=null){
-			queue.setPatientName(patient.getGivenName() + " " + patient.getFamilyName() + " " + patient.getMiddleName());
+			queue.setPatientName(patient.getGivenName() + " " + patient.getFamilyName() + " " + patient.getMiddleName().replace(",", " "));
 			}
 			else{
 				queue.setPatientName(patient.getGivenName()+ " " + patient.getFamilyName());

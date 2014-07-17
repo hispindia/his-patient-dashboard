@@ -490,7 +490,7 @@ public class OPDEntryController {
 			if (patient.getMiddleName() != null) {
 				queue.setPatientName(patient.getGivenName() + " "
 						+ patient.getFamilyName() + " "
-						+ patient.getMiddleName());
+						+ patient.getMiddleName().replace(","," "));
 			} else {
 				queue.setPatientName(patient.getGivenName() + " "
 						+ patient.getFamilyName());
@@ -626,7 +626,7 @@ public class OPDEntryController {
 				if (patient.getMiddleName() != null) {
 					patientAdmission.setPatientName(patient.getGivenName()
 							+ " " + patient.getFamilyName() + " "
-							+ patient.getMiddleName());
+							+ patient.getMiddleName().replace(","," "));
 				} else {
 					patientAdmission.setPatientName(patient.getGivenName()
 							+ " " + patient.getFamilyName());
