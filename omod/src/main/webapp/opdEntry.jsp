@@ -78,8 +78,10 @@
 }
 </style>
 <script type="text/javascript">
+var drugIssuedList = new Array();
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value;
+   drugIssuedList.push(drugName);
    if(drugName==null || drugName==""){
    alert("Please enter drug name");
    return false;
@@ -138,6 +140,8 @@ function deleteInput(drugName) {
    var child = document.getElementById(drugName);
    var parent = document.getElementById(parentDiv);
    parent.removeChild(child); 
+   Array.prototype.remove = function(v) { this.splice(this.indexOf(v) == -1 ? this.length : this.indexOf(v), 1); }
+   drugIssuedList.remove(drugName);
 }
 
 var minorOTProcedures = new Array();
@@ -206,58 +210,61 @@ var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
 
 var selSymLen = selectedSymptomList.length;
-var symList="";
 for(i=selSymLen-1; i>=0; i--){
 var sym=selectedSymptomList[i].text;
-symList=symList.concat(sym);
-if(i!=0){
-symList=symList.concat(",");
+jQuery("#printableSymptom").append("<span style='margin:5px;'>" + sym + "<br/>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "</span>");
 }
-}
-jQuery("#printableSymptom").append("<span style='margin:5px;'>" + symList + "</span>");
+
 
 var selDiagLen = selectedDiagnosisList.length;
-var diagList="";
 for(i=selDiagLen-1; i>=0; i--){
 var diag=selectedDiagnosisList[i].text;
-diagList=diagList.concat(diag);
-if(i!=0){
-diagList=diagList.concat(",");
+jQuery("#printableProvisionalDiagnosis").append("<span style='margin:5px;'>" + diag + "<br/>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "</span>");
 }
-}
-jQuery("#printableProvisionalDiagnosis").append("<span style='margin:5px;'>" + diagList + "</span>");
 
 var selProLen = selectedProcedureList.length;
-var proList="";
 for(i=selProLen-1; i>=0; i--){
 var pro=selectedProcedureList[i].text;
-proList=proList.concat(pro);
-if(i!=0){
-proList=proList.concat(",");
+jQuery("#printablePostForProcedure").append("<span style='margin:5px;'>" + pro + "<br/>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "</span>");
 }
-}
-jQuery("#printablePostForProcedure").append("<span style='margin:5px;'>" + proList + "</span>");
 
 var selInvgLen = selectedInvestigationList.length;
-var invgList="";
 for(i=selInvgLen-1; i>=0; i--){
 var invg=selectedInvestigationList[i].text;
-invgList=invgList.concat(invg);
-if(i!=0){
-invgList=invgList.concat(",");
+jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + invg + "<br/>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "</span>");
 }
+
+
+var selDrugLen = drugIssuedList.length;
+var j=1;
+for(i=selDrugLen-1; i>=0; i--){
+var drug=drugIssuedList[i];
+var formulationName=document.getElementById(drug+"_formulationName").value;
+var frequencyName=document.getElementById(drug+"_frequencyName").value;
+var noOfDays=document.getElementById(drug+"_noOfDays").value;
+var comments=document.getElementById(drug+"_comments").value;
+jQuery("#printableSlNo").append("<span style='margin:5px;'>" + j + "<br/>" + "</span>");
+jQuery("#printableDrug").append("<span style='margin:5px;'>" + drug + "<br/>" + "</span>");
+jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
+jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
+jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
+jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
+j++;
 }
-jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + invgList + "</span>");
+
 
 var noteValue = document.getElementById('note').value;
 jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + noteValue + "</span>");
 
 var internalReferral = document.getElementById('internalReferral').value;
+if(internalReferral!=-1){
 jQuery("#printableInternalReferral").append("<span style='margin:5px;'>" + internalReferral + "</span>");
+}
 
 var externalReferral = document.getElementById('externalReferral').value;
+if(externalReferral!=-1){
 jQuery("#printableExternalReferral").append("<span style='margin:5px;'>" + externalReferral + "</span>");
-
+}
 var val = $('input:radio[name=radio_f]:checked').val();
 jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + val + "</span>");
  
@@ -758,36 +765,46 @@ popClose : true
 <table id="tableSchedule">
 </table>
 </div>
-<div id="printOPDSlip">
+<div id="printOPDSlip" style="visibility:hidden;">
 <div class="box">
 <table>
 <tr>
 <center>
 <h3>${hospitalName}</h3></center></tr>
-<tr><td>Receipt No</td></tr>
-<tr><td>Date/Time:${currentDateTime}</td></tr>
-<tr><td>Name:${patientName}</td></tr>
-<tr><td>Identifier:${patient.patientIdentifier.identifier}</td></tr>
-<tr><td>Patient Category:${selectedCategory}</td></tr>
-<tr><td>Waiver/ Exemption No:${exemptionNumber} ${nhifCardNumber} ${waiverNumber}</td></tr>
-<tr><td>Treating doctor:${user.personName}</td></tr>
+<tr><td><b>Receipt No:</b></td></tr>
+<tr><td><b>Date/Time:</b>${currentDateTime}</td></tr>
+<tr><td><b>Name:</b>${patientName}</td></tr>
+<tr><td><b>Identifier:</b>${patient.patientIdentifier.identifier}</td></tr>
+<tr><td><b>Patient Category:</b>${selectedCategory}</td></tr>
+<tr><td><b>Waiver/ Exemption No:</b>${exemptionNumber} ${nhifCardNumber} ${waiverNumber}</td></tr>
+<tr><td><b>Treating doctor:</b>${user.personName}</td></tr>
+</table>
+</div>
+<div class="box">
+<div class="box">
+<table>
+<tr><td><div id="printableHistoryOfPresentIllness"><b>History of present illness:</b></div></td></tr>
+<tr><td><div id="printableSymptom"><b>Symptom:</b></div></td></tr>
+<tr><td><div id="printableProvisionalDiagnosis"><b>Provisional diagnosis:</b></div></td></tr>
+<tr><td><div id="printablePostForProcedure"><b>Post for procedure:</b></div></td></tr>
+<tr><td><div id="printableInvestigation"><b>Investigation:</b></div></td></tr>
 </table>
 </div>
 <div class="box">
 <table>
-<tr><td><div id="printableHistoryOfPresentIllness">History of present illness:</div></td></tr>
-<tr><td><div id="printableSymptom">Symptom:</div></td></tr>
-<tr><td><div id="printableProvisionalDiagnosis">Provisional Diagnosis:</div></td></tr>
-<tr><td><div id="printablePostForProcedure">Post for procedure:</div></td></tr>
-<tr><td><div id="printableInvestigation">Investigation:</div></td></tr>
+<thead>
+<tr><th>S.No</th><th>Drug</th><th>Formulation</th><th>Frequency</th><th>No of days</th><th>Comments</th></tr></thead>
+<tbody><tr><td><div id="printableSlNo"></div></td><td><div id="printableDrug"></div></td><td><div id="printableFormulation"></div></td><td><div id="printableFrequency"></div></td>
+<td><div id="printableNoOfDays"></div></td><td><div id="printableComments"></div></td></tr></tbody>
 </table>
+</div>
 </div>
 <div class="box">
 <table>
-<tr><td><div id="printableOtherInstructions">Other instructions:</div></td></tr>
-<tr><td><div id="printableInternalReferral">Internal referral:</div></td></tr>
-<tr><td><div id="printableExternalReferral">External referral:</div></td></tr>
-<tr><td><div id="printableOPDVisitOutCome">OPD visit outcome:</div></td></tr>
+<tr><td><div id="printableOtherInstructions"><b>Other instructions:</b></div></td></tr>
+<tr><td><div id="printableInternalReferral"><b>Internal referral:</b></div></td></tr>
+<tr><td><div id="printableExternalReferral"><b>External referral:</b></div></td></tr>
+<tr><td><div id="printableOPDVisitOutCome"><b>OPD visit outcome:</b></div></td></tr>
 </table>
 </div>
 </div>
