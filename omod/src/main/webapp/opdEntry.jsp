@@ -206,9 +206,12 @@ tb_show("View Question",url,false);
 // Print the slip
 function print(){
 var submitStatus=0;
-jQuery("#opdEntryForm").keypress(function(event){			
+jQuery("#opdEntryForm").keypress(function(event){		
 if(event.keyCode == 13){	
 submitStatus=1;	
+}
+else{
+submitStatus=0;
 }
 });
 
