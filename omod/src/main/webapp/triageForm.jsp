@@ -258,8 +258,8 @@ history.style.display="none";
 		<br><br>
 	<div id="tabs">
 	<b class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		<input name="formVitalButton" type="button" onclick="ShowVitalForm();" value="Vital Statistics" class="classname"> 
-		<input name="formButton" type="button" onclick="ShowForm();" value="Patient History" class="classname">
+		&nbsp;<input id="formVitalButton" name="formVitalButton" type="button" onclick="ShowVitalForm();" value="Vital Statistics" class="classname"> 
+		<input id="formButton" name="formButton" type="button" onclick="ShowForm();" value="Patient History" class="classname">
 	</b>
 
 	<form id="triageForm" method="POST" onsubmit="javascript:return validate();">
@@ -372,13 +372,55 @@ history.style.display="none";
 		<script  type="text/JavaScript">
 
 		$(function () {
-		
-				var existingIllness = function (element) {
-					if(element.value == "No") {
+
 						$("input[name=existingIllnessProblem]").attr("disabled", "disabled");
 						$("input[name=existingIllnessLong]").attr("disabled", "disabled");
 						$("input[name=existingIllnessProgress]").attr("disabled", "disabled");
 						$("input[name=existingIllnessRecord]").attr("disabled", "disabled");
+						$("input[name=chronicIllnessProblem]").attr("disabled", "disabled");
+						$("input[name=chronicIllnessOccure]").attr("disabled", "disabled");
+						$("input[name=chronicIllnessOutcome]").attr("disabled", "disabled");
+						$("input[name=chronicIllnessRecord]").attr("disabled", "disabled");
+						$("input[name=previousAdmissionWhen]").attr("disabled", "disabled");
+						$("input[name=previousAdmissionProblem]").attr("disabled", "disabled");
+						$("input[name=previousAdmissionOutcome]").attr("disabled", "disabled");
+						$("input[name=previousAdmissionRecord]").attr("disabled", "disabled");
+						$("input[name=previousInvestigationWhen]").attr("disabled", "disabled");
+						$("input[name=previousInvestigationProblem]").attr("disabled", "disabled");
+						$("input[name=previousInvestigationOutcome]").attr("disabled", "disabled");
+						$("input[name=previousInvestigationRecord]").attr("disabled", "disabled");
+						$("input[name=medicationName]").attr("disabled", "disabled");
+						$("input[name=medicationPeriod]").attr("disabled", "disabled");
+						$("input[name=medicationReason]").attr("disabled", "disabled");
+						$("input[name=medicationRecord]").attr("disabled", "disabled");
+						$("input[name=sensitiveMedicationName]").attr("disabled", "disabled");
+						$("input[name=sensitiveMedicationSymptom]").attr("disabled", "disabled");
+						jQuery("#invasiveContraceptionName").attr("disabled", "disabled");
+						$("input[name=parentDeathCause]").attr("disabled", "disabled");
+						$("input[name=parentDeathAge]").attr("disabled", "disabled");
+						$("input[name=siblingDeathCause]").attr("disabled", "disabled");
+						$("input[name=siblingDeathAge]").attr("disabled", "disabled");
+						$("input[name=smokeItem]").attr("disabled", "disabled");
+						$("input[name=smokeAverage]").attr("disabled", "disabled");
+						$("input[name=alcoholItem]").attr("disabled", "disabled");
+						$("input[name=alcoholAverage]").attr("disabled", "disabled");						
+						$("input[name=drugItem]").attr("disabled", "disabled");
+						$("input[name=drugAverage]").attr("disabled", "disabled");
+						$("input[name=exposedHivFactor]").attr("disabled", "disabled");
+						$("input[name=otherHelp]").attr("disabled", "disabled");
+						
+		
+		
+				var existingIllness = function (element) {
+					if(element.value == "No") {
+						$("input[name=existingIllnessProblem]").attr("disabled", "disabled");
+						jQuery("#existingIllnessProblem").val("");
+						$("input[name=existingIllnessLong]").attr("disabled", "disabled");
+						jQuery("#existingIllnessLong").val("");
+						$("input[name=existingIllnessProgress]").attr("disabled", "disabled");
+						jQuery("#existingIllnessProgress").val("");
+						$("input[name=existingIllnessRecord]").attr("disabled", "disabled");
+						jQuery("#existingIllnessRecord").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  )
@@ -389,25 +431,25 @@ history.style.display="none";
 						$("input[name=existingIllnessRecord]").removeAttr("disabled");
 						}
 					else {	
-						if(${existingIllnessProblem != ''}  || ${existingIllnessProblem == null}){
+						if(${existingIllnessProblem !='' && existingIllnessProblem != null} ){
 							$("input[name=existingIllnessProblem]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=existingIllnessProblem]").removeAttr("disabled");
 						}
-						if(${existingIllnessLong != ''} || ${existingIllnessLong == null}){
+						if(${existingIllnessLong != ''} && ${existingIllnessLong != null}){
 							$("input[name=existingIllnessLong]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=existingIllnessLong]").removeAttr("disabled");
 						}
-						if(${existingIllnessProgress != ''} || ${existingIllnessProgress == null}){
+						if(${existingIllnessProgress != ''} && ${existingIllnessProgress != null}){
 							$("input[name=existingIllnessProgress]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=existingIllnessProgress]").removeAttr("disabled");
 						}	
-						if(${existingIllnessRecord != ''} || ${existingIllnessRecord == null}){
+						if(${existingIllnessRecord != ''} && ${existingIllnessRecord != null}){
 							$("input[name=existingIllnessRecord]").attr("disabled", "disabled");
 						}
 						else{
@@ -420,9 +462,13 @@ history.style.display="none";
 				var chronicIllness = function (element) {
 					if(element.value == "No") {
 						$("input[name=chronicIllnessProblem]").attr("disabled", "disabled");
+						jQuery("#chronicIllnessProblem").val("");
 						$("input[name=chronicIllnessOccure]").attr("disabled", "disabled");
+						jQuery("#chronicIllnessOccure").val("");
 						$("input[name=chronicIllnessOutcome]").attr("disabled", "disabled");
+						jQuery("#chronicIllnessOutcome").val("");
 						$("input[name=chronicIllnessRecord]").attr("disabled", "disabled");
+						jQuery("#chronicIllnessRecord").val("");
 					}
 					else {
 						if( ${referral.name =='New Patient'}  )
@@ -433,28 +479,28 @@ history.style.display="none";
 							$("input[name=chronicIllnessRecord]").removeAttr("disabled");
 						}
 						else{
-						if(${chronicIllnessProblem != ''} || ${chronicIllnessProblem == null}){
+						if(${chronicIllnessProblem != ''} && ${chronicIllnessProblem != null}){
 							$("input[name=chronicIllnessProblem]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=chronicIllnessProblem]").removeAttr("disabled");
 						}	
 						
-						if(${chronicIllnessOccure != ''} || ${chronicIllnessOccure == null}){
+						if(${chronicIllnessOccure != ''} && ${chronicIllnessOccure != null}){
 							$("input[name=chronicIllnessOccure]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=chronicIllnessOccure]").removeAttr("disabled");
 						}	
 						
-						if(${chronicIllnessOutcome != ''} || ${chronicIllnessOutcome == null}){
+						if(${chronicIllnessOutcome != ''} && ${chronicIllnessOutcome != null}){
 							$("input[name=chronicIllnessOutcome]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=chronicIllnessOutcome]").removeAttr("disabled");
 						}
 						
-						if(${chronicIllnessRecord != ''} || ${chronicIllnessRecord == null}){
+						if(${chronicIllnessRecord != ''} && ${chronicIllnessRecord != null}){
 							$("input[name=chronicIllnessRecord]").attr("disabled", "disabled");
 						}
 						else{
@@ -467,9 +513,13 @@ history.style.display="none";
 				var previousAdmission = function (element) {
 					if(element.value == "No") {
 						$("input[name=previousAdmissionWhen]").attr("disabled", "disabled");
+						jQuery("#previousAdmissionWhen").val("");
 						$("input[name=previousAdmissionProblem]").attr("disabled", "disabled");
+						jQuery("#previousAdmissionProblem").val("");
 						$("input[name=previousAdmissionOutcome]").attr("disabled", "disabled");
-						$("input[name=previousAdmissionRecord]").attr("disabled", "disabled")
+						jQuery("#previousAdmissionOutcome").val("");
+						$("input[name=previousAdmissionRecord]").attr("disabled", "disabled");
+						jQuery("#previousAdmissionRecord").val("");
 					}
 					else {
 						if( ${referral.name =='New Patient'}  )
@@ -480,27 +530,27 @@ history.style.display="none";
 							$("input[name=previousAdmissionRecord]").removeAttr("disabled");
 						}
 						else{
-						if(${previousAdmissionWhen != ''} || ${previousAdmissionWhen == null}){
+						if(${previousAdmissionWhen != ''} && ${previousAdmissionWhen != null}){
 							$("input[name=previousAdmissionWhen]").attr("disabled", "disabled");
 						}
 						else {
 							$("input[name=previousAdmissionWhen]").removeAttr("disabled");
 						}	
 						
-						if(${previousAdmissionProblem != ''} || ${previousAdmissionProblem == null}){
+						if(${previousAdmissionProblem != ''} && ${previousAdmissionProblem != null}){
 							$("input[name=previousAdmissionProblem]").attr("disabled", "disabled");
 						}
 						else {
 							$("input[name=previousAdmissionProblem]").removeAttr("disabled");
 						}	
 						
-						if(${previousAdmissionOutcome != ''} || ${previousAdmissionOutcome == null}){
+						if(${previousAdmissionOutcome != ''} && ${previousAdmissionOutcome != null}){
 							$("input[name=previousAdmissionOutcome]").attr("disabled", "disabled");
 						}
 						else{
 							$("input[name=previousAdmissionOutcome]").removeAttr("disabled");
 						}
-						if(${previousAdmissionRecord != ''} || ${previousAdmissionRecord == null}){
+						if(${previousAdmissionRecord != ''} && ${previousAdmissionRecord != null}){
 							$("input[name=previousAdmissionRecord]").attr("disabled", "disabled")
 						}
 						else {
@@ -513,9 +563,13 @@ history.style.display="none";
 				var previousInvestigation = function (element) {
 					if(element.value == "No") {
 						$("input[name=previousInvestigationWhen]").attr("disabled", "disabled");
+						jQuery("#previousInvestigationWhen").val("");
 						$("input[name=previousInvestigationProblem]").attr("disabled", "disabled");
+						jQuery("#previousInvestigationProblem").val("");
 						$("input[name=previousInvestigationOutcome]").attr("disabled", "disabled");
-						$("input[name=previousInvestigationRecord]").attr("disabled", "disabled")
+						jQuery("#previousInvestigationOutcome").val("");
+						$("input[name=previousInvestigationRecord]").attr("disabled", "disabled");
+						jQuery("#previousInvestigationRecord").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  )
@@ -526,18 +580,18 @@ history.style.display="none";
 						$("input[name=previousInvestigationRecord]").removeAttr("disabled");
 					}
 					else {
-						if(${previousInvestigationProblem != ''} || ${previousInvestigationProblem == null}){
+						if(${previousInvestigationProblem != ''} && ${previousInvestigationProblem != null}){
 							$("input[name=previousInvestigationWhen]").attr("disabled", "disabled");
 						}
 						else {
 							$("input[name=previousInvestigationWhen]").removeAttr("disabled"); }
 						
-						if(${previousInvestigationProblem != ''} || ${previousInvestigationProblem == null}){
+						if(${previousInvestigationProblem != ''} && ${previousInvestigationProblem != null}){
 							$("input[name=previousInvestigationProblem]").attr("disabled", "disabled");
 						}
 						else {
 							$("input[name=previousInvestigationProblem]").removeAttr("disabled"); }
-						if(${previousInvestigationOutcome != ''} || ${previousInvestigationOutcome == null})
+						if(${previousInvestigationOutcome != ''} && ${previousInvestigationOutcome != null})
 						{
 							$("input[name=previousInvestigationOutcome]").attr("disabled", "disabled");
 						}
@@ -545,7 +599,7 @@ history.style.display="none";
 							$("input[name=previousInvestigationOutcome]").removeAttr("disabled"); 
 						}
 						
-						if(${previousInvestigationRecord != ''} || ${previousInvestigationRecord == null})
+						if(${previousInvestigationRecord != ''} && ${previousInvestigationRecord != null})
 						{
 							$("input[name=previousInvestigationRecord]").attr("disabled", "disabled")
 						}
@@ -559,9 +613,13 @@ history.style.display="none";
 				var currentMedication = function (element) {
 					if(element.value == "No") {
 						$("input[name=medicationName]").attr("disabled", "disabled");
+						jQuery("#medicationName").val("");
 						$("input[name=medicationPeriod]").attr("disabled", "disabled");
+						jQuery("#medicationPeriod").val("");
 						$("input[name=medicationReason]").attr("disabled", "disabled");
-						$("input[name=medicationRecord]").attr("disabled", "disabled")
+						jQuery("#medicationReason").val("");
+						$("input[name=medicationRecord]").attr("disabled", "disabled");
+						jQuery("#medicationRecord").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  )
@@ -572,28 +630,28 @@ history.style.display="none";
 						$("input[name=medicationRecord]").removeAttr("disabled");
 					}
 					else{
-						if(${medicationName != ''} || ${medicationName == null})
+						if(${medicationName != ''} && ${medicationName != null})
 						{
 							$("input[name=medicationName]").attr("disabled", "disabled")
 						}
 						else {
 							$("input[name=medicationName]").removeAttr("disabled");
 						}
-						if(${medicationPeriod != ''} || ${medicationPeriod == null})
+						if(${medicationPeriod != ''} && ${medicationPeriod != null})
 						{
 							$("input[name=medicationPeriod]").attr("disabled", "disabled")
 						}
 						else {
 							$("input[name=medicationPeriod]").removeAttr("disabled");
 						}
-						if(${medicationReason != ''} || ${medicationReason == null})
+						if(${medicationReason != ''} && ${medicationReason != null})
 						{
 							$("input[name=medicationReason]").attr("disabled", "disabled")
 						}
 						else {
 							$("input[name=medicationReason]").removeAttr("disabled");
 						}
-						if(${medicationRecord != ''} || ${medicationRecord == null})
+						if(${medicationRecord != ''} && ${medicationRecord != null})
 						{
 							$("input[name=medicationRecord]").attr("disabled", "disabled")
 						}
@@ -607,7 +665,9 @@ history.style.display="none";
 				var sensitiveMedication = function (element) {
 					if(element.value == "No") {
 						$("input[name=sensitiveMedicationName]").attr("disabled", "disabled");
+						jQuery("#sensitiveMedicationName").val("");
 						$("input[name=sensitiveMedicationSymptom]").attr("disabled", "disabled");
+						jQuery("#sensitiveMedicationSymptom").val("");
 					}
 					else {
 						if( ${referral.name =='New Patient'}  ){
@@ -615,7 +675,7 @@ history.style.display="none";
 							$("input[name=sensitiveMedicationSymptom]").removeAttr("disabled");
 						}
 						else{
-						if(${sensitiveMedicationName != ''} || ${sensitiveMedicationName == null})
+						if(${sensitiveMedicationName != ''} && ${sensitiveMedicationName != null})
 						{
 							$("input[name=sensitiveMedicationName]").attr("disabled", "disabled")
 						}
@@ -623,7 +683,7 @@ history.style.display="none";
 						$("input[name=sensitiveMedicationName]").removeAttr("disabled");
 						}
 						
-						if(${sensitiveMedicationSymptom != ''} || ${sensitiveMedicationSymptom == null})
+						if(${sensitiveMedicationSymptom != ''} && ${sensitiveMedicationSymptom != null})
 						{
 							$("input[name=sensitiveMedicationSymptom]").attr("disabled", "disabled")
 						}
@@ -638,6 +698,7 @@ history.style.display="none";
 					if(element.value == "No") {
 				
 						jQuery("#invasiveContraceptionName").attr("disabled", "disabled");
+						jQuery("#invasiveContraceptionName").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
@@ -658,7 +719,9 @@ history.style.display="none";
 				var parentStatus = function (element) {
 					if(element.value == "Alive") {
 						$("input[name=parentDeathCause]").attr("disabled", "disabled");
+						jQuery("#parentDeathCause").val("");
 						$("input[name=parentDeathAge]").attr("disabled", "disabled");
+						jQuery("#parentDeathAge").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
@@ -666,14 +729,14 @@ history.style.display="none";
 						$("input[name=parentDeathAge]").removeAttr("disabled");	
 					}
 					else{
-						if(${parentDeathCause != ''} || ${parentDeathCause == null})
+						if(${parentDeathCause != ''} && ${parentDeathCause != null})
 						{
 							$("input[name=parentDeathCause]").attr("disabled", "disabled")
 						}
 						else {
 							$("input[name=parentDeathCause]").removeAttr("disabled");
 						}	
-						if(${parentDeathAge != ''} || ${parentDeathAge == null})
+						if(${parentDeathAge != ''} && ${parentDeathAge != null})
 						{
 							$("input[name=parentDeathAge]").attr("disabled", "disabled")
 						}
@@ -687,7 +750,9 @@ history.style.display="none";
 				var siblingStatus = function (element) {
 					if(element.value == "Alive") {
 						$("input[name=siblingDeathCause]").attr("disabled", "disabled");
+						jQuery("#siblingDeathCause").val("");
 						$("input[name=siblingDeathAge]").attr("disabled", "disabled");	
+						jQuery("#siblingDeathAge").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
@@ -695,7 +760,7 @@ history.style.display="none";
 						$("input[name=siblingDeathAge]").removeAttr("disabled");	
 					}
 					else{
-						if(${siblingDeathCause != ''} || ${siblingDeathCause == null})
+						if(${siblingDeathCause != ''} && ${siblingDeathCause != null})
 						{
 							$("input[name=siblingDeathCause]").attr("disabled", "disabled")
 						}
@@ -703,7 +768,7 @@ history.style.display="none";
 							$("input[name=siblingDeathCause]").removeAttr("disabled");
 						}
 						
-						if(${siblingDeathAge != ''} || ${siblingDeathAge == null})
+						if(${siblingDeathAge != ''} && ${siblingDeathAge != null})
 						{
 							$("input[name=siblingDeathAge]").attr("disabled", "disabled")
 						}
@@ -717,21 +782,23 @@ history.style.display="none";
 				var smoke = function (element) {
 					if(element.value == "No") {
 						$("input[name=smokeItem]").attr("disabled", "disabled");
+						jQuery("#smokeItem").val("");
 						$("input[name=smokeAverage]").attr("disabled", "disabled");	
+						jQuery("#smokeAverage").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
 						$("input[name=smokeItem]").removeAttr("disabled");
 						$("input[name=smokeAverage]").removeAttr("disabled");						
 					}
-					else{	if(${smokeItem != ''} || ${smokeItem == null})
+					else{	if(${smokeItem != ''} && ${smokeItem != null})
 						{
 							$("input[name=smokeItem]").attr("disabled", "disabled")
 						}
 						else {
 							$("input[name=smokeItem]").removeAttr("disabled");
 						}
-						if(${smokeAverage != ''} || ${smokeAverage == null})
+						if(${smokeAverage != ''} && ${smokeAverage != null})
 						{
 							$("input[name=smokeAverage]").attr("disabled", "disabled")
 						}
@@ -745,7 +812,9 @@ history.style.display="none";
 				var alcohol = function (element) {
 					if(element.value == "No") {
 						$("input[name=alcoholItem]").attr("disabled", "disabled");
+						jQuery("#alcoholItem").val("");
 						$("input[name=alcoholAverage]").attr("disabled", "disabled");	
+						jQuery("#alcoholAverage").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
@@ -753,14 +822,14 @@ history.style.display="none";
 						$("input[name=alcoholAverage]").removeAttr("disabled");						
 					}
 					else{
-						if(${alcoholItem != ''} || ${alcoholItem == null})
+						if(${alcoholItem != ''} && ${alcoholItem != null})
 						{
 							$("input[name=alcoholItem]").attr("disabled", "disabled")
 						}
 						else {
 						$("input[name=alcoholItem]").removeAttr("disabled");
 						}
-						if(${alcoholAverage != ''} || ${alcoholAverage == null})
+						if(${alcoholAverage != ''} && ${alcoholAverage != null})
 						{
 							$("input[name=alcoholAverage]").attr("disabled", "disabled")
 						}
@@ -774,7 +843,9 @@ history.style.display="none";
 				var drug = function (element) {
 					if(element.value == "No") {
 						$("input[name=drugItem]").attr("disabled", "disabled");
+						jQuery("#drugItem").val("");
 						$("input[name=drugAverage]").attr("disabled", "disabled");	
+						jQuery("#drugAverage").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
@@ -782,14 +853,14 @@ history.style.display="none";
 						$("input[name=drugAverage]").removeAttr("disabled");						
 					}
 					else{
-						if(${drugItem != ''} || ${drugItem == null})
+						if(${drugItem != ''} && ${drugItem != null})
 						{
 							$("input[name=drugItem]").attr("disabled", "disabled")
 						}
 						else {
 							$("input[name=drugItem]").removeAttr("disabled");
 							}	
-						if(${drugAverage != ''} || ${drugAverage == null})
+						if(${drugAverage != ''} && ${drugAverage != null})
 						{
 							$("input[name=drugAverage]").attr("disabled", "disabled")
 						}
@@ -800,16 +871,17 @@ history.style.display="none";
 					}
 				};
 
-				var hivStatus = function (element) {
+				var exposedHiv = function (element) {
 					if(element.value == "No") {
 						$("input[name=exposedHivFactor]").attr("disabled", "disabled");
+						jQuery("#exposedHivFactor").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
 						$("input[name=exposedHivFactor]").removeAttr("disabled");
 					}
 					else{
-						if(${exposedHivFactor != ''} || ${exposedHivFactor == null})
+						if(${exposedHivFactor != ''} && ${exposedHivFactor != null})
 						{
 							$("input[name=exposedHivFactor]").attr("disabled", "disabled")
 						}
@@ -823,13 +895,14 @@ history.style.display="none";
 				var familyHelp = function (element) {
 					if(element.value == "Yes") {
 						$("input[name=otherHelp]").attr("disabled", "disabled");
+						jQuery("#otherHelp").val("");
 					}
 					else {
 					if( ${referral.name =='New Patient'}  ){
 						$("input[name=otherHelp]").removeAttr("disabled");
 					}
 					else{
-					if(${otherHelp != ''} || ${otherHelp == null})
+					if(${otherHelp != ''} && ${otherHelp != null})
 						{
 							$("input[name=otherHelp]").attr("disabled", "disabled")
 						}
@@ -856,7 +929,7 @@ history.style.display="none";
 				$(":radio[name=smoke]").click(function () {smoke(this);	}).filter(":checked").each(function () { smoke(this); });				
 				$(":radio[name=alcohol]").click(function () {alcohol(this);	}).filter(":checked").each(function () { alcohol(this); });				
 				$(":radio[name=drug]").click(function () {drug(this);	}).filter(":checked").each(function () { drug(this); });				
-				$(":radio[name=hivStatus]").click(function () {hivStatus(this);	}).filter(":checked").each(function () { hivStatus(this); });				
+				$(":radio[name=exposedHiv]").click(function () {exposedHiv(this);	}).filter(":checked").each(function () { exposedHiv(this); });				
 				$(":radio[name=familyHelp]").click(function () {familyHelp(this);	}).filter(":checked").each(function () { familyHelp(this); });				
 	
 			});
@@ -865,7 +938,7 @@ history.style.display="none";
 		</script>
 		<table id="patientHistory">
 				<tr><td>.</td></tr>
-				<tr><td><b class="boxHeader"><u>Past Medical and Surgical History</u></b></td>
+				<tr><td><b class="boxHeader">Past Medical and Surgical History</b></td>
 				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
 				</tr>
 				<tr>
@@ -1528,11 +1601,11 @@ history.style.display="none";
 				</tr>								
 				<tr><td>&nbsp;</td></tr>
 				<tr><td>&nbsp;</td></tr>
-				<tr><td><b class="boxHeader"><u>Past Drug History</u></b></td>
+				<tr><td><b class="boxHeader">Past Drug History</b></td>
 				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
 				</tr>
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;Current Medications? &nbsp;&nbsp;&nbsp;</td>
+					<td>&nbsp;&nbsp;&nbsp;Current medications? &nbsp;&nbsp;&nbsp;</td>
 					<td>
 					
 						<c:choose> 
@@ -1708,7 +1781,7 @@ history.style.display="none";
 				<tr><td>&nbsp;</td></tr>
 				<tr><td>&nbsp;</td></tr>
 
-				<tr><td><b class="boxHeader"><u>Family History</u></b></td>
+				<tr><td><b class="boxHeader">Family History</b></td>
 				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
 				</tr>
 				<tr>
@@ -1849,7 +1922,7 @@ history.style.display="none";
 				<tr><td>&nbsp;</td></tr>
 				<tr><td>&nbsp;</td></tr>
 
-				<tr><td><b class="boxHeader"><u>Personal and Social History</u></b></td>
+				<tr><td><b class="boxHeader">Personal and Social History</b></td>
 				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
 				</tr>
 				<tr>
@@ -1988,7 +2061,44 @@ history.style.display="none";
 				</tr>
 				<tr><td>&nbsp;</td></tr>				
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;Are you aware of your current HIV Status?&nbsp;&nbsp;&nbsp;</td>
+					<td>&nbsp;&nbsp;&nbsp;Are you aware of your current HIV status?&nbsp;&nbsp;&nbsp;</td>
+					<td>
+						<c:choose> 
+							<c:when test="${hivStatus != null}"> 
+								<c:if test="${hivStatus  == 'Yes'}">
+								<input type="radio" id="hivStatus" name="hivStatus" disabled checked="checked" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+								<c:if test="${hivStatus  == 'No'}">
+								<input type="radio" id="hivStatus" name="hivStatus" disabled value="Yes">Yes &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+							</c:when> 
+							<c:when test="${hivStatus == null}"> 
+								<input type="radio" id="hivStatus" name="hivStatus" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+							</c:when> 	
+						</c:choose>
+																	
+						 <c:choose> 
+							<c:when test="${hivStatus != null}"> 
+								<c:if test="${hivStatus  == 'No'}">
+								<input type="radio" id="hivStatus" name="hivStatus" disabled checked="checked" value="No">No &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+								<c:if test="${hivStatus  == 'Yes'}">
+								<input type="radio" id="hivStatus" name="hivStatus" disabled value="No">No &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+							</c:when> 
+							<c:when test="${hivStatus == null}"> 
+								<input type="radio" id="hivStatus" name="hivStatus" value="No">No &nbsp;&nbsp;&nbsp;
+							</c:when> 	
+						</c:choose>							
+					</td>
+				</tr>
+				
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?&nbsp;&nbsp;&nbsp;</td>
 					<td>
 						<c:choose> 
 							<c:when test="${exposedHiv != null}"> 
@@ -2024,42 +2134,6 @@ history.style.display="none";
 					</td>
 				</tr>
 				
-				<tr>
-					<td>&nbsp;&nbsp;&nbsp;Have you been exposed to any HIV/ AIDS factor in the past year, or since your last HIV Test?&nbsp;&nbsp;&nbsp;</td>
-					<td>
-						<c:choose> 
-							<c:when test="${hivStatus != null}"> 
-								<c:if test="${hivStatus  == 'Yes'}">
-								<input type="radio" id="hivStatus" name="hivStatus" disabled checked="checked" value="Yes">Yes &nbsp;&nbsp;&nbsp;
-								</c:if>
-								
-								<c:if test="${hivStatus  == 'No'}">
-								<input type="radio" id="hivStatus" name="hivStatus" disabled value="Yes">Yes &nbsp;&nbsp;&nbsp;
-								</c:if>
-								
-							</c:when> 
-							<c:when test="${hivStatus == null}"> 
-								<input type="radio" id="hivStatus" name="hivStatus" value="Yes">Yes &nbsp;&nbsp;&nbsp;
-							</c:when> 	
-						</c:choose>
-																	
-						 <c:choose> 
-							<c:when test="${hivStatus != null}"> 
-								<c:if test="${hivStatus  == 'No'}">
-								<input type="radio" id="hivStatus" name="hivStatus" disabled checked="checked" value="No">No &nbsp;&nbsp;&nbsp;
-								</c:if>
-								
-								<c:if test="${hivStatus  == 'Yes'}">
-								<input type="radio" id="hivStatus" name="hivStatus" disabled value="No">No &nbsp;&nbsp;&nbsp;
-								</c:if>
-								
-							</c:when> 
-							<c:when test="${hivStatus == null}"> 
-								<input type="radio" id="hivStatus" name="hivStatus" value="No">No &nbsp;&nbsp;&nbsp;
-							</c:when> 	
-						</c:choose>							
-					</td>
-				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Which factors?</td>
 					<td><input type="text" id="exposedHivFactor" name="exposedHivFactor" value="${exposedHivFactor}" size="50"></td>

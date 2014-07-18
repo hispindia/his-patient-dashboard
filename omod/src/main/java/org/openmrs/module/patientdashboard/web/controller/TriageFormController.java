@@ -211,7 +211,7 @@ public class TriageFormController {
 		{
 			model.addAttribute("parentStatus", patientFamilyHistory.getParentStatus());
 			model.addAttribute("parentDeathCause", patientFamilyHistory.getParentDeathCause());
-			model.addAttribute("parentDeathAge", patientFamilyHistory.getParentDeathCause());
+			model.addAttribute("parentDeathAge", patientFamilyHistory.getParentDeathAge());
 			model.addAttribute("siblingStatus", patientFamilyHistory.getSiblingStatus());
 			model.addAttribute("siblingDeathCause", patientFamilyHistory.getSiblingDeathCause());
 			model.addAttribute("siblingDeathAge", patientFamilyHistory.getSiblingDeathAge());
