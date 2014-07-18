@@ -205,7 +205,14 @@ tb_show("View Question",url,false);
 
 // Print the slip
 function print(){
+var submitStatus=0;
+jQuery("#opdEntryForm").keypress(function(event){			
+if(event.keyCode == 13){	
+submitStatus=1;	
+}
+});
 
+if(submitStatus!=1){
 var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
 
@@ -265,15 +272,18 @@ var externalReferral = document.getElementById('externalReferral').value;
 if(externalReferral!=-1){
 jQuery("#printableExternalReferral").append("<span style='margin:5px;'>" + externalReferral + "</span>");
 }
+
 var val = $('input:radio[name=radio_f]:checked').val();
+if(val!=undefined){
 jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + val + "</span>");
- 
+}
 if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0){
 jQuery("#printOPDSlip").printArea({
 mode : "popup",
 popClose : true
 });
 	}
+  }
 }
 </script>
 <script type="text/javascript">
