@@ -216,6 +216,8 @@ submitStatus=0;
 });
 
 if(submitStatus!=1){
+jQuery("#printable").empty();
+
 var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
 
@@ -796,6 +798,7 @@ popClose : true
 <div class="box">
 <div class="box">
 <table>
+<tr><td><div id="printable"><b>Printable:</b></div></td></tr>
 <tr><td><div id="printableHistoryOfPresentIllness"><b>History of present illness:</b></div></td></tr>
 <tr><td><div id="printableSymptom"><b>Symptom:</b></div></td></tr>
 <tr><td><div id="printableProvisionalDiagnosis"><b>Provisional diagnosis:</b></div></td></tr>
