@@ -78,6 +78,14 @@
 }
 </style>
 <script type="text/javascript">
+function stopRKey(evt) {
+  var evt = (evt) ? evt : ((event) ? event : null);
+  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+  if ((evt.keyCode == 13) && (node.type=="text"))  {return false;}
+}
+
+document.onkeypress = stopRKey; 
+
 var drugIssuedList = new Array();
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value;
@@ -216,7 +224,6 @@ submitStatus=0;
 });
 
 if(submitStatus!=1){
-jQuery("#printable").empty();
 
 var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
@@ -798,7 +805,6 @@ popClose : true
 <div class="box">
 <div class="box">
 <table>
-<tr><td><div id="printable"><b>Printable:</b></div></td></tr>
 <tr><td><div id="printableHistoryOfPresentIllness"><b>History of present illness:</b></div></td></tr>
 <tr><td><div id="printableSymptom"><b>Symptom:</b></div></td></tr>
 <tr><td><div id="printableProvisionalDiagnosis"><b>Provisional diagnosis:</b></div></td></tr>
