@@ -246,7 +246,9 @@ public class AutoCompleteController {
 			EncounterService encounterService = Context.getEncounterService();
 			Encounter encounter =encounterService.getEncounter(id);
 			OpdPatientQueueLog opdPatientQueueLog=dashboardService.getOpdPatientQueueLog(encounter);
-			model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+			if (opdPatientQueueLog != null) {
+				model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+			}
 		}
 		return "module/patientdashboard/vitalStatistic";
 	}
