@@ -23,30 +23,20 @@
 
 <c:when test="${not empty clinicalSummaries}">
 <table cellpadding="5" cellspacing="0" width="100%">
-<tr>
-	<th><spring:message code="patientdashboard.clinicalSummary.view"/></th>
+<tr align="center">
 	<th><spring:message code="patientdashboard.clinicalSummary.dateOfVisit"/></th>
-	<!--<th><spring:message code="patientdashboard.clinicalSummary.typeOfVisit"/></th>
-	--><th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
-	<th><spring:message code="patientdashboard.clinicalSummary.diagnosis"/></th>
-	<th><spring:message code="patientdashboard.clinicalSummary.procedures"/></th>
-	<!-- Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552-->
-	<th><spring:message code="patientdashboard.clinicalSummary.visitOutcome"/></th>	
-	<!-- <th><spring:message code="patientdashboard.clinicalSummary.linkedVisit"/></th> -->
+	<th><spring:message code="patientdashboard.clinicalSummary.viewVisitDetails"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.vitalStatistics"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.symptomlDetails"/></th>
 </tr>
 
 <c:forEach items="${clinicalSummaries}" var="clinicalSummary" varStatus="varStatus">
-<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>[Detail]</small></a> </td>
-	<td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
-	<!--<td>${clinicalSummary.typeOfVisit}</td>
-	--><td>${clinicalSummary.treatingDoctor}</td>
-	<td>${clinicalSummary.diagnosis}</td>
-	<td><a href="#" onclick="DASHBOARD.detailProcedure('${clinicalSummary.id}');">${clinicalSummary.procedures}</a></td>
-	<!-- Sagar Bele Date:29-12-2012 Add field of visit outcome for Bangladesh requirement #552-->
-	<td>${clinicalSummary.visitOutcomes}</td><!--
-	<td>${clinicalSummary.linkedVisit}</td>
---></tr>
+<tr align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
+    <td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
+	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>[View details]</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>[View details]</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>[View details]</small></a> </td>
+	</tr>
 </c:forEach>
 </table>
 </c:when>

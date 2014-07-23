@@ -129,6 +129,20 @@ DASHBOARD={
 				tb_show(" ",url,false);
 			}
 		},
+		vitalStatistics : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "vitalStatistic.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				tb_show(" ",url,false);
+			}
+		},
+		symptomDetails : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "symptomlDetail.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				tb_show(" ",url,false);
+			}
+		},
 		showAllDiagnosis : function()
 		{
 			if(SESSION.checkSession()){

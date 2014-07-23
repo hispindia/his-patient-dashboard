@@ -40,6 +40,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -236,6 +237,18 @@ public class AutoCompleteController {
 			
 		}
 		return "module/patientdashboard/detailClinical";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/vitalStatistic.htm", method=RequestMethod.GET)
+	public String vitalStatistic(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if(id != null){
+		    PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			EncounterService encounterService = Context.getEncounterService();
+			Encounter encounter =encounterService.getEncounter(id);
+			OpdPatientQueueLog opdPatientQueueLog=dashboardService.getOpdPatientQueueLog(encounter);
+			model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+		}
+		return "module/patientdashboard/vitalStatistic";
 	}
 	
 	@RequestMapping(value="/module/patientdashboard/autoCompleteSymptom.htm", method=RequestMethod.GET)
