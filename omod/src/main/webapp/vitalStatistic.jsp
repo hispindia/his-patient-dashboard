@@ -25,8 +25,6 @@
 <span class="boxHeader">Vital statistics Detail</span>
 <table class="box">
 	<tr>
-
-	<tr>
 		<td>Weight (Kg)</td>
 						<td><input type="text" id="weight" name="weight" size="11"
 			value="${opdPatientQueueLog.triageDataId.weight}" readonly="readonly">

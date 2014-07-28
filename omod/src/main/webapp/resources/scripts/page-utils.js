@@ -132,14 +132,14 @@ DASHBOARD={
 		vitalStatistics : function(id)
 		{
 			if(SESSION.checkSession()){
-				url = "vitalStatistic.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				url = "vitalStatistic.htm?id="+id+"&keepThis=false&TB_iframe=true&height=400&width=500";
 				tb_show(" ",url,false);
 			}
 		},
-		symptomDetails : function(id)
+		symptomlDetails : function(id)
 		{
 			if(SESSION.checkSession()){
-				url = "symptomlDetail.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				url = "symptomDetails.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
 				tb_show(" ",url,false);
 			}
 		},

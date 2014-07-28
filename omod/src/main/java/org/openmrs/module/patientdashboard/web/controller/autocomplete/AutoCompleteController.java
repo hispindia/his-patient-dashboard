@@ -23,10 +23,11 @@ package org.openmrs.module.patientdashboard.web.controller.autocomplete;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
@@ -38,9 +39,12 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.Question;
+import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -251,6 +255,37 @@ public class AutoCompleteController {
 			}
 		}
 		return "module/patientdashboard/vitalStatistic";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/symptomDetails.htm", method=RequestMethod.GET)
+	public String symptomDetails(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if(id != null){
+		    PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			EncounterService encounterService = Context.getEncounterService();
+			Encounter encounter =encounterService.getEncounter(id);
+			List<Symptom> symptoms=dashboardService.getSymptom(encounter);
+			List<String> al=new ArrayList<String>();
+			Map<String,Collection<Question>> syptomquestionanswer=new LinkedHashMap<String,Collection<Question>>();
+			Map<Question,String> questionanswer=new LinkedHashMap<Question,String>();
+			for(Symptom symptom:symptoms){
+				al.add(symptom.getSymptomConcept().getName().toString());
+				Collection<Question> questions=dashboardService.getQuestion(symptom);
+				syptomquestionanswer.put( symptom.getSymptomConcept().getName().toString(), (Collection<Question>) questions);
+				for(Question question:questions){
+					Answer answer=dashboardService.getAnswer(question);
+					if(answer.getAnswerConcept()!=null){
+					questionanswer.put(question, answer.getAnswerConcept().getName().toString());
+					}
+					else{
+						questionanswer.put(question, answer.getFreeText());
+					}
+				}
+			}
+			model.addAttribute("al", al);
+			model.addAttribute("syptomquestionanswer", syptomquestionanswer);
+			model.addAttribute("questionanswer", questionanswer);
+		}
+		return "module/patientdashboard/symptomDetail";
 	}
 	
 	@RequestMapping(value="/module/patientdashboard/autoCompleteSymptom.htm", method=RequestMethod.GET)

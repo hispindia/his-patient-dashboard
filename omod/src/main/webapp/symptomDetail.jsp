@@ -22,37 +22,21 @@
 <%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
-<span class="boxHeader">Visit Detail</span>
+<span class="boxHeader">Symptom Detail</span>
 <table class="box">
-	<tr>
-		<td>Treating doctor:</td>
-	</tr>
-	<tr>
-		<td><strong>History of Present Illness:</strong>
-			${illnessHistory}</td>
-	</tr>
-	<tr>
-		<td>Symptom:</td>
-	</tr>
-	<tr>
-		<td>Provisional Diagnosis:</td>
-	</tr>
-	<tr>
-		<td>Procedure:</td>
-	</tr>
-	<tr>
-		<td><strong>Other Instructions:</strong> ${otherInstructions}
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Internal referral:</strong> ${internal}</td>
-	</tr>
-	<tr>
-		<td><strong>External referral:</strong> ${external}</td>
-	</tr>
-	<tr>
-		<td><strong>VisitOutCome:</strong> ${visitOutCome} <c:if
-				test="${not empty otherValueOfVisit}">- ${otherValueOfVisit}</c:if>
-		</td>
-	</tr>
+	<c:choose>
+		<c:when test="${not empty al}">
+			<c:forEach items="${al}" var="a">
+				<tr>
+					<td bgcolor="red">${a}</td>
+				</tr>
+				<c:forEach items="${syptomquestionanswer[a]}" var="sqa">
+					<tr>
+						<td><font font-size: 1pt>${sqa.questionConcept.name}</font></td>
+						<td><font font-size: 1pt>${questionanswer[sqa]}</font></td>
+					</tr>
+				</c:forEach>
+			</c:forEach>
+		</c:when>
+	</c:choose>
 </table>
