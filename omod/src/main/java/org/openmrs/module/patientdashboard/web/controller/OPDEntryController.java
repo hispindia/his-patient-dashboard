@@ -343,6 +343,8 @@ public class OPDEntryController {
 		}
 
 		ConceptService conceptService = Context.getConceptService();
+		GlobalProperty gpSymptom = administrationService
+		.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_SYMPTOM);
 		GlobalProperty gpDiagnosis = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
 		GlobalProperty procedure = administrationService
@@ -355,6 +357,8 @@ public class OPDEntryController {
 		GlobalProperty externalReferral = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
 
+		Concept cSymptom = conceptService.getConceptByName(gpSymptom
+				.getPropertyValue());
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis
 				.getPropertyValue());
 		// ghanshyam 8-july-2013 New Requirement #1963 Redesign patientdashboard
@@ -363,6 +367,22 @@ public class OPDEntryController {
 		Concept illnessHistory = conceptService
 				.getConceptByName("History of Present Illness");
 
+		if (cSymptom == null) {
+			throw new Exception("Symptom concept null");
+		}
+		// symptom
+		for (Integer cId : command.getSelectedSymptomList()) {
+			Obs obsSymptom = new Obs();
+			obsSymptom.setObsGroup(obsGroup);
+			obsSymptom.setConcept(cDiagnosis);
+			obsSymptom.setValueCoded(conceptService.getConcept(cId));
+			obsSymptom.setCreator(user);
+			obsSymptom.setDateCreated(date);
+			obsSymptom.setEncounter(encounter);
+			obsSymptom.setPatient(patient);
+			encounter.addObs(obsSymptom);
+		}
+		
 		if (cDiagnosis == null) {
 			throw new Exception("Diagnosis concept null");
 		}

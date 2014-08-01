@@ -78,6 +78,13 @@
 			External hospital root concept name
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.symptomConcept</property>
+		<defaultValue>symptom</defaultValue>
+		<description>
+			symptom concept name
+		</description>
+	</globalProperty>
  	<globalProperty>
 		<property>@MODULE_ID@.provisionalDiagnosisConcept</property>
 		<defaultValue>Provisional diagnosis</defaultValue>

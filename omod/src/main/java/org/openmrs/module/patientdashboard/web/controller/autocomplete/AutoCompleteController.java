@@ -33,6 +33,8 @@ import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
@@ -42,6 +44,7 @@ import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
+import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.Question;
 import org.openmrs.module.hospitalcore.model.Symptom;
@@ -163,7 +166,9 @@ public class AutoCompleteController {
 			 ConceptService conceptService = Context.getConceptService();
 			
 			EncounterService encounterService = Context.getEncounterService();
-			 AdministrationService administrationService = Context.getAdministrationService();
+			AdministrationService administrationService = Context.getAdministrationService();
+			PatientDashboardService patientDashboardService = Context
+				.getService(PatientDashboardService.class);
 			String gpVisiteOutCome = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
 			Encounter encounter =encounterService.getEncounter(id);
 			String internal = "";
@@ -181,6 +186,11 @@ public class AutoCompleteController {
 			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
 			
 			Concept conIllnessHistory = conceptService.getConceptByName("History of Present Illness");
+			List<Concept> symptoms = new ArrayList<Concept>();
+			List<Concept> diagnosiss = new ArrayList<Concept>();
+			List<Concept> procedures = new ArrayList<Concept>();
+			List<Concept> investigations = new ArrayList<Concept>();
+			List<Concept> drugs = new ArrayList<Concept>();
 			try {
 				if(encounter != null){
 					for( Obs obs : encounter.getAllObs()){
@@ -220,6 +230,21 @@ public class AutoCompleteController {
 						if( obs.getConcept().getConceptId().equals(conIllnessHistory.getConceptId()) ){
 							illnessHistory = obs.getValueText();
 						}
+						
+						if (obs.getValueCoded() != null) {
+							if (obs.getValueCoded().getConceptClass().getName().equals("Symptom")) {
+								symptoms.add(obs.getValueCoded());
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
+								diagnosiss.add(obs.getValueCoded());
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Procedure")) {
+								procedures.add(obs.getValueCoded());
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Test")) {
+								investigations.add(obs.getValueCoded());
+							}
+						}
 
 					}
 					
@@ -230,7 +255,27 @@ public class AutoCompleteController {
 				e.printStackTrace();
 			}
 			
+			User user=Context.getUserContext().getAuthenticatedUser();
+			Person person=Context.getPersonService().getPerson(user);
+			String givenName=person.getGivenName();
+			String middleName=person.getMiddleName();
+			String familyName=person.getFamilyName();
 			
+			if(givenName==null){
+				givenName="";
+			}
+			if(middleName==null){
+				middleName="";
+			}
+			if(familyName==null){
+				familyName="";
+			}
+		
+			String treatingDoctor=givenName+" "+middleName+" "+familyName;
+			
+			List<OpdDrugOrder> opdDrugOrders=patientDashboardService.getOpdDrugOrder(encounter);
+			
+			model.addAttribute("treatingDoctor", treatingDoctor);
 			model.addAttribute("internal", internal);
 			model.addAttribute("external", external);
 			model.addAttribute("visitOutCome", visitOutCome);
@@ -238,6 +283,11 @@ public class AutoCompleteController {
 			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
 			model.addAttribute("otherInstructions", otherInstructions);
 			model.addAttribute("illnessHistory", illnessHistory);
+			model.addAttribute("symptoms", symptoms);
+			model.addAttribute("diagnosiss", diagnosiss);
+			model.addAttribute("procedures", procedures);
+			model.addAttribute("investigations", investigations);
+			model.addAttribute("opdDrugOrders", opdDrugOrders);
 			
 		}
 		return "module/patientdashboard/detailClinical";

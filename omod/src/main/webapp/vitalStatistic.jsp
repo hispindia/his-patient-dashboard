@@ -25,95 +25,60 @@
 <span class="boxHeader">Vital statistics Detail</span>
 <table class="box">
 	<tr>
-		<td>Weight (Kg)</td>
-						<td><input type="text" id="weight" name="weight" size="11"
-			value="${opdPatientQueueLog.triageDataId.weight}" readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Height (cm)</td>
-						<td><input type="text" id="height" name="height" size="11"
-			value="${opdPatientQueueLog.triageDataId.height}" readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>MUA Circumference(cm)</td>
-						<td><input type="text" id="mua" name="mua" size="11"
-			value="${opdPatientQueueLog.triageDataId.mua}" readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Chest Circumference(cm)</td>
-						<td><input type="text" id="chest" name="chest" size="11"
-			value="${opdPatientQueueLog.triageDataId.chest}" readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Abdominal Circumference(cm)</td>
-						<td><input type="text" id="abdominal" name="abdominal"
-			size="11" value="${opdPatientQueueLog.triageDataId.abdominal}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Temperature (degree C)</td>
-						<td><input type="text" id="temperature" name="temperature"
-			size="11" value="${opdPatientQueueLog.triageDataId.temperature}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Systolic B.P</td>
-						<td><input type="text" id="sbp" name="sbp" size="11"
-			value="${opdPatientQueueLog.triageDataId.systolic}" readonly="readonly">
-						</td>
-					</tr>
-					<tr>
-						<td>Diastolic B.P</td>
-						<td><input type="text" id="dbp" name="dbp" size="11"
-			value="${opdPatientQueueLog.triageDataId.daistolic}" readonly="readonly">
-						</td>
-					</tr>
-					<tr>
-						<td>Respiratory Rate</td>
-						<td><input type="text" id="resRate" name="resRate" size="11"
-			value="${opdPatientQueueLog.triageDataId.respiratoryRate}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Pulse Rate</td>
-						<td><input type="text" id="pulseRate" name="pulseRate"
-			size="11" value="${opdPatientQueueLog.triageDataId.pulsRate}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Blood Group</td>
-						<td><input type="text" id="bloodGroup" name="bloodGroup"
-			size="11" value="${opdPatientQueueLog.triageDataId.bloodGroup}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Rhesus Factor</td>
-						<td><input type="text" id="rhesusFactor" name="rhesusFactor"
-			size="11" value="${opdPatientQueueLog.triageDataId.rhesusFactor}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>Last Menstrual Period</td>
-						<td><input type="text" id="lastMenstrualPeriod"
-			name="lastMenstrualPeriod" size="11" value="${opdPatientQueueLog.triageDataId.lastMenstrualDate}"
-			readonly="readonly">
-		</td>
-					</tr>
-					<tr>
-						<td>PITCT</td>
-						<td><input type="text" id="pitct" name="pitct" size="11"
-			value="${opdPatientQueueLog.triageDataId.pitct}" readonly="readonly">
-						</td></tr>
-	
+		<td><strong>Weight (Kg)</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.weight}</td>
+	</tr>
+	<tr>
+		<td><strong>Height (cm)</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.height}</td>
+	</tr>
+	<tr>
+		<td><strong>MUA Circumference(cm)</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.mua}</td>
+	</tr>
+	<tr>
+		<td><strong>Chest Circumference(cm)</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.chest}</td>
+	</tr>
+	<tr>
+		<td><strong>Abdominal Circumference(cm)</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.abdominal}</td>
+	</tr>
+	<tr>
+		<td><strong>Temperature (degree C)</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.temperature}</td>
+	</tr>
+	<tr>
+		<td><strong>Systolic B.P</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.systolic}</td>
+	</tr>
+	<tr>
+		<td><strong>Diastolic B.P</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.daistolic}</td>
+	</tr>
+	<tr>
+		<td><strong>Respiratory Rate</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.respiratoryRate}</td>
+	</tr>
+	<tr>
+		<td><strong>Pulse Rate</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.pulsRate}</td>
+	</tr>
+	<tr>
+		<td><strong>Blood Group</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.bloodGroup}</td>
+	</tr>
+	<tr>
+		<td><strong>Rhesus Factor</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.rhesusFactor}</td>
+	</tr>
+	<tr>
+		<td><strong>Last Menstrual Period</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.lastMenstrualDate}</td>
+	</tr>
+	<tr>
+		<td><strong>PITCT</strong></td>
+		<td>${opdPatientQueueLog.triageDataId.pitct}</td>
+	</tr>
 
 </table>

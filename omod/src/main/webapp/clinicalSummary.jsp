@@ -33,9 +33,9 @@
 <c:forEach items="${clinicalSummaries}" var="clinicalSummary" varStatus="varStatus">
 <tr align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
     <td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
-	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>[View details]</small></a> </td>
-	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>[View details]</small></a> </td>
-	<td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>[View details]</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>View details</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	</tr>
 </c:forEach>
 </table>

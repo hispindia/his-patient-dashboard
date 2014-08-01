@@ -125,7 +125,7 @@ DASHBOARD={
 		detailClinical : function(id)
 		{
 			if(SESSION.checkSession()){
-				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=400&width=700";
 				tb_show(" ",url,false);
 			}
 		},

@@ -25,34 +25,90 @@
 <span class="boxHeader">Visit Detail</span>
 <table class="box">
 	<tr>
-		<td>Treating doctor:</td>
+		<td><strong>Treating doctor:</strong></td>
+		<td>${treatingDoctor}</td>
 	</tr>
 	<tr>
-		<td><strong>History of Present Illness:</strong>
-			${illnessHistory}</td>
+		<td><strong>History of Present Illness:</strong></td>
+		<td>${illnessHistory}</td>
+	</tr>
+
+	<tr>
+		<td><strong>Symptom:</strong></td>
+		<c:forEach items="${symptoms}" var="symptom">
+			</td>
+			<td>${symptom.name}</td>
 	</tr>
 	<tr>
-		<td>Symptom:</td>
+		<td></c:forEach>
+	</tr>
+
+	<tr>
+		<td><strong>Provisional Diagnosis:</strong></td>
+		<c:forEach items="${diagnosiss}" var="diagnosis">
+			</td>
+			<td>${diagnosis.name}</td>
 	</tr>
 	<tr>
-		<td>Provisional Diagnosis:</td>
+		<td></c:forEach>
+	</tr>
+
+	<tr>
+		<td><strong>Procedure:</strong></td>
+		<c:forEach items="${procedures}" var="procedure">
+			</td>
+			<td>${procedure.name}</td>
 	</tr>
 	<tr>
-		<td>Procedure:</td>
+		<td></c:forEach>
+	</tr>
+
+	<tr>
+		<td><strong>Investigation:</strong></td>
+		<c:forEach items="${investigations}" var="investigation">
+			</td>
+			<td>${investigation.name}</td>
 	</tr>
 	<tr>
-		<td><strong>Other Instructions:</strong> ${otherInstructions}
-		</td>
+		<td></c:forEach>
+	</tr>
+	</table>
+
+	<table class="box">
+	<tr align="center">
+		<th><strong>Drug:</strong></th>
+		<th><strong>Formulation:</strong></th>
+		<th><strong>Frequency:</strong></th>
+		<th><strong>No Of Days:</strong></th>
+		<th><strong>Comments:</strong></th>
+	</tr>
+	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder">
+	<tr align="center">
+			<td>${opdDrugOrder.inventoryDrug.name}</td>
+			<td>${opdDrugOrder.inventoryDrugFormulation.name}-${opdDrugOrder.inventoryDrugFormulation.dozage}</td>
+			<td>${opdDrugOrder.frequency.name}</td>
+			<td>${opdDrugOrder.noOfDays}</td>
+			<td>${opdDrugOrder.comments}</td>
+	</tr>
+	</c:forEach>
+	</table>
+	
+	<table class="box">
+	<tr>
+		<td><strong>Other Instructions:</strong></td>
+		<td>${otherInstructions}</td>
 	</tr>
 	<tr>
-		<td><strong>Internal referral:</strong> ${internal}</td>
+		<td><strong>Internal referral:</strong></td>
+		<td>${internal}</td>
 	</tr>
 	<tr>
-		<td><strong>External referral:</strong> ${external}</td>
+		<td><strong>External referral:</strong></td>
+		<td>${external}</td>
 	</tr>
 	<tr>
-		<td><strong>VisitOutCome:</strong> ${visitOutCome} <c:if
-				test="${not empty otherValueOfVisit}">- ${otherValueOfVisit}</c:if>
-		</td>
+		<td><strong>VisitOutCome:</strong></td>
+		<td> ${visitOutCome}</td>
+		<td><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if></td>
 	</tr>
-</table>
+	</table>
