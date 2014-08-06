@@ -297,6 +297,30 @@ popClose : true
 	}
   }
 }
+
+function validate(){
+var i;
+if(selectedProcedureList.length>0){
+for(i=selectedProcedureList.length-1; i>=0; i--){
+var spl=selectedProcedureList.options[i].value;
+var splts=spl.toString();
+var procedure=document.getElementById(splts).value;
+if(procedure==null || procedure==""){
+   alert("Please enter procedure date");
+   return false;
+   }
+   else{
+   print();
+   }
+ }
+
+}
+else{
+print();
+}
+
+return true;
+}
 </script>
 <script type="text/javascript">
 // get context path in order to build controller url
@@ -308,7 +332,7 @@ popClose : true
 	}
 </script>
 <b class="boxHeader">Opd Form</b>
-<form class="box" method="post" action="opdEntry.htm" id="opdEntryForm">
+<form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="return validate();">
 
 	<input type="hidden" name="patientId" value="${patientId }" /> <input
 		type="hidden" name="opdId" value="${opd.conceptId }" /> <input
