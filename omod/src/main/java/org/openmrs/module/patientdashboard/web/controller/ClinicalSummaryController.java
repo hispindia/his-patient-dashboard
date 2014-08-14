@@ -170,6 +170,7 @@ public class ClinicalSummaryController {
 			// add command to list
 		};
 		//System.out.println("clinicalSummaries: "+clinicalSummaries);
+		model.addAttribute("patient", patient);
 		model.addAttribute("clinicalSummaries", clinicalSummaries);
 		return "module/patientdashboard/clinicalSummary";
 	}

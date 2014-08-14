@@ -190,7 +190,6 @@ public class AutoCompleteController {
 			List<Concept> diagnosiss = new ArrayList<Concept>();
 			List<Concept> procedures = new ArrayList<Concept>();
 			List<Concept> investigations = new ArrayList<Concept>();
-			List<Concept> drugs = new ArrayList<Concept>();
 			try {
 				if(encounter != null){
 					for( Obs obs : encounter.getAllObs()){

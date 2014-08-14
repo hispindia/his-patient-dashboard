@@ -19,6 +19,42 @@
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
 
+<script type="text/javascript">
+function clinicalSummary(encounterId){
+ var patientId = ${patient.patientId};
+jQuery.ajax({
+				type : "GET",
+				url : getContextPath() + "/module/patientdashboard/printDetails.form",
+				data : ({
+					encounterId			: encounterId,
+					patientId			: patientId
+				}),
+				success : function(data) {
+					jQuery("#printOPDSlipp").html(data);	
+					printClinicalSummary();	
+				}
+				
+			});			
+}
+</script>
+<script type="text/javascript">
+function printClinicalSummary(){
+jQuery("#printOPDSlipp").printArea({
+            mode : "popup",
+            popClose : true
+            });
+}
+</script>
+<script type="text/javascript">
+// get context path in order to build controller url
+	function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+
 <c:choose>
 
 <c:when test="${not empty clinicalSummaries}">
@@ -28,6 +64,7 @@
 	<th><spring:message code="patientdashboard.clinicalSummary.viewVisitDetails"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.vitalStatistics"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.symptomlDetails"/></th>
+	<th></th>
 </tr>
 
 <c:forEach items="${clinicalSummaries}" var="clinicalSummary" varStatus="varStatus">
@@ -36,8 +73,14 @@
 	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>View details</small></a> </td>
+	<td><a href="#" onclick="clinicalSummary('${ clinicalSummary.id}');"><small>Print</small></a> </td>
 	</tr>
+
 </c:forEach>
 </table>
 </c:when>
 </c:choose>
+
+<div id="printOPDSlipp">
+
+</div>
