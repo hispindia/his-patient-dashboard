@@ -75,7 +75,7 @@
 
 </form>
 </c:when>
-<c:otherwise>No investigation found</c:otherwise>
+<c:otherwise>No Investigation Found</c:otherwise>
 </c:choose>
 
 

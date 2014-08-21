@@ -254,8 +254,9 @@ public class AutoCompleteController {
 				e.printStackTrace();
 			}
 			
-			User user=Context.getUserContext().getAuthenticatedUser();
-			Person person=Context.getPersonService().getPerson(user);
+			OpdPatientQueueLog opql=patientDashboardService.getOpdPatientQueueLog(encounter);
+			User user=opql.getUser();
+			Person person=user.getPerson();
 			String givenName=person.getGivenName();
 			String middleName=person.getMiddleName();
 			String familyName=person.getFamilyName();

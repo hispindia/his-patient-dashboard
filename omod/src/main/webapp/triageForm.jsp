@@ -127,7 +127,7 @@ if(!StringUtils.isBlank(jQuery("#chest").val())) {
 
 if(!StringUtils.isBlank(jQuery("#abdominal").val())) {
       if (!jQuery("#abdominal").val().match(intRegex)) {
-	  alert("Please enter Chest Circumference in correct format");
+	  alert("Please enter Abdominal Circumference in correct format");
 	  return false;
 	  }
 }
@@ -238,9 +238,19 @@ history.style.display="none";
 				${patient.givenName}&nbsp;${patient.familyName}&nbsp; ${fn:replace(patient.middleName,',',' ')}
 				</td>
 			<td width="30%"><b>Age:</b> ${age }</td>
-			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
+			<td width="30%"><b>Gender:</b>
+			<c:choose>
+					<c:when
+						test="${patient.gender } == 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+				</c:choose>
+				</td>
 		</tr>
-			<td width="40%"><b>Age category:</b> ${ageCategory }</td>
+			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
 			<td width="30%"><b>Visit Status:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
 				<c:choose>
 					<c:when
@@ -251,7 +261,7 @@ history.style.display="none";
 					${referral.name }	
 				</c:otherwise>
 				</c:choose></td>
-			<td width="30%"><b>Follow up:</b> <openmrs:formatDate date="${ob.valueDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
+			<td width="30%"><b>Previous Visit:</b> <openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
 
 		</tr>
 	</table>

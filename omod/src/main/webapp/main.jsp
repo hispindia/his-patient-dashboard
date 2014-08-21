@@ -44,7 +44,17 @@
 				${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}
 				</td>
 			<td width="30%"><b>Age:</b> ${age }</td>
-			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
+			<td width="30%"><b>Gender:</b>
+			<c:choose>
+					<c:when
+						test="${patient.gender } == 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+				</c:choose>
+				</td>
 		</tr>
 		<%-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed --%>
 		<%-- ghanshyam 27-02-2013 Feedback #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module(remove category from registration,OPD,IPD,Inventory) --%>
@@ -56,7 +66,7 @@
 		</c:forEach>
 			</td>
 			--%>
-			<td width="40%"><b>Age category:</b> ${ageCategory }</td>
+			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
 			<td width="30%"><b>Visit Status:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
 				<c:choose>
 					<c:when
@@ -68,9 +78,9 @@
 				</c:otherwise>
 				</c:choose>
 			</td>
-			<td width="30%"><b>Follow up:</b> 
+			<td width="30%"><b>Previous Visit:</b> 
 			<c:if test="${not empty ob }">
-			<openmrs:formatDate date="${ob.valueDatetime }" /> at ${opdPatientQueueLog.opdConceptName}
+			<openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}
 			</c:if>
 			</td>
 
@@ -80,28 +90,28 @@
 		<ul>
 			<li><a
 				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"
-				title="OPD entry"><span> OPD entry</span> </a></li>
+				title="OPD entry"><span> OPD Entry</span> </a></li>
 			<li><a
 				href="clinicalSummary.htm?patientId=${patient.patientId }"
-				title="Clinical summary"><span>Clinical summary</span> </a></li>
+				title="Clinical summary"><span>Clinical Summary</span> </a></li>
 			<%-- ghanshyam,date:31-12-2012 New Requirement #553 [OPD] Add Laboratory report of patient in OPD for all Bangladesh Hospitals --%>
 			<%-- ghanshyam,date:26-02-2013 Support #964[Patient Dashboard]change in the Dashboard Tab 'Laboratory report' to 'Laboratory record' for Bangladesh module
  --%>
 			<li><a
 				href="investigationReport.htm?patientId=${patient.patientId }"
-				title="Laboratory record"><span>Laboratory record</span> </a></li>
+				title="Laboratory record"><span>Laboratory Record</span> </a></li>
 			<%-- ghanshyam,date:8-01-2013 New Requirement #554 [OPD] Add Radiology report of patient in OPD for all Bangladesh Hospitals --%>
 			<li><a
 				href="radiologyRecord.htm?patientId=${patient.patientId }"
-				title="Radiology record"><span>Radiology record</span> </a></li>
+				title="Radiology record"><span>Radiology Record</span> </a></li>
 			<li><a
 				href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"
-				title="IPD record"><span>IPD record</span> </a></li>
+				title="IPD record"><span>IPD Record</span> </a></li>
 			<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
 			<li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"
-				title="Pharmacy record"><span>Pharmacy record</span> </a></li>
+				title="Pharmacy record"><span>Pharmacy Record</span> </a></li>
 			<li><a href="patientHistory.htm?patientId=${patient.patientId }"
-				title="Patient history"><span>Patient history</span> </a></li>
+				title="Patient history"><span>Patient History</span> </a></li>
 
 			</ul>
 

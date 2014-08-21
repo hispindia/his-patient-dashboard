@@ -25,7 +25,7 @@
 <span class="boxHeader">Visit Detail</span>
 <table class="box">
 	<tr>
-		<td><strong>Treating doctor:</strong></td>
+		<td><strong>Treating Doctor:</strong></td>
 		<td>${treatingDoctor}</td>
 	</tr>
 	<tr>
@@ -99,11 +99,11 @@
 		<td>${otherInstructions}</td>
 	</tr>
 	<tr>
-		<td><strong>Internal referral:</strong></td>
+		<td><strong>Internal Referral:</strong></td>
 		<td>${internal}</td>
 	</tr>
 	<tr>
-		<td><strong>External referral:</strong></td>
+		<td><strong>External Referral:</strong></td>
 		<td>${external}</td>
 	</tr>
 	<tr>

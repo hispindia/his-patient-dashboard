@@ -27,40 +27,48 @@
 		</center>
 	</tr>
 	<tr>
-		<td><strong>Receipt No:</strong>
-		</td>
+		<td><strong>Receipt No:</strong></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><strong>Date/Time:</strong>
-		</td>
+		<td><strong>Date/Time:</strong></td>
 		<td>${currentDateTime}</td>
 	</tr>
 	<tr>
-		<td><strong>Name:</strong>
-		</td>
+		<td><strong>Name:</strong></td>
 		<td>${patientName}</td>
 	</tr>
 	<tr>
-		<td><strong>Identifier:</strong>
-		</td>
+		<td><strong>Patient ID:</strong></td>
 		<td>${patient.patientIdentifier.identifier}</td>
 	</tr>
 	<tr>
-		<td><strong>Patient Category:</strong>
-		</td>
+		<td><strong>Age:</strong></td>
+		<td>${age}</td>
+	</tr>
+	<tr>
+		<td><strong>Gender:</strong></td>
+		<td><c:choose>
+				<c:when test="${patient.gender } == 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+			</c:choose></td>
+	</tr>
+	<tr>
+		<td><strong>Patient Category:</strong></td>
 		<td>${selectedCategory}</td>
 	</tr>
 	<tr>
-		<td><strong>Waiver/ Exemption No:</strong>
-		</td>
+		<td><strong>Waiver/ Exemption No:</strong></td>
 		<td>${exemptionNumber}</td>
 		<td>${nhifCardNumber}</td>
 		<td>${waiverNumber}</td>
 	</tr>
 	<tr>
-		<td><strong>Treating doctor:</strong>
-		</td>
+		<td><strong>Treating Doctor:</strong></td>
 		<td>${user.personName}</td>
 	</tr>
 </table>
@@ -68,13 +76,11 @@
 
 <table class="box">
 	<tr>
-		<td><strong>History of Present Illness:</strong>
-		</td>
+		<td><strong>History of Present Illness:</strong></td>
 		<td>${illnessHistory}</td>
 	</tr>
 	<tr>
-		<td><strong>Symptom:</strong>
-		</td>
+		<td><strong>Symptom:</strong></td>
 		<c:forEach items="${symptoms}" var="symptom">
 			</td>
 			<td>${symptom.name}</td>
@@ -83,8 +89,7 @@
 		<td></c:forEach>
 	</tr>
 	<tr>
-		<td><strong>Provisional Diagnosis:</strong>
-		</td>
+		<td><strong>Provisional Diagnosis:</strong></td>
 		<c:forEach items="${diagnosiss}" var="diagnosis">
 			</td>
 			<td>${diagnosis.name}</td>
@@ -94,8 +99,7 @@
 	</tr>
 
 	<tr>
-		<td><strong>Procedure:</strong>
-		</td>
+		<td><strong>Procedure:</strong></td>
 		<c:forEach items="${procedures}" var="procedure">
 			</td>
 			<td>${procedure.name}</td>
@@ -105,8 +109,7 @@
 	</tr>
 
 	<tr>
-		<td><strong>Investigation:</strong>
-		</td>
+		<td><strong>Investigation:</strong></td>
 		<c:forEach items="${investigations}" var="investigation">
 			</td>
 			<td>${investigation.name}</td>
@@ -118,19 +121,16 @@
 
 <table class="box">
 	<tr align="center">
-		<th><strong>Drug:</strong>
-		</th>
-		<th><strong>Formulation:</strong>
-		</th>
-		<th><strong>Frequency:</strong>
-		</th>
-		<th><strong>No Of Days:</strong>
-		</th>
-		<th><strong>Comments:</strong>
-		</th>
+		<th><strong>S.No</strong></th>
+		<th><strong>Drug</strong></th>
+		<th><strong>Formulation:</strong></th>
+		<th><strong>Frequency:</strong></th>
+		<th><strong>No Of Days</strong></th>
+		<th><strong>Comments</strong></th>
 	</tr>
 	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder">
 		<tr align="center">
+			<td></td>
 			<td>${opdDrugOrder.inventoryDrug.name}</td>
 			<td>${opdDrugOrder.inventoryDrugFormulation.name}-${opdDrugOrder.inventoryDrugFormulation.dozage}</td>
 			<td>${opdDrugOrder.frequency.name}</td>
@@ -142,23 +142,19 @@
 
 <table class="box">
 	<tr>
-		<td><strong>Other Instructions:</strong>
-		</td>
+		<td><strong>Other Instructions:</strong></td>
 		<td>${otherInstructions}</td>
 	</tr>
 	<tr>
-		<td><strong>Internal referral:</strong>
-		</td>
+		<td><strong>Internal Referral:</strong></td>
 		<td>${internal}</td>
 	</tr>
 	<tr>
-		<td><strong>External referral:</strong>
-		</td>
+		<td><strong>External Referral:</strong></td>
 		<td>${external}</td>
 	</tr>
 	<tr>
-		<td><strong>VisitOutCome:</strong>
-		</td>
+		<td><strong>OPD Visit Outcome:</strong></td>
 		<td>${visitOutCome}</td>
 		<td><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if>
 		</td>

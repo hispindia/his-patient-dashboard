@@ -41,6 +41,7 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +73,9 @@ public class PrintClinicalSummaryController {
 
 		model.addAttribute("patient", patient);
 		model.addAttribute("patientName", patientName);
+		
+		Date birthday = patient.getBirthdate();
+		model.addAttribute("age", PatientUtils.estimateAge(birthday));
 
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);

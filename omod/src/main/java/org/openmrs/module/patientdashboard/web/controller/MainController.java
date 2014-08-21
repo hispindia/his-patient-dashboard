@@ -37,6 +37,8 @@ import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
@@ -194,6 +196,15 @@ public class MainController {
 		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
 		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
 		model.addAttribute("ob", ob);
+		
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		 for (PersonAttribute pa : pas) {
+			 PersonAttributeType attributeType = pa.getAttributeType(); 
+			 if(attributeType.getPersonAttributeTypeId()==14){
+				 model.addAttribute("selectedCategory",pa.getValue()); 
+			 }
+		 }
 		
 		Boolean dead = patient.getDead();
 		if(dead.equals(true)){

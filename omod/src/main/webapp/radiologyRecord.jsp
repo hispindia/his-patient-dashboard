@@ -187,5 +187,5 @@ jQuery.ajax({
 			</table>
 		</form>
 	</c:when>
-	<c:otherwise>No Radiology record found</c:otherwise>
+	<c:otherwise>No Radiology Record Found</c:otherwise>
 </c:choose>

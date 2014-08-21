@@ -42,7 +42,17 @@
 				${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
 				</td>
 			<td width="30%"><b>Age:</b> ${age }</td>
-			<td width="30%"><b>Gender:</b> ${patient.gender }</td>
+			<td width="30%"><b>Gender:</b>
+			<c:choose>
+					<c:when
+						test="${patient.gender } == 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+				</c:choose>
+				</td>
 		</tr>
 		<%-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed --%>
 		<%-- ghanshyam 27-02-2013 Feedback #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module(remove category from registration,OPD,IPD,Inventory) --%>
@@ -54,7 +64,7 @@
 		</c:forEach>
 			</td>
 			--%>
-			<td width="40%"><b>Age category:</b> ${ageCategory }</td>
+			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
 
 		</tr>
 	</table>

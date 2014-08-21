@@ -306,7 +306,7 @@ var spl=selectedProcedureList.options[i].value;
 var splts=spl.toString();
 var procedure=document.getElementById(splts).value;
 if(procedure==null || procedure==""){
-   alert("Please enter procedure date");
+   alert("Please schedule the procedure");
    return false;
    }
    else{
@@ -331,7 +331,7 @@ return true;
 		return cp;
 	}
 </script>
-<b class="boxHeader">Opd Form</b>
+<b class="boxHeader">OPD Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="return validate();">
 
 	<input type="hidden" name="patientId" value="${patientId }" /> <input
@@ -463,7 +463,7 @@ return true;
 					<tr>
 						<td colspan="3">
 							<div class="ui-widget">
-								<strong>Post for procedure:</strong> <input
+								<strong>Post for Procedure:</strong> <input
 									class="ui-autocomplete-input ui-widget-content ui-corner-all"
 									title="${opd.conceptId }" id="procedure" style="width: 420px"
 									name="procedure" />
@@ -640,14 +640,14 @@ return true;
 						</td>
 					</tr>
 					<tr>
-						<td colspan="3">Internal referral: <select
+						<td colspan="3">Internal Referral: <select
 							id="internalReferral" name="internalReferral">
 								<option value="-1">--Select--</option>
 								<c:forEach items="${listInternalReferral}"
 									var="internalReferral">
 									<option value="${internalReferral.answerConcept.id}">${internalReferral.answerConcept.name}</option>
 								</c:forEach>
-						</select> External referral: <select id="externalReferral"
+						</select> External Referral: <select id="externalReferral"
 							name="externalReferral">
 								<option value="-1">--Select--</option>
 								<c:forEach items="${listExternalReferral}"
@@ -664,18 +664,18 @@ return true;
 					
 						<td colspan="2"><div id="abcd"><c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" id="input_follow"
-									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this);">Follow up <input
+									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this);">Follow Up <input
 									type="text" class="date-pick left" readonly="readonly"
 									ondblclick="this.value='';" name="dateFollowUp"
 									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">
-								<input type="radio" name="radio_f" value="cured" id="cured"
+								<input type="radio" name="radio_f" value="Cured" id="cured"
 									onclick="DASHBOARD.onChangeRadio(this);">Cured
-   <input type="radio" name="radio_f" value="died" id="died"
+   <input type="radio" name="radio_f" value="Died" id="died"
 									onclick="DASHBOARD.onChangeRadio(this);">Died
-   </c:if> <input type="radio" name="radio_f" value="reviewed" id="reviewed"
+   </c:if> <input type="radio" name="radio_f" value="Reviewed" id="reviewed"
 							onclick="DASHBOARD.onChangeRadio(this);">Reviewed <c:if
 								test="${empty admitted}">
-								<input type="radio" name="radio_f" value="admit" id="admit"
+								<input type="radio" name="radio_f" value="Admit" id="admit"
 									onclick="DASHBOARD.onChangeRadio(this);">Admit
    </c:if></div></td>
 						<td align="left" class="tdIpdWard" style='display: none;'><select
@@ -690,7 +690,7 @@ return true;
 					</tr>
 					<tr>
 						<td colspan="3"><c:if test="${not empty queueId}">
-								<input type="submit" value="Conclude visit"
+								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.submitOpdEntry();print();" />
 								<input type="submit"
@@ -698,7 +698,7 @@ return true;
 									value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
 							</c:if>
 							<c:if test="${not empty opdLogId}">
-								<input type="submit" value="Conclude visit"
+								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.submitOpdEntry();print();" />
 								<input type="submit"
@@ -726,10 +726,18 @@ return true;
 <tr>
 <center>
 <h3>${hospitalName}</h3></center></tr>
-<tr><td><b>Receipt No:</b></td></tr>
 <tr><td><b>Date/Time:</b>${currentDateTime}</td></tr>
 <tr><td><b>Name:</b>${patientName}</td></tr>
-<tr><td><b>Identifier:</b>${patient.patientIdentifier.identifier}</td></tr>
+<tr><td><b>Patient ID:</b>${patient.patientIdentifier.identifier}</td></tr>
+<tr><td><b>Age:</b>${age}</td></tr>
+<tr><td><b>Gender:</b><c:choose>
+				<c:when test="${patient.gender } == 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+			</c:choose></td></tr>
 <tr><td><b>Patient Category:</b>${selectedCategory}</td></tr>
 <tr><td><b>Waiver/ Exemption No:</b>${exemptionNumber} ${nhifCardNumber} ${waiverNumber}</td></tr>
 <tr><td><b>Treating doctor:</b>${user.personName}</td></tr>
@@ -738,17 +746,17 @@ return true;
 <div class="box">
 <div class="box">
 <table>
-<tr><td><div id="printableHistoryOfPresentIllness"><b>History of present illness:</b></div></td></tr>
+<tr><td><div id="printableHistoryOfPresentIllness"><b>History of Present Illness:</b></div></td></tr>
 <tr><td><div id="printableSymptom"><b>Symptom:</b></div></td></tr>
-<tr><td><div id="printableProvisionalDiagnosis"><b>Provisional diagnosis:</b></div></td></tr>
-<tr><td><div id="printablePostForProcedure"><b>Post for procedure:</b></div></td></tr>
+<tr><td><div id="printableProvisionalDiagnosis"><b>Provisional Diagnosis:</b></div></td></tr>
+<tr><td><div id="printablePostForProcedure"><b>Post for Procedure:</b></div></td></tr>
 <tr><td><div id="printableInvestigation"><b>Investigation:</b></div></td></tr>
 </table>
 </div>
 <div class="box">
 <table>
 <thead>
-<tr><th>S.No</th><th>Drug</th><th>Formulation</th><th>Frequency</th><th>No of days</th><th>Comments</th></tr></thead>
+<tr><th>S.No</th><th>Drug</th><th>Formulation</th><th>Frequency</th><th>No of Days</th><th>Comments</th></tr></thead>
 <tbody><tr><td><div id="printableSlNo"></div></td><td><div id="printableDrug"></div></td><td><div id="printableFormulation"></div></td><td><div id="printableFrequency"></div></td>
 <td><div id="printableNoOfDays"></div></td><td><div id="printableComments"></div></td></tr></tbody>
 </table>

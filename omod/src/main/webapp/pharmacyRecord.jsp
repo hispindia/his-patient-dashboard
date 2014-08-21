@@ -67,5 +67,5 @@ jQuery.ajax({
 			</table>
 		</form>
 	</c:when>
-	<c:otherwise>No Pharmacy record found</c:otherwise>
+	<c:otherwise>No Pharmacy Record Found</c:otherwise>
 </c:choose>

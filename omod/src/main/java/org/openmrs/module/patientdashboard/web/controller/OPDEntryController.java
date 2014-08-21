@@ -74,6 +74,7 @@ import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -232,6 +233,9 @@ public class OPDEntryController {
 		
 		model.addAttribute("patient",patient);
 		model.addAttribute("patientName",patientName);
+		
+		Date birthday = patient.getBirthdate();
+		model.addAttribute("age", PatientUtils.estimateAge(birthday));
 		
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
@@ -498,6 +502,15 @@ public class OPDEntryController {
 
 			Concept currentOpd = conceptService.getConcept(command.getOpdId());
 
+			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
+			String selectedCategory="";
+			 for (PersonAttribute pa : pas) {
+				 PersonAttributeType attributeType = pa.getAttributeType(); 
+				 if(attributeType.getPersonAttributeTypeId()==14){
+					 selectedCategory=pa.getValue(); 
+				 }
+			 }
+			 
 			// add this patient to the queue of the referral OPD
 			OpdPatientQueue queue = new OpdPatientQueue();
 			queue.setPatient(patient);
@@ -519,6 +532,7 @@ public class OPDEntryController {
 			queue.setReferralConceptName(currentOpd.getName().getName());
 			queue.setSex(patient.getGender());
 			queue.setTriageDataId(null);
+			queue.setCategory(selectedCategory);
 			queueService.saveOpdPatientQueue(queue);
 
 		}
@@ -617,6 +631,7 @@ public class OPDEntryController {
 			queueLog.setStatus("processed");
 			queueLog.setBirthDate(patient.getBirthdate());
 			queueLog.setEncounter(encounter);
+			queueLog.setCategory(queue.getCategory());
 			if (queue.getTriageDataId() != null) {
 				queueLog.setTriageDataId(queue.getTriageDataId());
 			} else {
