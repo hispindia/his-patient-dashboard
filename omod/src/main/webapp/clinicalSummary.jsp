@@ -31,6 +31,7 @@ jQuery.ajax({
 				}),
 				success : function(data) {
 					jQuery("#printClinicalSummary").html(data);	
+					jQuery("#printClinicalSummary").hide();
 					printClinicalSummary();	
 				}
 				
@@ -43,7 +44,6 @@ jQuery("#printClinicalSummary").printArea({
             mode : "popup",
             popClose : true
             });
-jQuery("#printClinicalSummary").hide();
 }
 </script>
 <script type="text/javascript">

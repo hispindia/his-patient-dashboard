@@ -718,7 +718,7 @@ return true;
 <table class="box">
 <tr>
 		<center>
-			<h3>${hospitalName}</h3>
+			<b>${hospitalName}</b>
 		</center>
 	</tr>
 <tr>
