@@ -27,10 +27,6 @@
 		</center>
 	</tr>
 	<tr>
-		<td><strong>Receipt No:</strong></td>
-		<td></td>
-	</tr>
-	<tr>
 		<td><strong>Date/Time:</strong></td>
 		<td>${currentDateTime}</td>
 	</tr>
@@ -128,9 +124,9 @@
 		<th><strong>No Of Days</strong></th>
 		<th><strong>Comments</strong></th>
 	</tr>
-	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder">
+	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder" varStatus="index">
 		<tr align="center">
-			<td></td>
+			<td>${index.count}</td>
 			<td>${opdDrugOrder.inventoryDrug.name}</td>
 			<td>${opdDrugOrder.inventoryDrugFormulation.name}-${opdDrugOrder.inventoryDrugFormulation.dozage}</td>
 			<td>${opdDrugOrder.frequency.name}</td>
@@ -168,6 +164,6 @@
 	<br />
 	<br />
 	<tr>
-		<p style="text-align: right;">Signature of the treating doctor</p>
+		<p style="text-align: right;">Signature of the Treating Doctor</p>
 	</tr>
 </table>

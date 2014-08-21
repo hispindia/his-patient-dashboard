@@ -21,7 +21,7 @@
 
 <script type="text/javascript">
 function clinicalSummary(encounterId){
- var patientId = ${patient.patientId};
+var patientId = ${patient.patientId};
 jQuery.ajax({
 				type : "GET",
 				url : getContextPath() + "/module/patientdashboard/printDetails.form",
@@ -30,7 +30,7 @@ jQuery.ajax({
 					patientId			: patientId
 				}),
 				success : function(data) {
-					jQuery("#printOPDSlipp").html(data);	
+					jQuery("#printClinicalSummary").html(data);	
 					printClinicalSummary();	
 				}
 				
@@ -39,10 +39,11 @@ jQuery.ajax({
 </script>
 <script type="text/javascript">
 function printClinicalSummary(){
-jQuery("#printOPDSlipp").printArea({
+jQuery("#printClinicalSummary").printArea({
             mode : "popup",
             popClose : true
             });
+jQuery("#printClinicalSummary").hide();
 }
 </script>
 <script type="text/javascript">
@@ -81,6 +82,6 @@ jQuery("#printOPDSlipp").printArea({
 </c:when>
 </c:choose>
 
-<div id="printOPDSlipp">
+<div id="printClinicalSummary" style="visibility:hidden;">
 
 </div>
