@@ -639,14 +639,14 @@ return true;
 								<option value="-1">--Select--</option>
 								<c:forEach items="${listInternalReferral}"
 									var="internalReferral">
-									<option value="${internalReferral.answerConcept.id}">${internalReferral.answerConcept.name}</option>
+									<option value="${internalReferral.answerConcept.name}">${internalReferral.answerConcept.name}</option>
 								</c:forEach>
 						</select> External Referral: <select id="externalReferral"
 							name="externalReferral">
 								<option value="-1">--Select--</option>
 								<c:forEach items="${listExternalReferral}"
 									var="externalReferral">
-									<option value="${externalReferral.answerConcept.id}">${externalReferral.answerConcept.name}</option>
+									<option value="${externalReferral.answerConcept.name}">${externalReferral.answerConcept.name}</option>
 								</c:forEach>
 						</select></td>
 					</tr>

@@ -30,8 +30,8 @@ public class OPDEntryCommand {
 	//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
 	private Integer[] selectedInvestigationList;
 	private Integer patientId;
-	private Integer internalReferral;
-	private Integer externalReferral;
+	private String internalReferral;
+	private String externalReferral;
 	private String note;
 	private String history;
 	private Integer admit;
@@ -52,16 +52,16 @@ public class OPDEntryCommand {
 	public void setIpdWard(Integer ipdWard) {
 		this.ipdWard = ipdWard;
 	}
-	public Integer getInternalReferral() {
+	public String getInternalReferral() {
 		return internalReferral;
 	}
-	public void setInternalReferral(Integer internalReferral) {
+	public void setInternalReferral(String internalReferral) {
 		this.internalReferral = internalReferral;
 	}
-	public Integer getExternalReferral() {
+	public String getExternalReferral() {
 		return externalReferral;
 	}
-	public void setExternalReferral(Integer externalReferral) {
+	public void setExternalReferral(String externalReferral) {
 		this.externalReferral = externalReferral;
 	}
 	public String getNote() {
