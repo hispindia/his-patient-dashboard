@@ -25,15 +25,6 @@
 <span class="boxHeader">Visit Details</span>
 <table class="box">
 	<tr>
-		<center>
-			<b>${hospitalName}</b>
-		</center>
-	</tr>
-	<tr>
-		<td><strong>Date/Time:</strong></td>
-		<td>${currentDateTime}</td>
-	</tr>
-	<tr>
 		<td><strong>Name:</strong></td>
 		<td>${patientName}</td>
 	</tr>
@@ -122,9 +113,9 @@
 	<tr align="center">
 		<th><strong>S.No</strong></th>
 		<th><strong>Drug</strong></th>
-		<th><strong>Formulation:</strong></th>
-		<th><strong>Frequency:</strong></th>
-		<th><strong>No Of Days</strong></th>
+		<th><strong>Formulation</strong></th>
+		<th><strong>Frequency</strong></th>
+		<th><strong>No of Days</strong></th>
 		<th><strong>Comments</strong></th>
 	</tr>
 	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder" varStatus="index">

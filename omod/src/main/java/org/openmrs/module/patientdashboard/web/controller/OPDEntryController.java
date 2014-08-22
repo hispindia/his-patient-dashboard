@@ -147,7 +147,8 @@ public class OPDEntryController {
 		}
 		model.addAttribute("listProcedures", procedures);
 
-		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send
+		// investigation orders from dashboard to billing
 		List<Concept> investigations = patientDashboardService
 				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[2]);
 		if (CollectionUtils.isNotEmpty(investigations)) {
@@ -155,7 +156,15 @@ public class OPDEntryController {
 		}
 		model.addAttribute("listInvestigations", investigations);
 
-		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+		List<Concept> symptomList = patientDashboardService
+				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[3]);
+		if (CollectionUtils.isNotEmpty(investigations)) {
+			Collections.sort(symptomList, new ConceptComparator());
+		}
+		model.addAttribute("symptomList", symptomList);
+
+		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to
+		// send pharmacy orders to issue drugs to a patient from dashboard
 		List<Concept> drugFrequencyConcept = inventoryCommonService
 				.getDrugFrequency();
 		model.addAttribute("drugFrequencyList", drugFrequencyConcept);
@@ -214,48 +223,49 @@ public class OPDEntryController {
 			}
 		}
 		model.addAttribute("allMajorOTProcedures", id2);
-		
+
 		String hospitalName = Context.getAdministrationService()
-		.getGlobalProperty("hospital.location_user");
+				.getGlobalProperty("hospital.location_user");
 		model.addAttribute("hospitalName", hospitalName);
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy kk:mm");
 		model.addAttribute("currentDateTime", sdf.format(new Date()));
-		Patient patient=Context.getPatientService().getPatient(patientId);
+		Patient patient = Context.getPatientService().getPatient(patientId);
 		patient.getPatientIdentifier();
 		String patientName;
-		if( patient.getMiddleName() !=null){
-		patientName=patient.getGivenName() + " " + patient.getFamilyName() + " " + patient.getMiddleName();
+		if (patient.getMiddleName() != null) {
+			patientName = patient.getGivenName() + " "
+					+ patient.getFamilyName() + " " + patient.getMiddleName();
+		} else {
+			patientName = patient.getGivenName() + " "
+					+ patient.getFamilyName();
 		}
-		else{
-		patientName=patient.getGivenName() + " " + patient.getFamilyName();
-		}
-		
-		model.addAttribute("patient",patient);
-		model.addAttribute("patientName",patientName);
-		
+
+		model.addAttribute("patient", patient);
+		model.addAttribute("patientName", patientName);
+
 		Date birthday = patient.getBirthdate();
 		model.addAttribute("age", PatientUtils.estimateAge(birthday));
-		
+
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
-		 for (PersonAttribute pa : pas) {
-			 PersonAttributeType attributeType = pa.getAttributeType(); 
-			 if(attributeType.getPersonAttributeTypeId()==14){
-				 model.addAttribute("selectedCategory",pa.getValue()); 
-			 }
-			 if(attributeType.getPersonAttributeTypeId()==36){
-				 model.addAttribute("exemptionNumber",pa.getValue()); 
-			 }
-			 if(attributeType.getPersonAttributeTypeId()==33){
-				 model.addAttribute("nhifCardNumber",pa.getValue()); 
-			 }
-			 if(attributeType.getPersonAttributeTypeId()==32){
-				 model.addAttribute("waiverNumber",pa.getValue()); 
-			 }
+		for (PersonAttribute pa : pas) {
+			PersonAttributeType attributeType = pa.getAttributeType();
+			if (attributeType.getPersonAttributeTypeId() == 14) {
+				model.addAttribute("selectedCategory", pa.getValue());
+			}
+			if (attributeType.getPersonAttributeTypeId() == 36) {
+				model.addAttribute("exemptionNumber", pa.getValue());
+			}
+			if (attributeType.getPersonAttributeTypeId() == 33) {
+				model.addAttribute("nhifCardNumber", pa.getValue());
+			}
+			if (attributeType.getPersonAttributeTypeId() == 32) {
+				model.addAttribute("waiverNumber", pa.getValue());
+			}
 			User user = Context.getAuthenticatedUser();
-			model.addAttribute("user",user); 
-		 }
+			model.addAttribute("user", user);
+		}
 
 		return "module/patientdashboard/opdEntry";
 	}
@@ -281,7 +291,8 @@ public class OPDEntryController {
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
 
-		// harsh 14/6/2012 setting death date to today's date and dead variable to true when "died" is selected
+		// harsh 14/6/2012 setting death date to today's date and dead variable
+		// to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")) {
 
 			ConceptService conceptService = Context.getConceptService();
@@ -348,12 +359,13 @@ public class OPDEntryController {
 
 		ConceptService conceptService = Context.getConceptService();
 		GlobalProperty gpSymptom = administrationService
-		.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_SYMPTOM);
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_SYMPTOM);
 		GlobalProperty gpDiagnosis = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
 		GlobalProperty procedure = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
-		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
+		// ghanshyam 1-june-2013 New Requirement #1633 User must be able to send
+		// investigation orders from dashboard to billing
 		GlobalProperty investigationn = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_FOR_INVESTIGATION);
 		GlobalProperty internalReferral = administrationService
@@ -386,7 +398,7 @@ public class OPDEntryController {
 			obsSymptom.setPatient(patient);
 			encounter.addObs(obsSymptom);
 		}
-		
+
 		if (cDiagnosis == null) {
 			throw new Exception("Diagnosis concept null");
 		}
@@ -407,8 +419,8 @@ public class OPDEntryController {
 
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			// ghanshyam 8-july-2013 New Requirement #1963 Redesign patient
-			// dashboard
+			// ghanshyam 8-july-2013 New Requirement #1963 Redesign
+			// patientdashboard
 			obsDiagnosis.setConcept(cOtherInstructions);
 			obsDiagnosis.setValueText(command.getNote());
 			obsDiagnosis.setCreator(user);
@@ -423,8 +435,8 @@ public class OPDEntryController {
 
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			// ghanshyam 8-july-2013 New Requirement #1963 Redesign patient
-			// dashboard
+			// ghanshyam 8-july-2013 New Requirement #1963 Redesign
+			// patientdashboard
 			obsDiagnosis.setConcept(illnessHistory);
 			obsDiagnosis.setValueText(command.getHistory());
 			obsDiagnosis.setCreator(user);
@@ -480,7 +492,8 @@ public class OPDEntryController {
 
 		// internal referral
 		// System.out.println("command.getInternalReferral(): "+command.getInternalReferral());
-		if (command.getInternalReferral() != null && command.getInternalReferral() != "") {
+		if (command.getInternalReferral() != null
+				&& command.getInternalReferral() != "") {
 			Concept cInternalReferral = conceptService
 					.getConceptByName(internalReferral.getPropertyValue());
 			if (cInternalReferral == null) {
@@ -501,15 +514,16 @@ public class OPDEntryController {
 
 			Concept currentOpd = conceptService.getConcept(command.getOpdId());
 
-			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
-			String selectedCategory="";
-			 for (PersonAttribute pa : pas) {
-				 PersonAttributeType attributeType = pa.getAttributeType(); 
-				 if(attributeType.getPersonAttributeTypeId()==14){
-					 selectedCategory=pa.getValue(); 
-				 }
-			 }
-			 
+			List<PersonAttribute> pas = hcs.getPersonAttributes(patient
+					.getPatientId());
+			String selectedCategory = "";
+			for (PersonAttribute pa : pas) {
+				PersonAttributeType attributeType = pa.getAttributeType();
+				if (attributeType.getPersonAttributeTypeId() == 14) {
+					selectedCategory = pa.getValue();
+				}
+			}
+
 			// add this patient to the queue of the referral OPD
 			OpdPatientQueue queue = new OpdPatientQueue();
 			queue.setPatient(patient);
@@ -522,7 +536,7 @@ public class OPDEntryController {
 			if (patient.getMiddleName() != null) {
 				queue.setPatientName(patient.getGivenName() + " "
 						+ patient.getFamilyName() + " "
-						+ patient.getMiddleName().replace(","," "));
+						+ patient.getMiddleName().replace(",", " "));
 			} else {
 				queue.setPatientName(patient.getGivenName() + " "
 						+ patient.getFamilyName());
@@ -538,7 +552,8 @@ public class OPDEntryController {
 
 		// external referral
 		// System.out.println("command.getExternalReferral(): "+command.getExternalReferral());
-		if (command.getExternalReferral() != null && command.getExternalReferral() != "") {
+		if (command.getExternalReferral() != null
+				&& command.getExternalReferral() != "") {
 			Concept cExternalReferral = conceptService
 					.getConceptByName(externalReferral.getPropertyValue());
 			if (cExternalReferral == null) {
@@ -659,7 +674,7 @@ public class OPDEntryController {
 				if (patient.getMiddleName() != null) {
 					patientAdmission.setPatientName(patient.getGivenName()
 							+ " " + patient.getFamilyName() + " "
-							+ patient.getMiddleName().replace(","," "));
+							+ patient.getMiddleName().replace(",", " "));
 				} else {
 					patientAdmission.setPatientName(patient.getGivenName()
 							+ " " + patient.getFamilyName());
@@ -895,7 +910,8 @@ public class OPDEntryController {
 
 		}
 
-		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to send pharmacy orders to issue drugs to a patient from dashboard
+		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to
+		// send pharmacy orders to issue drugs to a patient from dashboard
 		Integer formulationId;
 		Integer frequencyId;
 		Integer noOfDays;
@@ -934,63 +950,66 @@ public class OPDEntryController {
 				}
 			}
 		}
-		
-		//symptom
+
+		// symptom
 		Symptom symptom = new Symptom();
 		Question question = new Question();
 		Answer answer = new Answer();
 		for (String syptomId : syptomIdList) {
 			String sypId = request.getParameter(syptomId);
 			if (sypId != null) {
-			symptom.setEncounter(encounter);
-			symptom.setSymptomConcept(Context.getConceptService().getConcept(
-					Integer.parseInt(syptomId)));
-			symptom.setCreatedDate(new Date());
-			symptom.setCreator(Context.getAuthenticatedUser());
-			Symptom sym = patientDashboardService.saveSymptom(symptom);
-			Collection<ConceptAnswer> conceptAnswers = Context
-					.getConceptService().getConcept(Integer.parseInt(syptomId))
-					.getAnswers();
+				symptom.setEncounter(encounter);
+				symptom.setSymptomConcept(Context.getConceptService()
+						.getConcept(Integer.parseInt(syptomId)));
+				symptom.setCreatedDate(new Date());
+				symptom.setCreator(Context.getAuthenticatedUser());
+				Symptom sym = patientDashboardService.saveSymptom(symptom);
+				Collection<ConceptAnswer> conceptAnswers = Context
+						.getConceptService()
+						.getConcept(Integer.parseInt(syptomId)).getAnswers();
 
-			for (ConceptAnswer conceptAnswer : conceptAnswers) {
-				if (conceptAnswer.getAnswerConcept().getDatatype().isCoded()) {
-					String aa = request.getParameter(syptomId
-							+ ":"
-							+ conceptAnswer.getAnswerConcept().getConceptId()
-									.toString() + ":" + "radioOption");
-					if (aa != null) {
-						question.setSymptom(sym);
-						question.setQuestionConcept(conceptAnswer
-								.getAnswerConcept());
-						Question que = patientDashboardService
-								.saveQuestion(question);
+				for (ConceptAnswer conceptAnswer : conceptAnswers) {
+					if (conceptAnswer.getAnswerConcept().getDatatype()
+							.isCoded()) {
+						String aa = request.getParameter(syptomId
+								+ ":"
+								+ conceptAnswer.getAnswerConcept()
+										.getConceptId().toString() + ":"
+								+ "radioOption");
+						if (aa != null) {
+							question.setSymptom(sym);
+							question.setQuestionConcept(conceptAnswer
+									.getAnswerConcept());
+							Question que = patientDashboardService
+									.saveQuestion(question);
 
-						Integer ghi = Integer.parseInt(aa);
-						answer.setQuestion(que);
-						answer.setAnswerConcept(Context.getConceptService()
-								.getConcept(ghi));
-						answer.setFreeText(null);
-						patientDashboardService.saveAnswer(answer);
-					}
-				} else {
-					String jkl = request.getParameter(syptomId
-							+ ":"
-							+ conceptAnswer.getAnswerConcept().getConceptId()
-									.toString() + ":" + "textFieldQues");
-					if (!jkl.equals("")) {
-						question.setSymptom(sym);
-						question.setQuestionConcept(conceptAnswer
-								.getAnswerConcept());
-						Question que = patientDashboardService
-								.saveQuestion(question);
+							Integer ghi = Integer.parseInt(aa);
+							answer.setQuestion(que);
+							answer.setAnswerConcept(Context.getConceptService()
+									.getConcept(ghi));
+							answer.setFreeText(null);
+							patientDashboardService.saveAnswer(answer);
+						}
+					} else {
+						String jkl = request.getParameter(syptomId
+								+ ":"
+								+ conceptAnswer.getAnswerConcept()
+										.getConceptId().toString() + ":"
+								+ "textFieldQues");
+						if (!jkl.equals("")) {
+							question.setSymptom(sym);
+							question.setQuestionConcept(conceptAnswer
+									.getAnswerConcept());
+							Question que = patientDashboardService
+									.saveQuestion(question);
 
-						answer.setQuestion(que);
-						answer.setAnswerConcept(null);
-						answer.setFreeText(jkl);
-						patientDashboardService.saveAnswer(answer);
+							answer.setQuestion(que);
+							answer.setAnswerConcept(null);
+							answer.setFreeText(jkl);
+							patientDashboardService.saveAnswer(answer);
+						}
 					}
 				}
-			  }
 			}
 		}
 
