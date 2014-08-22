@@ -53,6 +53,7 @@ import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.Question;
 import org.openmrs.module.hospitalcore.model.Symptom;
+import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
@@ -375,6 +376,16 @@ public class AutoCompleteController {
 			model.addAttribute("questionanswer", questionanswer);
 		}
 		return "module/patientdashboard/symptomDetail";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/currentVitalStatistic.htm", method=RequestMethod.GET)
+	public String currentVitalStatistic(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if(id != null){
+		    PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+		    TriagePatientData triagePatientData = dashboardService.getTriagePatientData(id);
+		    model.addAttribute("triagePatientData",triagePatientData);
+		}
+		return "module/patientdashboard/currentVitalStatistic";
 	}
 	
 	@RequestMapping(value="/module/patientdashboard/autoCompleteSymptom.htm", method=RequestMethod.GET)

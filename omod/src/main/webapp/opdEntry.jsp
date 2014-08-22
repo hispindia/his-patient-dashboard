@@ -353,6 +353,12 @@ return true;
 		</tr>
 	 -->
 					<tr>
+					<td><input type="button" value="View Current Vital Statistics"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									onclick="DASHBOARD.currentVitalStatistics('${ opdPatientQueue.triageDataId.id}');" /></td>
+					</tr>
+					
+					<tr>
 						<td colspan="3"><strong>History of Present Illness:</strong>
 							<input type="text" id="history" name="history" size="200"
 							style="width: 1000px; height: 50px"

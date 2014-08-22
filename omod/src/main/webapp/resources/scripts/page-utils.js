@@ -143,6 +143,13 @@ DASHBOARD={
 				tb_show(" ",url,false);
 			}
 		},
+		currentVitalStatistics : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "currentVitalStatistic.htm?id="+id+"&keepThis=false&TB_iframe=true&height=400&width=500";
+				tb_show(" ",url,false);
+			}
+		},
 		showAllDiagnosis : function()
 		{
 			if(SESSION.checkSession()){
