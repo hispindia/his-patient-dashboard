@@ -480,7 +480,7 @@ public class OPDEntryController {
 
 		// internal referral
 		// System.out.println("command.getInternalReferral(): "+command.getInternalReferral());
-		if (command.getInternalReferral() != null) {
+		if (command.getInternalReferral() != null && command.getInternalReferral() != "") {
 			Concept cInternalReferral = conceptService
 					.getConceptByName(internalReferral.getPropertyValue());
 			if (cInternalReferral == null) {
@@ -538,7 +538,7 @@ public class OPDEntryController {
 
 		// external referral
 		// System.out.println("command.getExternalReferral(): "+command.getExternalReferral());
-		if (command.getExternalReferral() != null) {
+		if (command.getExternalReferral() != null && command.getExternalReferral() != "") {
 			Concept cExternalReferral = conceptService
 					.getConceptByName(externalReferral.getPropertyValue());
 			if (cExternalReferral == null) {

@@ -125,7 +125,7 @@ DASHBOARD={
 		detailClinical : function(id)
 		{
 			if(SESSION.checkSession()){
-				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=400&width=700";
+				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=600&width=700";
 				tb_show(" ",url,false);
 			}
 		},
@@ -183,7 +183,7 @@ DASHBOARD={
 				}else{
 					jQuery('#selectedSymptomList').append('<option value="' + id + '">' + name + '</option>');
 					getQuestion();
-					if(confirm("Do you want also add this symptom to opd symptom?"))
+					if(confirm("Do you want to add this symptom to the list of symptoms for this OPD?"))
 					{
 						jQuery.ajax({
 							  type: 'POST',
@@ -220,7 +220,7 @@ DASHBOARD={
 					jQuery("#availableDiagnosisList option[value=" +id+ "]").remove();
 				}else{
 					jQuery('#selectedDiagnosisList').append('<option value="' + id + '">' + name + '</option>');
-					if(confirm("Do you want also add this diagnosis to opd diagnosis?"))
+					if(confirm("Do you want to add this diagnosis to the list of diagnosis for this OPD?"))
 					{
 						jQuery.ajax({
 							  type: 'POST',
@@ -257,7 +257,7 @@ DASHBOARD={
 				}else{
 					jQuery('#selectedProcedureList').append('<option value="' + id + '">' + name + '</option>');
 					addSchedule();
-					if(confirm("Do you want also add this procedure to opd procedure?"))
+					if(confirm("Do you want to add this procedure to the list of procedures for this OPD?"))
 					{
 						jQuery.ajax({
 							  type: 'POST',
@@ -294,7 +294,7 @@ DASHBOARD={
 					jQuery("#availableInvestigationList option[value=" +id+ "]").remove();
 				}else{
 					jQuery('#selectedInvestigationList').append('<option value="' + id + '">' + name + '</option>');
-					if(confirm("Do you want also add this investigation to opd investigation?"))
+					if(confirm("Do you want to add this investigation to the list of investigations for this OPD?"))
 					{
 						jQuery.ajax({
 							  type: 'POST',

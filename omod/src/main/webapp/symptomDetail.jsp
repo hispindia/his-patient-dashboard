@@ -22,7 +22,7 @@
 <%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
-<span class="boxHeader">Symptom Detail</span>
+<span class="boxHeader">Symptom Details</span>
 <table class="box">
 	<c:choose>
 		<c:when test="${not empty al}">

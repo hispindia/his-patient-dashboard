@@ -40,6 +40,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
@@ -202,11 +203,12 @@ public class PrintClinicalSummaryController {
 			e.printStackTrace();
 		}
 
-		User user = Context.getUserContext().getAuthenticatedUser();
-		Person person = Context.getPersonService().getPerson(user);
-		String givenName = person.getGivenName();
-		String middleName = person.getMiddleName();
-		String familyName = person.getFamilyName();
+		OpdPatientQueueLog opql=patientDashboardService.getOpdPatientQueueLog(encounter);
+		User user=opql.getUser();
+		Person person=user.getPerson();
+		String givenName=person.getGivenName();
+		String middleName=person.getMiddleName();
+		String familyName=person.getFamilyName();
 
 		if (givenName == null) {
 			givenName = "";

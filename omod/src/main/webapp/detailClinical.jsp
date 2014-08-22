@@ -22,17 +22,62 @@
 <%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
-<span class="boxHeader">Visit Detail</span>
+<span class="boxHeader">Visit Details</span>
 <table class="box">
+	<tr>
+		<center>
+			<b>${hospitalName}</b>
+		</center>
+	</tr>
+	<tr>
+		<td><strong>Date/Time:</strong></td>
+		<td>${currentDateTime}</td>
+	</tr>
+	<tr>
+		<td><strong>Name:</strong></td>
+		<td>${patientName}</td>
+	</tr>
+	<tr>
+		<td><strong>Patient ID:</strong></td>
+		<td>${patient.patientIdentifier.identifier}</td>
+	</tr>
+	<tr>
+		<td><strong>Age:</strong></td>
+		<td>${age}</td>
+	</tr>
+	<tr>
+		<td><strong>Gender:</strong></td>
+		<td><c:choose>
+				<c:when test="${patient.gender } == 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+			</c:choose></td>
+	</tr>
+	<tr>
+		<td><strong>Patient Category:</strong></td>
+		<td>${selectedCategory}</td>
+	</tr>
+	<tr>
+		<td><strong>Waiver/ Exemption No:</strong></td>
+		<td>${exemptionNumber}</td>
+		<td>${nhifCardNumber}</td>
+		<td>${waiverNumber}</td>
+	</tr>
 	<tr>
 		<td><strong>Treating Doctor:</strong></td>
 		<td>${treatingDoctor}</td>
 	</tr>
+</table>
+
+
+<table class="box">
 	<tr>
 		<td><strong>History of Present Illness:</strong></td>
 		<td>${illnessHistory}</td>
 	</tr>
-
 	<tr>
 		<td><strong>Symptom:</strong></td>
 		<c:forEach items="${symptoms}" var="symptom">
@@ -42,7 +87,6 @@
 	<tr>
 		<td></c:forEach>
 	</tr>
-
 	<tr>
 		<td><strong>Provisional Diagnosis:</strong></td>
 		<c:forEach items="${diagnosiss}" var="diagnosis">
@@ -72,28 +116,30 @@
 	<tr>
 		<td></c:forEach>
 	</tr>
-	</table>
+</table>
 
-	<table class="box">
+<table class="box">
 	<tr align="center">
-		<th><strong>Drug:</strong></th>
+		<th><strong>S.No</strong></th>
+		<th><strong>Drug</strong></th>
 		<th><strong>Formulation:</strong></th>
 		<th><strong>Frequency:</strong></th>
-		<th><strong>No Of Days:</strong></th>
-		<th><strong>Comments:</strong></th>
+		<th><strong>No Of Days</strong></th>
+		<th><strong>Comments</strong></th>
 	</tr>
-	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder">
-	<tr align="center">
+	<c:forEach items="${opdDrugOrders}" var="opdDrugOrder" varStatus="index">
+		<tr align="center">
+			<td>${index.count}</td>
 			<td>${opdDrugOrder.inventoryDrug.name}</td>
 			<td>${opdDrugOrder.inventoryDrugFormulation.name}-${opdDrugOrder.inventoryDrugFormulation.dozage}</td>
 			<td>${opdDrugOrder.frequency.name}</td>
 			<td>${opdDrugOrder.noOfDays}</td>
 			<td>${opdDrugOrder.comments}</td>
-	</tr>
+		</tr>
 	</c:forEach>
-	</table>
-	
-	<table class="box">
+</table>
+
+<table class="box">
 	<tr>
 		<td><strong>Other Instructions:</strong></td>
 		<td>${otherInstructions}</td>
@@ -107,8 +153,9 @@
 		<td>${external}</td>
 	</tr>
 	<tr>
-		<td><strong>VisitOutCome:</strong></td>
-		<td> ${visitOutCome}</td>
-		<td><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if></td>
+		<td><strong>OPD Visit Outcome:</strong></td>
+		<td>${visitOutCome}</td>
+		<td><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if>
+		</td>
 	</tr>
-	</table>
+</table>

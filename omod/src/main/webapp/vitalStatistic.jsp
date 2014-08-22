@@ -22,7 +22,7 @@
 <%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
-<span class="boxHeader">Vital statistics Detail</span>
+<span class="boxHeader">Vital Statistics Details</span>
 <table class="box">
 	<tr>
 		<td><strong>Weight (Kg)</strong></td>

@@ -24,6 +24,7 @@ package org.openmrs.module.patientdashboard.web.controller.autocomplete;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +34,16 @@ import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Answer;
@@ -49,6 +54,7 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.Question;
 import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -255,6 +261,21 @@ public class AutoCompleteController {
 			}
 			
 			OpdPatientQueueLog opql=patientDashboardService.getOpdPatientQueueLog(encounter);
+			Patient patient = opql.getPatient();
+			String patientName;
+			if (patient.getMiddleName() != null) {
+				patientName = patient.getGivenName() + " "
+						+ patient.getFamilyName() + " " + patient.getMiddleName();
+			} else {
+				patientName = patient.getGivenName() + " "
+						+ patient.getFamilyName();
+			}
+			model.addAttribute("patient", patient);
+			model.addAttribute("patientName", patientName);
+			
+			Date birthday = patient.getBirthdate();
+			model.addAttribute("age", PatientUtils.estimateAge(birthday));
+			
 			User user=opql.getUser();
 			Person person=user.getPerson();
 			String givenName=person.getGivenName();
@@ -272,6 +293,24 @@ public class AutoCompleteController {
 			}
 		
 			String treatingDoctor=givenName+" "+middleName+" "+familyName;
+			
+			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
+			for (PersonAttribute pa : pas) {
+				PersonAttributeType attributeType = pa.getAttributeType();
+				if (attributeType.getPersonAttributeTypeId() == 14) {
+					model.addAttribute("selectedCategory", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 36) {
+					model.addAttribute("exemptionNumber", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 33) {
+					model.addAttribute("nhifCardNumber", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 32) {
+					model.addAttribute("waiverNumber", pa.getValue());
+				}
+			}
 			
 			List<OpdDrugOrder> opdDrugOrders=patientDashboardService.getOpdDrugOrder(encounter);
 			

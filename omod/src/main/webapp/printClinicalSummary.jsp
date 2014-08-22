@@ -65,7 +65,7 @@
 	</tr>
 	<tr>
 		<td><strong>Treating Doctor:</strong></td>
-		<td>${user.personName}</td>
+		<td>${treatingDoctor}</td>
 	</tr>
 </table>
 

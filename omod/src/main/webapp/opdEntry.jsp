@@ -636,14 +636,14 @@ return true;
 					<tr>
 						<td colspan="3">Internal Referral: <select
 							id="internalReferral" name="internalReferral">
-								<option value="-1">--Select--</option>
+								<option value="">--Select--</option>
 								<c:forEach items="${listInternalReferral}"
 									var="internalReferral">
 									<option value="${internalReferral.answerConcept.name}">${internalReferral.answerConcept.name}</option>
 								</c:forEach>
 						</select> External Referral: <select id="externalReferral"
 							name="externalReferral">
-								<option value="-1">--Select--</option>
+								<option value="">--Select--</option>
 								<c:forEach items="${listExternalReferral}"
 									var="externalReferral">
 									<option value="${externalReferral.answerConcept.name}">${externalReferral.answerConcept.name}</option>
