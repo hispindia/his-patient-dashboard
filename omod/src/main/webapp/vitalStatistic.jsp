@@ -74,7 +74,7 @@
 	</tr>
 	<tr>
 		<td><strong>Last Menstrual Period</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.lastMenstrualDate}</td>
+		<td><openmrs:formatDate date="${opdPatientQueueLog.triageDataId.lastMenstrualDate}" /></td>
 	</tr>
 	<tr>
 		<td><strong>PITCT</strong></td>

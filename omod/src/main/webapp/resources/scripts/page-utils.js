@@ -316,7 +316,7 @@ DASHBOARD={
 		onChangeRadio : function(thiz)
 		{
 			var text = jQuery(thiz).val();
-			if(text != null && text !='' && text == 'admit'){
+			if(text != null && text !='' && text == 'Admit'){
 				jQuery(".tdIpdWard").show();
 			}else{
 				jQuery(".tdIpdWard").hide();

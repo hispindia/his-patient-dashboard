@@ -240,8 +240,7 @@ history.style.display="none";
 			<td width="30%"><b>Age:</b> ${age }</td>
 			<td width="30%"><b>Gender:</b>
 			<c:choose>
-					<c:when
-						test="${patient.gender } == 'M'}">
+					<c:when test="${patient.gender eq 'M'}">
 					Male
 				</c:when>
 				<c:otherwise>

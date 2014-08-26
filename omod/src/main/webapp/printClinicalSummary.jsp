@@ -45,7 +45,7 @@
 	<tr>
 		<td><strong>Gender:</strong></td>
 		<td><c:choose>
-				<c:when test="${patient.gender } == 'M'}">
+				<c:when test="${patient.gender eq 'M'}">
 					Male
 				</c:when>
 				<c:otherwise>
