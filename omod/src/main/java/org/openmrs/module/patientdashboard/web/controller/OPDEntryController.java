@@ -390,7 +390,7 @@ public class OPDEntryController {
 		for (Integer cId : command.getSelectedSymptomList()) {
 			Obs obsSymptom = new Obs();
 			obsSymptom.setObsGroup(obsGroup);
-			obsSymptom.setConcept(cDiagnosis);
+			obsSymptom.setConcept(cSymptom);
 			obsSymptom.setValueCoded(conceptService.getConcept(cId));
 			obsSymptom.setCreator(user);
 			obsSymptom.setDateCreated(date);
