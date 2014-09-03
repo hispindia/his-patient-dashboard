@@ -193,9 +193,6 @@ jQuery.ajax({
 }
 
 function removeSymptom(){
-//alert("llllllllllllllllllllll");
-//$('#tableSchedulee').empty();
-//$('#scheduleDivv').empty();
 var selLen = selectedSymptomList.length;
 var i;
 for(i=selLen-1; i>=0; i--){
@@ -204,6 +201,7 @@ var splts=dat1.toString();
 var spltswhs="#".concat(splts); 
 $('spltswhs').remove();
 }
+getQuestion();
 }
 
 function viewQuestion(){
@@ -394,11 +392,11 @@ return true;
 						<td><input type="button" value="&gt;"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							style="width: 50px"
-							onclick="moveSelectedById( 'availableSymptomList', 'selectedSymptomisList');" /><br />
+							onclick="moveSelectedById( 'availableSymptomList', 'selectedSymptomList');getQuestion();" /><br />
 							<input type="button" value="&lt;"
 							class="ui-button ui-widget ui-state-default ui-corner-all"
 							style="width: 50px"
-							onclick="moveSelectedById( 'selectedSymptomList', 'availableSymptomList');" />
+							onclick="moveSelectedById( 'selectedSymptomList', 'availableSymptomList');removeSymptom()" />
 						</td>
 						<td>
 							<!-- List of all selected DataElements --> <select

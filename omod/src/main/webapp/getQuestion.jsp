@@ -23,8 +23,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="View PatientDashboard"
 	otherwise="/login.htm" redirect="index.htm" />
-<%@ include file="/WEB-INF/template/headerMinimal.jsp"%>
-<%@ include file="includes/js_css.jsp"%>
 	<div class="box">
 		<table cellspacing="10" width="100%">
 			<c:choose>

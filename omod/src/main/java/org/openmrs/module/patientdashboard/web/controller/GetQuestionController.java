@@ -38,10 +38,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/module/patientdashboard/getQuestion.htm")
 public class GetQuestionController {
 	@RequestMapping(method = RequestMethod.GET)
-	public String firstView(@RequestParam(value = "selectedSymptom", required = false) String selectedDiagnosis,
+	public String firstView(@RequestParam(value = "selectedSymptom", required = false) String selectedSymptom,
 	                        Model model) {
 		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
-		String[] columns = selectedDiagnosis.split(",");
+		if(!selectedSymptom.equals("")){
+		String[] columns = selectedSymptom.split(",");
 		int a=columns.length;
 		List<String> al=new ArrayList<String>();
 		Map<String,String> syptomname=new LinkedHashMap<String,String>();
@@ -68,6 +69,7 @@ public class GetQuestionController {
 		model.addAttribute("syptomname", syptomname);
 		model.addAttribute("syptomquestionanswer", syptomquestionanswer);
 		model.addAttribute("syptomquestionanswer2", syptomquestionanswer2);
+		}
 		return "module/patientdashboard/getQuestion";
 		}
 	}
