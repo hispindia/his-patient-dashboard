@@ -231,6 +231,7 @@ public class IPDRecordController {
 		model.addAttribute("procedure", procedure);*/
 		
 		model.addAttribute("currentAdmission", currentAdmission);
+		model.addAttribute("abc", " ");
 		
 		
 		return "module/patientdashboard/ipdRecord";

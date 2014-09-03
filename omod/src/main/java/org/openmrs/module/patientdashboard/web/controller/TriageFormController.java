@@ -85,7 +85,7 @@ public class TriageFormController {
 			@RequestParam("opdId") Integer opdId,
 			@RequestParam(value = "queueId", required = false) Integer queueId,
 			@RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
-			@RequestParam("referralId") Integer referralId, Model model) {
+			@RequestParam("visitStatus") String visitStatus, Model model) {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
 		List<EncounterType> types = new ArrayList<EncounterType>();
@@ -256,8 +256,7 @@ public class TriageFormController {
 			model.addAttribute("referredType", referral.getValueCoded()
 					.getName());
 
-		model.addAttribute("referral",
-				Context.getConceptService().getConcept(referralId));
+		model.addAttribute("visitStatus",visitStatus);
 
 		insertPropertiesUnlessExist();
 
@@ -417,8 +416,10 @@ public class TriageFormController {
         queueLog.setBirthDate(queue.getBirthDate());
         queueLog.setEncounter(encounter);
         queueLog.setCategory(queue.getCategory());
+        queueLog.setVisitStatus(queue.getVisitStatus());
 		TriagePatientQueueLog triagePatientLog = queueService.saveTriagePatientQueueLog(queueLog);
 		queueService.deleteTriagePatientQueue(queue);
+		
 		TriagePatientData tpd=new TriagePatientData();
 		tpd.setTriageLogId(triagePatientLog);
 		tpd.setWeight(weight);
@@ -756,7 +757,17 @@ public class TriageFormController {
 		opdObs.setConcept(opdConcept);
 		opdObs.setValueCoded(selectedOPDConcept);
 		encounter.addObs(opdObs);
-		sendPatientToOPDQueue(queueLog.getPatient(), selectedOPDConcept, triagePatientData, false, queueLog.getCategory());
+		
+		//triagePatientLog.getVisitStatus().NEW PATIENT
+		boolean visitStatus=false;
+		if(triagePatientLog.getVisitStatus().equalsIgnoreCase("REVISIT")){
+			visitStatus=true;
+		}
+		else{
+			visitStatus=false;
+		}
+		
+		sendPatientToOPDQueue(queueLog.getPatient(), selectedOPDConcept, triagePatientData, visitStatus, queueLog.getCategory());
 		return "redirect:/module/patientqueue/main.htm?opdId="+triagePatientLog.getTriageConcept().getId();
 	}
 
@@ -969,11 +980,11 @@ public class TriageFormController {
 	}
 	
 	public static void sendPatientToOPDQueue(Patient patient, Concept selectedOPDConcept, TriagePatientData triagePatientData, boolean revisit, String selectedCategory) {
-		Concept referralConcept = null;
+		Concept visitStatus = null;
 		if (!revisit) {
-			referralConcept = Context.getConceptService().getConcept("New Patient");
+			visitStatus = Context.getConceptService().getConcept("NEW PATIENT");
 		} else {
-			referralConcept = Context.getConceptService().getConcept("Revisit");
+			visitStatus = Context.getConceptService().getConcept("REVISIT");
 		}
 		
 		OpdPatientQueue queue = Context.getService(PatientQueueService.class).getOpdPatientQueue(
@@ -993,11 +1004,12 @@ public class TriageFormController {
 			else{
 				queue.setPatientName(patient.getGivenName()+ " " + patient.getFamilyName());
 			}
-			queue.setReferralConcept(referralConcept);
-			queue.setReferralConceptName(referralConcept.getName().getName());
+			//queue.setReferralConcept(referralConcept);
+			//queue.setReferralConceptName(referralConcept.getName().getName());
 			queue.setSex(patient.getGender());
 			queue.setTriageDataId(triagePatientData);
 			queue.setCategory(selectedCategory);
+			queue.setVisitStatus(visitStatus.getName().getName());
 			PatientQueueService queueService = Context.getService(PatientQueueService.class);
 			queueService.saveOpdPatientQueue(queue);
 			

@@ -150,6 +150,13 @@ DASHBOARD={
 				tb_show(" ",url,false);
 			}
 		},
+		detailIPDClinical : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "detailIPDClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=600&width=900";
+				tb_show(" ",url,false);
+			}
+		},
 		showAllDiagnosis : function()
 		{
 			if(SESSION.checkSession()){

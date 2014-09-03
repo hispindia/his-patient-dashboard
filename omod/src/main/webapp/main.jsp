@@ -66,17 +66,7 @@
 			</td>
 			--%>
 			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
-			<td width="30%"><b>Visit Status:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
-				<c:choose>
-					<c:when
-						test="${referredType!=null}">
-					${referredType}
-				</c:when>
-					<c:otherwise>
-					${referral.name }	
-				</c:otherwise>
-				</c:choose>
-			</td>
+			<td width="30%"><b>Visit Status:</b> ${visitStatus }</td>
 			<td width="30%"><b>Previous Visit:</b> 
 			<c:if test="${not empty ob }">
 			<openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}
@@ -88,7 +78,7 @@
 	<div id="tabs">
 		<ul>
 			<li><a
-				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"
+				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&queueId=${queueId}"
 				title="OPD entry"><span> OPD Entry</span> </a></li>
 			<li><a
 				href="clinicalSummary.htm?patientId=${patient.patientId }"

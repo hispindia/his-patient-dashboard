@@ -74,7 +74,7 @@ public class MainController {
 	                        @RequestParam(value = "opdLogId", required = false) Integer opdLogId,
 	                        //ghanshyam 26-march-2013 Bug #1230 Error in BD IPD Module
 	                        @RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
-	                        @RequestParam("referralId") Integer referralId, Model model) {
+	                        @RequestParam(value = "visitStatus", required = false) String visitStatus, Model model) {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
 		
@@ -175,10 +175,11 @@ public class MainController {
 		model.addAttribute("opd", Context.getConceptService().getConcept(opdId));
 		
 		// If the patient from another health place come - issue #45
-		if (null != referral)
+		if (null != referral){
 			model.addAttribute("referredType", referral.getValueCoded().getName());
+		}
 		
-		model.addAttribute("referral", Context.getConceptService().getConcept(referralId));
+		model.addAttribute("visitStatus", visitStatus);
 		
 		insertPropertiesUnlessExist();
 		

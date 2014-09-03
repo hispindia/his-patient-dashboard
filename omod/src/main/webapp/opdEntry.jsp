@@ -223,8 +223,9 @@ submitStatus=0;
 }
 });
 
-if(submitStatus!=1 && selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0){
+var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
+if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
 var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
 
@@ -276,19 +277,17 @@ var noteValue = document.getElementById('note').value;
 jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + noteValue + "</span>");
 
 var internalReferral = document.getElementById('internalReferral').value;
-if(internalReferral!=-1){
+if(internalReferral!=""){
 jQuery("#printableInternalReferral").append("<span style='margin:5px;'>" + internalReferral + "</span>");
 }
 
 var externalReferral = document.getElementById('externalReferral').value;
-if(externalReferral!=-1){
+if(externalReferral!=""){
 jQuery("#printableExternalReferral").append("<span style='margin:5px;'>" + externalReferral + "</span>");
 }
 
-var val = $('input:radio[name=radio_f]:checked').val();
-if(val!=undefined){
-jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + val + "</span>");
-}
+jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
+if(validate()){
 
 jQuery("#printOPDSlip").printArea({
 mode : "popup",
@@ -296,6 +295,8 @@ popClose : true
 });
 
   }
+
+ }
 }
 
 function validate(){
@@ -330,8 +331,7 @@ return true;
 
 	<input type="hidden" name="patientId" value="${patientId }" /> <input
 		type="hidden" name="opdId" value="${opd.conceptId }" /> <input
-		type="hidden" name="queueId" id="queueId" value="${queueId }" /> <input
-		type="hidden" name="referralId" value="${referral.conceptId }" />
+		type="hidden" name="queueId" id="queueId" value="${queueId }" />
 		<input
 		type="hidden" name="opdLogId" id="opdLogId" value="${opdLogId }" />
 
@@ -352,11 +352,15 @@ return true;
 				</c:if></td>
 		</tr>
 	 -->
+					<c:choose>
+                   <c:when test="${ not empty opdPatientQueue }">
 					<tr>
 					<td><input type="button" value="View Current Vital Statistics"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.currentVitalStatistics('${ opdPatientQueue.triageDataId.id}');" /></td>
 					</tr>
+					</c:when>
+					</c:choose>
 					
 					<tr>
 						<td colspan="3"><strong>History of Present Illness:</strong>

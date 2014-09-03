@@ -250,16 +250,7 @@ history.style.display="none";
 				</td>
 		</tr>
 			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
-			<td width="30%"><b>Visit Status:</b> <!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
-				<c:choose>
-					<c:when
-						test="${referredType!=null}">
-					${referredType}
-				</c:when>
-					<c:otherwise>
-					${referral.name }	
-				</c:otherwise>
-				</c:choose></td>
+			<td width="30%"><b>Visit Status:</b> ${visitStatus }</td>
 			<td width="30%"><b>Previous Visit:</b> <openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
 
 		</tr>
@@ -432,7 +423,7 @@ history.style.display="none";
 						jQuery("#existingIllnessRecord").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  )
+					if( ${visitStatus =='New Patient'}  )
 						{
 						$("input[name=existingIllnessProblem]").removeAttr("disabled");
 						$("input[name=existingIllnessLong]").removeAttr("disabled");
@@ -480,7 +471,7 @@ history.style.display="none";
 						jQuery("#chronicIllnessRecord").val("");
 					}
 					else {
-						if( ${referral.name =='New Patient'}  )
+						if( ${visitStatus =='New Patient'}  )
 						{
 							$("input[name=chronicIllnessProblem]").removeAttr("disabled");
 							$("input[name=chronicIllnessOccure]").removeAttr("disabled");
@@ -531,7 +522,7 @@ history.style.display="none";
 						jQuery("#previousAdmissionRecord").val("");
 					}
 					else {
-						if( ${referral.name =='New Patient'}  )
+						if( ${visitStatus =='New Patient'}  )
 						{
 							$("input[name=previousAdmissionWhen]").removeAttr("disabled");
 							$("input[name=previousAdmissionProblem]").removeAttr("disabled");
@@ -581,7 +572,7 @@ history.style.display="none";
 						jQuery("#previousInvestigationRecord").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  )
+					if( ${visitStatus =='New Patient'}  )
 					{
 						$("input[name=previousInvestigationWhen]").removeAttr("disabled"); 
 						$("input[name=previousInvestigationProblem]").removeAttr("disabled"); 
@@ -631,7 +622,7 @@ history.style.display="none";
 						jQuery("#medicationRecord").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  )
+					if( ${visitStatus =='New Patient'}  )
 					{
 						$("input[name=medicationName]").removeAttr("disabled");
 						$("input[name=medicationPeriod]").removeAttr("disabled");
@@ -679,7 +670,7 @@ history.style.display="none";
 						jQuery("#sensitiveMedicationSymptom").val("");
 					}
 					else {
-						if( ${referral.name =='New Patient'}  ){
+						if( ${visitStatus =='New Patient'}  ){
 							$("input[name=sensitiveMedicationName]").removeAttr("disabled");
 							$("input[name=sensitiveMedicationSymptom]").removeAttr("disabled");
 						}
@@ -710,7 +701,7 @@ history.style.display="none";
 						jQuery("#invasiveContraceptionName").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						jQuery("#invasiveContraceptionName").removeAttr("disabled");
 					}
 					else{
@@ -733,7 +724,7 @@ history.style.display="none";
 						jQuery("#parentDeathAge").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=parentDeathCause]").removeAttr("disabled");
 						$("input[name=parentDeathAge]").removeAttr("disabled");	
 					}
@@ -764,7 +755,7 @@ history.style.display="none";
 						jQuery("#siblingDeathAge").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=siblingDeathCause]").removeAttr("disabled");
 						$("input[name=siblingDeathAge]").removeAttr("disabled");	
 					}
@@ -796,7 +787,7 @@ history.style.display="none";
 						jQuery("#smokeAverage").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=smokeItem]").removeAttr("disabled");
 						$("input[name=smokeAverage]").removeAttr("disabled");						
 					}
@@ -826,7 +817,7 @@ history.style.display="none";
 						jQuery("#alcoholAverage").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=alcoholItem]").removeAttr("disabled");
 						$("input[name=alcoholAverage]").removeAttr("disabled");						
 					}
@@ -857,7 +848,7 @@ history.style.display="none";
 						jQuery("#drugAverage").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=drugItem]").removeAttr("disabled");
 						$("input[name=drugAverage]").removeAttr("disabled");						
 					}
@@ -886,7 +877,7 @@ history.style.display="none";
 						jQuery("#exposedHivFactor").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=exposedHivFactor]").removeAttr("disabled");
 					}
 					else{
@@ -907,7 +898,7 @@ history.style.display="none";
 						jQuery("#otherHelp").val("");
 					}
 					else {
-					if( ${referral.name =='New Patient'}  ){
+					if( ${visitStatus =='New Patient'}  ){
 						$("input[name=otherHelp]").removeAttr("disabled");
 					}
 					else{

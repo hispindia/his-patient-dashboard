@@ -1,4 +1,5 @@
- <%--
+
+<%--
  *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
@@ -16,87 +17,72 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
---%> 
-<%@ include file="/WEB-INF/template/include.jsp" %>
+--%>
+<%@ include file="/WEB-INF/template/include.jsp"%>
 
-
-
-<b class="boxHeader">Current Admission</b>
-<table class="box" width="100%">
+<b class="boxHeader">Admission Details</b>
+<table class="box"  width="100%">
 	<tr align="center">
-<!-- Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555 -->	
 		<th><spring:message code="patientdashboard.dateOfAdmission"/></th>
-		<th><spring:message code="patientdashboard.treatingDoctor"/></th>
-		<th><spring:message code="patientdashboard.provisionalDiagnosis"/></th>
-		<th><spring:message code="patientdashboard.proceduresDone"/></th>
-<!-- 		
-		<th><spring:message code="patientdashboard.final/currentDiagnosis"/></th>
-		<th><spring:message code="patientdashboard.surgery"/></th>
-		<th><spring:message code="patientdashboard.action"/></th>
- -->	
+		<th width="340"><spring:message code="patientdashboard.details"/></th>
+		<th width="280"></th>
+		<th width="300"></th>
+		<th width="390"></th>
 	</tr>
 	<c:choose>
-		<c:when test="${not empty currentAdmission}">
+	  <c:when test="${not empty currentAdmission}">
 			<tr align="center">
 				<td><openmrs:formatDate date="${currentAdmission.admissionDate}" type="textbox"/></td>
-				<td>${admitted.ipdAdmittedUser.givenName}</td>
-				<td>${diagnosis}</td>				
-<!-- Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555 -->				
-				<td>${procedure}</td>
-				<!--
-				<td>
-					${finalDiagnosis }
-				
-				</td>
-				<td>
-					${finalProcedures }
-				</td>
-				<td><input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="<spring:message code="patientdashboard.addEditFinalResult"/>" onclick="ADMITTED.changeFinalResult('${currentAdmission.id}');"/>
-				<c:if test="${not empty  finalDiagnosis}">
-					<input type="button" value="<spring:message code="patientdashboard.discharge"/>" onclick="ADMITTED.discharge('${admitted.id}');"/>
-				</c:if>
-				
-				</td> -->
+				<td><a href="#" onclick="DASHBOARD.detailIPDClinical('${ currentAdmission.ipdEncounter.encounterId}');"><small>View details</small></a></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			</tr>
-		</c:when>
-		<c:otherwise>
-				<tr align="center"><td colspan="6">No data</td></tr>
-		</c:otherwise>
+	</c:when>
+	<c:otherwise>
+				<tr align="center"><td>No data</td></tr>
+	</c:otherwise>
 	</c:choose>
 </table>
 
-
-<br/>
+<br />
 
 <b class="boxHeader">Previous Admission</b>
 <table class="box" width="100%">
 	<tr align="center">
-<!-- Sagar Bele Date:31-12-2012 Add procedure done in IPD record block in OPD patient-dashboard #555 -->	
-<!-- 	<th><spring:message code="patientdashboard.hospital"/></th>  -->
-		<th><spring:message code="patientdashboard.dateOfAdmission"/></th>
-		<th><spring:message code="patientdashboard.dateOfDischarge"/></th>
-		<th><spring:message code="patientdashboard.finalDiagnosis"/></th>
-		<th><spring:message code="patientdashboard.finalProcedures"/></th>
-		<th><spring:message code="patientdashboard.admissionOutcome"/></th>
-<!-- 	<th><spring:message code="patientdashboard.linkToD/cSummary"/></th>  -->
+		<th><spring:message code="patientdashboard.dateOfAdmission" />
+		</th>
+		<th><spring:message code="patientdashboard.dateOfDischarge" />
+		</th>
+		<th><spring:message code="patientdashboard.finalDiagnosis" />
+		</th>
+		<th><spring:message code="patientdashboard.finalProcedures" />
+		</th>
+		<th><spring:message code="patientdashboard.admissionOutcome" />
+		</th>
 	</tr>
 	<c:choose>
-	  <c:when test="${not empty records}">
-		<c:forEach items="${records}" var="record" varStatus="varStatus">
-			<tr align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-<!-- 			<td>${record.hospitalName }</td>  -->
-				<td><openmrs:formatDate date="${record.admissionDate}" type="textbox"/></td>
-				<td><openmrs:formatDate date="${record.dischargeDate}" type="textbox"/></td>
-				
-				<td>${record.diagnosis }</td>
-				<td>${record.procedures }</td>
-				<td>${record.admissionOutcome }</td>
+		<c:when test="${not empty records}">
+			<c:forEach items="${records}" var="record" varStatus="varStatus">
+				<tr align="center"
+					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
+					<td><openmrs:formatDate date="${record.admissionDate}"
+							type="textbox" />
+					</td>
+					<td><openmrs:formatDate date="${record.dischargeDate}"
+							type="textbox" />
+					</td>
+					<td>${record.diagnosis }</td>
+					<td>${record.procedures }</td>
+					<td>${record.admissionOutcome }</td>
+				</tr>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<tr align="center">
+				<td>No data</td>
 			</tr>
-		</c:forEach>
-	</c:when>
-	<c:otherwise>
-				<tr align="center"><td colspan="7">No data</td></tr>
-	</c:otherwise>
+		</c:otherwise>
 	</c:choose>
 </table>
 

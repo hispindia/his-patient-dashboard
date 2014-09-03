@@ -63,6 +63,7 @@ import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
@@ -92,8 +93,7 @@ public class OPDEntryController {
 			@RequestParam("patientId") Integer patientId,
 			@RequestParam("opdId") Integer opdId,
 			@RequestParam(value = "queueId", required = false) Integer queueId,
-			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
-			@RequestParam("referralId") Integer referralId, Model model) {
+			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,Model model) {
 
 		Concept opdWardConcept = Context.getConceptService().getConceptByName(
 				Context.getAdministrationService().getGlobalProperty(
@@ -170,8 +170,7 @@ public class OPDEntryController {
 		model.addAttribute("drugFrequencyList", drugFrequencyConcept);
 
 		model.addAttribute("opd", opdConcept);
-		model.addAttribute("referral",
-				Context.getConceptService().getConcept(referralId));
+	
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
 		OpdPatientQueue opdPatientQueue = new OpdPatientQueue();
@@ -193,7 +192,7 @@ public class OPDEntryController {
 			// opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(Context.getEncounterService().getEncounter(encounterId));
 			OpdPatientQueueLog opdPatientQueueLog = queueService
 					.getOpdPatientQueueLogById(opdLogId);
-			model.addAttribute("opdPatientQueue", opdPatientQueueLog);
+			model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
 		} else {
 			model.addAttribute("opdPatientQueue", opdPatientQueue);
 		}
@@ -288,6 +287,7 @@ public class OPDEntryController {
 				.getService(PatientQueueService.class);
 		PatientDashboardService patientDashboardService = Context
 				.getService(PatientDashboardService.class);
+		IpdService ipdService = Context.getService(IpdService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
 
@@ -347,7 +347,8 @@ public class OPDEntryController {
 		if (opdLogId != null) {
 			OpdPatientQueueLog opdPatientQueueLog = queueService
 					.getOpdPatientQueueLogById(opdLogId);
-			encounter = opdPatientQueueLog.getEncounter();
+			IpdPatientAdmissionLog ipdPatientAdmissionLog=ipdService.getIpdPatientAdmissionLog(opdPatientQueueLog);
+			encounter = ipdPatientAdmissionLog.getIpdEncounter();
 		} else {
 			encounter.setPatient(patient);
 			encounter.setCreator(user);
@@ -645,6 +646,7 @@ public class OPDEntryController {
 			queueLog.setBirthDate(patient.getBirthdate());
 			queueLog.setEncounter(encounter);
 			queueLog.setCategory(queue.getCategory());
+			queueLog.setVisitStatus(queue.getVisitStatus());
 			if (queue.getTriageDataId() != null) {
 				queueLog.setTriageDataId(queue.getTriageDataId());
 			} else {
@@ -658,8 +660,6 @@ public class OPDEntryController {
 
 				opdPatientLog.setVisitOutCome("admit");
 				queueService.saveOpdPatientQueueLog(opdPatientLog);
-				IpdService ipdService = (IpdService) Context
-						.getService(IpdService.class);
 				IpdPatientAdmission patientAdmission = new IpdPatientAdmission();
 				patientAdmission.setAdmissionDate(date);
 				patientAdmission.setAdmissionWard(conceptService
@@ -691,7 +691,6 @@ public class OPDEntryController {
 		BillingService billingService = Context
 				.getService(BillingService.class);
 
-		IpdService ipdService = Context.getService(IpdService.class);
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command
 				.getPatientId());
 		if (admitted != null) {
@@ -729,6 +728,7 @@ public class OPDEntryController {
 					Concept c = conceptService.getConcept(iId);
 					service = billingService.getServiceByConceptId(c
 							.getConceptId());
+					if(service!=null){
 					amount = service.getPrice();
 					item = new IndoorPatientServiceBillItem();
 					item.setCreatedDate(new Date());
@@ -740,6 +740,7 @@ public class OPDEntryController {
 					item.setAmount(amount);
 					item.setActualAmount(amount);
 					bill.addBillItem(item);
+					}
 				}
 				bill.setAmount(amount);
 				bill.setActualAmount(amount);

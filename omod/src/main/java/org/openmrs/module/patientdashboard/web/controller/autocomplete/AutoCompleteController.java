@@ -45,10 +45,12 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
+import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.Question;
@@ -479,6 +481,177 @@ public class AutoCompleteController {
 	model.addAttribute("visitOutCome", visitOutCome);
 	}
 	return "module/patientdashboard/detailProcedure";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/detailIPDClinical.htm", method=RequestMethod.GET)
+	public String detailIPDClinical(@RequestParam(value="id",required=false) Integer encounterId, Model model) {
+		if(encounterId != null){
+			
+			 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			 ConceptService conceptService = Context.getConceptService();
+			
+			EncounterService encounterService = Context.getEncounterService();
+			AdministrationService administrationService = Context.getAdministrationService();
+			PatientDashboardService patientDashboardService = Context
+				.getService(PatientDashboardService.class);
+			IpdService ipdService = Context.getService(IpdService.class);
+			String gpVisiteOutCome = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
+			Encounter encounter =encounterService.getEncounter(encounterId);
+			String internal = "";
+			String external = "";
+			String visitOutCome = "";
+			String otherValueOfVisit = "";
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			String otherInstructions = "";
+			String illnessHistory = "";
+			
+			Concept conInternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
+			Concept conExternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
+			Concept conVisiteOutCome  = conceptService.getConcept(gpVisiteOutCome);
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
+			
+			Concept conIllnessHistory = conceptService.getConceptByName("History of Present Illness");
+			List<Obs> symptoms = new ArrayList<Obs>();
+			List<Obs> diagnosiss = new ArrayList<Obs>();
+			List<Obs> procedures = new ArrayList<Obs>();
+			List<Obs> investigations = new ArrayList<Obs>();
+			try {
+				if(encounter != null){
+					for( Obs obs : encounter.getAllObs()){
+						if( obs.getConcept().getConceptId().equals(conInternal.getConceptId()) ){
+							internal = obs.getValueCoded().getName()+"";
+						}
+						if( obs.getConcept().getConceptId().equals(conExternal.getConceptId()) ){
+							external = obs.getValueCoded().getName()+"";
+						}
+						if( obs.getConcept().getConceptId().equals(conVisiteOutCome.getConceptId()) ){
+							visitOutCome = obs.getValueText();
+							if("Follow-up".equalsIgnoreCase(visitOutCome)){
+								try {
+									otherValueOfVisit = formatter.format(obs.getValueDatetime());
+								} catch (Exception e) {
+									// TODO: handle exception
+									e.printStackTrace();
+								}
+								
+							}else if("admit".equalsIgnoreCase(visitOutCome)){
+								if(obs.getValueCoded() != null){
+									
+									try {
+										otherValueOfVisit = obs.getValueCoded().getName()+"";
+									} catch (Exception e) {
+										// TODO: handle exception
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+						//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+						if( obs.getConcept().getConceptId().equals(conOtherInstructions.getConceptId()) ){
+							otherInstructions = obs.getValueText();
+						}
+
+						if( obs.getConcept().getConceptId().equals(conIllnessHistory.getConceptId()) ){
+							illnessHistory = obs.getValueText();
+						}
+						
+						if (obs.getValueCoded() != null) {
+							if (obs.getValueCoded().getConceptClass().getName().equals("Symptom")) {
+								symptoms.add(obs);
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
+								diagnosiss.add(obs);
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Procedure")) {
+								procedures.add(obs);
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Test")) {
+								investigations.add(obs);
+							}
+						}
+
+					}
+					
+					
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			
+			IpdPatientAdmissionLog ipdPatientAdmissionLog=ipdService.getIpdPatientAdmissionLog(encounter);
+			OpdPatientQueueLog opql=patientDashboardService.getOpdPatientQueueLog(ipdPatientAdmissionLog.getOpdLog().getEncounter());
+			Patient patient = opql.getPatient();
+			String patientName;
+			if (patient.getMiddleName() != null) {
+				patientName = patient.getGivenName() + " "
+						+ patient.getFamilyName() + " " + patient.getMiddleName();
+			} else {
+				patientName = patient.getGivenName() + " "
+						+ patient.getFamilyName();
+			}
+			model.addAttribute("patient", patient);
+			model.addAttribute("patientName", patientName);
+			
+			Date birthday = patient.getBirthdate();
+			model.addAttribute("age", PatientUtils.estimateAge(birthday));
+			
+			User user=opql.getUser();
+			Person person=user.getPerson();
+			String givenName=person.getGivenName();
+			String middleName=person.getMiddleName();
+			String familyName=person.getFamilyName();
+			
+			if(givenName==null){
+				givenName="";
+			}
+			if(middleName==null){
+				middleName="";
+			}
+			if(familyName==null){
+				familyName="";
+			}
+		
+			String treatingDoctor=givenName+" "+middleName+" "+familyName;
+			
+			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
+			for (PersonAttribute pa : pas) {
+				PersonAttributeType attributeType = pa.getAttributeType();
+				if (attributeType.getPersonAttributeTypeId() == 14) {
+					model.addAttribute("selectedCategory", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 36) {
+					model.addAttribute("exemptionNumber", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 33) {
+					model.addAttribute("nhifCardNumber", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 32) {
+					model.addAttribute("waiverNumber", pa.getValue());
+				}
+			}
+			
+			List<OpdDrugOrder> opdDrugOrders=patientDashboardService.getOpdDrugOrder(encounter);
+			
+			model.addAttribute("treatingDoctor", treatingDoctor);
+			model.addAttribute("internal", internal);
+			model.addAttribute("external", external);
+			model.addAttribute("visitOutCome", visitOutCome);
+			model.addAttribute("otherValueOfVisit", otherValueOfVisit);
+			//ghanshyam 8-july-2013 New Requirement #1963 Redesign patient dashboard
+			model.addAttribute("otherInstructions", otherInstructions);
+			model.addAttribute("illnessHistory", illnessHistory);
+			model.addAttribute("symptoms", symptoms);
+			model.addAttribute("diagnosiss", diagnosiss);
+			model.addAttribute("procedures", procedures);
+			model.addAttribute("investigations", investigations);
+			model.addAttribute("opdDrugOrders", opdDrugOrders);
+			model.addAttribute("admissionWard", ipdPatientAdmissionLog.getAdmissionWard().getName());
+			
+		}
+		return "module/patientdashboard/detailIPDClinical";
 	}
 	
 }
