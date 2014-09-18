@@ -224,6 +224,7 @@ submitStatus=0;
 var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
 if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
+if(validate()){
 var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
 
@@ -285,7 +286,6 @@ jQuery("#printableExternalReferral").append("<span style='margin:5px;'>" + exter
 }
 
 jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
-if(validate()){
 
 jQuery("#printOPDSlip").printArea({
 mode : "popup",
@@ -303,11 +303,34 @@ if(selectedProcedureList.length>0){
 for(i=selectedProcedureList.length-1; i>=0; i--){
 var spl=selectedProcedureList.options[i].value;
 var splts=spl.toString();
+if(document.getElementById(splts)!=null){
 var procedure=document.getElementById(splts).value;
 if(procedure==null || procedure==""){
    alert("Please schedule the procedure");
    return false;
    }
+  }
+ }
+
+}
+
+return true;
+}
+
+
+function validateOnSubmit(){
+var i;
+if(selectedProcedureList.length>0){
+for(i=selectedProcedureList.length-1; i>=0; i--){
+var spl=selectedProcedureList.options[i].value;
+var splts=spl.toString();
+if(document.getElementById(splts)!=null){
+var procedure=document.getElementById(splts).value;
+if(procedure==null || procedure==""){
+//   alert("Please schedule the procedure");
+   return false;
+   }
+  }
  }
 
 }
@@ -325,7 +348,7 @@ return true;
 	}
 </script>
 <b class="boxHeader">OPD Form</b>
-<form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="return validate();">
+<form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="return validateOnSubmit();">
 
 	<input type="hidden" name="patientId" value="${patientId }" /> <input
 		type="hidden" name="opdId" value="${opd.conceptId }" /> <input

@@ -723,12 +723,14 @@ public class OPDEntryController {
 				merge = command.getSelectedInvestigationList();
 			}
 
+			boolean serviceAvailable = false;
 			if (merge != null) {
 				for (Integer iId : merge) {
 					Concept c = conceptService.getConcept(iId);
 					service = billingService.getServiceByConceptId(c
 							.getConceptId());
 					if(service!=null){
+					serviceAvailable = true;
 					amount = service.getPrice();
 					item = new IndoorPatientServiceBillItem();
 					item.setCreatedDate(new Date());
@@ -746,7 +748,9 @@ public class OPDEntryController {
 				bill.setActualAmount(amount);
 				bill.setEncounter(admitted.getPatientAdmissionLog()
 						.getIpdEncounter());
+				if(serviceAvailable ==true){
 				bill = billingService.saveIndoorPatientServiceBill(bill);
+				}
 
 				IndoorPatientServiceBill indoorPatientServiceBill = billingService
 						.getIndoorPatientServiceBillById(bill
