@@ -347,7 +347,7 @@ return true;
 		return cp;
 	}
 </script>
-<b class="boxHeader">OPD Form</b>
+<b class="boxHeader">Clinical Notes</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="return validateOnSubmit();">
 
 	<input type="hidden" name="patientId" value="${patientId }" /> <input

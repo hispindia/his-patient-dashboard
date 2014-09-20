@@ -79,7 +79,7 @@
 		<ul>
 			<li><a
 				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&opdLogId=${opdLogId}"
-				title="OPD entry"><span> OPD entry</span> </a></li>
+				title="OPD entry"><span> Clinical Notes</span> </a></li>
 			<li><a
 				href="clinicalSummary.htm?patientId=${patient.patientId }"
 				title="Clinical summary"><span>Clinical summary</span> </a></li>
