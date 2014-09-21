@@ -172,6 +172,13 @@ if (StringUtils.isBlank(jQuery("#opd").val())) {
 				return false;
 			}
 			
+ re = /^\d{1,2}\/\d{1,2}\/\d{4}$/; 
+ if(jQuery("#lastMenstrualPeriod").val() != '' && !jQuery("#lastMenstrualPeriod").val().match(re)) 
+ {
+ alert("Invalid date format");
+ jQuery("#lastMenstrualPeriod").val('');
+ return false; 
+ } 					
 jQuery("#rhesusFactor").removeAttr("disabled");
 jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 }
