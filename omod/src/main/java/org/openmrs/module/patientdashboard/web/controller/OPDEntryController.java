@@ -158,7 +158,7 @@ public class OPDEntryController {
 
 		List<Concept> symptomList = patientDashboardService
 				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[3]);
-		if (CollectionUtils.isNotEmpty(investigations)) {
+		if (CollectionUtils.isNotEmpty(symptomList)) {
 			Collections.sort(symptomList, new ConceptComparator());
 		}
 		model.addAttribute("symptomList", symptomList);
