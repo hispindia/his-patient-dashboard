@@ -59,14 +59,68 @@
 	cursor : pointer;
 	background-color:#FFDD57;
 }
+
+.className:AFTER{
+background-color:#FF0000;
+}
+
+.classname1 {
+	-webkit-border-top-left-radius:4px;
+	-moz-border-radius-topleft:4px;
+	border-top-left-radius:4px;
+	-webkit-border-top-right-radius:4px;
+	-moz-border-radius-topright:4px;
+	border-top-right-radius:4px;
+	-webkit-border-bottom-right-radius:4px;
+	-moz-border-radius-bottomright:4px;
+	border-bottom-right-radius:4px;
+	-webkit-border-bottom-left-radius:4px;
+	-moz-border-radius-bottomleft:4px;
+	border-bottom-left-radius:4px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:30px;
+	line-height:30px;
+	width:250px;
+	text-decoration:none;
+	text-align:center;
+}
+.classname1:hover{
+	background-color:#FFDD57;
+}
+
+.classname1:active {
+	position:relative;
+	top:1px;
+	cursor : pointer;
+	background-color:#FFDD57;
+}
+
+.red
+{
+    background-color:red;
+}
 </style>
 
 <script type="text/javascript">
 	jQuery(document).ready(
 			function() {
-			
-			var history = document.getElementById("patientHistory");
+			jQuery("#opdMessgaeLbl").hide();
+			var history = document.getElementById("patientHistoryDiv");
+			var medical = document.getElementById("medicalDiv");
+			var drug = document.getElementById("drugDiv");
+			var family = document.getElementById("familyDiv");
+			var personal = document.getElementById("personalDiv");
 			history.style.display="none";
+			medical.style.display="none";
+			drug.style.display="none";
+			family.style.display="none";
+			personal.style.display="none";
 
 				jQuery('#lastMenstrualPeriod').datepicker({
 					yearRange : 'c-100:c+100',
@@ -88,7 +142,7 @@
 			    jQuery("#calendarButton").hide();
 			    };
 				
-		    
+	
 				
 });
 </script>
@@ -201,182 +255,152 @@ jQuery("#bloodGroup").click(function() {
 
 <script type="text/JavaScript">
 function ShowForm () {
-var history = document.getElementById("patientHistory");
+
+
+var history = document.getElementById("patientHistoryDiv");
 var triage = document.getElementById("triageVitalData");
+var medical = document.getElementById("medicalDiv");
+var drug = document.getElementById("drugDiv");
+var family = document.getElementById("familyDiv");
+var personal = document.getElementById("personalDiv");
+
+
 if (history.style.display=="inline" ) {
 history.style.display="none";
 triage.style.display="inline";
+medical.style.display="none";
+drug.style.display="none";
+family.style.display="none";
+personal.style.display="none";
 }
 else {
 history.style.display="inline";
 triage.style.display="none";
+medical.style.display="inline";
+drug.style.display="none";
+family.style.display="none";
+personal.style.display="none";
 }
 };
 
 function ShowVitalForm () {
-var history = document.getElementById("patientHistory");
+
+var history = document.getElementById("patientHistoryDiv");
 var triage = document.getElementById("triageVitalData");
+var medical = document.getElementById("medicalDiv");
+var drug = document.getElementById("drugDiv");
+var family = document.getElementById("familyDiv");
+var personal = document.getElementById("personalDiv");
+
 if (triage.style.display=="inline" ) {
 triage.style.display="none";
 history.style.display="inline";
+medical.style.display="inline";
+drug.style.display="inline";
+family.style.display="inline";
+personal.style.display="inline";
 }
 else {
 triage.style.display="inline";
 history.style.display="none";
+medical.style.display="none";
+drug.style.display="none";
+family.style.display="none";
+personal.style.display="none";
 }
 }
+
+
+function OnSelectOpd(){
+if($('#opd :selected').text()=="-Please select-")
+{
+	$("#opdMessgaeLbl").hide();
+}
+else
+{
+	$("#opdMessgaeLbl").show();
+}
+}
+
+
+function ShowMedicalDiv () {
+var history = document.getElementById("patientHistoryDiv");
+var triage = document.getElementById("triageVitalData");
+var medical = document.getElementById("medicalDiv");
+var drug = document.getElementById("drugDiv");
+var family = document.getElementById("familyDiv");
+var personal = document.getElementById("personalDiv");
+
+
+history.style.display="inline";
+triage.style.display="none";
+medical.style.display="inline";
+drug.style.display="none";
+family.style.display="none";
+personal.style.display="none";
+
+};
+
+
+function ShowDrugDiv () {
+var history = document.getElementById("patientHistoryDiv");
+var triage = document.getElementById("triageVitalData");
+var medical = document.getElementById("medicalDiv");
+var drug = document.getElementById("drugDiv");
+var family = document.getElementById("familyDiv");
+var personal = document.getElementById("personalDiv");
+
+
+history.style.display="inline";
+triage.style.display="none";
+medical.style.display="none";
+drug.style.display="inline";
+family.style.display="none";
+personal.style.display="none";
+
+};
+
+
+function ShowFamilyDiv () {
+var history = document.getElementById("patientHistoryDiv");
+var triage = document.getElementById("triageVitalData");
+var medical = document.getElementById("medicalDiv");
+var drug = document.getElementById("drugDiv");
+var family = document.getElementById("familyDiv");
+var personal = document.getElementById("personalDiv");
+
+
+history.style.display="inline";
+triage.style.display="none";
+medical.style.display="none";
+drug.style.display="none";
+family.style.display="inline";
+personal.style.display="none";
+
+};
+
+
+function ShowPersonalDiv () {
+var history = document.getElementById("patientHistoryDiv");
+var triage = document.getElementById("triageVitalData");
+var medical = document.getElementById("medicalDiv");
+var drug = document.getElementById("drugDiv");
+var family = document.getElementById("familyDiv");
+var personal = document.getElementById("personalDiv");
+
+history.style.display="inline";
+triage.style.display="none";
+medical.style.display="none";
+drug.style.display="none";
+family.style.display="none";
+personal.style.display="inline";
+
+};
+
+
 
 </script>
-
-<b class="boxHeader">Patient Detail</b>
-<div class="box" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-	<table cellspacing="10" width="100%">
-		<tr>
-			<td width="40%"><b>Patient ID:</b>
-				${patient.patientIdentifier.identifier}</td>
-			<td width="30%"><c:if test="${not empty admittedStatus }">
-					<span style="background-color: red; color: white">Admitted
-						patient</span>
-				</c:if></td>
-			<td width="30%"><b>Location:</b> ${opd.name }</td>
-		</tr>
-		<tr>
-			<td width="40%"><b>Name:</b>
-				${patient.givenName}&nbsp;${patient.familyName}&nbsp; ${fn:replace(patient.middleName,',',' ')}
-				</td>
-			<td width="30%"><b>Age:</b> ${age }</td>
-			<td width="30%"><b>Gender:</b>
-			<c:choose>
-					<c:when test="${patient.gender eq 'M'}">
-					Male
-				</c:when>
-				<c:otherwise>
-					Female
-				</c:otherwise>
-				</c:choose>
-				</td>
-		</tr>
-			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
-			<td width="30%"><b>Visit Status:</b> ${visitStatus }</td>
-			<td width="30%"><b>Previous Visit:</b> <openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
-
-		</tr>
-	</table>
-		<br><br>
-	<div id="tabs">
-	<b class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-		&nbsp;<input id="formVitalButton" name="formVitalButton" type="button" onclick="ShowVitalForm();" value="Vital Statistics" class="classname"> 
-		<input id="formButton" name="formButton" type="button" onclick="ShowForm();" value="Patient History" class="classname">
-	</b>
-
-	<form id="triageForm" method="POST" onsubmit="javascript:return validate();">
-		
-		<table id="triageVitalData">
-			<tr>
-				<td>Weight (Kg)</td>
-				<td><input type="text" id="weight" name="weight" size="8">
-				</td>
-			</tr>
-			<tr>
-				<td>Height (cm)</td>
-				<td><input type="text" id="height" name="height" size="8">
-				</td>
-			</tr>
-			<tr>
-				<td>MUA Circumference(cm)</td>
-				<td><input type="text" id="mua" name="mua" size="8">
-				</td>
-			</tr>
-			<tr>
-				<td>Chest Circumference(cm)</td>
-				<td><input type="text" id="chest" name="chest" size="8"></td>
-			</tr>
-			<tr>
-				<td>Abdominal Circumference(cm)</td>
-				<td><input type="text" id="abdominal" name="abdominal" size="8"></td>
-			</tr>
-			<tr>
-				<td>Temperature (degree C)</td>
-				<td><input type="text" id="temperature" name="temperature"
-					size="8"></td>
-			</tr>
-			<tr>
-				<td>Systolic B.P</td>
-				<td><input type="text" id="sbp" name="sbp" size="8"></td>
-			</tr>
-			<tr>
-				<td>Diastolic B.P</td>
-				<td><input type="text" id="dbp" name="dbp" size="8"></td>
-			</tr>
-			<tr>
-				<td>Respiratory Rate</td>
-				<td><input type="text" id="resRate" name="resRate" size="8">
-				</td>
-			</tr>
-			<tr>
-				<td>Pulse Rate</td>
-				<td><input type="text" id="pulseRate" name="pulseRate" size="8">
-				</td>
-			</tr>
-			<tr>
-				<td>Last Menstrual Period</td>
-				<td><input type="text" id="lastMenstrualPeriod"
-					name="lastMenstrualPeriod" size="8"> <img
-					id="calendarButton"
-					src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
-				</td>
-			</tr>
-			<tr>
-				<td>Blood Group</td>
-				<td><select id="bloodGroup" name="bloodGroup"
-					style="width: 278px;" onclick="enableAndDisable();">
-						<option value="">-Please select-</option>
-						<option value="O">O</option>
-						<option value="A">A</option>
-						<option value="B">B</option>
-						<option value="AB">AB</option>
-						<option value="Not Known">Not Known</option>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Rhesus Factor</td>
-				<td><select id="rhesusFactor" name="rhesusFactor"
-					style="width: 278px;">
-						<option value="">-Please select-</option>
-						<option value="Positive (+)">Positive (+)</option>
-						<option value="Negative (-)">Negative (-)</option>
-						<option value="Not Known">Not Known</option>
-				</select></td>
-			</tr>
-			<tr>
-				<td>PITCT</td>
-				<td><select id="pitct" name="pitct" style="width: 278px;">
-						<option value="">-Please select-</option>
-						<option value="Reactive">Reactive</option>
-						<option value="Non-Reactive">Non-Reactive</option>
-						<option value="Not Known">Not Known</option>
-				</select></td>
-			</tr>
-			<tr>
-				<td>Room to Visit *:</td>
-				<td><select id="opd" name="opd" style="width: 278px;"><option
-							value="">-Please select-</option>
-						<c:forEach items="${listOPD}" var="opd">
-							<option value="${opd.answerConcept.id }"
-								<c:if test="${opdId == opd.answerConcept.id  }">selected="selected"</c:if>>${opd.answerConcept.name}</option>
-						</c:forEach>
-				</select>
-				</td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<td><input type="submit" value="Save"></td>
-				<td><input type="button" value="Reset"
-					onclick="window.location.href=window.location.href"></td>
-			</tr>
-		</table>
-		
-		<script  type="text/JavaScript">
+<script  type="text/JavaScript">
 
 		$(function () {
 
@@ -943,11 +967,182 @@ history.style.display="none";
 			
 
 		</script>
-		<table id="patientHistory">
-				<tr><td>.</td></tr>
-				<tr><td><b class="boxHeader">Past Medical and Surgical History</b></td>
-				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
-				</tr>
+
+
+<b class="boxHeader">Patient Detail</b>
+<div class="box" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<table cellspacing="10" width="100%">
+		<tr>
+			<td width="40%"><b>Patient ID:</b>
+				${patient.patientIdentifier.identifier}</td>
+			<td width="30%"><c:if test="${not empty admittedStatus }">
+					<span style="background-color: red; color: white">Admitted
+						patient</span>
+				</c:if></td>
+			<td width="30%"><b>Location:</b> ${opd.name }</td>
+		</tr>
+		<tr>
+			<td width="40%"><b>Name:</b>
+				${patient.givenName}&nbsp;${patient.familyName}&nbsp; ${fn:replace(patient.middleName,',',' ')}
+				</td>
+			<td width="30%"><b>Age:</b> ${age }</td>
+			<td width="30%"><b>Gender:</b>
+			<c:choose>
+					<c:when test="${patient.gender eq 'M'}">
+					Male
+				</c:when>
+				<c:otherwise>
+					Female
+				</c:otherwise>
+				</c:choose>
+				</td>
+		</tr>
+			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
+			<td width="30%"><b>Visit Status:</b> ${visitStatus }</td>
+			<td width="30%"><b>Previous Visit:</b> <openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
+
+		</tr>
+	</table>
+		<br><br>
+	<div id="tabs">
+	 <b class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+		&nbsp;<input id="vitalButton" name="formVitalButton" type="button" onclick="ShowVitalForm();" value="Vital Statistics" class="classname"> 
+		<input id="patientHistoryButton"  type="button" onclick="ShowForm();" value="Patient History" class="classname">
+	</b>
+	
+
+	<form id="triageForm" method="POST" onsubmit="javascript:return validate();">
+		
+		<table id="triageVitalData">
+			<tr><td>&nbsp;</td></tr>
+			<tr>
+				<td>Weight (Kg)</td>
+				<td><input type="text" id="weight" name="weight" size="8">
+				</td>
+			</tr>
+			<tr>
+				<td>Height (cm)</td>
+				<td><input type="text" id="height" name="height" size="8">
+				</td>
+			</tr>
+			<tr>
+				<td>MUA Circumference(cm)</td>
+				<td><input type="text" id="mua" name="mua" size="8">
+				</td>
+			</tr>
+			<tr>
+				<td>Chest Circumference(cm)</td>
+				<td><input type="text" id="chest" name="chest" size="8"></td>
+			</tr>
+			<tr>
+				<td>Abdominal Circumference(cm)</td>
+				<td><input type="text" id="abdominal" name="abdominal" size="8"></td>
+			</tr>
+			<tr>
+				<td>Temperature (degree C)</td>
+				<td><input type="text" id="temperature" name="temperature"
+					size="8"></td>
+			</tr>
+			<tr>
+				<td>Systolic B.P</td>
+				<td><input type="text" id="sbp" name="sbp" size="8"></td>
+			</tr>
+			<tr>
+				<td>Diastolic B.P</td>
+				<td><input type="text" id="dbp" name="dbp" size="8"></td>
+			</tr>
+			<tr>
+				<td>Respiratory Rate</td>
+				<td><input type="text" id="resRate" name="resRate" size="8">
+				</td>
+			</tr>
+			<tr>
+				<td>Pulse Rate</td>
+				<td><input type="text" id="pulseRate" name="pulseRate" size="8">
+				</td>
+			</tr>
+			<tr>
+				<td>Last Menstrual Period</td>
+				<td><input type="text" id="lastMenstrualPeriod"
+					name="lastMenstrualPeriod" size="8"> <img
+					id="calendarButton"
+					src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
+				</td>
+			</tr>
+			<tr>
+				<td>Blood Group</td>
+				<td><select id="bloodGroup" name="bloodGroup"
+					style="width: 278px;" onclick="enableAndDisable();">
+						<option value="">-Please select-</option>
+						<option value="O">O</option>
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="AB">AB</option>
+						<option value="Not Known">Not Known</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>Rhesus Factor</td>
+				<td><select id="rhesusFactor" name="rhesusFactor"
+					style="width: 278px;">
+						<option value="">-Please select-</option>
+						<option value="Positive (+)">Positive (+)</option>
+						<option value="Negative (-)">Negative (-)</option>
+						<option value="Not Known">Not Known</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>PITCT</td>
+				<td><select id="pitct" name="pitct" style="width: 278px;">
+						<option value="">-Please select-</option>
+						<option value="Reactive">Reactive</option>
+						<option value="Non-Reactive">Non-Reactive</option>
+						<option value="Not Known">Not Known</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>Room to Visit *:</td>
+				<td><select id="opd" name="opd" style="width: 278px;" onChange="OnSelectOpd();"><option
+							value="">-Please select-</option>
+						<c:forEach items="${listOPD}" var="opd">
+							<option value="${opd.answerConcept.id }"
+								<c:if test="${opdId == opd.answerConcept.id  }">selected="selected"</c:if>>${opd.answerConcept.name}</option>
+						</c:forEach>
+				</select>
+				</td>
+				<td bgcolor="#FFF600">
+					<label id="opdMessgaeLbl" style="" ><b> Please click on save button to move patient to next queue !!!</b></label>
+				</td>
+			</tr>
+			<tr></tr>
+			<tr>
+				<td><input id="saveButton" type="submit" value="Save"></td>
+				<td><input type="button" value="Reset"
+					onclick="window.location.href=window.location.href"></td>
+			</tr>
+		</table>
+		
+	<div id="patientHistoryDiv">
+			<table>
+			<tr><td>&nbsp;</td></tr>
+			<tr><td>
+				<div id="internalTabs">
+				<b class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+					&nbsp;
+					<input id="medicalButton" name="medicalButton" type="button" onclick="ShowMedicalDiv();" value="Medical and Surgical History" class="classname1"  > 
+					<input id="drugButton" name="drugButton" type="button" onclick="ShowDrugDiv();" value="Drug History" class="classname1" >
+					<input id="familyButton" name="familyButton" type="button" onclick="ShowFamilyDiv();" value="Family History" class="classname1" >
+					<input id="personalButton" name="personalButton" type="button" onclick="ShowPersonalDiv();" value="Personal and Social History" class="classname1" >
+				</b>
+				</div>
+			</td></tr>
+			</table>
+	</div> <!-- end of patientHistoryDiv -->
+		
+		<div id="medicalDiv">
+			<table>
+				<tr><td>&nbsp;</td></tr>
+				
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;Any existing illness/ conditions? &nbsp;&nbsp;&nbsp;</td>
 					<td>
@@ -1607,10 +1802,13 @@ history.style.display="none";
 					</td>
 				</tr>								
 				<tr><td>&nbsp;</td></tr>
+				</table>
+		</div><!-- end of medicalDiv -->
+				
+		<div id="drugDiv">
+				<table>
 				<tr><td>&nbsp;</td></tr>
-				<tr><td><b class="boxHeader">Past Drug History</b></td>
-				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
-				</tr>
+				
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;Current medications? &nbsp;&nbsp;&nbsp;</td>
 					<td>
@@ -1787,10 +1985,14 @@ history.style.display="none";
 
 				<tr><td>&nbsp;</td></tr>
 				<tr><td>&nbsp;</td></tr>
-
-				<tr><td><b class="boxHeader">Family History</b></td>
-				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
-				</tr>
+			</table>
+		</div> <!-- end of drugDiv -->
+				
+				
+		<div id="familyDiv">
+			<table>
+				<tr><td>&nbsp;</td></tr>
+				
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;Status of parents? &nbsp;&nbsp;&nbsp;</td>
 					<td>
@@ -1927,11 +2129,13 @@ history.style.display="none";
 					</td>
 				</tr>
 				<tr><td>&nbsp;</td></tr>
+			</table>
+		</div>  <!--  end of familyDiv -->
+				
+		<div id="personalDiv">
+			<table>
 				<tr><td>&nbsp;</td></tr>
-
-				<tr><td><b class="boxHeader">Personal and Social History</b></td>
-				<td><b class="boxHeader"><u>&nbsp;</u></b></td>
-				</tr>
+				
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;Do you smoke? &nbsp;&nbsp;&nbsp;</td>
 					<td>
@@ -2225,7 +2429,9 @@ history.style.display="none";
 					</td>
 				</tr>
 			</table>
-	
+		</div> <!--  end of personalDiv -->
+				
+			
 	</form>
 	</div>
 		
