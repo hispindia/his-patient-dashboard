@@ -39,6 +39,8 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
+import org.openmrs.Privilege;
+import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
@@ -207,6 +209,32 @@ public class MainController {
 			 }
 		 }
 		
+		 
+		 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
+			Set<Role> userRole = loggedInUser.getAllRoles();
+			Set<Privilege> userPrivileges = (Set<Privilege>) loggedInUser.getPrivileges();
+			 String hasEditPrivilige = "no";
+			  Iterator iteratorRole = userRole.iterator(); 
+			  Iterator iteratorPrivileges = userPrivileges.iterator(); 
+		      // check values
+		      while (iteratorRole.hasNext()){
+		         System.out.println("Roles: "+iteratorRole.next() + " ");  
+		      }
+		      String priv= "Edit Patient by Doctor";
+		      while (iteratorPrivileges.hasNext()){
+			         if(priv.equalsIgnoreCase(iteratorPrivileges.next().toString()))
+				      {
+			        	 
+			        	 System.out.println("in if iteratorPrivileges loop ..... "+hasEditPrivilige);
+				    	 hasEditPrivilige = "yes";
+				    	 System.out.println("setting hasEditPrivilige as  ..... "+hasEditPrivilige);
+				      }
+			        
+			      }
+			
+		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
+		     
+		 
 		Boolean dead = patient.getDead();
 		if(dead.equals(true)){
 			//return "module/patientdashboard/main";

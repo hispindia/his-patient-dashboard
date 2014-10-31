@@ -45,6 +45,12 @@
 		<name>View PatientDashboard</name>
 		<description>Allows user to view PatientDashboard</description>
 	</privilege>
+	
+	<privilege>
+		<name>Edit Patient by Doctor</name>
+		<description>Allows Doctor Edit Patient history</description>
+	</privilege>
+	
 	<!-- Required Global Properties -->
 	
 	<globalProperty>

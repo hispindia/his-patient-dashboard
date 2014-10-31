@@ -21,26 +21,13 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
 
-import org.openmrs.Patient;
-import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.model.InventoryStoreDrugPatient;
-import org.openmrs.module.hospitalcore.model.InventoryStoreDrugPatientDetail;
-import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
-import org.openmrs.module.hospitalcore.model.TriagePatientData;
-import org.openmrs.module.hospitalcore.model.PatientMedicalHistory;
 import org.openmrs.module.hospitalcore.model.PatientDrugHistory;
 import org.openmrs.module.hospitalcore.model.PatientFamilyHistory;
+import org.openmrs.module.hospitalcore.model.PatientMedicalHistory;
 import org.openmrs.module.hospitalcore.model.PatientPersonalHistory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,8 +43,22 @@ public class PatientHistoryController {
 	public String firstView(
 			@RequestParam(value = "patientId", required = false) Integer patientId,
 			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+			@RequestParam(value="visitStatus" ,required=false) String visitStatus ,
+			@RequestParam(value="opdId" ,required=false) Integer opdId ,
+			@RequestParam(value="hasEditPrivilige" ,required=false) String hasEditPrivilige ,
 			Model model) {
+		System.out.println("**************************************** in patieint history controller ");
+		System.out.println("patientId: "+patientId);
+		System.out.println("queueId: "+queueId);
+		System.out.println("visitStatus: "+visitStatus);
+		System.out.println("opdId: "+opdId);
+		System.out.println("hasEditPrivilige: "+hasEditPrivilige);
 		model.addAttribute("patientId", patientId);
+		model.addAttribute("queueId", queueId);
+		model.addAttribute("visitStatus", visitStatus);
+		model.addAttribute("opdId", opdId);
+		model.addAttribute("hasEditPrivilige", hasEditPrivilige);
+		
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 
 		PatientMedicalHistory patientMedicalHistory = queueService.getPatientHistoryByPatientId(patientId);	
@@ -133,5 +134,185 @@ public class PatientHistoryController {
 		return "module/patientdashboard/patientHistory";
 	}
 
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public String onUpdate(
+			@RequestParam(value = "patientId", required = false) Integer patientId,
+			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+			@RequestParam(value="visitStatus" ,required=false) String visitStatus ,
+			@RequestParam(value="opdId" ,required=false) Integer opdId ,
+			HttpServletRequest request,
+			Model model)
+	{
+		
+		String existingIllness =request.getParameter("existingIllness");
+		String existingIllnessProblem =request.getParameter("existingIllnessProblem");
+		String existingIllnessLong =request.getParameter("existingIllnessLong");
+		String existingIllnessProgress =request.getParameter("existingIllnessProgress");
+		String existingIllnessRecord =request.getParameter("existingIllnessRecord");
+		String chronicIllness = request.getParameter("chronicIllness");
+		String chronicIllnessProblem = request.getParameter("chronicIllnessProblem");
+		String chronicIllnessOccure = request.getParameter("chronicIllnessOccure");
+		String chronicIllnessOutcome = request.getParameter("chronicIllnessOutcome");
+		String chronicIllnessRecord = request.getParameter("chronicIllnessRecord");
+		String previousAdmission = request.getParameter("previousAdmission");
+		String previousAdmissionWhen = request.getParameter("previousAdmissionWhen");
+		String previousAdmissionProblem = request.getParameter("previousAdmissionProblem");
+		String previousAdmissionOutcome = request.getParameter("previousAdmissionOutcome");
+		String previousAdmissionRecord = request.getParameter("previousAdmissionRecord");
+		String previousInvestigation = request.getParameter("previousInvestigation");
+		String previousInvestigationWhen = request.getParameter("previousInvestigationWhen");
+		String previousInvestigationProblem = request.getParameter("previousInvestigationProblem");
+		String previousInvestigationOutcome = request.getParameter("previousInvestigationOutcome");
+		String previousInvestigationRecord = request.getParameter("previousInvestigationRecord");
+		String BCG = request.getParameter("BCG");
+		String polio = request.getParameter("polio");
+		String DPT = request.getParameter("DPT");
+		String measles = request.getParameter("measles");
+		String pneumococcal = request.getParameter("pneumococcal");
+		String yellowFever = request.getParameter("yellowFever");
+		String tetanusMale = request.getParameter("tetanusMale");
+		String tetanusFemale = request.getParameter("tetanusFemale");
+		String otherVaccinations = request.getParameter("otherVaccinations");
+		
+		
+		
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		
+		PatientMedicalHistory patientMedicalHistory = queueService.getPatientHistoryByPatientId(patientId);	
+		patientMedicalHistory.setIllnessExisting(existingIllness);
+		patientMedicalHistory.setIllnessProblem(existingIllnessProblem);
+		patientMedicalHistory.setIllnessLong(existingIllnessLong);
+		patientMedicalHistory.setIllnessProgress(existingIllnessProgress);
+		patientMedicalHistory.setIllnessRecord(existingIllnessRecord);
+		patientMedicalHistory.setChronicIllness(chronicIllness);
+		patientMedicalHistory.setChronicIllnessProblem(chronicIllnessProblem);
+		patientMedicalHistory.setChronicIllnessOccure(chronicIllnessOccure);
+		patientMedicalHistory.setChronicIllnessOutcome(chronicIllnessOutcome);
+		patientMedicalHistory.setChronicIllnessRecord(chronicIllnessRecord);
+		patientMedicalHistory.setPreviousAdmission(previousAdmission);
+		patientMedicalHistory.setPreviousAdmissionWhen(previousAdmissionWhen);
+		patientMedicalHistory.setPreviousAdmissionProblem(previousAdmissionProblem);
+		patientMedicalHistory.setPreviousAdmissionOutcome(previousAdmissionOutcome);
+		patientMedicalHistory.setPreviousAdmissionRecord(previousAdmissionRecord);
+		patientMedicalHistory.setPreviousInvestigation(previousInvestigation);
+		patientMedicalHistory.setPreviousInvestigationWhen(previousInvestigationWhen);
+		patientMedicalHistory.setPreviousInvestigationProblem(previousInvestigationProblem);
+		patientMedicalHistory.setPreviousInvestigationOutcome(previousInvestigationOutcome);
+		patientMedicalHistory.setPreviousInvestigationRecord(previousInvestigationRecord);
+		if(!(BCG.equals("Yes")||(BCG.equals("No"))))
+			BCG="Not Sure";
+		if(!(polio.equals("Yes")||(polio.equals("No"))))
+			polio="Not Sure";
+		if(!(DPT.equals("Yes")||(DPT.equals("No"))))
+			DPT="Not Sure";
+		if(!(measles.equals("Yes")||(measles.equals("No"))))
+			measles="Not Sure";
+		if(!(pneumococcal.equals("Yes")||(pneumococcal.equals("No"))))
+			pneumococcal="Not Sure";
+		if(!(yellowFever.equals("Yes")||(yellowFever.equals("No"))))
+			yellowFever="Not Sure";
+		if(!(tetanusFemale.equals("Yes")||(tetanusFemale.equals("No"))))
+			tetanusFemale="Not Sure";
+		if(!(tetanusMale.equals("Yes")||(tetanusMale.equals("No"))))
+			tetanusMale="Not Sure";
+		patientMedicalHistory.setBcg(BCG);
+		patientMedicalHistory.setPolio(polio);
+		patientMedicalHistory.setDpt(DPT);
+		patientMedicalHistory.setMeasles(measles);
+		patientMedicalHistory.setPneumococcal(pneumococcal);
+		patientMedicalHistory.setYellowFever(yellowFever);
+		patientMedicalHistory.setTetanusFemale(tetanusFemale);
+		patientMedicalHistory.setTetanusMale(tetanusMale);
+		patientMedicalHistory.setOtherVaccinations(otherVaccinations);
+		
+		
+		
+		queueService.updatePatientHistoryByPatientId(patientMedicalHistory);
+		
+		PatientDrugHistory patientDrugHistory = queueService.getPatientDrugHistoryByPatientId(patientId);
+		String currentMedication = request.getParameter("currentMedication");
+		String medicationName = request.getParameter("medicationName");
+		String medicationPeriod = request.getParameter("medicationPeriod");
+		String medicationReason = request.getParameter("medicationReason");
+		String medicationRecord = request.getParameter("medicationRecord");
+		String sensitiveMedication = request.getParameter("sensitiveMedication");
+		String sensitiveMedicationName = request.getParameter("sensitiveMedicationName");
+		String sensitiveMedicationSymptom = request.getParameter("sensitiveMedicationSymptom");
+		String invasiveContraception = request.getParameter("invasiveContraception");
+		String invasiveContraceptionName = request.getParameter("invasiveContraceptionName");
+		
+		patientDrugHistory.setCurrentMedication(currentMedication);
+		patientDrugHistory.setMedicationRecord(medicationRecord);
+		patientDrugHistory.setMedicationName(medicationName);
+		patientDrugHistory.setMedicationPeriod(medicationPeriod);
+		patientDrugHistory.setMedicationReason(medicationReason);
+		patientDrugHistory.setSensitiveMedication(sensitiveMedication);
+		patientDrugHistory.setSensitiveMedicationName(sensitiveMedicationName);
+		patientDrugHistory.setSensitiveMedicationSymptom(sensitiveMedicationSymptom);
+		patientDrugHistory.setInvasiveContraception(invasiveContraception);
+		patientDrugHistory.setInvasiveContraceptionName(invasiveContraceptionName);
+		
+		queueService.updatePatientDrugHistoryByPatientId(patientDrugHistory);
+			
+		PatientFamilyHistory patientFamilyHistory = queueService.getPatientFamilyHistoryByPatientId(patientId);
+			
+		String parentStatus = request.getParameter("parentStatus");
+		String parentDeathCause = request.getParameter("parentDeathCause");
+		String parentDeathAge = request.getParameter("parentDeathAge");
+		String siblingStatus = request.getParameter("siblingStatus");
+		String siblingDeathCause = request.getParameter("siblingDeathCause");
+		String siblingDeathAge = request.getParameter("siblingDeathAge");
+		String familyIllnessHistory = request.getParameter("familyIllnessHistory");
+		System.out.println("familyIllnessHistory:             "+familyIllnessHistory);
+		patientFamilyHistory.setParentStatus(parentStatus);
+		patientFamilyHistory.setParentDeathCause(parentDeathCause);
+		patientFamilyHistory.setParentDeathAge(parentDeathAge);
+		patientFamilyHistory.setSiblingStatus(siblingStatus);
+		patientFamilyHistory.setSiblingDeathCause(siblingDeathCause);
+		patientFamilyHistory.setSiblingDeathAge(siblingDeathAge);
+		patientFamilyHistory.setFamilyIllnessHistory(familyIllnessHistory);
+		
+		queueService.updatePatientFamilyHistoryByPatientId(patientFamilyHistory);
+			
+		PatientPersonalHistory patientPersonalHistory = queueService.getPatientPersonalHistoryByPatientId(patientId);
+		String smoke = request.getParameter("smoke");
+		String smokeItem = request.getParameter("smokeItem");
+		String smokeAverage = request.getParameter("smokeAverage");
+		String alcohol = request.getParameter("alcohol");
+		String alcoholItem = request.getParameter("alcoholItem");
+		String alcoholAverage = request.getParameter("alcoholAverage");
+		String drug = request.getParameter("drug");
+		String drugItem = request.getParameter("drugItem");
+		String drugAverage = request.getParameter("drugAverage");
+		String hivStatus = request.getParameter("hivStatus");
+		String exposedHiv = request.getParameter("exposedHiv");
+		String exposedHivFactor = request.getParameter("exposedHivFactor");
+		String familyHelp = request.getParameter("familyHelp");
+		String otherHelp = request.getParameter("otherHelp");
+		String incomeSource = request.getParameter("incomeSource");
+		
+		patientPersonalHistory.setSmoke(smoke);
+		patientPersonalHistory.setSmokeItem(smokeItem);
+		patientPersonalHistory.setSmokeAverage(smokeAverage);
+		patientPersonalHistory.setAlcohol(alcohol);
+		patientPersonalHistory.setAlcoholItem(alcoholItem);
+		patientPersonalHistory.setAlcoholAverage(alcoholAverage);
+		patientPersonalHistory.setDrug(drug);
+		patientPersonalHistory.setDrugItem(drugItem);
+		patientPersonalHistory.setDrugAverage(drugAverage);
+		patientPersonalHistory.setHivStatus(hivStatus);
+		patientPersonalHistory.setExposedHiv(exposedHiv);
+		patientPersonalHistory.setExposedHivFactor(exposedHivFactor);
+		patientPersonalHistory.setFamilyHelp(familyHelp);
+		patientPersonalHistory.setOtherHelp(otherHelp);
+		patientPersonalHistory.setIncomeSource(incomeSource);
+		
+		queueService.updatePatientPersonalHistoryByPatientId(patientPersonalHistory);
+
+		
+		return "redirect:/module/patientdashboard/main.htm?patientId="+patientId
+		+"&opdId="+opdId+"&visitStatus="+visitStatus+"&queueId="+queueId+"#Patient_history";
+	}
 
 }
