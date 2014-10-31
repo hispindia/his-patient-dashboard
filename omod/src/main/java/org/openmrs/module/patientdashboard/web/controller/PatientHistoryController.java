@@ -47,12 +47,7 @@ public class PatientHistoryController {
 			@RequestParam(value="opdId" ,required=false) Integer opdId ,
 			@RequestParam(value="hasEditPrivilige" ,required=false) String hasEditPrivilige ,
 			Model model) {
-		System.out.println("**************************************** in patieint history controller ");
-		System.out.println("patientId: "+patientId);
-		System.out.println("queueId: "+queueId);
-		System.out.println("visitStatus: "+visitStatus);
-		System.out.println("opdId: "+opdId);
-		System.out.println("hasEditPrivilige: "+hasEditPrivilige);
+		
 		model.addAttribute("patientId", patientId);
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("visitStatus", visitStatus);

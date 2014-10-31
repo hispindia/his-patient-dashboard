@@ -224,11 +224,8 @@ public class MainController {
 		      while (iteratorPrivileges.hasNext()){
 			         if(priv.equalsIgnoreCase(iteratorPrivileges.next().toString()))
 				      {
-			        	 
-			        	 System.out.println("in if iteratorPrivileges loop ..... "+hasEditPrivilige);
-				    	 hasEditPrivilige = "yes";
-				    	 System.out.println("setting hasEditPrivilige as  ..... "+hasEditPrivilige);
-				      }
+			        	 hasEditPrivilige = "yes";
+				     }
 			        
 			      }
 			
