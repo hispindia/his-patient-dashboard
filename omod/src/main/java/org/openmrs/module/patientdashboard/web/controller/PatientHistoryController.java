@@ -259,7 +259,6 @@ public class PatientHistoryController {
 		String siblingDeathCause = request.getParameter("siblingDeathCause");
 		String siblingDeathAge = request.getParameter("siblingDeathAge");
 		String familyIllnessHistory = request.getParameter("familyIllnessHistory");
-		System.out.println("familyIllnessHistory:             "+familyIllnessHistory);
 		patientFamilyHistory.setParentStatus(parentStatus);
 		patientFamilyHistory.setParentDeathCause(parentDeathCause);
 		patientFamilyHistory.setParentDeathAge(parentDeathAge);

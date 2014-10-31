@@ -214,12 +214,9 @@ public class MainController {
 			Set<Role> userRole = loggedInUser.getAllRoles();
 			Set<Privilege> userPrivileges = (Set<Privilege>) loggedInUser.getPrivileges();
 			 String hasEditPrivilige = "no";
-			  Iterator iteratorRole = userRole.iterator(); 
+			  
 			  Iterator iteratorPrivileges = userPrivileges.iterator(); 
-		      // check values
-		      while (iteratorRole.hasNext()){
-		         System.out.println("Roles: "+iteratorRole.next() + " ");  
-		      }
+		      
 		      String priv= "Edit Patient by Doctor";
 		      while (iteratorPrivileges.hasNext()){
 			         if(priv.equalsIgnoreCase(iteratorPrivileges.next().toString()))
