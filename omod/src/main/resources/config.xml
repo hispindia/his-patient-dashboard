@@ -93,6 +93,20 @@
 		</description>
 	</globalProperty>
 	<globalProperty>
+		<property>@MODULE_ID@.investigationConcept</property>
+		<defaultValue>INVESTIGATION</defaultValue>
+		<description>
+			investigation concept name
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.drugConcept</property>
+		<defaultValue>DRUG</defaultValue>
+		<description>
+			drug concept name
+		</description>
+	</globalProperty>
+	<globalProperty>
 		<property>@MODULE_ID@.internalReferralConcept</property>
 		<defaultValue>Internal referral</defaultValue>
 		<description>

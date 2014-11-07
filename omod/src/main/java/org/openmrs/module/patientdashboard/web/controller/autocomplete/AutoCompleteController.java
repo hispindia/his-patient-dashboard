@@ -36,7 +36,10 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.model.InventoryDrug;
+import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,6 +118,24 @@ public class AutoCompleteController {
 		diagnosis = dashboardService.searchDiagnosis(text);
 		model.addAttribute("diagnosis", diagnosis);
 		return "/module/patientdashboard/autocomplete/comboboxDianosis";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/comboboxInvestigation.htm", method=RequestMethod.GET)
+	public String comboboxInvestigation(@RequestParam(value="text",required=false) String text, Model model) {
+		List<Concept> investigation = new ArrayList<Concept>();
+		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+		investigation = dashboardService.searchInvestigation(text);
+		model.addAttribute("investigation", investigation);
+		return "/module/patientdashboard/autocomplete/comboboxInvestigation";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/comboboxDrug.htm", method=RequestMethod.GET)
+	public String comboboxDrug(@RequestParam(value="text",required=false) String text, Model model) {
+		List<InventoryDrug> drugs = new ArrayList<InventoryDrug>();
+		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+		drugs = dashboardService.findDrug(text);
+		model.addAttribute("drugs", drugs);
+		return "/module/patientdashboard/autocomplete/comboboxDrug";
 	}
 	
 	@RequestMapping(value="/module/patientdashboard/detailClinical.htm", method=RequestMethod.GET)
@@ -200,6 +221,32 @@ public class AutoCompleteController {
 		
 		model.addAttribute("procedures",procedures);
 		return "module/patientdashboard/autocomplete/autoCompleteProcedure";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/autoCompleteInvestigation.htm", method=RequestMethod.GET)
+	public String autoCompleteInvestigation(@RequestParam(value="q",required=false) String name, Model model) {
+		List<Concept> investigations = Context.getService(PatientDashboardService.class).searchInvestigation(name);
+		model.addAttribute("investigations",investigations);
+		return "module/patientdashboard/autocomplete/autoCompleteInvestigation";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/autoCompleteDrug.htm", method=RequestMethod.GET)
+	public String autoCompleteDrug(@RequestParam(value="q",required=false) String name, Model model) {
+		List<InventoryDrug> drugs = Context.getService(PatientDashboardService.class).findDrug(name);
+		model.addAttribute("drugs",drugs);
+		return "module/patientdashboard/autocomplete/autoCompleteDrug";
+	}
+	
+	@RequestMapping(value="/module/patientdashboard/formulationByDrugNameForIssue.form",method=RequestMethod.GET)
+	public String formulationByDrugNameForIssueDrug(@RequestParam(value="drugName",required=false)String drugName, Model model) {
+		InventoryCommonService inventoryCommonService = (InventoryCommonService) Context.getService(InventoryCommonService.class);
+		InventoryDrug drug = inventoryCommonService.getDrugByName(drugName);
+		if(drug != null){
+			List<InventoryDrugFormulation> formulations = new ArrayList<InventoryDrugFormulation>(drug.getFormulations());
+			model.addAttribute("formulations", formulations);
+			model.addAttribute("drugId", drug.getId());
+		}
+		return "/module/patientdashboard/autocomplete/formulationByDrugForIssue";
 	}
 	
 }

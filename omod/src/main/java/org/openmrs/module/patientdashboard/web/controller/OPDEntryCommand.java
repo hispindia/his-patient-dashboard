@@ -26,9 +26,10 @@ public class OPDEntryCommand {
 	
 	private Integer[] selectedDiagnosisList;
 	private Integer[] selectedProcedureList;
+	private Integer[] selectedInvestigationList;
 	private Integer patientId;
-	private Integer internalReferral;
-	private Integer externalReferral;
+	private String internalReferral;
+	private String externalReferral;
 	private String note;
 	private Integer admit;
 	private String outCome;
@@ -47,16 +48,16 @@ public class OPDEntryCommand {
 	public void setIpdWard(Integer ipdWard) {
 		this.ipdWard = ipdWard;
 	}
-	public Integer getInternalReferral() {
+	public String getInternalReferral() {
 		return internalReferral;
 	}
-	public void setInternalReferral(Integer internalReferral) {
+	public void setInternalReferral(String internalReferral) {
 		this.internalReferral = internalReferral;
 	}
-	public Integer getExternalReferral() {
+	public String getExternalReferral() {
 		return externalReferral;
 	}
-	public void setExternalReferral(Integer externalReferral) {
+	public void setExternalReferral(String externalReferral) {
 		this.externalReferral = externalReferral;
 	}
 	public String getNote() {
@@ -104,6 +105,12 @@ public class OPDEntryCommand {
 		this.selectedProcedureList = selectedProcedureList;
 	}
 	
+	public Integer[] getSelectedInvestigationList() {
+		return selectedInvestigationList;
+	}
+	public void setSelectedInvestigationList(Integer[] selectedInvestigationList) {
+		this.selectedInvestigationList = selectedInvestigationList;
+	}
 	public String getRadio_f() {
 		return radio_f;
 	}

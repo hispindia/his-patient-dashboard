@@ -63,6 +63,26 @@ DASHBOARD={
 				}
 			}
 		},
+		onChangeInvestigation : function(id)
+		{
+			var text = jQuery("#"+id).val();
+			if(text != null && text != ''){
+				if(SESSION.checkSession()){
+					var data = jQuery.ajax(
+							{
+								type:"GET"
+								,url: "comboboxInvestigation.htm"
+								,data: ({text: text})	
+								,async: false
+								, cache : false
+							}).responseText;
+					if(data != undefined  && data != null && data != ''){
+						jQuery("#divAvailableInvestigationList").html("");
+						jQuery("#divAvailableInvestigationList").html(data);
+					}
+				}
+			}
+		},
 		submitOpdEntry : function(){
 				jQuery('#selectedDiagnosisList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
@@ -70,7 +90,10 @@ DASHBOARD={
 				jQuery('#selectedProcedureList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
-				jQuery("#opdEntryForm").submit();
+				jQuery('#selectedInvestigationList option').each(function(i) {  
+					 jQuery(this).attr("selected", "selected");  
+				}); 
+				//jQuery("#opdEntryForm").submit();
 		},
 		detailClinical : function(id)
 		{
@@ -153,12 +176,48 @@ DASHBOARD={
 					jQuery("#availableProcedureList option[value=" +id+ "]").remove();
 				}else{
 					jQuery('#selectedProcedureList').append('<option value="' + id + '">' + name + '</option>');
-					if(confirm("Do you want also add this procedure to opd procedure?"))
+					if(confirm("Do you want to add this procedure to the list of procedures for this OPD?"))
 					{
 						jQuery.ajax({
 							  type: 'POST',
 							  url: 'addConceptToWard.htm',
 							  data: {opdId: jQuery("#"+container).attr("title"), conceptId: id, typeConcept: 2}
+							});
+					}
+				}
+			}
+
+		if(container == 'investigation'){
+				var exists = false;
+				jQuery('#selectedInvestigationList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				if(exists){
+					alert('The test has already been selected');
+					return false;
+				}
+				exists = false;
+				jQuery('#availableInvestigationList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				jQuery("#investigation").val("");
+				if(exists){
+					jQuery("#availableInvestigationList option[value=" +id+ "]").appendTo("#selectedInvestigationList");
+					jQuery("#availableInvestigationList option[value=" +id+ "]").remove();
+				}else{
+					jQuery('#selectedInvestigationList').append('<option value="' + id + '">' + name + '</option>');
+					if(confirm("Do you want to add this investigation to the list of investigations for this OPD?"))
+					{
+						jQuery.ajax({
+							  type: 'POST',
+							  url: 'addConceptToWard.htm',
+							  data: {opdId: jQuery("#"+container).attr("title"), conceptId: id, typeConcept: 3}
 							});
 					}
 				}
@@ -206,6 +265,9 @@ ADMITTED = {
 			jQuery('#selectedProcedureList option').each(function(i) {  
 				 jQuery(this).attr("selected", "selected");  
 			}); 
+			jQuery('#selectedInvestigationList option').each(function(i) {  
+					 jQuery(this).attr("selected", "selected");  
+				}); 
 			jQuery("#finalResultForm").submit();
 		}
 };
@@ -237,4 +299,28 @@ DIAGNOSIS = {
 		 
 };
 
-
+ISSUE={
+		onBlur : function(thiz)
+		{
+			var x = jQuery(thiz).val();
+			if(x != null && x != '' ){
+				if(SESSION.checkSession()){
+					var data = jQuery.ajax(
+							{
+								type:"GET"
+								,url: "formulationByDrugNameForIssue.form"
+								,data: ({drugName :x})	
+								,async: false
+								, cache : false
+							}).responseText;
+					if(data != undefined  && data != null && data != ''){
+						jQuery("#divFormulation").html(data);
+					}else{
+						alert('Please refresh page!');
+					}
+				}
+			}
+		}
+		
+	
+};
