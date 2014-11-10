@@ -154,6 +154,9 @@ var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
 if(selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
 
+var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
+jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
+
 var selDiagLen = selectedDiagnosisList.length;
 for(i=selDiagLen-1; i>=0; i--){
 var diag=selectedDiagnosisList[i].text;
@@ -191,8 +194,8 @@ j++;
 }
 
 
-var noteValue = document.getElementById('note').value;
-jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + noteValue + "</span>");
+var otherInstructions = document.getElementById('otherInstructions').value;
+jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + otherInstructions + "</span>");
 
 var internalReferral = document.getElementById('internalReferral').value;
 if(internalReferral!=""){
@@ -230,6 +233,9 @@ popClose : true
 	  	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${queueId}');"/>
 	  </c:if>
    </td> </tr>
+   <tr><td colspan="3">
+   <strong>History of Present Illness:</strong>
+   <input type="text" id="historyOfPresentIlness" name="historyOfPresentIlness" size="50" style="width:385px;height: 30px" class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"/></td></tr>
 	<tr><td colspan="3">
 	<strong>Provisional Diagnosis:</strong><em>*</em>
 	<input class="ui-autocomplete-input ui-widget-content ui-corner-all" id="diagnosis" title="${opd.conceptId}" style="width:390px" name="diagnosis"/>
@@ -393,7 +399,7 @@ popClose : true
 					</tr>
 					<tr>
 						<td colspan="3"><strong>Other Instructions:</strong> <input
-							type="text" id="note" name="note" size="200"
+							type="text" id="otherInstructions" name="otherInstructions" size="200"
 							style="width: 1035px; height: 50px"
 							class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input" />
 						</td>
@@ -495,6 +501,7 @@ popClose : true
 	</tr>
 </table>
 <table class="box">
+<tr><td><strong>History of Present Illness:</strong></td><td><div id="printableHistoryOfPresentIllness"></div></td></tr>
 <tr><td><strong>Provisional Diagnosis:</strong></td><td><div id="printableProvisionalDiagnosis"></div></td></tr>
 <tr><td><strong>Procedure:</strong></td><td><div id="printablePostForProcedure"></div></td></tr>
 <tr><td><strong>Investigation:</strong></td><td><div id="printableInvestigation"></div></td></tr>

@@ -299,6 +299,8 @@ public class OPDEntryController {
 
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis
 				.getPropertyValue());
+		Concept chopi=Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
+		Concept cOtherIntructions=Context.getConceptService().getConcept("OTHER INSTRUCTIONS");
 
 		if (cDiagnosis == null) {
 			throw new Exception("Diagnosis concept null");
@@ -316,13 +318,13 @@ public class OPDEntryController {
 
 			encounter.addObs(obsDiagnosis);
 		}
-		// note
-		if (StringUtils.isNotBlank(command.getNote())) {
+		// historyOfPresentIllness
+		if (StringUtils.isNotBlank(command.getHistoryOfPresentIlness())) {
 
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			obsDiagnosis.setConcept(cDiagnosis);
-			obsDiagnosis.setValueText(command.getNote());
+			obsDiagnosis.setConcept(chopi);
+			obsDiagnosis.setValueText(command.getHistoryOfPresentIlness());
 			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
@@ -370,6 +372,20 @@ public class OPDEntryController {
 				encounter.addObs(obsInvestigation);
 			}
 
+		}
+		
+		//otherInstructions
+		if (StringUtils.isNotBlank(command.getOtherInstructions())) {
+
+			Obs obsDiagnosis = new Obs();
+			obsDiagnosis.setObsGroup(obsGroup);
+			obsDiagnosis.setConcept(cOtherIntructions);
+			obsDiagnosis.setValueText(command.getOtherInstructions());
+			obsDiagnosis.setCreator(user);
+			obsDiagnosis.setDateCreated(date);
+			obsDiagnosis.setEncounter(encounter);
+			obsDiagnosis.setPatient(patient);
+			encounter.addObs(obsDiagnosis);
 		}
 
 		// internal referral

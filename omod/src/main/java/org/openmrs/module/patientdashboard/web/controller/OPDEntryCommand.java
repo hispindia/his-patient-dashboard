@@ -30,7 +30,8 @@ public class OPDEntryCommand {
 	private Integer patientId;
 	private String internalReferral;
 	private String externalReferral;
-	private String note;
+	private String historyOfPresentIlness;
+	private String otherInstructions;
 	private Integer admit;
 	private String outCome;
 	private String dateFollowUp;
@@ -60,11 +61,17 @@ public class OPDEntryCommand {
 	public void setExternalReferral(String externalReferral) {
 		this.externalReferral = externalReferral;
 	}
-	public String getNote() {
-		return note;
+	public String getHistoryOfPresentIlness() {
+		return historyOfPresentIlness;
 	}
-	public void setNote(String note) {
-		this.note = note;
+	public void setHistoryOfPresentIlness(String historyOfPresentIlness) {
+		this.historyOfPresentIlness = historyOfPresentIlness;
+	}
+	public String getOtherInstructions() {
+		return otherInstructions;
+	}
+	public void setOtherInstructions(String otherInstructions) {
+		this.otherInstructions = otherInstructions;
 	}
 	public String getOutCome() {
 		return outCome;
@@ -131,7 +138,7 @@ public class OPDEntryCommand {
 				+ ", selectedProcedureList="
 				+ Arrays.toString(selectedProcedureList) + ", patientId="
 				+ patientId + ", internalReferral=" + internalReferral
-				+ ", externalReferral=" + externalReferral + ", note=" + note
+				+ ", externalReferral=" + externalReferral + ", historyOfPresentIlness=" + historyOfPresentIlness
 				+ ", admit=" + admit + ", outCome=" + outCome
 				+ ", dateFollowUp=" + dateFollowUp + ", admitWard=" + admitWard
 				+ ", radio_f=" + radio_f + "]";
