@@ -274,6 +274,7 @@ public class OPDEntryController {
 		
 		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command.getPatientId());
 		
+		/*
 		if (admitted != null) {
 			encounter = admitted.getPatientAdmissionLog().getIpdEncounter();
 		}
@@ -285,6 +286,13 @@ public class OPDEntryController {
 		encounter.setEncounterType(encounterType);
 		encounter.setLocation(location);
 		}
+		*/
+		encounter.setPatient(patient);
+		encounter.setCreator(user);
+		encounter.setProvider(user);
+		encounter.setEncounterDatetime(date);
+		encounter.setEncounterType(encounterType);
+		encounter.setLocation(location);
 
 		ConceptService conceptService = Context.getConceptService();
 		GlobalProperty gpDiagnosis = administrationService

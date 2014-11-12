@@ -237,7 +237,7 @@ popClose : true
    </td> </tr>
    <tr><td colspan="3">
    <strong>History of Present Illness:</strong>
-   <input type="text" id="historyOfPresentIlness" name="historyOfPresentIlness" size="50" style="width:385px;height: 30px" class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"/></td></tr>
+   <input type="text" id="historyOfPresentIlness" name="historyOfPresentIlness" size="200" style="width: 1000px; height: 50px" class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"/></td></tr>
 	<tr><td colspan="3">
 	<strong>Provisional Diagnosis:</strong><em>*</em>
 	<input class="ui-autocomplete-input ui-widget-content ui-corner-all" id="diagnosis" title="${opd.conceptId}" style="width:390px" name="diagnosis"/>
