@@ -98,7 +98,7 @@ DASHBOARD={
 		detailClinical : function(id)
 		{
 			if(SESSION.checkSession()){
-				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=600&width=700";
 				tb_show(" ",url,false);
 			}
 		},
@@ -226,7 +226,7 @@ DASHBOARD={
 		onChangeRadio : function(thiz)
 		{
 			var text = jQuery(thiz).val();
-			if(text != null && text !='' && text == 'admit'){
+			if(text != null && text !='' && text == 'Admit'){
 				jQuery(".tdIpdWard").show();
 			}else{
 				jQuery(".tdIpdWard").hide();

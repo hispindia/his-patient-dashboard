@@ -23,6 +23,7 @@ package org.openmrs.module.patientdashboard.web.controller.autocomplete;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,15 +33,24 @@ import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
+import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
+import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -146,17 +156,27 @@ public class AutoCompleteController {
 			 ConceptService conceptService = Context.getConceptService();
 			
 			EncounterService encounterService = Context.getEncounterService();
-			 AdministrationService administrationService = Context.getAdministrationService();
+			AdministrationService administrationService = Context.getAdministrationService();
+			PatientDashboardService patientDashboardService = Context
+				.getService(PatientDashboardService.class);
 			String gpVisiteOutCome = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_VISIT_OUTCOME);
 			Encounter encounter =encounterService.getEncounter(id);
 			String internal = "";
 			String external = "";
 			String visitOutCome = "";
 			String otherValueOfVisit = "";
+			String otherInstructions = "";
+			String illnessHistory = "";
 			
 			Concept conInternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
 			Concept conExternal = Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL));
 			Concept conVisiteOutCome  = conceptService.getConcept(gpVisiteOutCome);
+			Concept conIllnessHistory = conceptService.getConceptByName("HISTORY OF PRESENT ILLNESS");
+			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
+			
+			List<Concept> diagnosiss = new ArrayList<Concept>();
+			List<Concept> procedures = new ArrayList<Concept>();
+			List<Concept> investigations = new ArrayList<Concept>();
 			try {
 				if(encounter != null){
 					for( Obs obs : encounter.getAllObs()){
@@ -168,7 +188,7 @@ public class AutoCompleteController {
 						}
 						if( obs.getConcept().getConceptId().equals(conVisiteOutCome.getConceptId()) ){
 							visitOutCome = obs.getValueText();
-							if("follow".equalsIgnoreCase(visitOutCome)){
+							if("Follow-up".equalsIgnoreCase(visitOutCome)){
 								try {
 									otherValueOfVisit = formatter.format(obs.getValueDatetime());
 								} catch (Exception e) {
@@ -176,7 +196,7 @@ public class AutoCompleteController {
 									e.printStackTrace();
 								}
 								
-							}else if("admit".equalsIgnoreCase(visitOutCome)){
+							}else if("Admit".equalsIgnoreCase(visitOutCome)){
 								if(obs.getValueCoded() != null){
 									
 									try {
@@ -188,6 +208,27 @@ public class AutoCompleteController {
 								}
 							}
 						}
+						
+						if( obs.getConcept().getConceptId().equals(conOtherInstructions.getConceptId()) ){
+							otherInstructions = obs.getValueText();
+						}
+
+						if( obs.getConcept().getConceptId().equals(conIllnessHistory.getConceptId()) ){
+							illnessHistory = obs.getValueText();
+						}
+						
+						if (obs.getValueCoded() != null) {
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
+								diagnosiss.add(obs.getValueCoded());
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Procedure")) {
+								procedures.add(obs.getValueCoded());
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Test")) {
+								investigations.add(obs.getValueCoded());
+							}
+						}
+
 					}
 					
 					
@@ -197,12 +238,63 @@ public class AutoCompleteController {
 				e.printStackTrace();
 			}
 			
+			OpdPatientQueueLog opql=patientDashboardService.getOpdPatientQueueLog(encounter);
+			Patient patient = opql.getPatient();
+			String patientName;
+			if (patient.getMiddleName() != null) {
+				patientName = patient.getGivenName() + " "
+						+ patient.getFamilyName() + " " + patient.getMiddleName();
+			} else {
+				patientName = patient.getGivenName() + " "
+						+ patient.getFamilyName();
+			}
+			model.addAttribute("patient", patient);
+			model.addAttribute("patientName", patientName);
 			
+			Date birthday = patient.getBirthdate();
+			model.addAttribute("age", PatientUtils.estimateAge(birthday));
+			model.addAttribute("ageCategory", PatientUtils.estimateAgeCategory(birthday));
+			
+			User user=opql.getUser();
+			Person person=user.getPerson();
+			String givenName=person.getGivenName();
+			String middleName=person.getMiddleName();
+			String familyName=person.getFamilyName();
+			
+			if(givenName==null){
+				givenName="";
+			}
+			if(middleName==null){
+				middleName="";
+			}
+			if(familyName==null){
+				familyName="";
+			}
+		
+			String treatingDoctor=givenName+" "+middleName+" "+familyName;
+			
+			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
+			for (PersonAttribute pa : pas) {
+				PersonAttributeType attributeType = pa.getAttributeType();
+				if (attributeType.getPersonAttributeTypeId() == 14) {
+					model.addAttribute("selectedCategory", pa.getValue());
+				}
+			}
+			
+			List<OpdDrugOrder> opdDrugOrders=patientDashboardService.getOpdDrugOrder(encounter);
+			
+			model.addAttribute("treatingDoctor", treatingDoctor);
 			model.addAttribute("internal", internal);
 			model.addAttribute("external", external);
 			model.addAttribute("visitOutCome", visitOutCome);
 			model.addAttribute("otherValueOfVisit", otherValueOfVisit);
-			
+			model.addAttribute("otherInstructions", otherInstructions);
+			model.addAttribute("illnessHistory", illnessHistory);
+			model.addAttribute("diagnosiss", diagnosiss);
+			model.addAttribute("procedures", procedures);
+			model.addAttribute("investigations", investigations);
+			model.addAttribute("opdDrugOrders", opdDrugOrders);
 			
 		}
 		return "module/patientdashboard/detailClinical";

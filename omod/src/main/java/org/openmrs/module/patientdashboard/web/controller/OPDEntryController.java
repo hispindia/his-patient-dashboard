@@ -180,6 +180,7 @@ public class OPDEntryController {
 
 		Date birthday = patient.getBirthdate();
 		model.addAttribute("age", PatientUtils.estimateAge(birthday));
+		model.addAttribute("ageCategory", PatientUtils.estimateAgeCategory(birthday));
 
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
@@ -220,7 +221,7 @@ public class OPDEntryController {
 
 		// harsh 14/6/2012 setting death date to today's date and dead variable
 		// to true when "died" is selected
-		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")) {
+		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Died")) {
 			patient.setDead(true);
 			patient.setDeathDate(new Date());
 
@@ -236,7 +237,7 @@ public class OPDEntryController {
 		// create obs group only for internal referral and admit
 		Obs obsGroup = null;
 		obsGroup = hcs.getObsGroupCurrentDate(patient.getPersonId());
-		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")
+		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")
 				|| (command.getInternalReferral() != null)) {
 			if (obsGroup == null) {
 				obsGroup = hcs.createObsGroup(patient,
@@ -433,7 +434,7 @@ public class OPDEntryController {
 
 		// external referral
 		// System.out.println("command.getExternalReferral(): "+command.getExternalReferral());
-		if (command.getExternalReferral() != null) {
+		if (command.getExternalReferral() != null && !command.getExternalReferral().equals("")) {
 			Concept cExternalReferral = conceptService
 					.getConceptByName(externalReferral.getPropertyValue());
 			if (cExternalReferral == null) {
@@ -466,12 +467,12 @@ public class OPDEntryController {
 		try {
 			obsOutcome.setValueText(command.getRadio_f());
 			// TODO if
-			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "follow")) {
+			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")) {
 				obsOutcome.setValueDatetime(Context.getDateFormat().parse(
 						command.getDateFollowUp()));
 			}
 
-			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")) {
+			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")) {
 				// System.out.println("command.getIpdWard(): "+command.getIpdWard());
 				obsOutcome.setValueCoded(conceptService.getConcept(command
 						.getIpdWard()));
@@ -529,7 +530,7 @@ public class OPDEntryController {
 		queueService.deleteOpdPatientQueue(queue);
 		// done queue
 
-		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "admit")) {
+		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")) {
 
 			IpdPatientAdmission patientAdmission = new IpdPatientAdmission();
 			patientAdmission.setAdmissionDate(date);

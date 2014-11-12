@@ -170,27 +170,29 @@ jQuery("#printablePostForProcedure").append("<span style='margin:5px;'>" + pro +
 }
 
 var selInvgLen = selectedInvestigationList.length;
+var j=1;
 for(i=selInvgLen-1; i>=0; i--){
 var invg=selectedInvestigationList[i].text;
-jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + invg + "<br/>" + "</span>");
+jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + j + "." + invg + "<br/>" + "</span>");
+j++;
 }
 
 
 var selDrugLen = drugIssuedList.length;
-var j=1;
+var k=1;
 for(i=selDrugLen-1; i>=0; i--){
 var drug=drugIssuedList[i];
 var formulationName=document.getElementById(drug+"_formulationName").value;
 var frequencyName=document.getElementById(drug+"_frequencyName").value;
 var noOfDays=document.getElementById(drug+"_noOfDays").value;
 var comments=document.getElementById(drug+"_comments").value;
-jQuery("#printableSlNo").append("<span style='margin:5px;'>" + j + "<br/>" + "</span>");
+jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 jQuery("#printableDrug").append("<span style='margin:5px;'>" + drug + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
 jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
 jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
 jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
-j++;
+k++;
 }
 
 
@@ -429,13 +431,13 @@ popClose : true
   <tr><td colspan="2">
         <!-- ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient -->
         <c:if test ="${empty admitted}">
-  		<input type="radio" name="radio_f" id="input_follow" value="follow" onclick="DASHBOARD.onChangeRadio(this);">Follow up <input type="text" class="date-pick left" readonly="readonly"  ondblclick="this.value='';" name="dateFollowUp" id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">
-  		<input type="radio" name="radio_f" value="cured" onclick="DASHBOARD.onChangeRadio(this);">Cured
-  		<input type="radio" name="radio_f" value="died"  onclick="DASHBOARD.onChangeRadio(this);">Died
+  		<input type="radio" name="radio_f" id="input_follow" value="Follow-up" onclick="DASHBOARD.onChangeRadio(this);">Follow Up <input type="text" class="date-pick left" readonly="readonly"  ondblclick="this.value='';" name="dateFollowUp" id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">
+  		<input type="radio" name="radio_f" value="Cured" onclick="DASHBOARD.onChangeRadio(this);">Cured
+  		<input type="radio" name="radio_f" value="Died"  onclick="DASHBOARD.onChangeRadio(this);">Died
   		</c:if>
-  		<input type="radio" name="radio_f" value="reviewed"  onclick="DASHBOARD.onChangeRadio(this);">Reviewed
+  		<input type="radio" name="radio_f" value="Reviewed"  onclick="DASHBOARD.onChangeRadio(this);">Reviewed
   		<c:if test ="${empty admitted}">
-  			<input type="radio" name="radio_f" value="admit" onclick="DASHBOARD.onChangeRadio(this);">Admit
+  			<input type="radio" name="radio_f" value="Admit" onclick="DASHBOARD.onChangeRadio(this);">Admit
   		</c:if>
   	  </td>
   	  <td align="left" class="tdIpdWard" style='display: none;'>
@@ -481,6 +483,10 @@ popClose : true
 		<td>${age}</td>
 	</tr>
 <tr>
+		<td><strong>Age Category:</strong></td>
+		<td>${ageCategory}</td>
+	</tr>
+<tr>
 		<td><strong>Gender:</strong></td>
 		<td><c:choose>
 				<c:when test="${patient.gender eq 'M'}">
@@ -507,7 +513,7 @@ popClose : true
 <tr><td><strong>Investigation:</strong></td><td><div id="printableInvestigation"></div></td></tr>
 </table>
 <table class="box">
-<tr>Rx</tr>
+<tr><strong><font size="4">Rx</font></strong></tr>
 <tr align="center"><th>S.No</th><th>Drug</th><th>Formulation</th><th>Frequency</th><th>No of Days</th><th>Comments</th></tr>
 <tr align="center"><td><div id="printableSlNo"></div></td><td><div id="printableDrug"></div></td><td><div id="printableFormulation"></div></td><td><div id="printableFrequency"></div></td>
 <td><div id="printableNoOfDays"></div></td><td><div id="printableComments"></div></td></tr>
@@ -516,7 +522,7 @@ popClose : true
 <tr><td><strong>Other Instructions:</strong></td><td><div id="printableOtherInstructions"></div></td></tr>
 <tr><td><strong>Internal Referral:</strong></td><td><div id="printableInternalReferral"></div></td></tr>
 <tr><td><strong>External Referral:</strong></td><td><div id="printableExternalReferral"></div></td></tr>
-<tr><td><strong>OPD Visit Outcome:</strong></td><td><div id="printableOPDVisitOutCome"></div></td></tr>
+<tr><td><strong>OPD Visit Outcome:</strong></td><td><strong><div id="printableOPDVisitOutCome"></div></strong></td></tr>
 </table>
 <table>
 	<br />

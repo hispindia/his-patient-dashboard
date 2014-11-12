@@ -126,7 +126,8 @@ public class ClinicalSummaryController {
 			// set value to command object
 			// add command to list
 		};
-		//System.out.println("clinicalSummaries: "+clinicalSummaries);
+		
+		model.addAttribute("patient", patient);
 		model.addAttribute("clinicalSummaries", clinicalSummaries);
 		return "module/patientdashboard/clinicalSummary";
 	}

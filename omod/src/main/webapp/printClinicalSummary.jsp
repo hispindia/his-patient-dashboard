@@ -1,5 +1,6 @@
- <%--
- *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+
+<%--
+ *  Copyright 2014 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
  *
@@ -16,12 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
---%> 
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ include file="/WEB-INF/template/headerMinimal.jsp" %>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
-<span class="boxHeader">Visit Detail</span>
+--%>
+<%@ include file="/WEB-INF/template/include.jsp"%>
+
 <table class="box">
+	<tr>
+		<center>
+			<b>${hospitalName}</b>
+		</center>
+	</tr>
+	<tr>
+		<td><strong>Date/Time:</strong></td>
+		<td>${currentDateTime}</td>
+	</tr>
 	<tr>
 		<td><strong>Name:</strong></td>
 		<td>${patientName}</td>
@@ -74,7 +82,7 @@
 	<tr>
 		<td></c:forEach>
 	</tr>
-
+	
 	<tr>
 		<td><strong>Procedure:</strong></td>
 		<c:forEach items="${procedures}" var="procedure">
@@ -97,6 +105,7 @@
 </table>
 
 <table class="box">
+    <tr><strong><font size="4">Rx</font></strong></tr>
 	<tr align="center">
 		<th><strong>S.No</strong></th>
 		<th><strong>Drug</strong></th>
@@ -132,8 +141,19 @@
 	</tr>
 	<tr>
 		<td><strong>OPD Visit Outcome:</strong></td>
-		<td>${visitOutCome}</td>
-		<td><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if>
-		</td>
+		<td><strong>${visitOutCome}</strong></td>
+		<td><strong><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if>
+		</strong></td>
+	</tr>
+</table>
+<table>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<tr>
+		<p style="text-align: right;">Signature of the Treating Doctor</p>
 	</tr>
 </table>

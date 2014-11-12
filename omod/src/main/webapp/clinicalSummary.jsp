@@ -19,6 +19,43 @@
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
 
+<script type="text/javascript">
+function clinicalSummary(encounterId){
+var patientId = ${patient.patientId};
+jQuery.ajax({
+				type : "GET",
+				url : getContextPath() + "/module/patientdashboard/printDetails.form",
+				data : ({
+					encounterId			: encounterId,
+					patientId			: patientId
+				}),
+				success : function(data) {
+					jQuery("#printClinicalSummary").html(data);	
+					jQuery("#printClinicalSummary").hide();
+					printClinicalSummary();	
+				}
+				
+			});			
+}
+</script>
+<script type="text/javascript">
+function printClinicalSummary(){
+jQuery("#printClinicalSummary").printArea({
+            mode : "popup",
+            popClose : true
+            });
+}
+</script>
+<script type="text/javascript">
+// get context path in order to build controller url
+	function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+
 <c:choose>
 
 <c:when test="${not empty clinicalSummaries}">
@@ -26,24 +63,25 @@
 <tr>
 	<th><spring:message code="patientdashboard.clinicalSummary.view"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.dateOfVisit"/></th>
-	<!--<th><spring:message code="patientdashboard.clinicalSummary.typeOfVisit"/></th>
-	--><th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.diagnosis"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.procedures"/></th>
-	<!-- <th><spring:message code="patientdashboard.clinicalSummary.linkedVisit"/></th> -->
 </tr>
 
 <c:forEach items="${clinicalSummaries}" var="clinicalSummary" varStatus="varStatus">
 <tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>[Detail]</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
-	<!--<td>${clinicalSummary.typeOfVisit}</td>
-	--><td>${clinicalSummary.treatingDoctor}</td>
+	<td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
-	<td>${clinicalSummary.procedures}</td><!--
-	<td>${clinicalSummary.linkedVisit}</td>
---></tr>
+	<td>${clinicalSummary.procedures}</td>
+	<td><a href="#" onclick="clinicalSummary('${ clinicalSummary.id}');"><small>Print</small></a> </td>
+	</tr>
 </c:forEach>
 </table>
 </c:when>
 </c:choose>
+
+<div id="printClinicalSummary" style="visibility:hidden;">
+
+</div>
