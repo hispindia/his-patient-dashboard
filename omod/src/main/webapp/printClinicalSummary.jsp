@@ -23,7 +23,7 @@
 <table class="box">
 	<tr>
 		<center>
-			<b>${hospitalName}</b>
+			<b><font size="4">${hospitalName}</font></b>
 		</center>
 	</tr>
 	<tr>
