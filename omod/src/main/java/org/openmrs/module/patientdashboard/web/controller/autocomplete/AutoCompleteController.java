@@ -227,6 +227,10 @@ public class AutoCompleteController {
 							if (obs.getValueCoded().getConceptClass().getName().equals("Test")) {
 								investigations.add(obs.getValueCoded());
 							}
+							if (obs.getValueCoded().getConceptClass().getName()
+									.equals("LabSet")) {
+								investigations.add(obs.getValueCoded());
+							}
 						}
 
 					}
