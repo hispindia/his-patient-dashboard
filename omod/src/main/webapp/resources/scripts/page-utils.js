@@ -125,7 +125,7 @@ DASHBOARD={
 				    }
 				});
 				if(exists){
-					alert('It\'s existed!');
+					alert('The diagnosis has already been selected');
 					return false;
 				}
 				exists = false;
@@ -160,7 +160,7 @@ DASHBOARD={
 				    }
 				});
 				if(exists){
-					alert('It\'s existed!');
+					alert('The procedure has already been selected');
 					return false;
 				}
 				exists = false;
