@@ -93,6 +93,14 @@ function radio_fSelected()
 	$("#lblPrompt").show();
 	
 }
+
+function removePrompt()
+{
+	$("#lblPrompt").hide();
+	
+}
+
+
 </script>
 
 <script type="text/javascript">
@@ -709,10 +717,10 @@ return true;
 								<div id="abcd">
 								<c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" id="input_follow"
-									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this); ">Follow Up 
+									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this); removePrompt(); ">Follow Up 
 								<input	type="text" class="date-pick left" readonly="readonly"
 									ondblclick="this.value='';" name="dateFollowUp"
-									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this); radio_fSelected(); ">
+									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this); " onchange=" radio_fSelected();">
 								<input type="radio" name="radio_f" value="Cured" id="cured"
 									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Cured
    								<input type="radio" name="radio_f" value="Died" id="died"
@@ -722,12 +730,12 @@ return true;
 									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Reviewed
 								<c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" value="Admit" id="admit"
-									onclick="DASHBOARD.onChangeRadio(this);">Admit
+									onclick="DASHBOARD.onChangeRadio(this); removePrompt();">Admit
    								</c:if>
    								</div>
    						</td>
 						<td align="left" class="tdIpdWard" style='display: none;'><select
-							id="ipdWard" name="ipdWard" onclick="radio_fSelected();">
+							id="ipdWard" name="ipdWard" onChange="radio_fSelected();">
 								<option value="">--Select--</option>
 								<c:if test="${not empty listIpd }">
 									<c:forEach items="${listIpd}" var="ipd">
