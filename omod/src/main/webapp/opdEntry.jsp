@@ -78,6 +78,24 @@
 }
 </style>
 <script type="text/javascript">
+	jQuery(document).ready(
+			function() {
+			
+			$("#lblPrompt").hide();
+			
+			
+});
+</script>
+
+<script type="text/javascript">
+function radio_fSelected()
+{
+	$("#lblPrompt").show();
+	
+}
+</script>
+
+<script type="text/javascript">
 function stopRKey(evt) {
   var evt = (evt) ? evt : ((event) ? event : null);
   var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
@@ -687,24 +705,29 @@ return true;
 					</tr>
 					<tr>
 					
-						<td colspan="2"><div id="abcd"><c:if test="${empty admitted}">
+						<td colspan="2">
+								<div id="abcd">
+								<c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" id="input_follow"
-									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this);">Follow Up <input
-									type="text" class="date-pick left" readonly="readonly"
+									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this); ">Follow Up 
+								<input	type="text" class="date-pick left" readonly="readonly"
 									ondblclick="this.value='';" name="dateFollowUp"
-									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this);">
+									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this); radio_fSelected(); ">
 								<input type="radio" name="radio_f" value="Cured" id="cured"
-									onclick="DASHBOARD.onChangeRadio(this);">Cured
-   <input type="radio" name="radio_f" value="Died" id="died"
-									onclick="DASHBOARD.onChangeRadio(this);">Died
-   </c:if> <input type="radio" name="radio_f" value="Reviewed" id="reviewed"
-							onclick="DASHBOARD.onChangeRadio(this);">Reviewed <c:if
-								test="${empty admitted}">
+									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Cured
+   								<input type="radio" name="radio_f" value="Died" id="died"
+									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Died
+   								</c:if>
+   								<input type="radio" name="radio_f" value="Reviewed" id="reviewed"
+									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Reviewed
+								<c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" value="Admit" id="admit"
 									onclick="DASHBOARD.onChangeRadio(this);">Admit
-   </c:if></div></td>
+   								</c:if>
+   								</div>
+   						</td>
 						<td align="left" class="tdIpdWard" style='display: none;'><select
-							id="ipdWard" name="ipdWard">
+							id="ipdWard" name="ipdWard" onclick="radio_fSelected();">
 								<option value="">--Select--</option>
 								<c:if test="${not empty listIpd }">
 									<c:forEach items="${listIpd}" var="ipd">
@@ -715,20 +738,42 @@ return true;
 					</tr>
 					<tr>
 						<td colspan="3"><c:if test="${not empty queueId}">
+						<table>
+								<tr>
+								<td>
 								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.submitOpdEntry();print();" />
+									</td>
+								<td>
 								<input type="submit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
+									</td>
+								<td>
+								<label id="lblPrompt" style="color: #FF0000;" ><b>Please click on 'CONCLUDE VISIT' to save the patient's details</b></label>
+									</td>
+								</tr>
+								</table>
 							</c:if>
 							<c:if test="${not empty opdLogId}">
+							<table>
+								<tr>
+								<td>
 								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.submitOpdEntry();print();" />
+									</td>
+								<td>
 								<input type="submit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Back" onclick="DASHBOARD.backToOpdQueue('${opdLogId}');" />
+									</td>
+								<td>
+								<label id="lblPrompt" style="color: #FF0000;" ><b>Please click on 'CONCLUDE VISIT' to save the patient's details</b></label>
+								</td>
+								</tr>
+								</table>
 							</c:if></td>
 					</tr>
 				</table>
