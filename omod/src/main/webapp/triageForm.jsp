@@ -1110,8 +1110,8 @@ personal.style.display="inline";
 						</c:forEach>
 				</select>
 				</td>
-				<td bgcolor="#FFF600">
-					<label id="opdMessgaeLbl" style="" ><b> Please click on save button to move patient to next queue !!!</b></label>
+				<td >
+					<label id="opdMessgaeLbl" style="color: #FF0000;"><b> Please click on save button to move patient to next queue !!!</b></label>
 				</td>
 			</tr>
 			<tr></tr>
