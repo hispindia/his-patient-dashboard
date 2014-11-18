@@ -266,6 +266,7 @@ public class OPDEntryController {
 			model.addAttribute("user", user);
 		}
 
+		
 		return "module/patientdashboard/opdEntry";
 	}
 
@@ -290,7 +291,6 @@ public class OPDEntryController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
-
 		// harsh 14/6/2012 setting death date to today's date and dead variable
 		// to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")) {
@@ -415,6 +415,8 @@ public class OPDEntryController {
 			obsDiagnosis.setPatient(patient);
 			encounter.addObs(obsDiagnosis);
 		}
+		
+	
 		// note
 		if (StringUtils.isNotBlank(command.getNote())) {
 
@@ -586,7 +588,7 @@ public class OPDEntryController {
 
 		try {
 			obsOutcome.setValueText(command.getRadio_f());
-			// TODO if
+		
 			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")) {
 				obsOutcome.setValueDatetime(Context.getDateFormat().parse(
 						command.getDateFollowUp()));
@@ -896,6 +898,9 @@ public class OPDEntryController {
 				if (coninvt == null) {
 					throw new Exception("Investigation concept null");
 				}
+				
+				
+				
 				for (Integer iId : command.getSelectedInvestigationList()) {
 					BillableService billableService = billingService
 							.getServiceByConceptId(iId);
@@ -909,6 +914,7 @@ public class OPDEntryController {
 					opdTestOrder.setCreatedOn(date);
 					opdTestOrder.setBillableService(billableService);
 					opdTestOrder.setScheduleDate(date);
+					opdTestOrder.setFromDept( opdPatientLog.getOpdConceptName());
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 				}
 			}
