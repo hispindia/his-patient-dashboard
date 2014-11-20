@@ -27,7 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,6 +39,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
@@ -265,8 +269,42 @@ public class OPDEntryController {
 			User user = Context.getAuthenticatedUser();
 			model.addAttribute("user", user);
 		}
-
+   		Patient p = new Patient(patientId);
+		Integer personId = p.getPersonId();
 		
+		List<Obs> diagnosis= queueService.getAllDiagnosis(personId);
+		Set<Concept> diagnosisIdSet = new LinkedHashSet<Concept>();
+		Set<ConceptName> diagnosisNameSet = new LinkedHashSet<ConceptName>();
+		 
+		for(Obs diagnos:diagnosis){
+			diagnosisIdSet.add(diagnos.getValueCoded());
+			diagnosisNameSet.add(diagnos.getValueCoded().getName());
+		 }
+		Set<String> diaNameSet = new LinkedHashSet<String>();
+		Iterator itr = diagnosisNameSet.iterator();
+		while(itr.hasNext())
+		{
+			diaNameSet.add((itr.next().toString()).replaceAll(",", "@"));
+		}
+		
+		List<Obs> symptom= queueService.getAllSymptom(personId);
+		Set<Concept> symptomIdSet = new LinkedHashSet<Concept>();
+		Set<ConceptName> symptomNameSet = new LinkedHashSet<ConceptName>();
+		for(Obs symp:symptom){
+			 symptomIdSet.add(symp.getValueCoded());
+			 symptomNameSet.add(symp.getValueCoded().getName());
+		}
+		Set<String> symNameSet = new LinkedHashSet<String>();
+		Iterator itr1 = symptomNameSet.iterator();
+		while(itr1.hasNext())
+		{
+			symNameSet.add((itr1.next().toString()).replaceAll(",", "@"));
+		}
+		
+		model.addAttribute("diagnosisIdSet", diagnosisIdSet);
+		model.addAttribute("symptomIdSet", symptomIdSet);
+		model.addAttribute("diaNameSet", diaNameSet);
+		model.addAttribute("symNameSet", symNameSet);
 		return "module/patientdashboard/opdEntry";
 	}
 

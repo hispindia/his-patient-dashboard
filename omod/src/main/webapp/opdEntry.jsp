@@ -78,12 +78,78 @@
 }
 </style>
 <script type="text/javascript">
+function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+<script type="text/javascript">
 	jQuery(document).ready(
 			function() {
 			
-			$("#lblPrompt").hide();
+	$("#lblPrompt").hide();
+	
+	
+	
+	
+	var symIdToBeAdded = ('${symptomIdSet}')
+	var symNameToBeAdded = ('${symNameSet}')
+	symIdToBeAdded = symIdToBeAdded.substr(1);
+	symIdToBeAdded = symIdToBeAdded.substr(0,symIdToBeAdded.length - 1);	
+	symNameToBeAdded = symNameToBeAdded.substr(1);
+	symNameToBeAdded = symNameToBeAdded.substring(0, symNameToBeAdded.length - 1);	
+	var sIdArr = symIdToBeAdded.split(",");
+	var sNameArr = symNameToBeAdded.split(",");
+	
+	
+	var ssl = $("#selectedSymptomList");
+	var abc="";
+	var selectedSymptom = new Array();
+	for (var i = 0; i < sIdArr.length; i++)
+	{ 	
+		 sNameArr[i] = sNameArr[i].replaceAll("@", ",");
+		 ssl.append("<option value='"+sIdArr[i].trim()+"'>"+sNameArr[i].trim()+"</option>");
+	     var n = sIdArr[i].trim().toString(); 
+	     selectedSymptom.push(n);
+		 abc = abc.concat(n);
+		 abc = abc.concat(",");
+	}  
+	
+	
+	     
+	   	 jQuery.ajax({
+			type : "GET",	
+			url : getContextPath() + "/module/patientdashboard/getQuestion.htm",
+			data : ({
+				selectedSymptom			: abc
+			}),
+			success : function(data) {
+				jQuery("#questionDiv").html(data);	
+				
+			}
 			
 			
+			});
+   
+	
+	var diagIdToBeAdded = ('${diagnosisIdSet}');
+	var diagNameToBeAdded = ('${diaNameSet}');
+	diagIdToBeAdded = diagIdToBeAdded.substr(1);
+	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
+	diagNameToBeAdded = diagNameToBeAdded.substr(1);
+	diagNameToBeAdded = diagNameToBeAdded.substring(0, diagNameToBeAdded.length - 1);	
+	var dIdArr = diagIdToBeAdded.split(",");
+	var dNameArr = diagNameToBeAdded.split(",");
+	
+	var sdl = $("#selectedDiagnosisList");
+	for (var i = 0; i < dIdArr.length; i++)
+	{
+		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
+	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+   	}
+	   
 });
 </script>
 
@@ -364,15 +430,7 @@ if(procedure==null || procedure==""){
 return true;
 }
 </script>
-<script type="text/javascript">
-// get context path in order to build controller url
-	function getContextPath(){		
-		pn = location.pathname;
-		len = pn.indexOf("/", 1);				
-		cp = pn.substring(0, len);
-		return cp;
-	}
-</script>
+
 <b class="boxHeader">Clinical Notes</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="return validateOnSubmit();">
 
