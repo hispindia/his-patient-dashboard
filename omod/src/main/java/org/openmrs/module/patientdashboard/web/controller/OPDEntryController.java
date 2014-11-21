@@ -416,6 +416,7 @@ public class OPDEntryController {
 				.getPropertyValue());
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis
 				.getPropertyValue());
+		Concept cFinalDiagnosis = conceptService.getConcept("FINAL DIAGNOSIS");
 		// ghanshyam 8-july-2013 New Requirement #1963 Redesign patientdashboard
 		Concept cOtherInstructions = conceptService
 				.getConceptByName("OTHER INSTRUCTIONS");
@@ -442,10 +443,17 @@ public class OPDEntryController {
 			throw new Exception("Diagnosis concept null");
 		}
 		// diagnosis
+		String selectedDia = request.getParameter("radio_dia");
 		for (Integer cId : command.getSelectedDiagnosisList()) {
+			
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			obsDiagnosis.setConcept(cDiagnosis);
+			if(selectedDia.equals("prov_dia")){
+				obsDiagnosis.setConcept(cDiagnosis);
+			}
+			else{
+				obsDiagnosis.setConcept(cFinalDiagnosis);
+			}
 			obsDiagnosis.setValueCoded(conceptService.getConcept(cId));
 			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);

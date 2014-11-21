@@ -90,8 +90,12 @@ function getContextPath(){
 			function() {
 			
 	$("#lblPrompt").hide();
-	
-	
+	function loadSelectedSymptomList()
+{
+var $dia = $('input:radio[name=radio_dia]');
+    if($dia.is(':checked') === false) {
+        $dia.filter('[value=prov_dia]').attr('checked', true);
+    }
 	
 	
 	var symIdToBeAdded = ('${symptomIdSet}')
@@ -102,7 +106,6 @@ function getContextPath(){
 	symNameToBeAdded = symNameToBeAdded.substring(0, symNameToBeAdded.length - 1);	
 	var sIdArr = symIdToBeAdded.split(",");
 	var sNameArr = symNameToBeAdded.split(",");
-	
 	
 	var ssl = $("#selectedSymptomList");
 	var abc="";
@@ -132,9 +135,14 @@ function getContextPath(){
 			
 			
 			});
-   
+}
 	
-	var diagIdToBeAdded = ('${diagnosisIdSet}');
+	
+
+
+function loadSelectedDiagnosisList()
+{
+var diagIdToBeAdded = ('${diagnosisIdSet}');
 	var diagNameToBeAdded = ('${diaNameSet}');
 	diagIdToBeAdded = diagIdToBeAdded.substr(1);
 	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
@@ -149,6 +157,11 @@ function getContextPath(){
 		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
 	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
    	}
+}
+
+	loadSelectedSymptomList();
+	loadSelectedDiagnosisList();
+	
 	   
 });
 </script>
@@ -166,6 +179,29 @@ function removePrompt()
 	
 }
 
+function removeSelectedDia()
+{
+$("#selectedDiagnosisList").empty();
+}
+
+function loadSelectedDiagnosisList()
+{
+var diagIdToBeAdded = ('${diagnosisIdSet}');
+	var diagNameToBeAdded = ('${diaNameSet}');
+	diagIdToBeAdded = diagIdToBeAdded.substr(1);
+	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
+	diagNameToBeAdded = diagNameToBeAdded.substr(1);
+	diagNameToBeAdded = diagNameToBeAdded.substring(0, diagNameToBeAdded.length - 1);	
+	var dIdArr = diagIdToBeAdded.split(",");
+	var dNameArr = diagNameToBeAdded.split(",");
+	
+	var sdl = $("#selectedDiagnosisList");
+	for (var i = 0; i < dIdArr.length; i++)
+	{
+		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
+	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+   	}
+}
 
 </script>
 
@@ -521,7 +557,12 @@ return true;
 					
 					
 					<tr>
-						<td colspan="3"><strong>Provisional Diagnosis:</strong><em>*</em>
+					    <td colspan="3">
+							<input type="radio" name="radio_dia" value="prov_dia" id="prov_dia"
+								 	onclick="loadSelectedDiagnosisList();"/><strong>Provisional</strong>
+							<input type="radio" name="radio_dia" value="final_dia" id="final_dia"
+									onclick="removeSelectedDia();"/><strong>Final</strong>&nbsp;&nbsp;
+							<strong>Diagnosis:</strong><em>*</em>
 							<input
 							class="ui-autocomplete-input ui-widget-content ui-corner-all"
 							id="diagnosis" title="${opd.conceptId}" style="width: 390px"
