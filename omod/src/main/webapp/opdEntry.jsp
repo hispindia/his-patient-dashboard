@@ -89,36 +89,38 @@ function getContextPath(){
 	jQuery(document).ready(
 			function() {
 			
+			
 	$("#lblPrompt").hide();
+	var $dia = $('input:radio[name=radio_dia]');
+	    if($dia.is(':checked') === false) {
+	        $dia.filter('[value=prov_dia]').attr('checked', true);
+	    }
 	function loadSelectedSymptomList()
-{
-var $dia = $('input:radio[name=radio_dia]');
-    if($dia.is(':checked') === false) {
-        $dia.filter('[value=prov_dia]').attr('checked', true);
-    }
-	
-	
-	var symIdToBeAdded = ('${symptomIdSet}')
-	var symNameToBeAdded = ('${symNameSet}')
-	symIdToBeAdded = symIdToBeAdded.substr(1);
-	symIdToBeAdded = symIdToBeAdded.substr(0,symIdToBeAdded.length - 1);	
-	symNameToBeAdded = symNameToBeAdded.substr(1);
-	symNameToBeAdded = symNameToBeAdded.substring(0, symNameToBeAdded.length - 1);	
-	var sIdArr = symIdToBeAdded.split(",");
-	var sNameArr = symNameToBeAdded.split(",");
-	
-	var ssl = $("#selectedSymptomList");
-	var abc="";
-	var selectedSymptom = new Array();
-	for (var i = 0; i < sIdArr.length; i++)
-	{ 	
-		 sNameArr[i] = sNameArr[i].replaceAll("@", ",");
-		 ssl.append("<option value='"+sIdArr[i].trim()+"'>"+sNameArr[i].trim()+"</option>");
-	     var n = sIdArr[i].trim().toString(); 
-	     selectedSymptom.push(n);
-		 abc = abc.concat(n);
-		 abc = abc.concat(",");
-	}  
+	{
+		if(${symptomIdSet}.length > 2)
+		{
+
+		var symIdToBeAdded = ('${symptomIdSet}')
+		var symNameToBeAdded = ('${symNameSet}')
+		symIdToBeAdded = symIdToBeAdded.substr(1);
+		symIdToBeAdded = symIdToBeAdded.substr(0,symIdToBeAdded.length - 1);	
+		symNameToBeAdded = symNameToBeAdded.substr(1);
+		symNameToBeAdded = symNameToBeAdded.substring(0, symNameToBeAdded.length - 1);	
+		var sIdArr = symIdToBeAdded.split(",");
+		var sNameArr = symNameToBeAdded.split(",");
+		
+		var ssl = $("#selectedSymptomList");
+		var abc="";
+		var selectedSymptom = new Array();
+		for (var i = 0; i < sIdArr.length; i++)
+		{ 	
+			 sNameArr[i] = sNameArr[i].replaceAll("@", ",");
+			 ssl.append("<option value='"+sIdArr[i].trim()+"'>"+sNameArr[i].trim()+"</option>");
+		     var n = sIdArr[i].trim().toString(); 
+		     selectedSymptom.push(n);
+			 abc = abc.concat(n);
+			 abc = abc.concat(",");
+		}  
 	
 	
 	     
@@ -135,6 +137,8 @@ var $dia = $('input:radio[name=radio_dia]');
 			
 			
 			});
+		}		
+			
 }
 	
 	
@@ -142,7 +146,9 @@ var $dia = $('input:radio[name=radio_dia]');
 
 function loadSelectedDiagnosisList()
 {
-var diagIdToBeAdded = ('${diagnosisIdSet}');
+	if(${diagnosisIdSet}.length > 2)
+	{
+	var diagIdToBeAdded = ('${diagnosisIdSet}');
 	var diagNameToBeAdded = ('${diaNameSet}');
 	diagIdToBeAdded = diagIdToBeAdded.substr(1);
 	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
@@ -152,10 +158,11 @@ var diagIdToBeAdded = ('${diagnosisIdSet}');
 	var dNameArr = diagNameToBeAdded.split(",");
 	
 	var sdl = $("#selectedDiagnosisList");
-	for (var i = 0; i < dIdArr.length; i++)
-	{
-		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
-	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+		for (var i = 0; i < dIdArr.length; i++)
+		{
+			 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
+		     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+	   	}
    	}
 }
 
@@ -186,7 +193,9 @@ $("#selectedDiagnosisList").empty();
 
 function loadSelectedDiagnosisList()
 {
-var diagIdToBeAdded = ('${diagnosisIdSet}');
+	if(${diagnosisIdSet}.length > 2)
+	{
+	var diagIdToBeAdded = ('${diagnosisIdSet}');
 	var diagNameToBeAdded = ('${diaNameSet}');
 	diagIdToBeAdded = diagIdToBeAdded.substr(1);
 	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
@@ -200,6 +209,7 @@ var diagIdToBeAdded = ('${diagnosisIdSet}');
 	{
 		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
 	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+   	}
    	}
 }
 
