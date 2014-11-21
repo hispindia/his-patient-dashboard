@@ -142,7 +142,7 @@ public class MainController {
 		Concept referralConcept = Context.getConceptService().getConcept("PATIENT REFERRED TO HOSPITAL?");
 		Concept conceptYesAnswer = Context.getConceptService().getConcept("YES");
 		Concept referredTypeConcept = Context.getConceptService().getConcept("REASON FOR REFERRAL");
-		Concept temporaryCategoryConcept = Context.getConceptService().getConcept("TEMPORARY CATEGORY");
+		Concept temporaryCategoryConcept = Context.getConceptService().getConcept("MEDICO LEGAL CASE");
 		
 		List<Obs> listObsTemporaryCategories = new ArrayList<Obs>();
 		Obs referral = null;

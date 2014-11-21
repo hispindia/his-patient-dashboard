@@ -137,7 +137,7 @@ public class TriageFormController {
 		Concept referredTypeConcept = Context.getConceptService().getConcept(
 				"REASON FOR REFERRAL");
 		Concept temporaryCategoryConcept = Context.getConceptService()
-				.getConcept("TEMPORARY CATEGORY");
+				.getConcept("MEDICO LEGAL CASE");
 
 		List<Obs> listObsTemporaryCategories = new ArrayList<Obs>();
 		Obs referral = null;
