@@ -97,7 +97,7 @@ function getContextPath(){
 	    }
 	function loadSelectedSymptomList()
 	{
-		if(${symptomIdSet}.length > 2)
+		if(${symptomIdSet}.length > 0)
 		{
 
 		var symIdToBeAdded = ('${symptomIdSet}')
@@ -146,7 +146,7 @@ function getContextPath(){
 
 function loadSelectedDiagnosisList()
 {
-	if(${diagnosisIdSet}.length > 2)
+	if(${diagnosisIdSet}.length > 0)
 	{
 	var diagIdToBeAdded = ('${diagnosisIdSet}');
 	var diagNameToBeAdded = ('${diaNameSet}');
@@ -193,7 +193,7 @@ $("#selectedDiagnosisList").empty();
 
 function loadSelectedDiagnosisList()
 {
-	if(${diagnosisIdSet}.length > 2)
+	if(${diagnosisIdSet}.length > 0)
 	{
 	var diagIdToBeAdded = ('${diagnosisIdSet}');
 	var diagNameToBeAdded = ('${diaNameSet}');
