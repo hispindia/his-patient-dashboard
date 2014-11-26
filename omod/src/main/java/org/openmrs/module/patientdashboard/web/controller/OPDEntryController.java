@@ -386,7 +386,21 @@ public class OPDEntryController {
 			OpdPatientQueueLog opdPatientQueueLog = queueService
 					.getOpdPatientQueueLogById(opdLogId);
 			IpdPatientAdmissionLog ipdPatientAdmissionLog=ipdService.getIpdPatientAdmissionLog(opdPatientQueueLog);
-			encounter = ipdPatientAdmissionLog.getIpdEncounter();
+			Encounter encounter1 = new Encounter();
+			try
+			{
+				encounter = ipdPatientAdmissionLog.getIpdEncounter();
+			}
+			catch(Exception e)
+			{
+				encounter = encounter1;
+				encounter.setPatient(patient);
+				encounter.setCreator(user);
+				encounter.setProvider(user);
+				encounter.setEncounterDatetime(date);
+				encounter.setEncounterType(encounterType);
+				encounter.setLocation(location);
+			}
 		} else {
 			encounter.setPatient(patient);
 			encounter.setCreator(user);
