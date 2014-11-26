@@ -997,7 +997,7 @@ personal.style.display="inline";
 				</c:choose>
 				</td>
 		</tr>
-			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
+			<td width="40%"><b>Payment Category:</b> ${selectedCategory }</td>
 			<td width="30%"><b>Visit Status:</b> ${visitStatus }</td>
 			<td width="30%"><b>Previous Visit:</b> <openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}</td>
 

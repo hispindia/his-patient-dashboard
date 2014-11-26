@@ -49,7 +49,7 @@
 			</c:choose></td>
 	</tr>
 	<tr>
-		<td><strong>Patient Category:</strong></td>
+		<td><strong>Payment Category:</strong></td>
 		<td>${selectedCategory}</td>
 	</tr>
 	<tr>

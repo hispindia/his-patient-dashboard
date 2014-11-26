@@ -63,7 +63,7 @@
 		</c:forEach>
 			</td>
 			--%>
-			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
+			<td width="40%"><b>Payment Category:</b> ${selectedCategory }</td>
 
 		</tr>
 	</table>

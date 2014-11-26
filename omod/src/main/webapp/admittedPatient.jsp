@@ -65,7 +65,7 @@
 		</c:forEach>
 			</td>
 			--%>
-			<td width="40%"><b>Patient Category:</b> ${selectedCategory }</td>
+			<td width="40%"><b>Payment Category:</b> ${selectedCategory }</td>
 			<td width="30%"><b>Visit Status:</b>${visitStatus }	</td>
 			<td width="30%"><b>Previous Visit:</b> 
 			<c:if test="${not empty ob }">
