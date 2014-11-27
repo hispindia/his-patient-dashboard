@@ -89,7 +89,23 @@ function getContextPath(){
 	jQuery(document).ready(
 			function() {
 			
-			
+
+	    
+				jQuery('#lastMenstrualPeriod').datepicker({
+					yearRange : 'c-100:c+100',
+					dateFormat : 'dd/mm/yy',
+					changeMonth : true,
+					changeYear : true
+				});
+				jQuery("#calendarButton").click(function() {
+					jQuery("#lastMenstrualPeriod").datepicker("show");
+				});	
+				
+				if("${patient.gender }"=="M"){
+			    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
+			   	jQuery("#calendarButton").hide();
+			    }
+				
 	$("#lblPrompt").hide();
 	var $dia = $('input:radio[name=radio_dia]');
 	    if($dia.is(':checked') === false) {
@@ -506,9 +522,10 @@ return true;
 					<c:choose>
                    <c:when test="${ not empty opdPatientQueue }">
 					<tr>
-					<td><input type="button" value="View Current Vital Statistics"
+					<%-- <td><input type="button" value="View Current Vital Statistics"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
-									onclick="DASHBOARD.currentVitalStatistics('${ opdPatientQueue.triageDataId.id}');" /></td>
+									onclick="DASHBOARD.currentVitalStatistics('${ opdPatientQueue.triageDataId.id}');" />
+									</td> --%>
 					</tr>
 					</c:when>
 					</c:choose>
@@ -895,9 +912,102 @@ return true;
 					</tr>
 				</table>
 			</tr>
-		</div>
+		</div> <!--  end of floatLeft -->
 
 		<div class="floatRight">
+		
+		<label><b>Current Vital Statistics Details</b></label>
+		<table>
+					<tr>
+						<td><br></td>
+					</tr>
+					<tr>
+						<td>Weight (Kg)</td>
+						<td><input type="text" id="weight" name="weight" size="11"
+							value="${opdPatientQueue.triageDataId.weight}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Height (cm)</td>
+						<td><input type="text" id="height" name="height" size="11"
+							value="${opdPatientQueue.triageDataId.height}" >
+						</td>
+					</tr>
+					<tr>
+						<td>MUA Circumference(cm)</td>
+						<td><input type="text" id="mua" name="mua" size=11"
+								value="${opdPatientQueue.triageDataId.mua}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Chest Circumference(cm)</td>
+						<td><input type="text" id="chest" name="chest" size="11"
+								value="${opdPatientQueue.triageDataId.chest}" ></td>
+					</tr>
+					<tr>
+						<td>Abdominal Circumference(cm)</td>
+						<td><input type="text" id="abdominal" name="abdominal" size="11"
+								value="${opdPatientQueue.triageDataId.abdominal}" ></td>
+					</tr>
+					<tr>
+						<td>Temperature (degree C)</td>
+						<td><input type="text" id="temperature" name="temperature"
+							size="11" value="${opdPatientQueue.triageDataId.temperature}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Systolic B.P</td>
+						<td><input type="text" id="sbp" name="sbp" size="11"
+							value="${opdPatientQueue.triageDataId.systolic}" ></td>
+					</tr>
+					<tr>
+						<td>Diastolic B.P</td>
+						<td><input type="text" id="dbp" name="dbp" size="11"
+							value="${opdPatientQueue.triageDataId.daistolic}" ></td>
+					</tr>
+					<tr>
+						<td>Respiratory Rate</td>
+						<td><input type="text" id="resRate" name="resRate" size="11"
+							value="${opdPatientQueue.triageDataId.respiratoryRate}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Pulse Rate</td>
+						<td><input type="text" id="pulseRate" name="pulseRate"
+							size="11" value="${opdPatientQueue.triageDataId.pulsRate}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Blood Group</td>
+						<td><input type="text" id="bloodGroup" name="bloodGroup"
+							size="11" value="${opdPatientQueue.triageDataId.bloodGroup}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Rhesus Factor</td>
+						<td><input type="text" id="rhesusFactor" name="rhesusFactor"
+							size="11" value="${opdPatientQueue.triageDataId.rhesusFactor}" >
+						</td>
+					</tr>
+					<tr>
+						<td>Last Menstrual Period</td>
+						<td><input type="text" id="lastMenstrualPeriod"
+							name="lastMenstrualPeriod" size="11"
+							value="${da}" ><img id="calendarButton" 
+							src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif"  />
+						</td>
+						
+				
+					</tr>
+					<tr>
+						<td>PITCT</td>
+						<td><input type="text" id="pitct" name="pitct" size="11"
+							value="${opdPatientQueue.triageDataId.pitct}" >
+						</td>
+					</tr>
+		</table>
+		</div><!--  end of floatRight -->
+		
 	</div>
 <div id="questionDiv" style="visibility:hidden;">
 <table id="tableQuestion">
