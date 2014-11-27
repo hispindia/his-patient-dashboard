@@ -77,6 +77,7 @@ import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.openmrs.module.hospitalcore.model.Question;
 import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.model.TriagePatientData;
+import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
@@ -318,6 +319,7 @@ public class OPDEntryController {
 			throws Exception {
 		// @RequestParam(value="encounterId" ,required=false) Integer
 		// encounterId) throws Exception{
+
 		User user = Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
 		HospitalCoreService hcs = (HospitalCoreService) Context
@@ -329,6 +331,7 @@ public class OPDEntryController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
+		
 		// harsh 14/6/2012 setting death date to today's date and dead variable
 		// to true when "died" is selected
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "died")) {
@@ -709,11 +712,187 @@ public class OPDEntryController {
 			queueLog.setEncounter(encounter);
 			queueLog.setCategory(queue.getCategory());
 			queueLog.setVisitStatus(queue.getVisitStatus());
+
 			if (queue.getTriageDataId() != null) {
 				queueLog.setTriageDataId(queue.getTriageDataId());
 			} else {
 				queueLog.setTriageDataId(null);
 			}
+			
+			PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			if(null!=queue.getTriageDataId() && null!=queue.getTriageDataId().getId())
+				{
+				TriagePatientData triagePatientData = dashboardService.getTriagePatientData(queue.getTriageDataId().getId());
+		
+				if(null!=request.getParameter("weight") && ""!=request.getParameter("weight"))
+				{
+					BigDecimal weight = new BigDecimal(request.getParameter("weight"));
+					triagePatientData.setWeight(weight);
+				}
+				if(null!=request.getParameter("height") && ""!=request.getParameter("height"))
+				{
+					BigDecimal height = new BigDecimal(request.getParameter("height"));
+					triagePatientData.setHeight(height);
+				}
+				if(null!=request.getParameter("temperature") && ""!=request.getParameter("temperature"))
+				{
+					BigDecimal temperature = new BigDecimal(request.getParameter("temperature"));
+					triagePatientData.setTemperature(temperature);
+				}
+				if(null!=request.getParameter("mua") && ""!=request.getParameter("mua"))
+				{
+					BigDecimal mua = new BigDecimal(request.getParameter("mua"));
+					triagePatientData.setMua(mua);
+				}
+				if(null!=request.getParameter("chest") && ""!=request.getParameter("chest"))
+				{
+					BigDecimal chest = new BigDecimal(request.getParameter("chest"));
+					triagePatientData.setChest(chest);
+				}
+				if(null!=request.getParameter("abdominal") && ""!=request.getParameter("abdominal"))
+				{
+					BigDecimal abdominal = new BigDecimal(request.getParameter("abdominal"));
+					triagePatientData.setAbdominal(abdominal);
+				}
+				if(null!=request.getParameter("systolic") && ""!=request.getParameter("systolic"))
+				{
+					Integer systolic = getInt(request.getParameter("systolic"));
+					triagePatientData.setSystolic(systolic);
+				}
+				if(null!=request.getParameter("daistolic") && ""!=request.getParameter("daistolic"))
+				{
+					Integer daistolic = getInt(request.getParameter("daistolic"));
+					triagePatientData.setDaistolic(daistolic);
+				}
+				if(null!=request.getParameter("respiratoryRate") && ""!=request.getParameter("respiratoryRate"))
+				{
+					Integer respiratoryRate = getInt(request.getParameter("respiratoryRate"));
+					triagePatientData.setRespiratoryRate(respiratoryRate);				
+				}
+				if(null!=request.getParameter("pulsRate") && ""!=request.getParameter("pulsRate"))
+				{
+					Integer pulsRate = getInt(request.getParameter("pulsRate"));
+					triagePatientData.setPulsRate(pulsRate);
+				}
+				if(null!=request.getParameter("bloodGroup") && ""!=request.getParameter("bloodGroup"))
+				{
+					String bloodGroup = request.getParameter("bloodGroup");
+					triagePatientData.setBloodGroup(bloodGroup);
+				}
+				if(null!=request.getParameter("rhesusFactor") && ""!=request.getParameter("rhesusFactor"))
+				{
+					String rhesusFactor = request.getParameter("rhesusFactor");
+					triagePatientData.setRhesusFactor(rhesusFactor);
+				}
+				if(null!=request.getParameter("lastMenstrualDate") && ""!=request.getParameter("lastMenstrualDate"))
+				{
+					Date lastMenstrualDate = new Date(request.getParameter("lastMenstrualDate"));
+					triagePatientData.setLastMenstrualDate(lastMenstrualDate);
+				}
+				if(null!=request.getParameter("pitct") && ""!=request.getParameter("pitct"))
+				{
+					String pitct = request.getParameter("pitct");
+					triagePatientData.setPitct(pitct);
+				}
+				queueService.updateTriagePatientData(triagePatientData);
+			}
+			else
+			{
+				TriagePatientQueueLog tpql = new TriagePatientQueueLog();
+				tpql.setUser(user);
+				tpql.setPatient(patient);
+				tpql.setCreatedOn(date);
+				tpql.setPatientName(patient.getPersonName().getFullName());
+				tpql.setSex(patient.getGender());
+				tpql.setStatus("processed");
+				tpql.setPatientIdentifier(patient.getPatientIdentifier().toString());
+				tpql.setBirthDate(patient.getBirthdate());
+				tpql.setCategory(patient.getAttribute("Payment Category").toString());
+				tpql.setEncounter(encounter);
+				tpql.setVisitStatus("REVISIT");
+				TriagePatientQueueLog newTpql = queueService.saveTriagePatientQueueLog(tpql);
+				
+				TriagePatientData triagePatientData =  new TriagePatientData();
+				triagePatientData.setTriageLogId(newTpql);
+			
+				if(null!=request.getParameter("weight") && ""!=request.getParameter("weight"))
+				{
+					BigDecimal weight = new BigDecimal(request.getParameter("weight"));
+					triagePatientData.setWeight(weight);
+				}
+				if(null!=request.getParameter("height") && ""!=request.getParameter("height"))
+				{
+					BigDecimal height = new BigDecimal(request.getParameter("height"));
+					triagePatientData.setHeight(height);
+				}
+				if(null!=request.getParameter("temperature") && ""!=request.getParameter("temperature"))
+				{
+					BigDecimal temperature = new BigDecimal(request.getParameter("temperature"));
+					triagePatientData.setTemperature(temperature);
+				}
+				if(null!=request.getParameter("mua") && ""!=request.getParameter("mua"))
+				{
+					BigDecimal mua = new BigDecimal(request.getParameter("mua"));
+					triagePatientData.setMua(mua);
+				}
+				if(null!=request.getParameter("chest") && ""!=request.getParameter("chest"))
+				{
+					BigDecimal chest = new BigDecimal(request.getParameter("chest"));
+					triagePatientData.setChest(chest);
+				}
+				if(null!=request.getParameter("abdominal") && ""!=request.getParameter("abdominal"))
+				{
+					BigDecimal abdominal = new BigDecimal(request.getParameter("abdominal"));
+					triagePatientData.setAbdominal(abdominal);
+				}
+				if(null!=request.getParameter("systolic") && ""!=request.getParameter("systolic"))
+				{
+					Integer systolic = getInt(request.getParameter("systolic"));
+					triagePatientData.setSystolic(systolic);
+				}
+				if(null!=request.getParameter("daistolic") && ""!=request.getParameter("daistolic"))
+				{
+					Integer daistolic = getInt(request.getParameter("daistolic"));
+					triagePatientData.setDaistolic(daistolic);
+				}
+				if(null!=request.getParameter("respiratoryRate") && ""!=request.getParameter("respiratoryRate"))
+				{
+					Integer respiratoryRate = getInt(request.getParameter("respiratoryRate"));
+					triagePatientData.setRespiratoryRate(respiratoryRate);				
+				}
+				if(null!=request.getParameter("pulsRate") && ""!=request.getParameter("pulsRate"))
+				{
+					Integer pulsRate = getInt(request.getParameter("pulsRate"));
+					triagePatientData.setPulsRate(pulsRate);
+				}
+				if(null!=request.getParameter("bloodGroup") && ""!=request.getParameter("bloodGroup"))
+				{
+					String bloodGroup = request.getParameter("bloodGroup");
+					triagePatientData.setBloodGroup(bloodGroup);
+				}
+				if(null!=request.getParameter("rhesusFactor") && ""!=request.getParameter("rhesusFactor"))
+				{
+					String rhesusFactor = request.getParameter("rhesusFactor");
+					triagePatientData.setRhesusFactor(rhesusFactor);
+				}
+				if(null!=request.getParameter("lastMenstrualDate") && ""!=request.getParameter("lastMenstrualDate"))
+				{
+					Date lastMenstrualDate = new Date(request.getParameter("lastMenstrualDate"));
+					triagePatientData.setLastMenstrualDate(lastMenstrualDate);
+				}
+				if(null!=request.getParameter("pitct") && ""!=request.getParameter("pitct"))
+				{
+					String pitct = request.getParameter("pitct");
+					triagePatientData.setPitct(pitct);
+				}
+				triagePatientData.setCreatedOn(date);
+				TriagePatientData newTpd  = queueService.updateTriagePatientData(triagePatientData);
+				queueLog.setTriageDataId(newTpd);
+				
+			
+			}
+			
+			
 			opdPatientLog = queueService.saveOpdPatientQueueLog(queueLog);
 			queueService.deleteOpdPatientQueue(queue);
 			// done queue
@@ -1084,9 +1263,20 @@ public class OPDEntryController {
 			}
 		}
 
+
+		
 		return "redirect:/module/patientqueue/main.htm?opdId="
 				+ opdPatientLog.getOpdConcept().getId();
 
+	}
+	
+	private Integer getInt(String value) {
+		try {
+			Integer number = Integer.parseInt(value);
+			return number;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 }
