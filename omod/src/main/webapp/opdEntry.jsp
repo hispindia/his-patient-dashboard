@@ -957,23 +957,23 @@ return true;
 					</tr>
 					<tr>
 						<td>Systolic B.P</td>
-						<td><input type="text" id="sbp" name="sbp" size="11"
+						<td><input type="text" id="systolic" name="systolic" size="11"
 							value="${opdPatientQueue.triageDataId.systolic}" ></td>
 					</tr>
 					<tr>
 						<td>Diastolic B.P</td>
-						<td><input type="text" id="dbp" name="dbp" size="11"
+						<td><input type="text" id="daistolic" name="daistolic" size="11"
 							value="${opdPatientQueue.triageDataId.daistolic}" ></td>
 					</tr>
 					<tr>
 						<td>Respiratory Rate</td>
-						<td><input type="text" id="resRate" name="resRate" size="11"
+						<td><input type="text" id="respiratoryRate" name="respiratoryRate" size="11"
 							value="${opdPatientQueue.triageDataId.respiratoryRate}" >
 						</td>
 					</tr>
 					<tr>
 						<td>Pulse Rate</td>
-						<td><input type="text" id="pulseRate" name="pulseRate"
+						<td><input type="text" id="pulsRate" name="pulsRate"
 							size="11" value="${opdPatientQueue.triageDataId.pulsRate}" >
 						</td>
 					</tr>
