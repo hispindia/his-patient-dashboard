@@ -89,8 +89,19 @@ function getContextPath(){
 	jQuery(document).ready(
 			function() {
 			
-
-	    
+				var href = window.top.location.href;
+				
+				
+				if (href.indexOf('Referred') > -1) 
+				{
+				  $("#triageDiv").hide();
+				} 
+				
+				var $dia = $('input:radio[name=radio_dia]');
+	    		if($dia.is(':checked') === false) {
+	    		
+	        		$dia.filter('[value=prov_dia]').attr('checked', true);
+	    		}
 				jQuery('#lastMenstrualPeriod').datepicker({
 					yearRange : 'c-100:c+100',
 					dateFormat : 'dd/mm/yy',
@@ -106,11 +117,9 @@ function getContextPath(){
 			   	jQuery("#calendarButton").hide();
 			    }
 				
-	$("#lblPrompt").hide();
-	var $dia = $('input:radio[name=radio_dia]');
-	    if($dia.is(':checked') === false) {
-	        $dia.filter('[value=prov_dia]').attr('checked', true);
-	    }
+				$("#lblPrompt").hide();
+				
+				
 	function loadSelectedSymptomList()
 	{
 		if(${symptomIdSet}.length > 0)
@@ -914,7 +923,7 @@ return true;
 			</tr>
 		</div> <!--  end of floatLeft -->
 
-		<div class="floatRight">
+		<div id="triageDiv" class="floatRight">
 		
 		<label><b>Current Vital Statistics Details</b></label>
 		<table>

@@ -612,6 +612,8 @@ public class OPDEntryController {
 			queue.setSex(patient.getGender());
 			queue.setTriageDataId(null);
 			queue.setCategory(selectedCategory);
+			// TODO
+			queue.setVisitStatus("Referred from "+currentOpd.getName().getName());
 			queueService.saveOpdPatientQueue(queue);
 
 		}
