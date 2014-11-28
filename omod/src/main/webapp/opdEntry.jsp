@@ -888,11 +888,11 @@ return true;
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									onclick="DASHBOARD.submitOpdEntry();print();" />
 									</td>
-								<td>
+								<%-- <td>
 								<input type="submit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
 									value="Back" onclick="DASHBOARD.backToQueue('${queueId}');" />
-									</td>
+									</td> --%>
 								<td>
 								<label id="lblPrompt" style="color: #FF0000;" ><b>Please click on 'CONCLUDE VISIT' to save the patient's details</b></label>
 									</td>
