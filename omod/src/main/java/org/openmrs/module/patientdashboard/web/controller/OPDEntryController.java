@@ -1197,6 +1197,7 @@ public class OPDEntryController {
 					opdDrugOrder.setComments(comments);
 					opdDrugOrder.setCreator(user);
 					opdDrugOrder.setCreatedOn(date);
+					opdDrugOrder.setReferralOpdName(opdPatientLog.getOpdConceptName());
 					patientDashboardService
 							.saveOrUpdateOpdDrugOrder(opdDrugOrder);
 				}
