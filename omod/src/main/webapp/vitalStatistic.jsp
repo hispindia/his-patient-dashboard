@@ -26,59 +26,59 @@
 <table class="box">
 	<tr>
 		<td><strong>Weight (Kg)</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.weight}</td>
+		<td>${triagePatientData.weight}</td>
 	</tr>
 	<tr>
 		<td><strong>Height (cm)</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.height}</td>
+		<td>${triagePatientData.height}</td>
 	</tr>
 	<tr>
 		<td><strong>MUA Circumference(cm)</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.mua}</td>
+		<td>${triagePatientData.mua}</td>
 	</tr>
 	<tr>
 		<td><strong>Chest Circumference(cm)</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.chest}</td>
+		<td>${triagePatientData.chest}</td>
 	</tr>
 	<tr>
 		<td><strong>Abdominal Circumference(cm)</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.abdominal}</td>
+		<td>${triagePatientData.abdominal}</td>
 	</tr>
 	<tr>
 		<td><strong>Temperature (degree C)</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.temperature}</td>
+		<td>${triagePatientData.temperature}</td>
 	</tr>
 	<tr>
 		<td><strong>Systolic B.P</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.systolic}</td>
+		<td>${triagePatientData.systolic}</td>
 	</tr>
 	<tr>
 		<td><strong>Diastolic B.P</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.daistolic}</td>
+		<td>${triagePatientData.daistolic}</td>
 	</tr>
 	<tr>
 		<td><strong>Respiratory Rate</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.respiratoryRate}</td>
+		<td>${triagePatientData.respiratoryRate}</td>
 	</tr>
 	<tr>
 		<td><strong>Pulse Rate</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.pulsRate}</td>
+		<td>${triagePatientData.pulsRate}</td>
 	</tr>
 	<tr>
 		<td><strong>Blood Group</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.bloodGroup}</td>
+		<td>${triagePatientData.bloodGroup}</td>
 	</tr>
 	<tr>
 		<td><strong>Rhesus Factor</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.rhesusFactor}</td>
+		<td>${triagePatientData.rhesusFactor}</td>
 	</tr>
 	<tr>
 		<td><strong>Last Menstrual Period</strong></td>
-		<td><openmrs:formatDate date="${opdPatientQueueLog.triageDataId.lastMenstrualDate}" /></td>
+		<td><openmrs:formatDate date="${triagePatientData.lastMenstrualDate}" /></td>
 	</tr>
 	<tr>
 		<td><strong>PITCT</strong></td>
-		<td>${opdPatientQueueLog.triageDataId.pitct}</td>
+		<td>${triagePatientData.pitct}</td>
 	</tr>
 
 </table>

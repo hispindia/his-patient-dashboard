@@ -338,12 +338,21 @@ public class AutoCompleteController {
 	@RequestMapping(value="/module/patientdashboard/vitalStatistic.htm", method=RequestMethod.GET)
 	public String vitalStatistic(@RequestParam(value="id",required=false) Integer id, Model model) {
 		if(id != null){
-		    PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
 			EncounterService encounterService = Context.getEncounterService();
 			Encounter encounter =encounterService.getEncounter(id);
 			OpdPatientQueueLog opdPatientQueueLog=dashboardService.getOpdPatientQueueLog(encounter);
 			if (opdPatientQueueLog != null) {
-				model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+				if(null  != opdPatientQueueLog.getTriageDataId())
+				{
+				model.addAttribute("triagePatientData", opdPatientQueueLog.getTriageDataId());
+				}
+				else
+				{
+					TriagePatientData triagePatientData = new TriagePatientData();
+					triagePatientData = dashboardService.getTriagePatientDataFromEncounter(id);
+					model.addAttribute("triagePatientData", triagePatientData);
+				}
 			}
 		}
 		return "module/patientdashboard/vitalStatistic";
