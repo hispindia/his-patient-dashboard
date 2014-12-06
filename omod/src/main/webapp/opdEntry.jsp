@@ -850,19 +850,23 @@ return true;
 					
 						<td colspan="2">
 								<div id="abcd">
+								<input type="radio" name="radio_f" value="Died" id="died"
+									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Died
+									&nbsp;&nbsp;
 								<c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" id="input_follow"
 									value="Follow-up" onclick="DASHBOARD.onChangeRadio(this); removePrompt(); ">Follow Up 
 								<input	type="text" class="date-pick left" readonly="readonly"
 									ondblclick="this.value='';" name="dateFollowUp"
 									id="dateFollowUp" onclick="DASHBOARD.onClickFollowDate(this); " onchange=" radio_fSelected();">
+									&nbsp;&nbsp;
 								<input type="radio" name="radio_f" value="Cured" id="cured"
 									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Cured
-   								<input type="radio" name="radio_f" value="Died" id="died"
-									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Died
+   									&nbsp;&nbsp;
    								</c:if>
    								<input type="radio" name="radio_f" value="Reviewed" id="reviewed"
 									onclick="DASHBOARD.onChangeRadio(this);radio_fSelected();">Reviewed
+									&nbsp;&nbsp;
 								<c:if test="${empty admitted}">
 								<input type="radio" name="radio_f" value="Admit" id="admit"
 									onclick="DASHBOARD.onChangeRadio(this); removePrompt();">Admit
