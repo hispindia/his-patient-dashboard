@@ -419,12 +419,17 @@ jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + invg + "
 
 var selDrugLen = drugIssuedList.length;
 var j=1;
+var alreadyAdded ;
+var addedDrug = drugIssuedList[selDrugLen-1];; 
 for(i=selDrugLen-1; i>=0; i--){
 var drug=drugIssuedList[i];
+if(alreadyAdded != drug)
+{
 var formulationName=document.getElementById(drug+"_formulationName").value;
 var frequencyName=document.getElementById(drug+"_frequencyName").value;
 var noOfDays=document.getElementById(drug+"_noOfDays").value;
 var comments=document.getElementById(drug+"_comments").value;
+alreadyAdded = drug;
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + j + "<br/>" + "</span>");
 jQuery("#printableDrug").append("<span style='margin:5px;'>" + drug + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
@@ -433,7 +438,7 @@ jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<
 jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
 j++;
 }
-
+}
 
 var noteValue = document.getElementById('note').value;
 jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + noteValue + "</span>");
@@ -1065,15 +1070,15 @@ return true;
 			</c:choose></td>
 	</tr>
 <tr>
-		<td><strong>Patient Category:</strong></td>
+		<td><strong>Payment Category:</strong></td>
 		<td>${selectedCategory}</td>
 	</tr>
-<tr>
+<%-- <tr>
 		<td><strong>Waiver/ Exemption No:</strong></td>
 		<td>${exemptionNumber}</td>
 		<td>${nhifCardNumber}</td>
 		<td>${waiverNumber}</td>
-	</tr>
+	</tr> --%>
 <tr>
 		<td><strong>Treating Doctor:</strong></td>
 		<td>${user.personName}</td>
