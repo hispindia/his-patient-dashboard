@@ -895,7 +895,10 @@ return true;
 								<td>
 								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
+									onclick="DASHBOARD.submitOpdEntry();" />
+									<!--
 									onclick="DASHBOARD.submitOpdEntry();print();" />
+									-->
 									</td>
 								<%-- <td>
 								<input type="submit"
@@ -914,7 +917,10 @@ return true;
 								<td>
 								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
+									onclick="DASHBOARD.submitOpdEntry();" />
+									<!--
 									onclick="DASHBOARD.submitOpdEntry();print();" />
+									-->
 									</td>
 								<td>
 								<input type="submit"
