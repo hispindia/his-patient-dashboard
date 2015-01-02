@@ -873,6 +873,7 @@ public class OPDEntryController {
 					item.setUnitPrice(service.getPrice());
 					item.setAmount(amount);
 					item.setActualAmount(amount);
+					item.setOrderType("SERVICE");
 					bill.addBillItem(item);
 					}
 				}
