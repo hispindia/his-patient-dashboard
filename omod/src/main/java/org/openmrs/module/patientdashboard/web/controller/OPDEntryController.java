@@ -183,7 +183,7 @@ public class OPDEntryController {
 		OpdPatientQueue opdPatientQueue = new OpdPatientQueue();
 		if (queueId != null) {
 			opdPatientQueue = queueService.getOpdPatientQueueById(queueId);
-			SimpleDateFormat formatterExt = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
 			TriagePatientData triagePatientData = opdPatientQueue
 					.getTriageDataId();
 			if (triagePatientData != null) {
@@ -317,7 +317,8 @@ public class OPDEntryController {
 			HttpServletRequest request,
 			@RequestParam(value = "syptomIdList", required = false) String[] syptomIdList,
 			@RequestParam(value = "drugOrder", required = false) String[] drugOrder,
-			@RequestParam(value = "opdLogId", required = false) Integer opdLogId)
+			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
+			@RequestParam(value = "lastMenstrualPeriod", required = false) Date lastMenstrualPeriod)
 			throws Exception {
 		// @RequestParam(value="encounterId" ,required=false) Integer
 		// encounterId) throws Exception{
@@ -771,11 +772,9 @@ public class OPDEntryController {
 					String rhesusFactor = request.getParameter("rhesusFactor");
 					triagePatientData.setRhesusFactor(rhesusFactor);
 				}
-				if(null!=request.getParameter("lastMenstrualPeriod") && ""!=request.getParameter("lastMenstrualPeriod"))
-				{
-					Date lastMenstrualDate = new Date(request.getParameter("lastMenstrualPeriod"));
-					triagePatientData.setLastMenstrualDate(lastMenstrualDate);
-				}
+				
+				triagePatientData.setLastMenstrualDate(lastMenstrualPeriod);
+				
 				if(null!=request.getParameter("pitct") && ""!=request.getParameter("pitct"))
 				{
 					String pitct = request.getParameter("pitct");

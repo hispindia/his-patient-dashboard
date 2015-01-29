@@ -86,9 +86,112 @@ function getContextPath(){
 	}
 </script>
 <script type="text/javascript">
+function validateTriage(){
+
+var intRegex=/^(?:[1-9]\d*(?:\.\d\d?)?|0\.[1-9]\d?|0\.0[1-9])$/;
+
+
+if(!StringUtils.isBlank(jQuery("#weight").val())) {
+      if (!jQuery("#weight").val().match(intRegex)) {
+	  alert("Please enter weight in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#height").val())) {
+      if (!jQuery("#height").val().match(intRegex)) {
+	  alert("Please enter height in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#mua").val())) {
+      if (!jQuery("#mua").val().match(intRegex)) {
+	  alert("Please enter MUA Circumference in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#chest").val())) {
+      if (!jQuery("#chest").val().match(intRegex)) {
+	  alert("Please enter Chest Circumference in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#abdominal").val())) {
+      if (!jQuery("#abdominal").val().match(intRegex)) {
+	  alert("Please enter Abdominal Circumference in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#temperature").val())) {
+      if (!jQuery("#temperature").val().match(intRegex)) {
+	  alert("Please enter temperature in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#systolic").val())) {
+      if (!jQuery("#systolic").val().match(intRegex)) {
+	  alert("Please enter Systolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#daistolic").val())) {
+      if (!jQuery("#daistolic").val().match(intRegex)) {
+	  alert("Please enter Diastolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#respiratoryRate").val())) {
+      if (!jQuery("#respiratoryRate").val().match(intRegex)) {
+	  alert("Please enter Respiratory Rate in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
+      if (!jQuery("#pulsRate").val().match(intRegex)) {
+	  alert("Please enter Pulse Rate in correct format");
+	  return false;
+	  }
+}
+
+
+			
+ re = /^\d{1,2}\/\d{1,2}\/\d{4}$/; 
+ if(jQuery("#lastMenstrualPeriod").val() != '' && !jQuery("#lastMenstrualPeriod").val().match(re))  
+ {
+ alert("Invalid date format");
+ jQuery("#lastMenstrualPeriod").val('');
+ return false; 
+ } 					
+jQuery("#rhesusFactor").removeAttr("disabled");
+jQuery("#lastMenstrualPeriod").removeAttr("disabled");
+}
+</script>
+<script type="text/javascript">
+function enableAndDisable(){
+jQuery("#bloodGroup").click(function() {
+				if (StringUtils.isBlank(jQuery("#bloodGroup").val())) {
+				jQuery("#rhesusFactor").attr("disabled", "disabled");
+				}
+				else if (jQuery("#bloodGroup").val()=="Not Known"){
+				jQuery("#rhesusFactor").attr("disabled", "disabled");
+				}
+                else{
+              jQuery("#rhesusFactor").removeAttr("disabled");
+			}
+		});
+}
+</script>
+<script type="text/javascript">
 	jQuery(document).ready(
 			function() {
-			
 				var href = window.top.location.href;
 				
 				
@@ -895,7 +998,7 @@ return true;
 								<td>
 								<input type="submit" value="Conclude Visit"
 									class="ui-button ui-widget ui-state-default ui-corner-all"
-									onclick="DASHBOARD.submitOpdEntry();" />
+									onclick="DASHBOARD.submitOpdEntry(); javascript:return validateTriage();" />
 									<!--
 									onclick="DASHBOARD.submitOpdEntry();print();" />
 									-->
@@ -1003,15 +1106,24 @@ return true;
 					</tr>
 					<tr>
 						<td>Blood Group</td>
-						<td><input type="text" id="bloodGroup" name="bloodGroup"
-							size="11" value="${opdPatientQueue.triageDataId.bloodGroup}" >
-						</td>
+						
+						<td><select id="bloodGroup" name="bloodGroup" style="width: 100px" onclick="enableAndDisable();">
+						<option value="">${opdPatientQueue.triageDataId.bloodGroup}</option>
+						<option value="O">O</option>
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="AB">AB</option>
+						<option value="Not Known">Not Known</option>
+						</select></td>
 					</tr>
 					<tr>
 						<td>Rhesus Factor</td>
-						<td><input type="text" id="rhesusFactor" name="rhesusFactor"
-							size="11" value="${opdPatientQueue.triageDataId.rhesusFactor}" >
-						</td>
+						<td><select id="rhesusFactor" name="rhesusFactor" style="width: 100px;">
+						<option value="">${opdPatientQueue.triageDataId.rhesusFactor}</option>
+						<option value="Positive (+)">Positive (+)</option>
+						<option value="Negative (-)">Negative (-)</option>
+						<option value="Not Known">Not Known</option>
+						</select></td>
 					</tr>
 					<tr>
 						<td>Last Menstrual Period</td>
@@ -1025,9 +1137,12 @@ return true;
 					</tr>
 					<tr>
 						<td>PITCT</td>
-						<td><input type="text" id="pitct" name="pitct" size="11"
-							value="${opdPatientQueue.triageDataId.pitct}" >
-						</td>
+						<td><select id="pitct" name="pitct" style="width: 100px;">
+						<option value="">${opdPatientQueue.triageDataId.pitct}</option>
+						<option value="Reactive">Reactive</option>
+						<option value="Non-Reactive">Non-Reactive</option>
+						<option value="Not Known">Not Known</option>
+				</select></td>
 					</tr>
 		</table>
 		</div><!--  end of floatRight -->
