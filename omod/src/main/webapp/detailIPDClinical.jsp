@@ -52,12 +52,12 @@
 		<td><strong>Payment Category:</strong></td>
 		<td>${selectedCategory}</td>
 	</tr>
-	<tr>
+	<%-- <tr>
 		<td><strong>Waiver/ Exemption No:</strong></td>
 		<td>${exemptionNumber}</td>
 		<td>${nhifCardNumber}</td>
 		<td>${waiverNumber}</td>
-	</tr>
+	</tr> --%>
 	<tr>
 		<td><strong>Treating Doctor:</strong></td>
 		<td>${treatingDoctor}</td>
