@@ -76,6 +76,13 @@
 .container {
 	overflow: hidden;
 }
+#commentsTA {
+    resize: none;
+}
+#historyTA {
+    resize: none;
+}
+
 </style>
 <script type="text/javascript">
 function getContextPath(){		
@@ -649,9 +656,10 @@ return true;
 					
 					<tr>
 						<td colspan="3"><strong>History of Present Illness:</strong>
-							<input type="text" id="history" name="history" size="200"
-							style="width: 1000px; height: 50px"
-							class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input" />
+							<TEXTAREA  id="historyTA" name="history" size="200" style="width: 1000px; height: 50px" 
+							placeholder="History of Present Illness"
+										rows=1 cols=15 class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"></TEXTAREA>
+										
 						</td>
 					</tr>
 					
@@ -873,7 +881,7 @@ return true;
 					<tr>
 						<td colspan="1">
 							<div class="drug-order" id="drugOrder"
-								style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 5em;">
+								style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 6em;">
 								<div class="drugs" class="ui-widget">
 									<input title="${opd.conceptId}" id="drugName" name="drugName"
 										placeholder="Search for drugs" onblur="ISSUE.onBlur(this);" />
@@ -898,8 +906,8 @@ return true;
 										placeholder="No Of Days" size="7">
 								</div>
 								<div class="comments">
-									<TEXTAREA id="comments" name="comments" placeholder="Comments"
-										rows=1 cols=15></TEXTAREA>
+									<TEXTAREA id="commentsTA" name="comments" placeholder="Comments"
+										rows=1 cols=15  class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"></TEXTAREA>
 								</div>
 							</div>
 						</td>
