@@ -76,10 +76,10 @@
 .container {
 	overflow: hidden;
 }
-#commentsTA {
+#comments {
     resize: none;
 }
-#historyTA {
+#history {
     resize: none;
 }
 
@@ -656,7 +656,7 @@ return true;
 					
 					<tr>
 						<td colspan="3"><strong>History of Present Illness:</strong>
-							<TEXTAREA  id="historyTA" name="history" size="200" style="width: 1000px; height: 50px" 
+							<TEXTAREA  id="history" name="history" size="200" style="width: 1000px; height: 50px" 
 							placeholder="History of Present Illness"
 										rows=1 cols=15 class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"></TEXTAREA>
 										
@@ -906,7 +906,7 @@ return true;
 										placeholder="No Of Days" size="7">
 								</div>
 								<div class="comments">
-									<TEXTAREA id="commentsTA" name="comments" placeholder="Comments"
+									<TEXTAREA id="comments" name="comments" placeholder="Comments"
 										rows=1 cols=15  class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"></TEXTAREA>
 								</div>
 							</div>
