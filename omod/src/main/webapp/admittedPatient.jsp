@@ -99,7 +99,7 @@
 			<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
 			<li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"
 				title="Pharmacy record"><span>Pharmacy record</span> </a></li>
-			<li><a href="patientHistory.htm?patientId=${patient.patientId }"
+			<li><a href="patientHistory.htm?patientId=${patientId}&opdId=${opdId}&visitStatus=${visitStatus}&queueId=${queueId}"
 				title="Patient history"><span>Patient history</span> </a></li>
 		</ul>
 
