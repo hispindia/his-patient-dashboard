@@ -76,9 +76,7 @@
 .container {
 	overflow: hidden;
 }
-#comments {
-    resize: none;
-}
+
 #history {
     resize: none;
 }
@@ -906,8 +904,8 @@ return true;
 										placeholder="No Of Days" size="7">
 								</div>
 								<div class="comments">
-									<TEXTAREA id="comments" name="comments" placeholder="Comments"
-										rows=1 cols=15  class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"></TEXTAREA>
+									<input id="comments"  type="text" name="comments" placeholder="Comments"
+										 >
 								</div>
 							</div>
 						</td>
