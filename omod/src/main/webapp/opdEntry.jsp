@@ -499,7 +499,7 @@ submitStatus=0;
 var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
 if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
-if(validate()){
+if(validateOnSubmit()){
 var history = document.getElementById('history').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + history + "</span>");
 
@@ -577,26 +577,6 @@ popClose : true
  }
 }
 
-function validate(){
-var i;
-if(selectedProcedureList.length>0){
-for(i=selectedProcedureList.length-1; i>=0; i--){
-var spl=selectedProcedureList.options[i].value;
-var splts=spl.toString();
-if(document.getElementById(splts)!=null){
-var procedure=document.getElementById(splts).value;
-if(procedure==null || procedure==""){
-   alert("Please schedule the procedure");
-   return false;
-   }
-  }
- }
-
-}
-
-return true;
-}
-
 
 function validateOnSubmit(){
 var i;
@@ -607,7 +587,7 @@ var splts=spl.toString();
 if(document.getElementById(splts)!=null){
 var procedure=document.getElementById(splts).value;
 if(procedure==null || procedure==""){
-//   alert("Please schedule the procedure");
+   alert("Please schedule the procedure");
    return false;
    }
   }
