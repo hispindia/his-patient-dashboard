@@ -177,6 +177,8 @@ if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
  } 					
 jQuery("#rhesusFactor").removeAttr("disabled");
 jQuery("#lastMenstrualPeriod").removeAttr("disabled");
+
+
 }
 </script>
 <script type="text/javascript">
@@ -199,7 +201,9 @@ jQuery("#bloodGroup").click(function() {
 			function() {
 				var href = window.top.location.href;
 				
-				
+				if (StringUtils.isBlank(jQuery("#bloodGroup").val())) {
+				jQuery("#rhesusFactor").attr("disabled", "disabled");
+				}
 				if (href.indexOf('Referred') > -1) 
 				{
 				  $("#triageDiv").hide();
@@ -655,7 +659,6 @@ return true;
 					<tr>
 						<td colspan="3"><strong>History of Present Illness:</strong>
 							<TEXTAREA  id="history" name="history" size="200" style="width: 1000px; height: 50px" 
-							placeholder="History of Present Illness"
 										rows=1 cols=15 class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"></TEXTAREA>
 										
 						</td>
@@ -880,6 +883,9 @@ return true;
 						<td colspan="1">
 							<div class="drug-order" id="drugOrder"
 								style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 6em;">
+								<table>
+								<tr>
+								<td>
 								<div class="drugs" class="ui-widget">
 									<input title="${opd.conceptId}" id="drugName" name="drugName"
 										placeholder="Search for drugs" onblur="ISSUE.onBlur(this);" />
@@ -903,10 +909,17 @@ return true;
 									<input type="text" id="noOfDays" name="noOfDays"
 										placeholder="No Of Days" size="7">
 								</div>
+								</td>
+								</tr>
+								<tr>
+								<td>
 								<div class="comments">
 									<input id="comments"  type="text" name="comments" placeholder="Comments"
 										 >
 								</div>
+								</td>
+								</tr>
+								</table>
 							</div>
 						</td>
 
@@ -1049,7 +1062,7 @@ return true;
 
 		<div id="triageDiv" class="floatRight">
 		
-		<label><b>Current Vital Statistics Details</b></label>
+		<label><b>Current Vitals Details</b></label>
 		<table>
 					<tr>
 						<td><br></td>
