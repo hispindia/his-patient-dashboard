@@ -1058,7 +1058,7 @@ personal.style.display="inline";
 			</tr>
 			<tr>
 				<td>Pulse Rate</td>
-				<td><input type="text" id="pulseRate" name="pulseRate" size="8">
+				<td><input type="text" id="pulseRate" name="pulseRate" size="8" maxlength="7">
 				</td>
 			</tr>
 			<tr>
