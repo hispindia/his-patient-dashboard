@@ -101,9 +101,12 @@ public class PatientHistoryController {
 		model.addAttribute("invasiveContraceptionName", patientDrugHistory.getInvasiveContraceptionName());
 	
 		PatientFamilyHistory patientFamilyHistory = queueService.getPatientFamilyHistoryByPatientId(patientId);
-		model.addAttribute("parentStatus", patientFamilyHistory.getParentStatus());
-		model.addAttribute("parentDeathCause", patientFamilyHistory.getParentDeathCause());
-		model.addAttribute("parentDeathAge", patientFamilyHistory.getParentDeathAge());
+		model.addAttribute("fatherStatus", patientFamilyHistory.getFatherStatus());
+		model.addAttribute("fatherDeathCause", patientFamilyHistory.getFatherDeathCause());
+		model.addAttribute("fatherDeathAge", patientFamilyHistory.getFatherDeathAge());
+		model.addAttribute("motherStatus", patientFamilyHistory.getMotherStatus());
+		model.addAttribute("motherDeathCause", patientFamilyHistory.getMotherDeathCause());
+		model.addAttribute("motherDeathAge", patientFamilyHistory.getMotherDeathAge());
 		model.addAttribute("siblingStatus", patientFamilyHistory.getSiblingStatus());
 		model.addAttribute("siblingDeathCause", patientFamilyHistory.getSiblingDeathCause());
 		model.addAttribute("siblingDeathAge", patientFamilyHistory.getSiblingDeathAge());
@@ -252,16 +255,22 @@ public class PatientHistoryController {
 			
 		PatientFamilyHistory patientFamilyHistory = queueService.getPatientFamilyHistoryByPatientId(patientId);
 			
-		String parentStatus = request.getParameter("parentStatus");
-		String parentDeathCause = request.getParameter("parentDeathCause");
-		String parentDeathAge = request.getParameter("parentDeathAge");
+		String fatherStatus = request.getParameter("fatherStatus");
+		String fatherDeathCause = request.getParameter("fatherDeathCause");
+		String fatherDeathAge = request.getParameter("fatherDeathAge");
+		String motherStatus = request.getParameter("motherStatus");
+		String motherDeathCause = request.getParameter("motherDeathCause");
+		String motherDeathAge = request.getParameter("motherDeathAge");
 		String siblingStatus = request.getParameter("siblingStatus");
 		String siblingDeathCause = request.getParameter("siblingDeathCause");
 		String siblingDeathAge = request.getParameter("siblingDeathAge");
 		String familyIllnessHistory = request.getParameter("familyIllnessHistory");
-		patientFamilyHistory.setParentStatus(parentStatus);
-		patientFamilyHistory.setParentDeathCause(parentDeathCause);
-		patientFamilyHistory.setParentDeathAge(parentDeathAge);
+		patientFamilyHistory.setFatherStatus(fatherStatus);
+		patientFamilyHistory.setFatherDeathCause(fatherDeathCause);
+		patientFamilyHistory.setFatherDeathAge(fatherDeathAge);
+		patientFamilyHistory.setMotherStatus(motherStatus);
+		patientFamilyHistory.setMotherDeathCause(motherDeathCause);
+		patientFamilyHistory.setMotherDeathAge(motherDeathAge);
 		patientFamilyHistory.setSiblingStatus(siblingStatus);
 		patientFamilyHistory.setSiblingDeathCause(siblingDeathCause);
 		patientFamilyHistory.setSiblingDeathAge(siblingDeathAge);

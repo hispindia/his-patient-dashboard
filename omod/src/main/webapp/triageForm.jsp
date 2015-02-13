@@ -427,8 +427,10 @@ personal.style.display="inline";
 						$("input[name=sensitiveMedicationName]").attr("disabled", "disabled");
 						$("input[name=sensitiveMedicationSymptom]").attr("disabled", "disabled");
 						jQuery("#invasiveContraceptionName").attr("disabled", "disabled");
-						$("input[name=parentDeathCause]").attr("disabled", "disabled");
-						$("input[name=parentDeathAge]").attr("disabled", "disabled");
+						$("input[name=fatherDeathCause]").attr("disabled", "disabled");
+						$("input[name=fatherDeathAge]").attr("disabled", "disabled");
+						$("input[name=motherDeathCause]").attr("disabled", "disabled");
+						$("input[name=motherDeathAge]").attr("disabled", "disabled");
 						$("input[name=siblingDeathCause]").attr("disabled", "disabled");
 						$("input[name=siblingDeathAge]").attr("disabled", "disabled");
 						$("input[name=smokeItem]").attr("disabled", "disabled");
@@ -747,32 +749,63 @@ personal.style.display="inline";
 				};
 
 
-				var parentStatus = function (element) {
+				var fatherStatus = function (element) {
 					if(element.value == "Alive") {
-						$("input[name=parentDeathCause]").attr("disabled", "disabled");
-						jQuery("#parentDeathCause").val("");
-						$("input[name=parentDeathAge]").attr("disabled", "disabled");
-						jQuery("#parentDeathAge").val("");
+						$("input[name=fatherDeathCause]").attr("disabled", "disabled");
+						jQuery("#fatherDeathCause").val("");
+						$("input[name=fatherDeathAge]").attr("disabled", "disabled");
+						jQuery("#fatherDeathAge").val("");
 					}
 					else {
 					if( ${visitStatus =='New Patient'}  ){
-						$("input[name=parentDeathCause]").removeAttr("disabled");
-						$("input[name=parentDeathAge]").removeAttr("disabled");	
+						$("input[name=fatherDeathCause]").removeAttr("disabled");
+						$("input[name=fatherDeathAge]").removeAttr("disabled");	
 					}
 					else{
-						if(${parentDeathCause != ''} && ${parentDeathCause != null})
+						if(${fatherDeathCause != ''} && ${fatherDeathCause != null})
 						{
-							$("input[name=parentDeathCause]").attr("disabled", "disabled")
+							$("input[name=fatherDeathCause]").attr("disabled", "disabled")
 						}
 						else {
-							$("input[name=parentDeathCause]").removeAttr("disabled");
+							$("input[name=fatherDeathCause]").removeAttr("disabled");
 						}	
-						if(${parentDeathAge != ''} && ${parentDeathAge != null})
+						if(${fatherDeathAge != ''} && ${fatherDeathAge != null})
 						{
-							$("input[name=parentDeathAge]").attr("disabled", "disabled")
+							$("input[name=fatherDeathAge]").attr("disabled", "disabled")
 						}
 						else {
-							$("input[name=parentDeathAge]").removeAttr("disabled");
+							$("input[name=fatherDeathAge]").removeAttr("disabled");
+						}	
+					}
+					}
+				};
+				
+				var motherStatus = function (element) {
+					if(element.value == "Alive") {
+						$("input[name=motherDeathCause]").attr("disabled", "disabled");
+						jQuery("#motherDeathCause").val("");
+						$("input[name=motherDeathAge]").attr("disabled", "disabled");
+						jQuery("#motherDeathAge").val("");
+					}
+					else {
+					if( ${visitStatus =='New Patient'}  ){
+						$("input[name=motherDeathCause]").removeAttr("disabled");
+						$("input[name=motherDeathAge]").removeAttr("disabled");	
+					}
+					else{
+						if(${motherDeathCause != ''} && ${motherDeathCause != null})
+						{
+							$("input[name=motherDeathCause]").attr("disabled", "disabled")
+						}
+						else {
+							$("input[name=motherDeathCause]").removeAttr("disabled");
+						}	
+						if(${motherDeathAge != ''} && ${motherDeathAge != null})
+						{
+							$("input[name=motherDeathAge]").attr("disabled", "disabled")
+						}
+						else {
+							$("input[name=motherDeathAge]").removeAttr("disabled");
 						}	
 					}
 					}
@@ -954,7 +987,8 @@ personal.style.display="inline";
 				$(":radio[name=sensitiveMedication]").click(function () {sensitiveMedication(this);	}).filter(":checked").each(function () { sensitiveMedication(this); });				
 				$(":radio[name=invasiveContraception]").click(function () {invasiveContraception(this);	}).filter(":checked").each(function () { invasiveContraception(this); });				
 	
-				$(":radio[name=parentStatus]").click(function () {parentStatus(this);	}).filter(":checked").each(function () { parentStatus(this); });				
+				$(":radio[name=fatherStatus]").click(function () {fatherStatus(this);	}).filter(":checked").each(function () { fatherStatus(this); });				
+				$(":radio[name=motherStatus]").click(function () {motherStatus(this);	}).filter(":checked").each(function () { motherStatus(this); });
 				$(":radio[name=siblingStatus]").click(function () {siblingStatus(this);	}).filter(":checked").each(function () { siblingStatus(this); });				
 
 				$(":radio[name=smoke]").click(function () {smoke(this);	}).filter(":checked").each(function () { smoke(this); });				
@@ -1994,48 +2028,93 @@ personal.style.display="inline";
 				<tr><td>&nbsp;</td></tr>
 				
 				<tr>
-					<td>&nbsp;&nbsp;&nbsp;Status of parents? &nbsp;&nbsp;&nbsp;</td>
+					<td>&nbsp;&nbsp;&nbsp;Status of father? &nbsp;&nbsp;&nbsp;</td>
 					<td>
 						<c:choose> 
-							<c:when test="${parentStatus != null}"> 
-								<c:if test="${parentStatus  == 'Alive'}">
-								<input type="radio" id="parentStatus" name="parentStatus" disabled checked="checked" value="Alive">Alive &nbsp;&nbsp;&nbsp;
+							<c:when test="${fatherStatus != null}"> 
+								<c:if test="${fatherStatus  == 'Alive'}">
+								<input type="radio" id="fatherStatus" name="fatherStatus" disabled checked="checked" value="Alive">Alive &nbsp;&nbsp;&nbsp;
 								</c:if>
 								
-								<c:if test="${parentStatus  != 'Alive'}">
-								<input type="radio" id="parentStatus" name="parentStatus" disabled value="Alive">Alive &nbsp;&nbsp;&nbsp;
+								<c:if test="${fatherStatus  != 'Alive'}">
+								<input type="radio" id="fatherStatus" name="fatherStatus" disabled value="Alive">Alive &nbsp;&nbsp;&nbsp;
 								</c:if>
 								
 							</c:when> 
-							<c:when test="${parentStatus == null}"> 
-								<input type="radio" id="parentStatus" name="parentStatus" value="Alive">Alive &nbsp;&nbsp;&nbsp;
+							<c:when test="${fatherStatus == null}"> 
+								<input type="radio" id="fatherStatus" name="fatherStatus" value="Alive">Alive &nbsp;&nbsp;&nbsp;
 							</c:when> 	
 						</c:choose>
 																	
 						 <c:choose> 
-							<c:when test="${parentStatus != null}"> 
-								<c:if test="${parentStatus  == 'Dead'}">
-								<input type="radio" id="parentStatus" name="parentStatus" disabled checked="checked" value="Dead">Dead &nbsp;&nbsp;&nbsp;
+							<c:when test="${fatherStatus != null}"> 
+								<c:if test="${fatherStatus  == 'Dead'}">
+								<input type="radio" id="fatherStatus" name="fatherStatus" disabled checked="checked" value="Dead">Dead &nbsp;&nbsp;&nbsp;
 								</c:if>
 								
-								<c:if test="${parentStatus  != 'Dead'}">
-								<input type="radio" id="parentStatus" name="parentStatus" disabled value="Dead">Dead &nbsp;&nbsp;&nbsp;
+								<c:if test="${fatherStatus  != 'Dead'}">
+								<input type="radio" id="fatherStatus" name="fatherStatus" disabled value="Dead">Dead &nbsp;&nbsp;&nbsp;
 								</c:if>
 								
 							</c:when> 
-							<c:when test="${parentStatus == null}"> 
-								<input type="radio" id="parentStatus" name="parentStatus" value="Dead">Dead &nbsp;&nbsp;&nbsp;
+							<c:when test="${fatherStatus == null}"> 
+								<input type="radio" id="fatherStatus" name="fatherStatus" value="Dead">Dead &nbsp;&nbsp;&nbsp;
 							</c:when> 	
 						</c:choose>
 					</td>
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the cause of death?</td>
-					<td><input type="text" id="parentDeathCause" name="parentDeathCause" value="${parentDeathCause}" size="50"></td>
+					<td><input type="text" id="fatherDeathCause" name="fatherDeathCause" value="${fatherDeathCause}" size="50"></td>
 				</tr>
 				<tr>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How old were they?</td>
-					<td><input type="text" id="parentDeathAge" name="parentDeathAge" value="${parentDeathAge}" size="50"></td>
+					<td><input type="text" id="fatherDeathAge" name="fatherDeathAge" value="${fatherDeathAge}" size="50"></td>
+				</tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;Status of mother? &nbsp;&nbsp;&nbsp;</td>
+					<td>
+						<c:choose> 
+							<c:when test="${motherStatus != null}"> 
+								<c:if test="${motherStatus  == 'Alive'}">
+								<input type="radio" id="motherStatus" name="motherStatus" disabled checked="checked" value="Alive">Alive &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+								<c:if test="${motherStatus  != 'Alive'}">
+								<input type="radio" id="motherStatus" name="motherStatus" disabled value="Alive">Alive &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+							</c:when> 
+							<c:when test="${motherStatus == null}"> 
+								<input type="radio" id="motherStatus" name="motherStatus" value="Alive">Alive &nbsp;&nbsp;&nbsp;
+							</c:when> 	
+						</c:choose>
+																	
+						 <c:choose> 
+							<c:when test="${motherStatus != null}"> 
+								<c:if test="${motherStatus  == 'Dead'}">
+								<input type="radio" id="motherStatus" name="motherStatus" disabled checked="checked" value="Dead">Dead &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+								<c:if test="${motherStatus  != 'Dead'}">
+								<input type="radio" id="motherStatus" name="motherStatus" disabled value="Dead">Dead &nbsp;&nbsp;&nbsp;
+								</c:if>
+								
+							</c:when> 
+							<c:when test="${motherStatus == null}"> 
+								<input type="radio" id="motherStatus" name="motherStatus" value="Dead">Dead &nbsp;&nbsp;&nbsp;
+							</c:when> 	
+						</c:choose>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What was the cause of death?</td>
+					<td><input type="text" id="motherDeathCause" name="motherDeathCause" value="${motherDeathCause}" size="50"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How old were they?</td>
+					<td><input type="text" id="motherDeathAge" name="motherDeathAge" value="${motherDeathAge}" size="50"></td>
 				</tr>
 				<tr><td>&nbsp;</td></tr>
 				<tr>

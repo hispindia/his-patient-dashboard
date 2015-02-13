@@ -211,9 +211,12 @@ public class TriageFormController {
 		PatientFamilyHistory patientFamilyHistory = queueService1.getPatientFamilyHistoryByPatientId(queue.getPatient().getPatientId());
 		if(patientFamilyHistory != null)
 		{
-			model.addAttribute("parentStatus", patientFamilyHistory.getParentStatus());
-			model.addAttribute("parentDeathCause", patientFamilyHistory.getParentDeathCause());
-			model.addAttribute("parentDeathAge", patientFamilyHistory.getParentDeathAge());
+			model.addAttribute("fatherStatus", patientFamilyHistory.getFatherStatus());
+			model.addAttribute("fatherDeathCause", patientFamilyHistory.getFatherDeathCause());
+			model.addAttribute("fatherDeathAge", patientFamilyHistory.getFatherDeathAge());
+			model.addAttribute("motherStatus", patientFamilyHistory.getMotherStatus());
+			model.addAttribute("motherDeathCause", patientFamilyHistory.getMotherDeathCause());
+			model.addAttribute("motherDeathAge", patientFamilyHistory.getMotherDeathAge());
 			model.addAttribute("siblingStatus", patientFamilyHistory.getSiblingStatus());
 			model.addAttribute("siblingDeathCause", patientFamilyHistory.getSiblingDeathCause());
 			model.addAttribute("siblingDeathAge", patientFamilyHistory.getSiblingDeathAge());
@@ -359,9 +362,12 @@ public class TriageFormController {
 			@RequestParam(value = "invasiveContraception", required = false) String invasiveContraception,
 			@RequestParam(value = "invasiveContraceptionName", required = false) String invasiveContraceptionName,
 
-			@RequestParam(value = "parentStatus", required = false) String parentStatus,
-			@RequestParam(value = "parentDeathCause", required = false) String parentDeathCause,
-			@RequestParam(value = "parentDeathAge", required = false) String parentDeathAge,
+			@RequestParam(value = "fatherStatus", required = false) String fatherStatus,
+			@RequestParam(value = "fatherDeathCause", required = false) String fatherDeathCause,
+			@RequestParam(value = "fatherDeathAge", required = false) String fatherDeathAge,
+			@RequestParam(value = "motherStatus", required = false) String motherStatus,
+			@RequestParam(value = "motherDeathCause", required = false) String motherDeathCause,
+			@RequestParam(value = "motherDeathAge", required = false) String motherDeathAge,
 			@RequestParam(value = "siblingStatus", required = false) String siblingStatus,
 			@RequestParam(value = "siblingDeathCause", required = false) String siblingDeathCause,
 			@RequestParam(value = "siblingDeathAge", required = false) String siblingDeathAge,
@@ -516,9 +522,12 @@ public class TriageFormController {
 		PatientFamilyHistory pfh = new PatientFamilyHistory(); 
 		pfh.setPatientId(queue.getPatient().getPatientId());
 		pfh.setTriageLogId(triagePatientLog);
-		pfh.setParentStatus(parentStatus);
-		pfh.setParentDeathCause(parentDeathCause);
-		pfh.setParentDeathAge(parentDeathAge);
+		pfh.setFatherStatus(fatherStatus);
+		pfh.setFatherDeathCause(fatherDeathCause);
+		pfh.setFatherDeathAge(fatherDeathAge);
+		pfh.setMotherStatus(motherStatus);
+		pfh.setMotherDeathCause(motherDeathCause);
+		pfh.setMotherDeathAge(motherDeathAge);
 		pfh.setSiblingStatus(siblingStatus);
 		pfh.setSiblingDeathCause(siblingDeathCause);
 		pfh.setSiblingDeathAge(siblingDeathAge);
@@ -677,14 +686,23 @@ public class TriageFormController {
 				
 				queueService.savePatientDrugHistory(patientDrugHistory1);
 				
-				if(patientFamilyHistory1.getParentStatus()==null || patientFamilyHistory1.getParentStatus().equals("")){
-					patientFamilyHistory1.setParentStatus(parentStatus);					
+				if(patientFamilyHistory1.getFatherStatus()==null || patientFamilyHistory1.getFatherStatus().equals("")){
+					patientFamilyHistory1.setFatherStatus(fatherStatus);					
 				}
-				if(patientFamilyHistory1.getParentDeathCause()==null || patientFamilyHistory1.getParentDeathCause().equals("")){
-					patientFamilyHistory1.setParentDeathCause(parentDeathCause);					
+				if(patientFamilyHistory1.getFatherDeathCause()==null || patientFamilyHistory1.getFatherDeathCause().equals("")){
+					patientFamilyHistory1.setFatherDeathCause(fatherDeathCause);					
 				}
-				if(patientFamilyHistory1.getParentDeathAge()==null || patientFamilyHistory1.getParentDeathAge().equals("")){
-					patientFamilyHistory1.setParentDeathAge(parentDeathAge);					
+				if(patientFamilyHistory1.getFatherDeathAge()==null || patientFamilyHistory1.getFatherDeathAge().equals("")){
+					patientFamilyHistory1.setFatherDeathAge(fatherDeathAge);					
+				}
+				if(patientFamilyHistory1.getMotherStatus()==null || patientFamilyHistory1.getMotherStatus().equals("")){
+					patientFamilyHistory1.setMotherStatus(motherStatus);					
+				}
+				if(patientFamilyHistory1.getMotherDeathCause()==null || patientFamilyHistory1.getMotherDeathCause().equals("")){
+					patientFamilyHistory1.setMotherDeathCause(motherDeathCause);					
+				}
+				if(patientFamilyHistory1.getMotherDeathAge()==null || patientFamilyHistory1.getMotherDeathAge().equals("")){
+					patientFamilyHistory1.setMotherDeathAge(motherDeathAge);					
 				}
 				if(patientFamilyHistory1.getSiblingStatus()==null || patientFamilyHistory1.getSiblingStatus().equals("")){
 					patientFamilyHistory1.setSiblingStatus(siblingStatus);
