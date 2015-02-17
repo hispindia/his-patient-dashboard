@@ -1045,43 +1045,43 @@ personal.style.display="inline";
 			<tr><td>&nbsp;</td></tr>
 			<tr>
 				<td>Weight (Kg)</td>
-				<td><input type="text" id="weight" name="weight" size="8">
+				<td><input type="text" id="weight" name="weight" size="8"  maxlength="7">
 				</td>
 			</tr>
 			<tr>
 				<td>Height (cm)</td>
-				<td><input type="text" id="height" name="height" size="8">
+				<td><input type="text" id="height" name="height" size="8"  maxlength="7">
 				</td>
 			</tr>
 			<tr>
 				<td>MUA Circumference(cm)</td>
-				<td><input type="text" id="mua" name="mua" size="8">
+				<td><input type="text" id="mua" name="mua" size="8"  maxlength="7">
 				</td>
 			</tr>
 			<tr>
 				<td>Chest Circumference(cm)</td>
-				<td><input type="text" id="chest" name="chest" size="8"></td>
+				<td><input type="text" id="chest" name="chest" size="8"  maxlength="7"></td>
 			</tr>
 			<tr>
 				<td>Abdominal Circumference(cm)</td>
-				<td><input type="text" id="abdominal" name="abdominal" size="8"></td>
+				<td><input type="text" id="abdominal" name="abdominal" size="8"   maxlength="7"></td>
 			</tr>
 			<tr>
 				<td>Temperature (degree C)</td>
 				<td><input type="text" id="temperature" name="temperature"
-					size="8"></td>
+					size="8"  maxlength="7"></td>
 			</tr>
 			<tr>
 				<td>Systolic B.P</td>
-				<td><input type="text" id="sbp" name="sbp" size="8"></td>
+				<td><input type="text" id="sbp" name="sbp" size="8"  maxlength="7"></td>
 			</tr>
 			<tr>
 				<td>Diastolic B.P</td>
-				<td><input type="text" id="dbp" name="dbp" size="8"></td>
+				<td><input type="text" id="dbp" name="dbp" size="8"  maxlength="7"></td>
 			</tr>
 			<tr>
 				<td>Respiratory Rate</td>
-				<td><input type="text" id="resRate" name="resRate" size="8">
+				<td><input type="text" id="resRate" name="resRate" size="8"  maxlength="7">
 				</td>
 			</tr>
 			<tr>
