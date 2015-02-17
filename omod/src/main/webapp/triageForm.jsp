@@ -733,19 +733,13 @@ personal.style.display="inline";
 						jQuery("#invasiveContraceptionName").attr("disabled", "disabled");
 						jQuery("#invasiveContraceptionName").val("");
 					}
-					else {
-					if( ${visitStatus =='New Patient'}  ){
-						jQuery("#invasiveContraceptionName").removeAttr("disabled");
-					}
+					
 					else{
-							if(${invasiveContraceptionName!=''}){
-								jQuery("#invasiveContraceptionName").attr("disabled", "disabled");
-							}
-							else{
-								jQuery("#invasiveContraceptionName").removeAttr("disabled");
-							}
+						jQuery("#invasiveContraceptionName").removeAttr("disabled");
+					
+							
 					}
-					}
+					
 				};
 
 
