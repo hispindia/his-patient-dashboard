@@ -42,14 +42,14 @@ public class PatientHistoryController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String firstView(
 			@RequestParam(value = "patientId", required = false) Integer patientId,
-			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+			//@RequestParam(value="queueId" ,required=false) Integer queueId ,
 			@RequestParam(value="visitStatus" ,required=false) String visitStatus ,
 			@RequestParam(value="opdId" ,required=false) Integer opdId ,
 			@RequestParam(value="hasEditPrivilige" ,required=false) String hasEditPrivilige ,
 			Model model) {
 		
 		model.addAttribute("patientId", patientId);
-		model.addAttribute("queueId", queueId);
+		//model.addAttribute("queueId", queueId);
 		model.addAttribute("visitStatus", visitStatus);
 		model.addAttribute("opdId", opdId);
 		model.addAttribute("hasEditPrivilige", hasEditPrivilige);
@@ -136,7 +136,7 @@ public class PatientHistoryController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String onUpdate(
 			@RequestParam(value = "patientId", required = false) Integer patientId,
-			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+		//	@RequestParam(value="queueId" ,required=false) Integer queueId ,
 			@RequestParam(value="visitStatus" ,required=false) String visitStatus ,
 			@RequestParam(value="opdId" ,required=false) Integer opdId ,
 			HttpServletRequest request,
@@ -315,7 +315,7 @@ public class PatientHistoryController {
 
 		
 		return "redirect:/module/patientdashboard/main.htm?patientId="+patientId
-		+"&opdId="+opdId+"&visitStatus="+visitStatus+"&queueId="+queueId+"#Patient_history";
+		+"&opdId="+opdId+"&visitStatus="+visitStatus+"#Patient_history";
 	}
 
 }

@@ -18,6 +18,8 @@
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
 --%>
+
+
 <%@page import="org.openmrs.ConceptName"%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="View PatientDashboard"
@@ -99,7 +101,7 @@
 			<%-- ghanshyam,date:8-01-2013 New Requirement #556 [OPD] Add Pharmacy record of patient in OPD for all Bangladesh Hospitals --%>
 			<li><a href="pharmacyRecord.htm?patientId=${patient.patientId }"
 				title="Pharmacy record"><span>Pharmacy record</span> </a></li>
-			<li><a href="patientHistory.htm?patientId=${patientId}&opdId=${opdId}&visitStatus=${visitStatus}&queueId=${queueId}"
+			<li><a href="patientHistory.htm?patientId=${patient.patientId}&opdId=${opd}&visitStatus=${visitStatus}&hasEditPrivilige=${hasEditPrivilige}"
 				title="Patient history"><span>Patient history</span> </a></li>
 		</ul>
 
