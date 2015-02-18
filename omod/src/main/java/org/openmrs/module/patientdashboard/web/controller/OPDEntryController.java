@@ -77,7 +77,6 @@ import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.openmrs.module.hospitalcore.model.Question;
 import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.model.TriagePatientData;
-import org.openmrs.module.hospitalcore.model.TriagePatientQueueLog;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
@@ -308,6 +307,10 @@ public class OPDEntryController {
 		model.addAttribute("symptomIdSet", symptomIdSet);
 		model.addAttribute("diaNameSet", diaNameSet);
 		model.addAttribute("symNameSet", symNameSet);
+		IpdPatientAdmission ipdPatientAdmission=ipds.getIpdPatientAdmissionByPatientId(patient);
+		if (ipdPatientAdmission != null) {
+		model.addAttribute("ipdPatientAdmission", ipdPatientAdmission.getId());
+		}
 		return "module/patientdashboard/opdEntry";
 	}
 

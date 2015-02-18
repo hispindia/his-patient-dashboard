@@ -580,6 +580,12 @@ popClose : true
 
 function validateOnSubmit(){
 var i;
+
+if(document.getElementById('admit').checked && '${ipdPatientAdmission}'!="") {
+alert("Patient already sent for admission");
+return false;
+}
+
 if(selectedProcedureList.length>0){
 for(i=selectedProcedureList.length-1; i>=0; i--){
 var spl=selectedProcedureList.options[i].value;
