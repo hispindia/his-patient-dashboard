@@ -1,3 +1,15 @@
+1.4.0
+- #Vital stats filled by triage user can be seen the dashboard page.
+- #Vital stats are editable by the doctor in dashboard page.
+- #Added final Diagnosis option to save the final Diagnosis by the doctor.
+- #24 hours old Symptom and Diagnosis for the revisiting patient
+- #User is prompted to conclude the visit on clicking of any visit outcome on dashboard.
+- #Doctor who has privilege can edit the history of patients.
+- #Added the validation in patient dashboard module for the patient that is in ipd que for admission
+- #Procedure not scheduling validation
+- #Labsets not displaying under clinical summary and IPD Record
+
+
  1.3.10
  Triage
 - #New Module development- vital statistics and patient history
