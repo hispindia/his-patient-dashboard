@@ -1148,7 +1148,7 @@ function reset()
 <tr>
 <td width="100%">
 <div id="editableDiv">
-<form id="patientHistory"  method="post" action="patientHistory.htm?patientId=${patientId}&opdId=${opdId}&visitStatus=${visitStatus}">
+<form id="patientHistory"  method="post" action="patientHistory.htm?patientId=${patientId}&opdId=${opdId}&visitStatus=${visitStatus}&queueId=${queueId}">
 
 <table id="patientHistory" width="100%">
 				<tr><td width="50%"><b class="boxHeader">Past Medical and Surgical History</b></td>
