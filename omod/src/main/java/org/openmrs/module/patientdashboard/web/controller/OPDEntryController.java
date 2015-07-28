@@ -26,7 +26,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -198,6 +200,12 @@ public class OPDEntryController {
 
 		User user = Context.getAuthenticatedUser();
 		model.addAttribute("user", user);
+		
+		Map<Integer, String> ipdConceptMap = new LinkedHashMap<Integer, String>();
+		for(ConceptAnswer ipdcon:ipdConcept.getAnswers()){
+			ipdConceptMap.put(ipdcon.getAnswerConcept().getId(), ipdcon.getAnswerConcept().getName().toString());
+		}
+		model.addAttribute("ipdConceptMap", ipdConceptMap);
 
 		return "module/patientdashboard/opdEntry";
 	}

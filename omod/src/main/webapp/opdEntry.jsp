@@ -70,6 +70,11 @@ function stopRKey(evt) {
 
 document.onkeypress = stopRKey; 
 
+    var _ipdConceptMap = new Array();
+	<c:forEach var="entry" items="${ipdConceptMap}">
+		_ipdConceptMap[${entry.key}] = "${entry.value}";
+	</c:forEach>
+
 var drugIssuedList = new Array();
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value.toString();
@@ -154,6 +159,21 @@ var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
 if(selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
 
+if(visitOutCome=="Follow-up"){
+var datFollUp=jQuery("#dateFollowUp").val();
+  if(datFollUp==""){
+  alert("Please Enter Follow-up date");
+  return false;
+  }
+ }
+else if(visitOutCome=="Admit"){
+var ipdward=jQuery("#ipdWard").val();
+  if(ipdward==""){
+  alert("Please select ipd ward");
+  return false;
+  }
+ }
+ 
 var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
 
@@ -197,31 +217,55 @@ k++;
 
 
 var otherInstructions = document.getElementById('otherInstructions').value;
+if(otherInstructions!=""){
 jQuery("#printableOtherInstructions").append("<span style='margin:5px;'>" + otherInstructions + "</span>");
+}
+else{
+jQuery("#othInst").hide();
+}
 
 var internalReferral = document.getElementById('internalReferral').value;
 if(internalReferral!=""){
 jQuery("#printableInternalReferral").append("<span style='margin:5px;'>" + internalReferral + "</span>");
+}
+else{
+jQuery("#intRef").hide();
 }
 
 var externalReferral = document.getElementById('externalReferral').value;
 if(externalReferral!=""){
 jQuery("#printableExternalReferral").append("<span style='margin:5px;'>" + externalReferral + "</span>");
 }
+else{
+jQuery("#extRef").hide();
+}
 
-jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
+var dateFollowUp = document.getElementById('dateFollowUp').value;
+if(dateFollowUp!=""){
+jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "    " + "Visit Date:  " + dateFollowUp + "</span>");
+}
+else{
+var ipdward=jQuery("#ipdWard").val();
+  if(ipdward!=""){
+  var selectedIpdName =_ipdConceptMap[ipdward];
+  jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "  -  " + selectedIpdName + "</span>");
+  }
+  else{
+  jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
+  }
+}
 
 jQuery("#printOPDSlip").printArea({
 mode : "popup",
 popClose : true
 });
 
- }
+   }
 }
 </script>
 
 <b class="boxHeader">Opd Form</b>
-<form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" onsubmit="print();">
+<form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" name="opdEntryForm" onsubmit="return print();">
 
 <input type="hidden" name="patientId" value="${patientId }"/>
 <input type="hidden" name="opdId" value="${opd.conceptId }"/>
@@ -467,24 +511,16 @@ popClose : true
 		</center>
 	</tr>
 <tr>
-		<td><strong>Date/Time:</strong></td>
+		<td><strong>Date & Time of the Visit:</strong></td>
 		<td>${currentDateTime}</td>
-	</tr>
-<tr>
-		<td><strong>Name:</strong></td>
-		<td>${patientName}</td>
+		<td><strong>Patient Category:</strong></td>
+		<td>${selectedCategory}</td>
 	</tr>
 <tr>
 		<td><strong>Patient ID:</strong></td>
 		<td>${patient.patientIdentifier.identifier}</td>
-	</tr>
-<tr>
-		<td><strong>Age:</strong></td>
-		<td>${age}</td>
-	</tr>
-<tr>
-		<td><strong>Age Category:</strong></td>
-		<td>${ageCategory}</td>
+		<td><strong>Name:</strong></td>
+		<td>${patientName}</td>
 	</tr>
 <tr>
 		<td><strong>Gender:</strong></td>
@@ -496,33 +532,45 @@ popClose : true
 					Female
 				</c:otherwise>
 			</c:choose></td>
+		<td><strong>Age:</strong></td>
+		<td>${age}</td>
 	</tr>
 <tr>
-		<td><strong>Patient Category:</strong></td>
-		<td>${selectedCategory}</td>
-	</tr>
-<tr>
-		<td><strong>Treating Doctor:</strong></td>
-		<td>${user.personName}</td>
-	</tr>
+<td><strong>OPD Consulted:</strong></td>
+<td>${opd.name}</td>
+</tr>
 </table>
 <table class="box">
+<br />
+<tr>
+<center>
+			<b><font size="2">CLINICAL SUMMARY</font></b>
+		</center>
+</tr>
 <tr><td><strong>History of Present Illness:</strong></td><td><div id="printableHistoryOfPresentIllness"></div></td></tr>
 <tr><td><strong>Provisional Diagnosis:</strong></td><td><div id="printableProvisionalDiagnosis"></div></td></tr>
 <tr><td><strong>Procedure:</strong></td><td><div id="printablePostForProcedure"></div></td></tr>
-<tr><td><strong>Investigation:</strong></td><td><div id="printableInvestigation"></div></td></tr>
+<tr><td><strong>Investigation Advised :</strong></td><td><div id="printableInvestigation"></div></td></tr>
 </table>
 <table class="box">
-<tr><strong><font size="4">Rx</font></strong></tr>
+<br />
+<tr>
+<center>
+			<b><font size="2">TREATMENT ADVISED</font></b>
+		</center>
+</tr>
+<!--
+<tr align="center"><th>--</th><th>--</th><th>--</th><th>--</th><th>--</th><th>--</th></tr>
+-->
 <tr align="center"><th>S.No</th><th>Drug</th><th>Formulation</th><th>Frequency</th><th>No of Days</th><th>Comments</th></tr>
 <tr align="center"><td><div id="printableSlNo"></div></td><td><div id="printableDrug"></div></td><td><div id="printableFormulation"></div></td><td><div id="printableFrequency"></div></td>
 <td><div id="printableNoOfDays"></div></td><td><div id="printableComments"></div></td></tr>
 </table>
 <table class="box">
-<tr><td><strong>Other Instructions:</strong></td><td><div id="printableOtherInstructions"></div></td></tr>
-<tr><td><strong>Internal Referral:</strong></td><td><div id="printableInternalReferral"></div></td></tr>
-<tr><td><strong>External Referral:</strong></td><td><div id="printableExternalReferral"></div></td></tr>
-<tr><td><strong>OPD Visit Outcome:</strong></td><td><strong><div id="printableOPDVisitOutCome"></div></strong></td></tr>
+<tr id="othInst"><td><strong>Other Instructions:</strong></td><td><div id="printableOtherInstructions"></div></td></tr>
+<tr id="intRef"><td><strong>Internal Referral:</strong></td><td><div id="printableInternalReferral"></div></td></tr>
+<tr id="extRef"><td><strong>External Referral:</strong></td><td><div id="printableExternalReferral"></div></td></tr>
+<tr><td><strong>Visit Outcome:</strong></td><td><div id="printableOPDVisitOutCome"></div></td></tr>
 </table>
 <table>
 	<br />
@@ -532,8 +580,13 @@ popClose : true
 	<br />
 	<br />
 	<tr>
-		<p style="text-align: right;">Signature of the Treating Doctor</p>
+		<p style="text-align: right;">${user.personName}</p>
 	</tr>
+	<br />
+	<br />
+	<br />
+	<tr><center>
+			<b><font size="2">Please Note - All follow-up appointments are scheduled between 3:00 -4:00 pm everyday</font></b></center></tr>
 </table>
 </div>     
 </form>

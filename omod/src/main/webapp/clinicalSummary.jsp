@@ -18,6 +18,7 @@
  *
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script type="text/javascript">
 function clinicalSummary(encounterId){
@@ -62,7 +63,7 @@ jQuery("#printClinicalSummary").printArea({
 <table cellpadding="5" cellspacing="0" width="100%">
 <tr>
 	<th><spring:message code="patientdashboard.clinicalSummary.view"/></th>
-	<th><spring:message code="patientdashboard.clinicalSummary.dateOfVisit"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.dateAndTimeOfVisit"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.diagnosis"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.procedures"/></th>
@@ -71,7 +72,10 @@ jQuery("#printClinicalSummary").printArea({
 <c:forEach items="${clinicalSummaries}" var="clinicalSummary" varStatus="varStatus">
 <tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
+	 <%--
 	<td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
+	--%>
+	<td><fmt:formatDate type="both" value="${clinicalSummary.dateOfVisit}" /></td>
 	<td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
 	<td>${clinicalSummary.procedures}</td>

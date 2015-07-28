@@ -231,6 +231,12 @@ DASHBOARD={
 			}else{
 				jQuery(".tdIpdWard").hide();
 			}
+			
+			if(text != null && text !='' && text == 'Follow-up'){
+
+			}else{
+				jQuery("#dateFollowUp").val("");
+			}
 		},
 		backToQueue : function(queueId)
 		{
