@@ -104,7 +104,8 @@ public class PrintClinicalSummaryController {
 		String internal = "";
 		String external = "";
 		String visitOutCome = "";
-		String otherValueOfVisit = "";
+		String followUpDate = "";
+		String ipdAdmissionWard = "";
 		String otherInstructions = "";
 		String illnessHistory = "";
 
@@ -139,7 +140,7 @@ public class PrintClinicalSummaryController {
 						visitOutCome = obs.getValueText();
 						if ("Follow-up".equalsIgnoreCase(visitOutCome)) {
 							try {
-								otherValueOfVisit = formatter.format(obs
+								followUpDate = formatter.format(obs
 										.getValueDatetime());
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -149,7 +150,7 @@ public class PrintClinicalSummaryController {
 							if (obs.getValueCoded() != null) {
 
 								try {
-									otherValueOfVisit = obs.getValueCoded()
+									ipdAdmissionWard = obs.getValueCoded()
 											.getName() + "";
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -220,13 +221,14 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("internal", internal);
 		model.addAttribute("external", external);
 		model.addAttribute("visitOutCome", visitOutCome);
-		model.addAttribute("otherValueOfVisit", otherValueOfVisit);
-		model.addAttribute("otherInstructions", otherInstructions);
+		model.addAttribute("followUpDate", followUpDate);
+		model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
 		model.addAttribute("illnessHistory", illnessHistory);
 		model.addAttribute("diagnosiss", diagnosiss);
 		model.addAttribute("procedures", procedures);
 		model.addAttribute("investigations", investigations);
 		model.addAttribute("opdDrugOrders", opdDrugOrders);
+		model.addAttribute("opdConceptName", opql.getOpdConceptName());
 
 		return "module/patientdashboard/printClinicalSummary";
 	}
