@@ -240,6 +240,8 @@ else{
 jQuery("#extRef").hide();
 }
 
+var admittedStatus='${admittedStatus}';
+if(admittedStatus==""){
 var dateFollowUp = document.getElementById('dateFollowUp').value;
 if(dateFollowUp!=""){
 jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "    " + "Visit Date:  " + dateFollowUp + "</span>");
@@ -253,6 +255,10 @@ var ipdward=jQuery("#ipdWard").val();
   else{
   jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
   }
+ }
+}
+else{
+jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
 }
 
 jQuery("#printOPDSlip").printArea({

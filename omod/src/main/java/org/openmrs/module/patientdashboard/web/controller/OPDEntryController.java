@@ -206,6 +206,13 @@ public class OPDEntryController {
 			ipdConceptMap.put(ipdcon.getAnswerConcept().getId(), ipdcon.getAnswerConcept().getName().toString());
 		}
 		model.addAttribute("ipdConceptMap", ipdConceptMap);
+		
+		IpdService ipdService=Context.getService(IpdService.class);
+		IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(patientId);
+		
+		if (admitted != null) {
+			model.addAttribute("admittedStatus", "Admitted");
+		}
 
 		return "module/patientdashboard/opdEntry";
 	}
