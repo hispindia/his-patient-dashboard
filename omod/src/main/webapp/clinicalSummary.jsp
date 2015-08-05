@@ -73,9 +73,10 @@ jQuery("#printClinicalSummary").printArea({
 <tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
 	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	 <%--
+	<td><fmt:formatDate type="both" value="${clinicalSummary.dateOfVisit}" /></td>
 	<td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
 	--%>
-	<td><fmt:formatDate type="both" value="${clinicalSummary.dateOfVisit}" /></td>
+	<td>${clinicalSummary.dateOfVisit}</td>
 	<td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
 	<td>${clinicalSummary.procedures}</td>

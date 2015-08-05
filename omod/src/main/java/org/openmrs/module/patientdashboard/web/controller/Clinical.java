@@ -20,12 +20,11 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
-import java.util.Date;
 
 public class Clinical {
 
 	private Integer id;
-	private Date dateOfVisit;
+	private String dateOfVisit;
 	private String typeOfVisit;
 	private String treatingDoctor;
 	private String diagnosis;
@@ -37,10 +36,10 @@ public class Clinical {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Date getDateOfVisit() {
+	public String getDateOfVisit() {
 		return dateOfVisit;
 	}
-	public void setDateOfVisit(Date dateOfVisit) {
+	public void setDateOfVisit(String dateOfVisit) {
 		this.dateOfVisit = dateOfVisit;
 	}
 	public String getTypeOfVisit() {

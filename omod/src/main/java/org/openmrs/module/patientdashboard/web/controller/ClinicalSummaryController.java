@@ -20,6 +20,7 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +118,8 @@ public class ClinicalSummaryController {
 			//${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp; ${patient.familyName}
 
 			clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
-			clinical.setDateOfVisit(enc.getDateCreated());
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
+			clinical.setDateOfVisit(sdf.format(enc.getDateCreated()));
 			clinical.setId(enc.getId());
 			clinical.setDiagnosis(diagnosis);
 			clinical.setProcedures(procedure);

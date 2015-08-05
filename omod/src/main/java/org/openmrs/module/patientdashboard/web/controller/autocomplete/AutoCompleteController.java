@@ -164,7 +164,8 @@ public class AutoCompleteController {
 			String internal = "";
 			String external = "";
 			String visitOutCome = "";
-			String otherValueOfVisit = "";
+			String followUpDate = "";
+			String ipdAdmissionWard = "";
 			String otherInstructions = "";
 			String illnessHistory = "";
 			
@@ -190,7 +191,7 @@ public class AutoCompleteController {
 							visitOutCome = obs.getValueText();
 							if("Follow-up".equalsIgnoreCase(visitOutCome)){
 								try {
-									otherValueOfVisit = formatter.format(obs.getValueDatetime());
+									followUpDate = formatter.format(obs.getValueDatetime());
 								} catch (Exception e) {
 									// TODO: handle exception
 									e.printStackTrace();
@@ -200,7 +201,7 @@ public class AutoCompleteController {
 								if(obs.getValueCoded() != null){
 									
 									try {
-										otherValueOfVisit = obs.getValueCoded().getName()+"";
+										ipdAdmissionWard = obs.getValueCoded().getName() + "";
 									} catch (Exception e) {
 										// TODO: handle exception
 										e.printStackTrace();
@@ -292,13 +293,18 @@ public class AutoCompleteController {
 			model.addAttribute("internal", internal);
 			model.addAttribute("external", external);
 			model.addAttribute("visitOutCome", visitOutCome);
-			model.addAttribute("otherValueOfVisit", otherValueOfVisit);
+			model.addAttribute("followUpDate", followUpDate);
+			model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
 			model.addAttribute("otherInstructions", otherInstructions);
 			model.addAttribute("illnessHistory", illnessHistory);
 			model.addAttribute("diagnosiss", diagnosiss);
 			model.addAttribute("procedures", procedures);
 			model.addAttribute("investigations", investigations);
 			model.addAttribute("opdDrugOrders", opdDrugOrders);
+			model.addAttribute("opdConceptName", opql.getOpdConceptName());
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
+			model.addAttribute("dateOfVisit", sdf.format(opql.getCreatedOn()));
 			
 		}
 		return "module/patientdashboard/detailClinical";

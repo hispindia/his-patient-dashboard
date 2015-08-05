@@ -20,23 +20,66 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/headerMinimal.jsp" %>
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+var otherInstructions = '${otherInstructions}';
+if(otherInstructions!=""){
+
+}
+else{
+jQuery("#othInstdc").hide();
+}
+
+var internalReferral = '${internal}';
+if(internalReferral!=""){
+
+}
+else{
+jQuery("#intRefdc").hide();
+}
+
+var externalReferral = '${external}';
+if(externalReferral!=""){
+
+}
+else{
+jQuery("#extRefdc").hide();
+}
+
+
+var dateFollowUp = '${followUpDate}';
+if(dateFollowUp!=""){
+
+}
+else{
+jQuery("#followupdatedc").hide();
+}
+
+var ipdward= '${ipdAdmissionWard}';
+if(ipdward!=""){
+  
+}
+else{
+jQuery("#ipdadmissionwarddc").hide();  
+}
+
+});
+</script>
+
 <span class="boxHeader">Visit Detail</span>
 <table class="box">
 	<tr>
-		<td><strong>Name:</strong></td>
-		<td>${patientName}</td>
+		<td><strong>Date & Time of the Visit:</strong></td>
+		<td>${dateOfVisit}</td>
+		<td><strong>Patient Category:</strong></td>
+		<td>${selectedCategory}</td>
 	</tr>
 	<tr>
 		<td><strong>Patient ID:</strong></td>
 		<td>${patient.patientIdentifier.identifier}</td>
-	</tr>
-	<tr>
-		<td><strong>Age:</strong></td>
-		<td>${age}</td>
-	</tr>
-	<tr>
-		<td><strong>Age Category:</strong></td>
-		<td>${ageCategory}</td>
+		<td><strong>Name:</strong></td>
+		<td>${patientName}</td>
 	</tr>
 	<tr>
 		<td><strong>Gender:</strong></td>
@@ -48,14 +91,12 @@
 					Female
 				</c:otherwise>
 			</c:choose></td>
+		<td><strong>Age:</strong></td>
+		<td>${age}</td>
 	</tr>
 	<tr>
-		<td><strong>Patient Category:</strong></td>
-		<td>${selectedCategory}</td>
-	</tr>
-	<tr>
-		<td><strong>Treating Doctor:</strong></td>
-		<td>${treatingDoctor}</td>
+		<td><strong>OPD Consulted:</strong></td>
+		<td>${opdConceptName}</td>
 	</tr>
 </table>
 
@@ -118,22 +159,43 @@
 </table>
 
 <table class="box">
-	<tr>
+	<tr id="othInstdc">
 		<td><strong>Other Instructions:</strong></td>
 		<td>${otherInstructions}</td>
 	</tr>
-	<tr>
+	<tr id="intRefdc">
 		<td><strong>Internal Referral:</strong></td>
 		<td>${internal}</td>
 	</tr>
-	<tr>
+	<tr id="extRefdc">
 		<td><strong>External Referral:</strong></td>
 		<td>${external}</td>
 	</tr>
 	<tr>
 		<td><strong>OPD Visit Outcome:</strong></td>
-		<td>${visitOutCome}</td>
-		<td><c:if test="${not empty otherValueOfVisit}">${otherValueOfVisit}</c:if>
-		</td>
+		<td>${visitOutCome} -</td>
+		<td id="followupdatedc">${followUpDate}</td>
+		<td id="ipdadmissionwarddc">${ipdAdmissionWard}</td>
+	</tr>
+</table>
+
+<table>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<tr>
+		<p style="text-align: right;">${treatingDoctor}</p>
+	</tr>
+	<br />
+	<br />
+	<br />
+	<tr>
+		<center>
+			<b><font size="2">Please Note - All follow-up appointments
+					are scheduled between 3:00 -4:00 pm everyday</font> </b>
+		</center>
 	</tr>
 </table>
