@@ -586,7 +586,7 @@ popClose : true
 	<br />
 	<br />
 	<tr>
-		<p style="text-align: right;">${user.personName}</p>
+		<p style="text-align: right;">${user.givenName}</p>
 	</tr>
 	<br />
 	<br />
