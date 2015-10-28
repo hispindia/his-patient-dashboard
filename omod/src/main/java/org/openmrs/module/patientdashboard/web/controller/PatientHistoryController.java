@@ -23,8 +23,11 @@ package org.openmrs.module.patientdashboard.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.PatientDrugHistory;
 import org.openmrs.module.hospitalcore.model.PatientFamilyHistory;
 import org.openmrs.module.hospitalcore.model.PatientMedicalHistory;
@@ -43,20 +46,30 @@ public class PatientHistoryController {
 	public String firstView(
 			@RequestParam(value = "patientId", required = false) Integer patientId,
 			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+			@RequestParam(value="opdLogId" ,required=false) Integer opdLogId , 
 			@RequestParam(value="visitStatus" ,required=false) String visitStatus ,
 			@RequestParam(value="opdId" ,required=false) Integer opdId ,
 			@RequestParam(value="hasEditPrivilige" ,required=false) String hasEditPrivilige ,
 			Model model) {
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		
 		model.addAttribute("patientId", patientId);
 		model.addAttribute("queueId", queueId);
+		model.addAttribute("opdLogId", opdLogId);
 		model.addAttribute("visitStatus", visitStatus);
 		model.addAttribute("opdId", opdId);
 		model.addAttribute("hasEditPrivilige", hasEditPrivilige);
 
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
-
+	
+        
 		PatientMedicalHistory patientMedicalHistory = queueService.getPatientHistoryByPatientId(patientId);	
+		if(patientMedicalHistory==null)
+		{
+		   System.out.println("No medical history");	 return "module/patientdashboard/patientHistory";
+		  // return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		model.addAttribute("dateOfCreation", patientMedicalHistory.getCreatedOn());
 		model.addAttribute("existingIllness", patientMedicalHistory.getIllnessExisting());
 		model.addAttribute("existingIllnessProblem", patientMedicalHistory.getIllnessProblem());
@@ -87,8 +100,16 @@ public class PatientHistoryController {
 		model.addAttribute("tetanusMale", patientMedicalHistory.getTetanusMale());
 		model.addAttribute("tetanusFemale", patientMedicalHistory.getTetanusFemale());
 		model.addAttribute("otherVaccinations", patientMedicalHistory.getOtherVaccinations());
-	
+		}
 		PatientDrugHistory patientDrugHistory = queueService.getPatientDrugHistoryByPatientId(patientId);
+		
+		if(patientDrugHistory==null)
+		{
+		   System.out.println("No medical history");	 return "module/patientdashboard/patientHistory";
+		  // return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		model.addAttribute("currentMedication", patientDrugHistory.getCurrentMedication());
 		model.addAttribute("medicationName", patientDrugHistory.getMedicationName());
 		model.addAttribute("medicationPeriod", patientDrugHistory.getMedicationPeriod());
@@ -99,8 +120,15 @@ public class PatientHistoryController {
 		model.addAttribute("sensitiveMedicationSymptom", patientDrugHistory.getSensitiveMedicationSymptom());
 		model.addAttribute("invasiveContraception", patientDrugHistory.getInvasiveContraception());
 		model.addAttribute("invasiveContraceptionName", patientDrugHistory.getInvasiveContraceptionName());
-	
+		}
 		PatientFamilyHistory patientFamilyHistory = queueService.getPatientFamilyHistoryByPatientId(patientId);
+		if(patientFamilyHistory==null)
+		{
+		   System.out.println("No medical history");	 return "module/patientdashboard/patientHistory";
+		  // return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		model.addAttribute("fatherStatus", patientFamilyHistory.getFatherStatus());
 		model.addAttribute("fatherDeathCause", patientFamilyHistory.getFatherDeathCause());
 		model.addAttribute("fatherDeathAge", patientFamilyHistory.getFatherDeathAge());
@@ -111,8 +139,16 @@ public class PatientHistoryController {
 		model.addAttribute("siblingDeathCause", patientFamilyHistory.getSiblingDeathCause());
 		model.addAttribute("siblingDeathAge", patientFamilyHistory.getSiblingDeathAge());
 		model.addAttribute("familyIllnessHistory", patientFamilyHistory.getFamilyIllnessHistory());
+		}
 		
 		PatientPersonalHistory patientPersonalHistory = queueService.getPatientPersonalHistoryByPatientId(patientId);
+		if(patientPersonalHistory==null)
+		{
+		   System.out.println("No medical history");	 return "module/patientdashboard/patientHistory";
+		  // return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		model.addAttribute("smoke", patientPersonalHistory.getSmoke());
 		model.addAttribute("smokeItem", patientPersonalHistory.getSmokeItem());
 		model.addAttribute("smokeAverage", patientPersonalHistory.getSmokeAverage());
@@ -128,7 +164,7 @@ public class PatientHistoryController {
 		model.addAttribute("familyHelp", patientPersonalHistory.getFamilyHelp());
 		model.addAttribute("otherHelp", patientPersonalHistory.getOtherHelp());
 		model.addAttribute("incomeSource", patientPersonalHistory.getIncomeSource());
-		
+		}
 		return "module/patientdashboard/patientHistory";
 	}
 
@@ -137,12 +173,22 @@ public class PatientHistoryController {
 	public String onUpdate(
 			@RequestParam(value = "patientId", required = false) Integer patientId,
 			@RequestParam(value="queueId" ,required=false) Integer queueId ,
+			@RequestParam(value="opdLogId" ,required=false) Integer opdLogId ,
 			@RequestParam(value="visitStatus" ,required=false) String visitStatus ,
 			@RequestParam(value="opdId" ,required=false) Integer opdId ,
 			HttpServletRequest request,
 			Model model)
-	{
+	{       PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		PatientMedicalHistory patientMedicalHistory = queueService.getPatientHistoryByPatientId(patientId);	
+		System.out.println("****"+patientMedicalHistory+"*****");
+		if(patientMedicalHistory==null)
+		{System.out.println("****"+"&&&&");
+			queueService.savePatientMedicalHistory(patientMedicalHistory);
+			return "module/patientdashboard/patientHistory";
+		}
 		
+		else
+		{
 		String existingIllness =request.getParameter("existingIllness");
 		String existingIllnessProblem =request.getParameter("existingIllnessProblem");
 		String existingIllnessLong =request.getParameter("existingIllnessLong");
@@ -175,9 +221,9 @@ public class PatientHistoryController {
 		
 		
 		
-		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		
-		PatientMedicalHistory patientMedicalHistory = queueService.getPatientHistoryByPatientId(patientId);	
+		
+		
 		patientMedicalHistory.setIllnessExisting(existingIllness);
 		patientMedicalHistory.setIllnessProblem(existingIllnessProblem);
 		patientMedicalHistory.setIllnessLong(existingIllnessLong);
@@ -223,12 +269,19 @@ public class PatientHistoryController {
 		patientMedicalHistory.setTetanusFemale(tetanusFemale);
 		patientMedicalHistory.setTetanusMale(tetanusMale);
 		patientMedicalHistory.setOtherVaccinations(otherVaccinations);
-		
+		}
 		
 		
 		queueService.updatePatientHistoryByPatientId(patientMedicalHistory);
 		
 		PatientDrugHistory patientDrugHistory = queueService.getPatientDrugHistoryByPatientId(patientId);
+		if(patientDrugHistory==null)
+		{
+			queueService.savePatientDrugHistory(patientDrugHistory);
+			return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		String currentMedication = request.getParameter("currentMedication");
 		String medicationName = request.getParameter("medicationName");
 		String medicationPeriod = request.getParameter("medicationPeriod");
@@ -250,11 +303,17 @@ public class PatientHistoryController {
 		patientDrugHistory.setSensitiveMedicationSymptom(sensitiveMedicationSymptom);
 		patientDrugHistory.setInvasiveContraception(invasiveContraception);
 		patientDrugHistory.setInvasiveContraceptionName(invasiveContraceptionName);
-		
+		}
 		queueService.updatePatientDrugHistoryByPatientId(patientDrugHistory);
 			
 		PatientFamilyHistory patientFamilyHistory = queueService.getPatientFamilyHistoryByPatientId(patientId);
-			
+		if(patientFamilyHistory==null)
+		{
+			queueService.savePatientFamilyHistory(patientFamilyHistory);
+			return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		String fatherStatus = request.getParameter("fatherStatus");
 		String fatherDeathCause = request.getParameter("fatherDeathCause");
 		String fatherDeathAge = request.getParameter("fatherDeathAge");
@@ -275,10 +334,17 @@ public class PatientHistoryController {
 		patientFamilyHistory.setSiblingDeathCause(siblingDeathCause);
 		patientFamilyHistory.setSiblingDeathAge(siblingDeathAge);
 		patientFamilyHistory.setFamilyIllnessHistory(familyIllnessHistory);
-		
+		}
 		queueService.updatePatientFamilyHistoryByPatientId(patientFamilyHistory);
 			
 		PatientPersonalHistory patientPersonalHistory = queueService.getPatientPersonalHistoryByPatientId(patientId);
+		if(patientPersonalHistory==null)
+		{
+			queueService.savePatientPersonalHistory(patientPersonalHistory);
+			return "module/patientdashboard/patientHistory";
+		}
+		else
+		{
 		String smoke = request.getParameter("smoke");
 		String smokeItem = request.getParameter("smokeItem");
 		String smokeAverage = request.getParameter("smokeAverage");
@@ -310,12 +376,27 @@ public class PatientHistoryController {
 		patientPersonalHistory.setFamilyHelp(familyHelp);
 		patientPersonalHistory.setOtherHelp(otherHelp);
 		patientPersonalHistory.setIncomeSource(incomeSource);
-		
+		}
 		queueService.updatePatientPersonalHistoryByPatientId(patientPersonalHistory);
-		
-
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		OpdPatientQueue opq = queueService.getOpdPatientQueue(patient
+				.getPatientIdentifier().getIdentifier(), opdId);
+	
+		OpdPatientQueueLog opql = queueService.getOpdPatientQueueLog(patient.getPatientIdentifier().getIdentifier(), opdId);
+      if(opq==null){
 		return "redirect:/module/patientdashboard/main.htm?patientId="+patientId
-		+"&opdId="+opdId+"&visitStatus="+visitStatus+"&queueId="+queueId;
+				+"&opdId="+opdId+"&visitStatus="+visitStatus+"&opdLogId="
+						+ opql.getId();
+      }
+      else
+      {
+    	  return "redirect:/module/patientdashboard/main.htm?patientId="
+					+ opq.getPatient().getPatientId() + "&opdId="
+					+ opq.getOpdConcept().getConceptId() + "&visitStatus="
+				+ opq.getVisitStatus() + "&queueId="
+					+ opq.getId();
+      }
+      
 	}
 
 }
