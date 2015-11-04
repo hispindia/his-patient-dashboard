@@ -76,10 +76,11 @@
 		</tr>
 	</table>
 	<div id="tabs">
-		<ul>
+	
+		<ul>   <c:if test="${(empty ob)||(create == 0)}">
 			<li><a
 				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&queueId=${queueId}"
-				title="OPD entry"><span> Clinical Notes</span> </a></li>
+				title="OPD entry"><span> Clinical Notes</span> </a></li> </c:if>
 			<li><a
 				href="clinicalSummary.htm?patientId=${patient.patientId }"
 				title="Clinical summary"><span>Clinical Summary</span> </a></li>
