@@ -91,6 +91,13 @@
 			symptom concept name
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.examinationConcept</property>
+		<defaultValue>examination</defaultValue>
+		<description>
+			examination concept name
+		</description>
+	</globalProperty>
  	<globalProperty>
 		<property>@MODULE_ID@.provisionalDiagnosisConcept</property>
 		<defaultValue>Provisional diagnosis</defaultValue>
