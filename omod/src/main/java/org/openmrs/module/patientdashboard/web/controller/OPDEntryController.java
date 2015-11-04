@@ -62,6 +62,7 @@ import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
+import org.openmrs.module.hospitalcore.model.Examination;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
@@ -168,7 +169,13 @@ public class OPDEntryController {
 			Collections.sort(symptomList, new ConceptComparator());
 		}
 		model.addAttribute("symptomList", symptomList);
-
+        //Examination 
+		List<Concept> examinationList = patientDashboardService
+				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[4]);
+		if (CollectionUtils.isNotEmpty( examinationList )) {
+			Collections.sort( examinationList , new ConceptComparator());
+		}
+		model.addAttribute(" examinationList ",  examinationList );
 		// ghanshyam 12-june-2013 New Requirement #1635 User should be able to
 		// send pharmacy orders to issue drugs to a patient from dashboard
 		List<Concept> drugFrequencyConcept = inventoryCommonService
@@ -302,11 +309,26 @@ public class OPDEntryController {
 		{
 			symNameSet.add((itr1.next().toString()).replaceAll(",", "@"));
 		}
-		
+		//Examination
+		List<Obs> examination= queueService.getAllExamination(personId);
+		Set<Concept> examinationIdSet = new LinkedHashSet<Concept>();
+		Set<ConceptName> examinationNameSet = new LinkedHashSet<ConceptName>();
+		for(Obs examp:examination){
+			examinationIdSet.add(examp.getValueCoded());
+			 examinationNameSet.add(examp.getValueCoded().getName());
+		}
+		Set<String> exmNameSet = new LinkedHashSet<String>();
+		Iterator i = examinationNameSet.iterator();
+		while(i.hasNext())
+		{
+			exmNameSet.add((i.next().toString()).replaceAll(",", "@"));
+		}
 		model.addAttribute("diagnosisIdSet", diagnosisIdSet);
 		model.addAttribute("symptomIdSet", symptomIdSet);
 		model.addAttribute("diaNameSet", diaNameSet);
 		model.addAttribute("symNameSet", symNameSet);
+		model.addAttribute("examinationIdSet", examinationIdSet);
+		model.addAttribute("exmNameSet",exmNameSet);
 		IpdPatientAdmission ipdPatientAdmission=ipds.getIpdPatientAdmissionByPatientId(patient);
 		if (ipdPatientAdmission != null) {
 		model.addAttribute("ipdPatientAdmission", ipdPatientAdmission.getId());
@@ -319,6 +341,7 @@ public class OPDEntryController {
 			OPDEntryCommand command,
 			HttpServletRequest request,
 			@RequestParam(value = "syptomIdList", required = false) String[] syptomIdList,
+			@RequestParam(value = "exminationIdList", required = false) String[] exminationIdList,
 			@RequestParam(value = "drugOrder", required = false) String[] drugOrder,
 			@RequestParam(value = "opdLogId", required = false) Integer opdLogId,
 			@RequestParam(value = "lastMenstrualPeriod", required = false) Date lastMenstrualPeriod)
@@ -407,6 +430,8 @@ public class OPDEntryController {
 		ConceptService conceptService = Context.getConceptService();
 		GlobalProperty gpSymptom = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_SYMPTOM);
+		GlobalProperty gpExamination = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXAMINATION);
 		GlobalProperty gpDiagnosis = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
 		GlobalProperty procedure = administrationService
@@ -422,6 +447,8 @@ public class OPDEntryController {
 
 		Concept cSymptom = conceptService.getConceptByName(gpSymptom
 				.getPropertyValue());
+		Concept cExamination = conceptService.getConceptByName(gpExamination
+				.getPropertyValue());
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis
 				.getPropertyValue());
 		Concept cFinalDiagnosis = conceptService.getConcept("FINAL DIAGNOSIS");
@@ -435,6 +462,7 @@ public class OPDEntryController {
 			throw new Exception("Symptom concept null");
 		}
 		// symptom
+		System.out.println("post of symptom"+command.getSelectedSymptomList());
 		for (Integer cId : command.getSelectedSymptomList()) {
 			Obs obsSymptom = new Obs();
 			obsSymptom.setObsGroup(obsGroup);
@@ -445,6 +473,23 @@ public class OPDEntryController {
 			obsSymptom.setEncounter(encounter);
 			obsSymptom.setPatient(patient);
 			encounter.addObs(obsSymptom);
+		}
+		//Examination
+		if (cExamination == null) {
+			throw new Exception("Examination concept null");
+		}
+		
+	
+		for (Integer cId : command.getSelectedExaminationList()) {
+			Obs obsExamination = new Obs();
+			obsExamination.setObsGroup(obsGroup);
+			obsExamination.setConcept(cExamination);
+			obsExamination.setValueCoded(conceptService.getConcept(cId));
+			obsExamination.setCreator(user);
+			obsExamination.setDateCreated(date);
+			obsExamination.setEncounter(encounter);
+			obsExamination.setPatient(patient);
+			encounter.addObs(obsExamination);
 		}
 
 		if (cDiagnosis == null) {
@@ -930,6 +975,7 @@ public class OPDEntryController {
 							.getServiceByConceptId(pId);
 					String OTscheduleDate = request
 							.getParameter(pId.toString());
+				
 					OpdTestOrder opdTestOrder = new OpdTestOrder();
 					opdTestOrder.setPatient(patient);
 					opdTestOrder.setEncounter(encounter);
@@ -1097,6 +1143,7 @@ public class OPDEntryController {
 		}
 
 		// symptom
+		System.out.println("Symptom is printed");
 		Symptom symptom = new Symptom();
 		Question question = new Question();
 		Answer answer = new Answer();
@@ -1157,7 +1204,68 @@ public class OPDEntryController {
 				}
 			}
 		}
-		
+		//Examination 
+		System.out.println("Symptom is printed");
+		Examination examination = new Examination();
+		Question quest = new Question();
+		Answer ans= new Answer();
+		for (String exminationId : exminationIdList) {
+			String exmId = request.getParameter(exminationId);
+			if (exmId != null) {
+				examination.setEncounters(encounter);
+				examination.setExaminationConcept(Context.getConceptService()
+						.getConcept(Integer.parseInt(exminationId)));
+				examination.setCreatedDate(new Date());
+				examination.setCreator(Context.getAuthenticatedUser());
+				Examination exm = patientDashboardService.saveExamination(examination);
+				Collection<ConceptAnswer> conceptAnswers = Context
+						.getConceptService()
+						.getConcept(Integer.parseInt(exminationId)).getAnswers();
+
+				for (ConceptAnswer conceptAnswer : conceptAnswers) {
+					if (conceptAnswer.getAnswerConcept().getDatatype()
+							.isCoded()) {
+						String aa = request.getParameter(exminationId
+								+ ":"
+								+ conceptAnswer.getAnswerConcept()
+										.getConceptId().toString() + ":"
+								+ "radioOption");
+						if (aa != null) {
+							quest.setExamination(exm);
+							quest.setQuestionConcept(conceptAnswer
+									.getAnswerConcept());
+							Question que = patientDashboardService
+									.saveQuestion(quest);
+
+							Integer ghi = Integer.parseInt(aa);
+							ans.setQuestion(que);
+							ans.setAnswerConcept(Context.getConceptService()
+									.getConcept(ghi));
+							ans.setFreeText(null);
+							patientDashboardService.saveAnswer(ans);
+						}
+					} else {
+						String jkl = request.getParameter(exminationId
+								+ ":"
+								+ conceptAnswer.getAnswerConcept()
+										.getConceptId().toString() + ":"
+								+ "textFieldQues");
+						if (!jkl.equals("")) {
+							quest.setExamination(exm);
+							quest.setQuestionConcept(conceptAnswer
+									.getAnswerConcept());
+							Question que = patientDashboardService
+									.saveQuestion(question);
+
+							ans.setQuestion(que);
+							ans.setAnswerConcept(null);
+							ans.setFreeText(jkl);
+							patientDashboardService.saveAnswer(ans);
+						}
+					}
+				}
+			}
+		}
 		if(null!=encounter && encounter.getEncounterType().getName().equals("OPDENCOUNTER"))
 		{
 			

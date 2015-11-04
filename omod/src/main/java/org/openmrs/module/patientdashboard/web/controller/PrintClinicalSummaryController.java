@@ -129,6 +129,7 @@ public class PrintClinicalSummaryController {
 				.getConceptByName("History of Present Illness");
 
 		List<Concept> symptoms = new ArrayList<Concept>();
+		List<Concept> examination = new ArrayList<Concept>();
 		List<Concept> diagnosiss = new ArrayList<Concept>();
 		List<Concept> procedures = new ArrayList<Concept>();
 		List<Concept> investigations = new ArrayList<Concept>();
@@ -182,6 +183,11 @@ public class PrintClinicalSummaryController {
 								.equals("Symptom")) {
 							symptoms.add(obs.getValueCoded());
 						}
+						
+							if (obs.getValueCoded().getConceptClass().getName()
+									.equals("EXAMINATION")) {
+								examination.add(obs.getValueCoded());
+							}
 						if (obs.getValueCoded().getConceptClass().getName()
 								.equals("Diagnosis")) {
 							diagnosiss.add(obs.getValueCoded());
@@ -237,6 +243,7 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("otherInstructions", otherInstructions);
 		model.addAttribute("illnessHistory", illnessHistory);
 		model.addAttribute("symptoms", symptoms);
+		model.addAttribute("examination", examination);
 		model.addAttribute("diagnosiss", diagnosiss);
 		model.addAttribute("procedures", procedures);
 		model.addAttribute("investigations", investigations);

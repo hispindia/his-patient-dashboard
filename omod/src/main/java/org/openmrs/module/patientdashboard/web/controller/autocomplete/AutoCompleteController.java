@@ -28,7 +28,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
@@ -48,6 +50,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.Answer;
+import org.openmrs.module.hospitalcore.model.Examination;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
@@ -137,6 +140,15 @@ public class AutoCompleteController {
 		model.addAttribute("symptom", symptom);
 		return "/module/patientdashboard/autocomplete/comboboxSymptom";
 	}
+	//Examination
+	@RequestMapping(value="/module/patientdashboard/comboboxExamination.htm", method=RequestMethod.GET)
+	public String comboboxExamination(@RequestParam(value="text",required=false) String text, Model model) {
+		List<Concept> examination = new ArrayList<Concept>();
+		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+		 examination = dashboardService.searchExamination(text);
+		model.addAttribute(" examination",  examination);
+		return "/module/patientdashboard/autocomplete/comboboxExamination";
+	}
 	
 	@RequestMapping(value="/module/patientdashboard/comboboxDianosis.htm", method=RequestMethod.GET)
 	public String comboboxDianosis(@RequestParam(value="text",required=false) String text, Model model) {
@@ -196,6 +208,7 @@ public class AutoCompleteController {
 			
 			Concept conIllnessHistory = conceptService.getConceptByName("History of Present Illness");
 			List<Concept> symptoms = new ArrayList<Concept>();
+			List<Concept> examinations = new ArrayList<Concept>();
 			List<Concept> diagnosiss = new ArrayList<Concept>();
 			List<Concept> procedures = new ArrayList<Concept>();
 			List<Concept> investigations = new ArrayList<Concept>();
@@ -242,6 +255,9 @@ public class AutoCompleteController {
 						if (obs.getValueCoded() != null) {
 							if (obs.getValueCoded().getConceptClass().getName().equals("Symptom")) {
 								symptoms.add(obs.getValueCoded());
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("EXAMINATION")) {
+								examinations.add(obs.getValueCoded());
 							}
 							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
 								diagnosiss.add(obs.getValueCoded());
@@ -329,6 +345,7 @@ public class AutoCompleteController {
 			model.addAttribute("otherInstructions", otherInstructions);
 			model.addAttribute("illnessHistory", illnessHistory);
 			model.addAttribute("symptoms", symptoms);
+			model.addAttribute("examinations", examinations);
 			model.addAttribute("diagnosiss", diagnosiss);
 			model.addAttribute("procedures", procedures);
 			model.addAttribute("investigations", investigations);
@@ -391,7 +408,37 @@ public class AutoCompleteController {
 		}
 		return "module/patientdashboard/symptomDetail";
 	}
-	
+	//Examination
+	@RequestMapping(value="/module/patientdashboard/examinationDetails.htm", method=RequestMethod.GET)
+	public String examinationDetails(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if(id != null){
+		    PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			EncounterService encounterService = Context.getEncounterService();
+			Encounter encounters =encounterService.getEncounter(id);
+			List<Examination> examinations=dashboardService.getExamination(encounters);
+			List<String> al=new ArrayList<String>();
+			Map<String,Collection<Question>> exminationquestionanswer=new LinkedHashMap<String,Collection<Question>>();
+			Map<Question,String> questionanswer=new LinkedHashMap<Question,String>();
+			for(Examination examination:examinations){
+				al.add(examination.getExaminationConcept().getName().toString());
+				Collection<Question> questions=dashboardService.getQuestion(examination);
+				exminationquestionanswer.put( examination.getExaminationConcept().getName().toString(), (Collection<Question>) questions);
+				for(Question question:questions){
+					Answer answer=dashboardService.getAnswer(question);
+					if(answer.getAnswerConcept()!=null){
+					questionanswer.put(question, answer.getAnswerConcept().getName().toString());
+					}
+					else{
+						questionanswer.put(question, answer.getFreeText());
+					}
+				}
+			}
+			model.addAttribute("al", al);
+			model.addAttribute("exminationquestionanswer", exminationquestionanswer);
+			model.addAttribute("questionanswer", questionanswer);
+		}
+		return "module/patientdashboard/examinationDetail";
+	}
 	@RequestMapping(value="/module/patientdashboard/currentVitalStatistic.htm", method=RequestMethod.GET)
 	public String currentVitalStatistic(@RequestParam(value="id",required=false) Integer id, Model model) {
 		if(id != null){
@@ -408,7 +455,13 @@ public class AutoCompleteController {
 		model.addAttribute("symptom",symptom);
 		return "module/patientdashboard/autocomplete/autoCompleteSymptom";
 	}
-	
+	//Examination
+	@RequestMapping(value="/module/patientdashboard/autoCompleteExamination.htm", method=RequestMethod.GET)
+	public String autoCompleteExamination(@RequestParam(value="q",required=false) String name, Model model) {
+		List<Concept> examination = Context.getService(PatientDashboardService.class).searchExamination(name);
+		model.addAttribute("examination",examination);
+		return "module/patientdashboard/autocomplete/autoCompleteExamination";
+	}
 	@RequestMapping(value="/module/patientdashboard/autoCompleteDiagnosis.htm", method=RequestMethod.GET)
 	public String autoCompleteDiagnosis(@RequestParam(value="q",required=false) String name, Model model) {
 		List<Concept> diagnosis = Context.getService(PatientDashboardService.class).searchDiagnosis(name);
@@ -525,6 +578,7 @@ public class AutoCompleteController {
 			
 			Concept conIllnessHistory = conceptService.getConceptByName("History of Present Illness");
 			List<Obs> symptoms = new ArrayList<Obs>();
+			List<Obs> examinations = new ArrayList<Obs>();
 			List<Obs> diagnosiss = new ArrayList<Obs>();
 			List<Obs> procedures = new ArrayList<Obs>();
 			List<Obs> investigations = new ArrayList<Obs>();
@@ -570,6 +624,9 @@ public class AutoCompleteController {
 						
 						if (obs.getValueCoded() != null) {
 							if (obs.getValueCoded().getConceptClass().getName().equals("Symptom")) {
+								symptoms.add(obs);
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("EXAMINATION")) {
 								symptoms.add(obs);
 							}
 							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
@@ -659,6 +716,7 @@ public class AutoCompleteController {
 			model.addAttribute("otherInstructions", otherInstructions);
 			model.addAttribute("illnessHistory", illnessHistory);
 			model.addAttribute("symptoms", symptoms);
+			model.addAttribute("examinations", examinations);
 			model.addAttribute("diagnosiss", diagnosiss);
 			model.addAttribute("procedures", procedures);
 			model.addAttribute("investigations", investigations);

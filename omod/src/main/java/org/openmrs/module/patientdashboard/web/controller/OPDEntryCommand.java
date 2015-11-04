@@ -27,6 +27,7 @@ public class OPDEntryCommand {
 	private Integer[] selectedSymptomList;
 	private Integer[] selectedDiagnosisList;
 	private Integer[] selectedProcedureList;
+	private Integer[] selectedExaminationList;
 	//ghanshyam 1-june-2013 New Requirement #1633 User must be able to send investigation orders from dashboard to billing
 	private Integer[] selectedInvestigationList;
 	private Integer patientId;
@@ -109,6 +110,12 @@ public class OPDEntryCommand {
 	public void setSelectedSymptomList(Integer[] selectedSymptomList) {
 		this.selectedSymptomList = selectedSymptomList;
 	}
+	public Integer[] getSelectedExaminationList() {
+		return selectedExaminationList;
+	}
+	public void setSelectedExaminationList(Integer[] selectedExaminationList) {
+		this.selectedExaminationList = selectedExaminationList;
+	}
 	public Integer[] getSelectedDiagnosisList() {
 		return selectedDiagnosisList;
 	}
@@ -182,5 +189,5 @@ public class OPDEntryCommand {
 	public void setOpdLogId(Integer opdLogId) {
 		this.opdLogId = opdLogId;
 	}
-		
+
 }
