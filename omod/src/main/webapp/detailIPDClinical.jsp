@@ -86,6 +86,16 @@
 		<td></c:forEach>
 	</tr>
 	<tr>
+		<td><strong>Physical Examination:</strong></td>
+		<c:forEach items="${examinations}" var="examination">
+			</td>
+			<td>${examination.valueCoded.name}</td>
+			<td><fmt:formatDate value="${examination.dateCreated}" pattern="dd-MM-yyyy HH:mm:ss" /></td>
+	</tr>
+	<tr>
+		<td></c:forEach>
+	</tr>
+	<tr>
 		<td><strong>Provisional Diagnosis:</strong></td>
 		<c:forEach items="${diagnosiss}" var="diagnosis">
 			</td>

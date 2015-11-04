@@ -79,6 +79,15 @@
 		<td></c:forEach>
 	</tr>
 	<tr>
+		<td><strong>Physical Examination:</strong></td>
+		<c:forEach items="${examinations}" var="examination">
+			</td>
+			<td>${examination.name}</td>
+	</tr>
+	<tr>
+		<td></c:forEach>
+	</tr>
+	<tr>
 		<td><strong>Provisional Diagnosis:</strong></td>
 		<c:forEach items="${diagnosiss}" var="diagnosis">
 			</td>

@@ -277,8 +277,52 @@ jQuery("#bloodGroup").click(function() {
 		}		
 			
 }
+	//Examination
+	function loadSelectedExaminationList()
+	{
+		if(${examinationIdSet}.length > 0)
+		{
+
+		var exmIdToBeAdded = ('${examinationIdSet}')
+		var exmNameToBeAdded = ('${exmNameSet}')
+		exmIdToBeAdded = exmIdToBeAdded.substr(1);
+		exmIdToBeAdded = exmIdToBeAdded.substr(0,exmIdToBeAdded.length - 1);	
+		exmNameToBeAdded = exmNameToBeAdded.substr(1);
+		exmNameToBeAdded = exmNameToBeAdded.substring(0, exmNameToBeAdded.length - 1);	
+		var eIdArr = exmIdToBeAdded.split(",");
+		var eNameArr = exmNameToBeAdded.split(",");
+		
+		var sel = $("#selectedExaminationList");
+		var abc="";
+		var selectedExamination = new Array();
+		for (var i = 0; i < eIdArr.length; i++)
+		{ 	
+			 eNameArr[i] = eNameArr[i].replaceAll("@", ",");
+			 sel.append("<option value='"+eIdArr[i].trim()+"'>"+eNameArr[i].trim()+"</option>");
+		     var n = eIdArr[i].trim().toString(); 
+		     selectedExamination.push(n);
+			 abc = abc.concat(n);
+			 abc = abc.concat(",");
+		}  
 	
 	
+	     
+	   	 jQuery.ajax({
+			type : "GET",	
+			url : getContextPath() + "/module/patientdashboard/getQuest.htm",
+			data : ({
+				selectedExamination		: abc
+			}),
+			success : function(data) {
+				jQuery("#questDiv").html(data);	
+				
+			}
+			
+			
+			});
+		}		
+			
+}
 
 
 function loadSelectedDiagnosisList()
@@ -304,6 +348,7 @@ function loadSelectedDiagnosisList()
 }
 
 	loadSelectedSymptomList();
+	loadSelectedExaminationList();
 	loadSelectedDiagnosisList();
 	
 	   
@@ -466,7 +511,31 @@ jQuery.ajax({
 			}
 			});
 }
-
+//Examination
+function getQuest(){
+	var selLen = selectedExaminationList.length;
+	var i;
+	var selectedExamination = new Array();
+	var dat1;
+	var abc="";
+	for(i=selLen-1; i>=0; i--){
+	var dat1=selectedExaminationList[i].value;
+	var n = dat1.toString(); 
+	selectedExamination.push(n);
+	abc = abc.concat(n);
+	abc = abc.concat(",");
+	}
+	jQuery.ajax({
+				type : "GET",	
+				url : getContextPath() + "/module/patientdashboard/getQuest.htm",
+				data : ({
+					selectedExamination		: abc
+				}),
+				success : function(data) {
+					jQuery("#questDiv").html(data);	
+				}
+				});
+	}
 function removeSymptom(){
 var selLen = selectedSymptomList.length;
 var i;
@@ -478,12 +547,26 @@ $('spltswhs').remove();
 }
 getQuestion();
 }
-
+//Examination
+function removeExamination(){
+var selLen = selectedExaminationList.length;
+var i;
+for(i=selLen-1; i>=0; i--){
+var dat1=selectedExaminationList[i].value;
+var splts=dat1.toString();
+var spltswhs="#".concat(splts); 
+$('spltswhs').remove();
+}
+getQuest();
+}
 function viewQuestion(){
 var url = "#TB_inline?height=500&width=1000&inlineId=questionDiv";
 tb_show("View Question",url,false);
 }
-
+function viewQuest(){
+	var url = "#TB_inline?height=500&width=1000&inlineId=questDiv";
+	tb_show("View Question",url,false);
+	}
 // Print the slip
 function print(){
 var submitStatus=0;
@@ -693,7 +776,50 @@ return true;
 									value="View Question" onclick="viewQuestion();"/>
 							</td>
 					</tr>
-					
+					<!--Examination-->
+					<tr>
+						<td colspan="3"><strong>Physical Examination:</strong><em>*</em>
+							<input
+							class="ui-autocomplete-input ui-widget-content ui-corner-all"
+							id="examination" title="${opd.conceptId}" style="width: 460px"
+							name="examination" /></td>
+					</tr>
+					<tr>
+						<td>
+							<!-- List of all available DataElements -->
+							<div id="divAvailableExaminationList">
+								<select size="4" style="width: 550px"
+									id="availableExaminationList" name="availableExaminationList"
+									multiple="multiple" style="min-width:25em;height:10em"
+									ondblclick="moveSelectedById( 'availableExaminationList', 'selectedExaminationList');getQuest();">
+									<c:forEach items="${examinationList}" var="examination">
+										<option value="${examination.id}">${examination.name}</option>
+									</c:forEach>
+								</select>
+							</div></td>
+						<td><input type="button" value="&gt;"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							style="width: 50px"
+							onclick="moveSelectedById( 'availableExaminationList', 'selectedExaminationList');getQuest();" /><br />
+							<input type="button" value="&lt;"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							style="width: 50px"
+							onclick="moveSelectedById( 'selectedExaminationList', 'availableExaminationList');removeExamination()" />
+						</td>
+						<td>
+							<!-- List of all selected DataElements --> <select
+							id="selectedExaminationList" size="4" style="width: 550px"
+							name="selectedExaminationList" multiple="multiple"
+							style="min-width:25em;height:10em"
+							ondblclick="moveSelectedById( 'selectedExaminationList', 'availableExaminationList' );removeExamination();">
+						</select></td>
+						<td>
+						<input type="button"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									value="View Question" onclick="viewQuest();"/>
+							</td>
+					</tr>
+					<!--Diagnosis-->
 					
 					<tr>
 					    <td colspan="3">
@@ -1154,6 +1280,10 @@ return true;
 		
 	</div>
 <div id="questionDiv" style="visibility:hidden;">
+<table id="tableQuestion">
+</table>
+</div>
+<div id="questDiv" style="visibility:hidden;">
 <table id="tableQuestion">
 </table>
 </div>

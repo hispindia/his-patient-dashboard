@@ -65,6 +65,7 @@ jQuery("#printClinicalSummary").printArea({
 	<th><spring:message code="patientdashboard.clinicalSummary.viewVisitDetails"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.vitalStatistics"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.symptomlDetails"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.examDetail"/></th>
 	<th></th>
 </tr>
 
@@ -74,6 +75,7 @@ jQuery("#printClinicalSummary").printArea({
 	<td><a href="#" onclick="DASHBOARD.detailClinical('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>View details</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.examDetail('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td><a href="#" onclick="clinicalSummary('${ clinicalSummary.id}');"><small>Print</small></a> </td>
 	</tr>
 

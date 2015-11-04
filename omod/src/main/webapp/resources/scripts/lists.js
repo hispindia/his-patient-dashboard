@@ -40,6 +40,7 @@ function deleteValue( theSel, theIndex ) {
  * @param targetListId the id of the target list.
  */
 function moveSelectedById( fromListId, targetListId ) {
+
     var fromList = document.getElementById( fromListId );
     var targetList = document.getElementById( targetListId );
     pl=targetListId;
@@ -53,7 +54,7 @@ function moveSelectedById( fromListId, targetListId ) {
  * @param targetList the target list.
  */
 function moveSelected( fromList, targetList ) {
-
+	
     if ( fromList.selectedIndex == -1 ) {
         return;
     }

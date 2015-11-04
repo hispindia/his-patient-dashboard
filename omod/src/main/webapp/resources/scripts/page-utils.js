@@ -43,6 +43,26 @@ DASHBOARD={
 				}
 			}
 		},
+		onChangeExamination : function(id)
+		{
+			var text = jQuery("#"+id).val();
+			if(text != null && text != ''){
+				if(SESSION.checkSession()){
+					var data = jQuery.ajax(
+							{
+								type:"GET"
+								,url: "comboboxExamination.htm"
+								,data: ({text: text})	
+								,async: false
+								, cache : false
+							}).responseText;
+					if(data != undefined  && data != null && data != ''){
+						jQuery("#divAvailableExaminationList").html("");
+						jQuery("#divAvailableExaminationList").html(data);
+					}
+				}
+			}
+		},
 		onChangeDianosis : function(id)
 		{
 			var text = jQuery("#"+id).val();
@@ -110,6 +130,9 @@ DASHBOARD={
 			    jQuery('#selectedSymptomList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
+			    jQuery('#selectedExaminationList option').each(function(i) {  
+					 jQuery(this).attr("selected", "selected");  
+				});
 				jQuery('#selectedDiagnosisList option').each(function(i) {  
 					 jQuery(this).attr("selected", "selected");  
 				}); 
@@ -140,6 +163,13 @@ DASHBOARD={
 		{
 			if(SESSION.checkSession()){
 				url = "symptomDetails.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				tb_show(" ",url,false);
+			}
+		},
+		examDetails : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "examinationDetail.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
 				tb_show(" ",url,false);
 			}
 		},
@@ -207,7 +237,43 @@ DASHBOARD={
 					}
 				}
 			}
-			
+			if(container == 'examination'){
+				var exists = false;
+				jQuery('#selectedExaminationList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				if(exists){
+					alert('The examination has already been selected');
+					return false;
+				}
+				exists = false;
+				jQuery('#availableExaminationList option').each(function(){
+				    if (this.value == id) {
+				        exists = true;
+				        return false;
+				    }
+				});
+				jQuery("#examination").val("");
+				if(exists){
+					jQuery("#availableExaminationList option[value=" +id+ "]").appendTo("#selectedExaminationList");
+					jQuery("#availableExaminationList option[value=" +id+ "]").remove();
+					getQuest();
+				}else{
+					jQuery('#selectedExaminationList').append('<option value="' + id + '">' + name + '</option>');
+					getQuest();
+					if(confirm("Do you want to add this examination to the list of examinations for this OPD?"))
+					{
+						jQuery.ajax({
+							  type: 'POST',
+							  url: 'addConceptToWard.htm',
+							  data: {opdId: jQuery("#"+container).attr("title"), conceptId: id, typeConcept: 5}
+							});
+					}
+				}
+			}
 			if(container == 'diagnosis'){
 				
 				var exists = false;
@@ -368,6 +434,9 @@ ADMITTED = {
 		},
 		submitIpdFinalResult : function(){
 		    jQuery('#selectedSymptomList option').each(function(i) {  
+				 jQuery(this).attr("selected", "selected");  
+			}); 
+		    jQuery('#selectedExamiantionList option').each(function(i) {  
 				 jQuery(this).attr("selected", "selected");  
 			}); 
 			jQuery('#selectedDiagnosisList option').each(function(i) {  
