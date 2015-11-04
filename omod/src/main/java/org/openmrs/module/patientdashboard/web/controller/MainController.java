@@ -20,6 +20,7 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -198,6 +199,20 @@ public class MainController {
 		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
 		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
 		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
+		if(ob==null)
+		{
+			System.out.println("New Patient");
+			return "module/patientdashboard/main";
+		}else
+		{
+		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    String created = sdf.format(ob.getDateCreated());
+			String sft= sdf.format(new Date())	;
+			int value=sft.compareTo(created);
+			System.out.println("****"+ created+"*******"+ sft+"*****");
+			System.out.println("****"+value);
+			  model.addAttribute("create", value);
+			  }
 		model.addAttribute("ob", ob);
 		
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
