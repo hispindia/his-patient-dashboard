@@ -34,20 +34,18 @@
 				<span style="background-color:red; color:white">Admitted patient</span>				
 			</c:if>
 		</td>
-		<td width="30%"><b>Location:</b> ${opd.name } </td>
+		<td width="30%"><b>OPD Name:</b> ${opd.name } </td>
 	</tr>
 	<tr>
-		<td width="40%"><b>Name:</b> ${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp; ${patient.familyName}</td>
+		<td width="40%"><b>Name:</b> ${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}</td>
 		<td width="30%"><b>Age:</b> ${age }</td>
 		<td width="30%"><b>Gender:</b> ${patient.gender }</td>
 	</tr>
 	<!-- ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,PatientTemporary category is not being displayed-->
 	<tr>
-		<td width="40%"><b>Patient category:</b> ${patientCategory} -
-		<c:forEach items="${observation}" var="observation">
-			${observation.valueText} 
-		</c:forEach>
-		</td>
+		
+		
+		
 		<td width="30%"><b>Age category:</b> ${ageCategory }</td>
 		<td width="30%"><b>Visit Status:</b>
 		<!-- June 20th 2012 - Thai Chuong supported for issue #45 -->
