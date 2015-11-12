@@ -12,6 +12,9 @@
 	<description>
 			Patient Dashboard
 	</description>
+	
+	<!--Ndisha changes, adding module description-->
+	<id>@MODULE_DESCRIPTION@</id>
 
 	<activator>@MODULE_PACKAGE@.PatientDashboardActivator</activator>
 	<require_modules>
