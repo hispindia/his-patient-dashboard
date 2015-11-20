@@ -564,7 +564,7 @@ var url = "#TB_inline?height=500&width=1000&inlineId=questionDiv";
 tb_show("View Question",url,false);
 }
 function viewQuest(){
-	var url = "#TB_inline?height=700&width=1500&inlineId=questDiv";
+	var url = "#TB_inline?height=500&width=1450&inlineId=questDiv";
 	tb_show("View Question",url,false);
 	}
 // Print the slip

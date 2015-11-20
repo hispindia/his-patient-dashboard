@@ -34,7 +34,7 @@
 						</tr>
 						<c:forEach items="${ exminationquestionanswer[a]}" var="sqa">
 							<tr>
-								<td><font font-size: 1pt>${sqa.answerConcept.name}</font></td>
+								<td><font font-size: 1pt><strong>${sqa.answerConcept.name}</strong></font></td>&nbsp;&nbsp;
 								<c:choose>
 								<c:when test="${not empty  exminationquestionanswer2[sqa.answerConcept.conceptId]}">
 								<c:forEach items="${ exminationquestionanswer2[sqa.answerConcept.conceptId]}" var="ac">
@@ -43,6 +43,12 @@
 								
 								<td><input type="hidden" name="${a}" id="${a}" value="${a}"/></td>
 								<td align="top"><font font-size: 0.5pt><label>${ac.answerConcept.name}</label><input type="text" id="${a}:${sqa.answerConcept.conceptId}:${ac.answerConcept.conceptId}" name="${a}:${sqa.answerConcept.conceptId}"></input></font></td>
+								</c:when>
+								<c:when test="${(ac.answerConcept.datatype.name == 'Numeric')}">
+								
+								<td><input type="hidden" name="${a}" id="${a}" value="${a}"/></td>
+								<label for="display-name">
+								<td align="top"><font font-size:  0.5pt><label>${ac.answerConcept.name}</label><input type="text" id="${a}:${sqa.answerConcept.conceptId}:${ac.answerConcept.conceptId}" name="${a}:${sqa.answerConcept.conceptId}"></input></font></td>
 								</c:when>
 								<c:otherwise>
 								
@@ -53,6 +59,12 @@
 								</c:forEach>
 								</c:when>
 								<c:when test="${(sqa.answerConcept.datatype.name == 'Text')}">
+								
+								<td><input type="hidden" name="${a}" id="${a}" value="${a}"/></td>
+								<label for="display-name">
+								<td align="top"><font font-size:  0.5pt><input type="text" id="${a}:${sqa.answerConcept.conceptId}:${ac.answerConcept.conceptId}" name="${a}:${sqa.answerConcept.conceptId}">${ac.answerConcept.name}</input></font></td>
+								</c:when>
+								<c:when test="${(sqa.answerConcept.datatype.name == 'Numeric')}">
 								
 								<td><input type="hidden" name="${a}" id="${a}" value="${a}"/></td>
 								<label for="display-name">
