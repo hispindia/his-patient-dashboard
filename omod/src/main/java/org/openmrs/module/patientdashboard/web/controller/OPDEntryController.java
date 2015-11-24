@@ -733,7 +733,9 @@ public class OPDEntryController {
 			OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
 					.getQueueId());
 			OpdPatientQueueLog queueLog = new OpdPatientQueueLog();
+			
 			queueLog.setOpdConcept(queue.getOpdConcept());
+			
 			queueLog.setOpdConceptName(queue.getOpdConceptName());
 			queueLog.setPatient(queue.getPatient());
 			queueLog.setCreatedOn(queue.getCreatedOn());
@@ -1189,6 +1191,7 @@ public class OPDEntryController {
 										.getConceptId().toString() + ":"
 								+ "textFieldQues");
 						if (!jkl.equals("")) {
+						//	System.out.println("XXXXXX is printed");
 							question.setSymptom(sym);
 							question.setQuestionConcept(conceptAnswer
 									.getAnswerConcept());
@@ -1250,7 +1253,8 @@ public class OPDEntryController {
 								+ conceptAnswer.getAnswerConcept()
 										.getConceptId().toString() + ":"
 								+ "textFieldQues");
-						if (!jkl.equals("")) {
+						if (jkl !=null && !jkl.equals("")) {
+							System.out.println("XXXXXX is printed");
 							quest.setExamination(exm);
 							quest.setQuestionConcept(conceptAnswer
 									.getAnswerConcept());

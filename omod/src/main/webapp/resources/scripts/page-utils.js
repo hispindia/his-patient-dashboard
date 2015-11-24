@@ -169,7 +169,7 @@ DASHBOARD={
 		examDetails : function(id)
 		{
 			if(SESSION.checkSession()){
-				url = "examinationDetail.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
+				url = "examinationDetails.htm?id="+id+"&keepThis=false&TB_iframe=true&height=300&width=500";
 				tb_show(" ",url,false);
 			}
 		},
