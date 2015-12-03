@@ -77,7 +77,7 @@
 	</table>
 	<div id="tabs">
 	
-		<ul>   <c:if test="${(empty ob)||(create == 0)}">
+		<ul>   <c:if test="${(empty ob)||(create == 0)||(creates==0)}">
 			<li><a
 				href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&queueId=${queueId}"
 				title="OPD entry"><span> Clinical Notes</span> </a></li> </c:if>

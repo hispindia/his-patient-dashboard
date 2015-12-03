@@ -199,19 +199,32 @@ public class MainController {
 		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
 		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
 		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
+		System.out.println("ob printed"+ob);
 		if(ob==null)
 		{
 			System.out.println("New Patient");
 			return "module/patientdashboard/main";
-		}else
-		{
+		}else 
+		{ HospitalCoreService hcss = Context.getService(HospitalCoreService.class);
 		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		    String created = sdf.format(ob.getDateCreated());
+		    String created = sdf.format(ob.getObsDatetime());
+		    String changed = sdf.format(patient.getDateChanged());
+		    String h = sdf.format(hcss.getLastVisitTime(patient));
 			String sft= sdf.format(new Date())	;
 			int value=sft.compareTo(created);
+			int value1= sft.compareTo(changed);
+			System.out.println("created"+ created);
+			System.out.println("todays date"+ sft);
+			System.out.println("changed"+ changed);
+			System.out.println("h"+ h);
+
 			System.out.println("****"+ created+"*******"+ sft+"*****");
-			System.out.println("****"+value);
+			System.out.println("&&&&&"+ changed+"&&&&&"+ sft+"&&&&&&");
+            System.out.println("****"+value);
+			System.out.println("&&&&"+value1);
 			  model.addAttribute("create", value);
+			  model.addAttribute("creates", value1);
+
 			  }
 		model.addAttribute("ob", ob);
 		
