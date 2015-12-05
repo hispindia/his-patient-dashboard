@@ -417,7 +417,12 @@ public class OPDEntryController {
 			OpdPatientQueueLog opdPatientQueueLog = queueService
 					.getOpdPatientQueueLogById(opdLogId);
 			IpdPatientAdmissionLog ipdPatientAdmissionLog=ipdService.getIpdPatientAdmissionLog(opdPatientQueueLog);
-			encounter = ipdPatientAdmissionLog.getIpdEncounter();
+			if(ipdPatientAdmissionLog!=null){
+				encounter = ipdPatientAdmissionLog.getIpdEncounter();
+				}
+				else{
+					encounter = opdPatientQueueLog.getEncounter();
+				}
 		} else {
 			encounter.setPatient(patient);
 			encounter.setCreator(user);
