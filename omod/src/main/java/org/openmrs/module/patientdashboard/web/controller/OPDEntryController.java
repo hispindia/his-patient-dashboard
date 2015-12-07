@@ -1150,7 +1150,7 @@ public class OPDEntryController {
 		}
 
 		// symptom
-		System.out.println("Symptom is printed");
+		//System.out.println("Symptom is printed");
 		Symptom symptom = new Symptom();
 		Question question = new Question();
 		Answer answer = new Answer();
@@ -1213,7 +1213,7 @@ public class OPDEntryController {
 			}
 		}
 		//Examination 
-		System.out.println("Symptom is printed");
+		//System.out.println("Symptom is printed");
 		Examination examination = new Examination();
 		Question quest = new Question();
 		Answer ans= new Answer();
@@ -1232,7 +1232,8 @@ public class OPDEntryController {
 
 				for (ConceptAnswer conceptAnswer : conceptAnswers) {
 					if (conceptAnswer.getAnswerConcept().getDatatype()
-							.isCoded()) {
+							.isCoded()  || conceptAnswer.getAnswerConcept().getDatatype()
+							.isAnswerOnly()) {
 						String aa = request.getParameter(exminationId
 								+ ":"
 								+ conceptAnswer.getAnswerConcept()
@@ -1245,7 +1246,7 @@ public class OPDEntryController {
 							Question que = patientDashboardService
 									.saveQuestion(quest);
 
-							Integer ghi = Integer.parseInt(aa);
+							String ghi = aa;
 							ans.setQuestion(que);
 							ans.setAnswerConcept(Context.getConceptService()
 									.getConcept(ghi));
@@ -1259,7 +1260,7 @@ public class OPDEntryController {
 										.getConceptId().toString() + ":"
 								+ "textFieldQues");
 						if (jkl !=null && !jkl.equals("")) {
-							System.out.println("XXXXXX is printed");
+							//System.out.println("XXXXXX is printed");
 							quest.setExamination(exm);
 							quest.setQuestionConcept(conceptAnswer
 									.getAnswerConcept());
