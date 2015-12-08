@@ -216,37 +216,20 @@ public class MainController {
 			System.out.println("New Patient");
 			return "module/patientdashboard/main";
 		}else 
-		{ HospitalCoreService hcss = Context.getService(HospitalCoreService.class);
+		{
 		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    String created = sdf.format(ob.getObsDatetime());
 		    String changed = sdf.format(patient.getDateChanged());
-		    String h = sdf.format(hcss.getLastVisitTime(patient));
 			String sft= sdf.format(new Date())	;
 			int value=sft.compareTo(created);
 			int value1= sft.compareTo(changed);
-			System.out.println("created"+ created);
-			System.out.println("todays date"+ sft);
-			System.out.println("changed"+ changed);
-			System.out.println("h"+ h);
-
-			System.out.println("****"+ created+"*******"+ sft+"*****");
-			System.out.println("&&&&&"+ changed+"&&&&&"+ sft+"&&&&&&");
-            System.out.println("****"+value);
-			System.out.println("&&&&"+value1);
 			  model.addAttribute("create", value);
 			  model.addAttribute("creates", value1);
 
 			  }
 		model.addAttribute("ob", ob);
 		
-		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
-		 for (PersonAttribute pa : pas) {
-			 PersonAttributeType attributeType = pa.getAttributeType(); 
-			 if(attributeType.getPersonAttributeTypeId()==14){
-				 model.addAttribute("selectedCategory",pa.getValue()); 
-			 }
-		 }
+
 		
 		 
 		 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
