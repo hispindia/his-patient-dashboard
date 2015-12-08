@@ -66,7 +66,8 @@
 			</td>
 			--%>
 			<td width="40%"><b>Payment Category:</b> ${selectedCategory }</td>
-			<td width="30%"><b>Visit Status:</b> ${visitStatus }</td>
+			<td width="30%"><b>Visit Status:</b><c:choose><c:when test="${not empty revisit}">
+		REVISIT </c:when><c:otherwise>${visitStatus}</c:otherwise></c:choose></td>
 			<td width="30%"><b>Previous Visit:</b> 
 			<c:if test="${not empty ob }">
 			<openmrs:formatDate date="${ob.obsDatetime }" /> at ${opdPatientQueueLog.opdConceptName}

@@ -193,7 +193,18 @@ public class MainController {
 		if (admitted != null) {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		 for (PersonAttribute pa : pas) {
+			 PersonAttributeType attributeType = pa.getAttributeType(); 
+			 System.out.println("pa.getAttributeType()"+attributeType.getPersonAttributeTypeId() );
+			 if(attributeType.getPersonAttributeTypeId()==14){
+				 System.out.println("pa value"+pa.getValue());
+				 model.addAttribute("selectedCategory",pa.getValue()); 
+						 
+			 }
 		
+		 }
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		Encounter enc=queueService.getLastOPDEncounter(patient);
 		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
@@ -256,7 +267,11 @@ public class MainController {
 			
 		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
 		     
-		 
+		  if(o.getConcept().getId()!=null)
+		     {
+		    	 model.addAttribute("revisit","revisit");
+		     }
+
 		Boolean dead = patient.getDead();
 		if(dead.equals(true)){
 			//return "module/patientdashboard/main";
