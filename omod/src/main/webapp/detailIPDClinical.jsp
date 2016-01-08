@@ -87,7 +87,7 @@
 	</tr>
 	<tr>
 		<td><strong>Physical Examination:</strong></td>
-		<c:forEach items="${examination}" var="examinations">
+		<c:forEach items="${examinations}" var="examinations">
 			</td>
 			<td>${examinations.valueCoded.name}</td>
 			<td><fmt:formatDate value="${examinations.dateCreated}" pattern="dd-MM-yyyy HH:mm:ss" /></td>

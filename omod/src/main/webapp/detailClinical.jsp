@@ -80,7 +80,7 @@
 	</tr>
 	<tr>
 		<td><strong>Physical Examination:</strong></td>
-		<c:forEach items="${examination}" var="examinations">
+		<c:forEach items="${examinations}" var="examinations">
 			</td>
 			<td>${examinations.name}</td>
 	</tr>
