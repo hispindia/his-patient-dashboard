@@ -61,6 +61,91 @@
 	padding: 0.48em 0 0.47em 0.45em;
 }
 </style>
+
+<%--New Requirement "Editable Dashboard" --%>
+<script type="text/javascript">
+function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+<script type="text/javascript">
+jQuery(document).ready( 
+		function() {
+function loadSelectedDiagnosisList()
+{
+	if(${diagnosisIdSet}.length > 0)
+	{
+	var diagIdToBeAdded = ('${diagnosisIdSet}');
+	
+	var diagNameToBeAdded = ('${diaNameSet}');
+
+	diagIdToBeAdded = diagIdToBeAdded.substr(1);
+	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
+	diagNameToBeAdded = diagNameToBeAdded.substr(1);
+	diagNameToBeAdded = diagNameToBeAdded.substring(0, diagNameToBeAdded.length - 1);	
+	var dIdArr = diagIdToBeAdded.split(",");
+	var dNameArr = diagNameToBeAdded.split(",");
+	
+	var sdl = $("#selectedDiagnosisList");
+	for (var i = 0; i < dIdArr.length; i++)
+	{ 
+		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
+		
+	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+   	}
+   	}
+}
+loadSelectedDiagnosisList();
+		});
+</script>
+<script type="text/javascript">
+function radio_fSelected()
+{
+	$("#lblPrompt").show();
+	
+}
+
+function removePrompt()
+{
+	$("#lblPrompt").hide();
+	
+}
+
+function removeSelectedDia()
+{
+$("#selectedDiagnosisList").empty();
+}
+
+function loadSelectedDiagnosisList()
+{
+	if(${diagnosisIdSet}.length > 0)
+	{
+	var diagIdToBeAdded = ('${diagnosisIdSet}');
+	
+	var diagNameToBeAdded = ('${diaNameSet}');
+	
+	diagIdToBeAdded = diagIdToBeAdded.substr(1);
+	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
+	diagNameToBeAdded = diagNameToBeAdded.substr(1);
+	diagNameToBeAdded = diagNameToBeAdded.substring(0, diagNameToBeAdded.length - 1);	
+	var dIdArr = diagIdToBeAdded.split(",");
+	var dNameArr = diagNameToBeAdded.split(",");
+	
+	var sdl = $("#selectedDiagnosisList");
+	for (var i = 0; i < dIdArr.length; i++)
+	{ 
+		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
+		
+	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+   	}
+   	}
+}
+
+</script>
+
 <script type="text/javascript">
 function stopRKey(evt) {
   var evt = (evt) ? evt : ((event) ? event : null);
@@ -177,6 +262,7 @@ var ipdward=jQuery("#ipdWard").val();
 var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
 
+//Diagnosis
 var selDiagLen = selectedDiagnosisList.length;
 for(i=selDiagLen-1; i>=0; i--){
 var diag=selectedDiagnosisList[i].text;
@@ -289,7 +375,18 @@ popClose : true
    <strong>History of Present Illness:</strong>
    <input type="text" id="historyOfPresentIlness" name="historyOfPresentIlness" size="200" style="width: 1000px; height: 50px" class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"/></td></tr>
 	<tr><td colspan="3">
-	<strong>Provisional Diagnosis:</strong><em>*</em>
+	
+	<%--New Requirement "Final & Provisional Diagnosis" ~Wasib--%>
+	<strong>PROVISIONAL DIAGNOSIS</strong></div>
+						</td>
+					</tr>
+					<tr>
+					     <td colspan="3"><div id="diag">
+							<input type="radio" name="radio_dia" value="prov_dia" checked="checked" id="prov_dia"
+								 	onclick="loadSelectedDiagnosisList();"/><strong>Provisional</strong>
+							<input type="radio" name="radio_dia" value="final_dia" id="final_dia"
+									onclick="removeSelectedDia();"/><strong>Final</strong>&nbsp;&nbsp;
+	<strong>Diagnosis:</strong><em>*</em>
 	<input class="ui-autocomplete-input ui-widget-content ui-corner-all" id="diagnosis" title="${opd.conceptId}" style="width:390px" name="diagnosis"/>
 	</td>
 	</tr>
@@ -305,8 +402,10 @@ popClose : true
           </div>
         </td>
         <td>
+        <div id="dgn">
         	<input type="button" value="&gt;" class="ui-button ui-widget ui-state-default ui-corner-all"  style="width:50px" onclick="moveSelectedById( 'availableDiagnosisList', 'selectedDiagnosisList');"/><br/>
             <input type="button" value="&lt;" class="ui-button ui-widget ui-state-default ui-corner-all" style="width:50px" onclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList');"/><br/>
+		</div>
 		</td>			
         <td>
           <!-- List of all selected DataElements -->
@@ -314,6 +413,7 @@ popClose : true
           </select>
         </td>
   </tr>
+  
   
   <tr><td colspan="3">
 	<div class="ui-widget">
@@ -547,6 +647,8 @@ popClose : true
 </tr>
 </table>
 <table class="box">
+<tr><td><strong>Provisional Diagnosis:</strong></td><td><div id="printableProvisionalDiagnosis"></div></td></tr>
+
 <br />
 <tr>
 <center>

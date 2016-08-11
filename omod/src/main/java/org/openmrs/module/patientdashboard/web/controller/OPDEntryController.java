@@ -20,15 +20,19 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+//New Requirement "Editable Dashboard" //
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +41,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
@@ -131,6 +136,7 @@ public class OPDEntryController {
 		 */
 		List<Concept> diagnosisList = patientDashboardService
 				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[0]);
+		
 		if (CollectionUtils.isNotEmpty(diagnosisList)) {
 			Collections.sort(diagnosisList, new ConceptComparator());
 		}
@@ -200,6 +206,37 @@ public class OPDEntryController {
 
 		User user = Context.getAuthenticatedUser();
 		model.addAttribute("user", user);
+		
+		//New Requirement "Editable Dashboard" //
+		PatientQueueService queueService = Context
+				.getService(PatientQueueService.class);
+		
+		Patient p = new Patient(patientId);
+		Integer personId = p.getPersonId();
+		Encounter enc= queueService.getLastOPDEncounter(patient);
+		List<Obs> diagnosis= queueService.getAllDiagnosis(personId);
+		Set<Concept> diagnosisIdSet = new LinkedHashSet<Concept>();
+		Set<ConceptName> diagnosisNameSet = new LinkedHashSet<ConceptName>();
+		 
+		for(Obs diagnos:diagnosis){
+			if(diagnos.getEncounter().getId().equals(enc.getEncounterId()))
+			{
+				
+				diagnosisIdSet.add(diagnos.getValueCoded());
+				diagnosisNameSet.add(diagnos.getValueCoded().getName());
+				
+			}
+			
+		 }
+		Set<String> diaNameSet = new LinkedHashSet<String>();
+		Iterator itr = diagnosisNameSet.iterator();
+		while(itr.hasNext())
+		{
+			diaNameSet.add((itr.next().toString()).replaceAll(",", "@"));
+			
+		}
+		model.addAttribute("diagnosisIdSet", diagnosisIdSet);
+		model.addAttribute("diaNameSet", diaNameSet);
 		
 		Map<Integer, String> ipdConceptMap = new LinkedHashMap<Integer, String>();
 		for(ConceptAnswer ipdcon:ipdConcept.getAnswers()){
@@ -320,9 +357,12 @@ public class OPDEntryController {
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
 		GlobalProperty externalReferral = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
-
-		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis
-				.getPropertyValue());
+		
+		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis.getPropertyValue());
+		
+		//New Requirement "Final & Provisional Diagnosis" //
+		Concept cFinalDiagnosis = conceptService.getConcept("FINAL DIAGNOSIS");
+		
 		Concept chopi=Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
 		Concept cOtherIntructions=Context.getConceptService().getConcept("OTHER INSTRUCTIONS");
 
@@ -330,16 +370,26 @@ public class OPDEntryController {
 			throw new Exception("Diagnosis concept null");
 		}
 		// diagnosis
+		//New Requirement "Final & Provisional Diagnosis" //
+		String selectedDia = request.getParameter("radio_dia");
 		for (Integer cId : command.getSelectedDiagnosisList()) {
+			
 			Obs obsDiagnosis = new Obs();
 			obsDiagnosis.setObsGroup(obsGroup);
-			obsDiagnosis.setConcept(cDiagnosis);
+			if(selectedDia.equals("prov_dia")){
+				obsDiagnosis.setConcept(cDiagnosis);
+				
+			}
+			else{
+				obsDiagnosis.setConcept(cFinalDiagnosis);
+				
+			}
 			obsDiagnosis.setValueCoded(conceptService.getConcept(cId));
+			
 			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
 			obsDiagnosis.setPatient(patient);
-
 			encounter.addObs(obsDiagnosis);
 		}
 		// historyOfPresentIllness

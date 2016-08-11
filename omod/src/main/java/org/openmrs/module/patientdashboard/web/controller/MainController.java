@@ -20,6 +20,8 @@
 
 package org.openmrs.module.patientdashboard.web.controller;
 
+//New Requirement "Editable Dashboard" ~//
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -37,6 +39,10 @@ import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
+import org.openmrs.Privilege;
+import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
@@ -183,6 +189,57 @@ public class MainController {
 		if (admitted != null) {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
+		
+		//New Requirement "Editable Dashboard"//
+		
+		PatientQueueService queueService = Context.getService(PatientQueueService.class);
+		Encounter enc=queueService.getLastOPDEncounter(patient);
+		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
+		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
+		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("Visit outcome"),enc);
+		
+		if(ob==null)
+		{
+			
+			return "module/patientdashboard/main";
+		}else 
+		{
+		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    String created = sdf.format(ob.getObsDatetime());
+		//    String changed = sdf.format(patient.getDateChanged());
+			String sft= sdf.format(new Date())	;
+			int value=sft.compareTo(created);
+		//	int value1= sft.compareTo(changed);
+			  model.addAttribute("create", value);
+		//	  model.addAttribute("creates", value1);
+
+			  }
+		model.addAttribute("ob", ob);
+		
+		 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
+			Set<Role> userRole = loggedInUser.getAllRoles();
+			Set<Privilege> userPrivileges = (Set<Privilege>) loggedInUser.getPrivileges();
+			 String hasEditPrivilige = "no";
+			  
+			  Iterator iteratorPrivileges = userPrivileges.iterator(); 
+		      
+		      String priv= "Edit Patient by Doctor";
+		      while (iteratorPrivileges.hasNext()){
+			         if(priv.equalsIgnoreCase(iteratorPrivileges.next().toString()))
+				      {
+			        	 hasEditPrivilige = "yes";
+				     }
+			        
+			      }
+			
+		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
+		     
+		  if(ob.getConcept().getId()!=null)
+		     {
+		    	 model.addAttribute("revisit","revisit");
+		     }
+		
+	
 		
 		//ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
 		Boolean dead = patient.getDead();

@@ -186,6 +186,11 @@ public class PrintClinicalSummaryController {
 								.equals("LabSet")) {
 							investigations.add(obs.getValueCoded());
 						}
+						//New Requirement "Final & Provisional Diagnosis" //
+						if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("PROVISIONAL DIAGNOSIS"))||(obs.getConcept().isNamed("FINAL DIAGNOSIS"))) {
+							diagnosiss.add(obs.getValueCoded());
+							
+						}
 					}
 
 				}

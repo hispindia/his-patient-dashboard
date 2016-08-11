@@ -108,8 +108,8 @@ public class AutoCompleteController {
 		List<Concept> diagnosis = new ArrayList<Concept>();
 		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
 		diagnosis = dashboardService.searchDiagnosis(name);
-		System.out.println("come here: "+name);
 		model.addAttribute("diagnosis", diagnosis);
+		
 		return "/module/patientdashboard/autocomplete/autoCompleteProvisionalDianosis";
 	}
 	
@@ -231,6 +231,11 @@ public class AutoCompleteController {
 							if (obs.getValueCoded().getConceptClass().getName()
 									.equals("LabSet")) {
 								investigations.add(obs.getValueCoded());
+							}
+							//New Requirement "Final & Provisional Diagnosis" //
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("PROVISIONAL DIAGNOSIS"))||(obs.getConcept().isNamed("FINAL DIAGNOSIS"))) {
+								diagnosiss.add(obs.getValueCoded());
+								
 							}
 						}
 
