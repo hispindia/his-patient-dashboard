@@ -63,8 +63,18 @@
 </table>
 <div id="tabs">
 <%--New Requirement "Editable Dashboard" --%>
-     <ul>	<c:if test="${(empty ob)||(create == 0)}">
-         <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li> </c:if>
+     <ul>	<c:choose>
+     <c:when test="${ empty admittedStatus }">
+      <c:if test="${(empty ob)||(create == 0) ||(creates==0)}" >
+       <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
+      </c:if>
+     </c:when>
+     <c:otherwise>
+      <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
+     </c:otherwise>
+          </c:choose>
+ 
+         
          <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical summary</span></a></li> 
 
          <%-- ghanshyam,date:22-april-2013 Support #1408 change in the Dashboard Tab 'Investigation report' to 'Laboratory record' for all hospital of india module
