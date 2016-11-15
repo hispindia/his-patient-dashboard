@@ -195,30 +195,29 @@ public class MainController {
 		
 		PatientQueueService queueService = Context.getService(PatientQueueService.class);
 		Encounter enc=queueService.getLastOPDEncounter(patient);
+	
 		OpdPatientQueueLog opdPatientQueueLog=queueService.getOpdPatientQueueLogByEncounter(enc);
 		model.addAttribute("opdPatientQueueLog", opdPatientQueueLog);
-		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("Visit outcome"),enc);
-		
-		
-		if(ob==null)
+		if(encounter!=null)
 		{
-			
-			return "module/patientdashboard/main";
-		}else 
-		{  	
-			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		    String created = sdf.format(ob.getObsDatetime());
-		   String changed = sdf.format(hcs.getLastVisitTime(patient.getId()));
-		  
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String created = sdf.format(encounter.getEncounterDatetime());
 			String sft= sdf.format(new Date())	;
-			int value=sft.compareTo(created);
-			int value1= sft.compareTo(changed);
-			  model.addAttribute("create", value);
-			  model.addAttribute("creates", value1);
+		int value=sft.compareTo(created);
+	
+		  model.addAttribute("createNew", value);
+		 
 		}
-			  
-		model.addAttribute("ob", ob);
+		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
+				if(ob==null)
+				{
+					return "module/patientdashboard/main";
+				}
+				else
+				{
+					model.addAttribute("ob", ob);
+				}
+		
 		
 		 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
 			Set<Role> userRole = loggedInUser.getAllRoles();

@@ -65,27 +65,27 @@
 <%--New Requirement "Editable Dashboard" --%>
      <ul>	<c:choose>
      <c:when test="${ empty admittedStatus }">
-      <c:if test="${(empty ob)||(create == 0) ||(creates==0)}" >
-       <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
+      <c:if test="${createNew==0}" >
+       <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > Clinical Notes</span></a></li>
       </c:if>
      </c:when>
      <c:otherwise>
-      <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > OPD entry</span></a></li>
+      <li><a href="opdEntry.htm?patientId=${patient.patientId }&opdId=${opd.conceptId }&referralId=${referral.conceptId }&queueId=${queueId}"  title="OPD entry"><span > Clinical Notes</span></a></li>
      </c:otherwise>
           </c:choose>
  
          
-         <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical summary</span></a></li> 
+         <li><a href="clinicalSummary.htm?patientId=${patient.patientId }"   title="Clinical summary"><span>Clinical Summary</span></a></li> 
 
          <%-- ghanshyam,date:22-april-2013 Support #1408 change in the Dashboard Tab 'Investigation report' to 'Laboratory record' for all hospital of india module
               renamed title and tab name from "Investigation report" to "Laboratory record"
          --%>
-         <li><a href="investigationReport.htm?patientId=${patient.patientId }"  title="Laboratory record"><span >Laboratory record</span></a></li>
+         <li><a href="investigationReport.htm?patientId=${patient.patientId }"  title="Laboratory record"><span >Laboratory Record</span></a></li>
          <%-- ghanshyam,date:10-april-2013 New Requirement #1302[PatientDashboard] Add Radiology record of patient in patientdashboard(india module) --%>
-         <li><a href="radiologyRecord.htm?patientId=${patient.patientId }" title="Radiology record"><span>Radiology record</span> </a></li>
-         <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD record</span></a></li>
+         <li><a href="radiologyRecord.htm?patientId=${patient.patientId }" title="Radiology record"><span>Radiology Record</span> </a></li>
+         <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD Record</span></a></li>
          <%-- ghanshyam,date:18-april-2013 New Requirement #1391 [Patient Dashboard] Add Pharmacy record of patient in Dashboard(in all hospital of india module) --%>
-		 <li><a href="pharmacyRecord.htm?patientId=${patient.patientId }" title="Pharmacy record"><span>Pharmacy record</span> </a></li>
+		 <li><a href="pharmacyRecord.htm?patientId=${patient.patientId }" title="Pharmacy record"><span>Pharmacy Record</span> </a></li>
      </ul>
      
      <div id="OPD_entry"></div>
