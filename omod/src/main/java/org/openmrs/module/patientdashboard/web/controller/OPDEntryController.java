@@ -48,6 +48,7 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
@@ -69,6 +70,7 @@ import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
+import org.openmrs.module.hospitalcore.model.LabTest;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
@@ -185,7 +187,7 @@ public class OPDEntryController {
 
 		model.addAttribute("patient", patient);
 		model.addAttribute("patientName", patientName);
-
+       Person person=Context.getPersonService().getPerson(patientId);
 		Date birthday = patient.getBirthdate();
 		model.addAttribute("age", PatientUtils.estimateAge(birthday));
 		model.addAttribute("ageCategory", PatientUtils.estimateAgeCategory(birthday));
@@ -203,7 +205,7 @@ public class OPDEntryController {
 			 */
 
 		}
-
+        
 		User user = Context.getAuthenticatedUser();
 		model.addAttribute("user", user);
 		
@@ -251,7 +253,7 @@ public class OPDEntryController {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
 
-		return "module/patientdashboard/opdEntry";
+        return "module/patientdashboard/opdEntry";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -260,6 +262,8 @@ public class OPDEntryController {
 			HttpServletRequest request,
 			@RequestParam(value = "drugOrder", required = false) String[] drugOrder)
 			throws Exception {
+		
+
 		User user = Context.getAuthenticatedUser();
 		PatientService ps = Context.getPatientService();
 		// ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
@@ -321,6 +325,10 @@ public class OPDEntryController {
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_OPD_ENCOUTNER_TYPE);
 		EncounterType encounterType = Context.getEncounterService()
 				.getEncounterType(gpOPDEncounterType.getPropertyValue());
+		
+		
+		
+		
 		Encounter encounter = new Encounter();
 		Location location = new Location(1);
 		
@@ -524,7 +532,132 @@ public class OPDEntryController {
 			obsExternalReferral.setPatient(patient);
 			encounter.addObs(obsExternalReferral);
 		}
-
+//Vital Static
+		
+		
+		
+		if(request.getParameter("weight")!=null && request.getParameter("weight")!="")
+			{ String weight=request.getParameter("weight");
+			  Double weights=Double.parseDouble(weight);
+			Obs vitalstaticweight=new Obs();
+			vitalstaticweight.setPatient(patient);
+			vitalstaticweight.setEncounter(encounter);
+			vitalstaticweight.setConcept(Context.getConceptService().getConcept("WEIGHT"));
+			vitalstaticweight.setDateCreated(date);
+			vitalstaticweight.setObsGroup(obsGroup);
+			
+			vitalstaticweight.setValueNumeric(weights);
+			vitalstaticweight.setCreator(user);
+			encounter.addObs(vitalstaticweight);
+			
+			
+			}
+		if(request.getParameter("height")!=null && request.getParameter("height")!="")
+		{String height=request.getParameter("height");
+		  Double heights=Double.parseDouble(height);
+			
+			Obs vitalstaticweight=new Obs();
+		vitalstaticweight.setPatient(patient);
+		vitalstaticweight.setEncounter(encounter);
+		vitalstaticweight.setConcept(Context.getConceptService().getConcept("HEIGHT"));
+		vitalstaticweight.setDateCreated(date);
+		vitalstaticweight.setObsGroup(obsGroup);
+		
+		vitalstaticweight.setValueNumeric(heights);
+		vitalstaticweight.setCreator(user);
+		encounter.addObs(vitalstaticweight);
+		
+		
+		}
+		if(request.getParameter("systolic")!=null && request.getParameter("systolic")!="")
+		{ String sys=request.getParameter("systolic");
+		  Double systolic=Double.parseDouble(sys);
+		Obs vitalstaticweight=new Obs();
+		vitalstaticweight.setPatient(patient);
+		vitalstaticweight.setEncounter(encounter);
+		vitalstaticweight.setConcept(Context.getConceptService().getConcept("SYSTOLIC BLOOD PRESSURE"));
+		vitalstaticweight.setDateCreated(date);
+		vitalstaticweight.setObsGroup(obsGroup);
+		
+		vitalstaticweight.setValueNumeric(systolic);
+		vitalstaticweight.setCreator(user);
+		encounter.addObs(vitalstaticweight);
+		
+		
+		}
+	if(request.getParameter("diastolic")!=null && request.getParameter("diastolic")!="")
+	{String dai=request.getParameter("diastolic");
+	  Double daistolic=Double.parseDouble(dai);
+		
+		Obs vitalstaticweight=new Obs();
+	vitalstaticweight.setPatient(patient);
+	vitalstaticweight.setEncounter(encounter);
+	vitalstaticweight.setConcept(Context.getConceptService().getConcept("DAISTOLIC BLOOD PRESSURE"));
+	vitalstaticweight.setDateCreated(date);
+	vitalstaticweight.setObsGroup(obsGroup);
+	
+	vitalstaticweight.setValueNumeric(daistolic);
+	vitalstaticweight.setCreator(user);
+	encounter.addObs(vitalstaticweight);
+	
+	}
+	if(request.getParameter("pulsRate")!=null && request.getParameter("pulsRate")!="")
+	{String pulse=request.getParameter("pulsRate");
+	  Double pulses=Double.parseDouble(pulse);
+		
+		Obs vitalstaticweight=new Obs();
+	vitalstaticweight.setPatient(patient);
+	vitalstaticweight.setEncounter(encounter);
+	vitalstaticweight.setConcept(Context.getConceptService().getConcept("PULSE RATE"));
+	vitalstaticweight.setDateCreated(date);
+	vitalstaticweight.setObsGroup(obsGroup);
+	
+	vitalstaticweight.setValueNumeric(pulses);
+	vitalstaticweight.setCreator(user);
+	encounter.addObs(vitalstaticweight);
+	
+	}
+	if(request.getParameter("weight")!=null && request.getParameter("weight")!=""&& request.getParameter("height")!=null && request.getParameter("height")!="" )
+	{String height=request.getParameter("height");
+	
+	  Double heights=Double.parseDouble(height);
+	  String weight=request.getParameter("weight");
+	  Double weights=Double.parseDouble(weight);
+	  Double BMI=((weights)/((heights/100)*(heights/100)));
+	  
+		Obs vitalstaticweight=new Obs();
+	vitalstaticweight.setPatient(patient);
+	vitalstaticweight.setEncounter(encounter);
+	vitalstaticweight.setConcept(Context.getConceptService().getConcept("BMI"));
+	vitalstaticweight.setDateCreated(date);
+	vitalstaticweight.setObsGroup(obsGroup);
+	
+	vitalstaticweight.setValueNumeric(BMI);
+	vitalstaticweight.setCreator(user);
+	encounter.addObs(vitalstaticweight);
+	
+	}
+	
+	
+	if(request.getParameter("temp")!=null && request.getParameter("temp")!="")
+	{String temperature=request.getParameter("temp");
+	
+	
+	
+	  Double temperatures=Double.parseDouble(temperature);
+		
+		Obs temperatureValue=new Obs();
+		temperatureValue.setPatient(patient);
+		temperatureValue.setEncounter(encounter);
+		temperatureValue.setConcept(Context.getConceptService().getConcept("TEMPERATURE"));
+		temperatureValue.setDateCreated(date);
+		temperatureValue.setObsGroup(obsGroup);
+	
+		temperatureValue.setValueNumeric(temperatures);
+		temperatureValue.setCreator(user);
+	encounter.addObs(temperatureValue);
+	
+	}
 		// TODO : out come
 
 		Concept cOutcome = conceptService

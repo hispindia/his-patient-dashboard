@@ -84,7 +84,9 @@ DASHBOARD={
 			}
 		},
 		submitOpdEntry : function(){
-				jQuery('#selectedDiagnosisList option').each(function(i) {  
+				jQuery('#selectedDiagnosisList option').each(function(i) {   
+					
+					
 					 jQuery(this).attr("selected", "selected");  
 				}); 
 				jQuery('#selectedProcedureList option').each(function(i) {  
@@ -99,6 +101,13 @@ DASHBOARD={
 		{
 			if(SESSION.checkSession()){
 				url = "detailClinical.htm?id="+id+"&keepThis=false&TB_iframe=true&height=600&width=700";
+				tb_show(" ",url,false);
+			}
+		},
+		vitalStatistics : function(id)
+		{
+			if(SESSION.checkSession()){
+				url = "vitalStatistic.htm?id="+id+"&keepThis=false&TB_iframe=true&height=400&width=500";
 				tb_show(" ",url,false);
 			}
 		},
@@ -130,7 +139,9 @@ DASHBOARD={
 				}
 				exists = false;
 				jQuery('#availableDiagnosisList option').each(function(){
-				    if (this.value == id) {
+				     
+				     if (this.value == id) {
+	                         			    	
 				        exists = true;
 				        return false;
 				    }

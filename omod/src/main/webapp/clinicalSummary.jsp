@@ -64,6 +64,7 @@ jQuery("#printClinicalSummary").printArea({
 <tr>
 	<th><spring:message code="patientdashboard.clinicalSummary.view"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.dateAndTimeOfVisit"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.vitalStatistics"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.diagnosis"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.procedures"/></th>
@@ -77,6 +78,7 @@ jQuery("#printClinicalSummary").printArea({
 	<td><openmrs:formatDate date="${clinicalSummary.dateOfVisit}" type="textbox"/></td>
 	--%>
 	<td>${clinicalSummary.dateOfVisit}</td>
+	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
 	<td>${clinicalSummary.procedures}</td>

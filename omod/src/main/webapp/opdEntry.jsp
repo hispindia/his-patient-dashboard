@@ -60,6 +60,15 @@
 	margin: 0;
 	padding: 0.48em 0 0.47em 0.45em;
 }
+.floatLeft {
+	width: 70%;
+	float: left;
+}
+
+.floatRight {
+	width: 25%;
+	float: right;
+}
 </style>
 
 <%--New Requirement "Editable Dashboard" --%>
@@ -72,8 +81,8 @@ function getContextPath(){
 	}
 </script>
 <script type="text/javascript">
-jQuery(document).ready( 
-		function() {
+jQuery(document).ready(  
+		function() { 
 function loadSelectedDiagnosisList()
 {
 	if(${diagnosisIdSet}.length > 0)
@@ -355,7 +364,17 @@ popClose : true
    }
 }
 </script>
+<script type="text/JavaScript">
+function calculateBmi(){
+var weight = jQuery("#weight").val();
+var height = jQuery("#height").val();	
+var Bmi =  jQuery("#weight").val()/((jQuery("#height").val()/100)*(jQuery("#height").val()/100));
 
+var b=Math.round(Bmi);
+jQuery("#BMI").val(b);
+}
+
+</script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm" name="opdEntryForm" onsubmit="return print();">
 
@@ -364,7 +383,10 @@ popClose : true
 <input type="hidden" name="queueId" id="queueId" value="${queueId }"/>
 <input type="hidden" name="referralId" value="${referral.conceptId }"/>
 
-
+<div class="container">
+	
+		<div class="floatLeft"> 
+	
 <table cellspacing="5">
 	<tr align="right"><td colspan="3">
 	  <c:if test ="${not empty queueId }">
@@ -410,6 +432,7 @@ popClose : true
         <td>
           <!-- List of all selected DataElements -->
           <select id="selectedDiagnosisList" size="4" style="width:550px" name="selectedDiagnosisList" multiple="multiple" style="min-width:25em;height:10em" ondblclick="moveSelectedById( 'selectedDiagnosisList', 'availableDiagnosisList' );">
+              
           </select>
         </td>
   </tr>
@@ -608,6 +631,71 @@ popClose : true
    </td> </tr>
 </table> 
 
+</div>
+
+
+<div class="floatRight">
+		<label><b> VITALS STATISTICS</b></label></div>
+		
+		<div id="current" class="floatRight">
+		<label><b class="boxHeader">Current Vitals Details</b></label>
+		<table>
+					<tr>
+						<th></th>
+						<th></th>
+						<th>Range</th>
+						<th>Unit</th>
+					</tr>
+				<tr>
+						<td>Weight (Kg)</td>
+						<td><input type="text" id="weight" name="weight" size="11">
+						</td>
+						<td></td>
+						<td>Kg</td>
+					</tr>
+					<tr>
+						<td>Height (cm)</td>
+						<td><input type="text" id="height" name="height" size="11" 
+							oninput="calculateBmi()">
+						</td>
+						<td></td>
+						<td>cm</td>
+				    </tr>
+					<tr>
+					<td>BMI</td>
+				<td><input type="text" id="BMI"  size="8"  maxlength="7" ></td>
+				<td>18.5-24.9</td>
+						<td></td>
+				</tr>
+  	<tr>
+					<td>Temperature</td>
+				<td><input type="text" id="temp"  name="temp" size="8"  maxlength="7" ></td>
+				<td>97.7-98.96</td>
+						<td>F</td>
+				</tr>
+					<tr>
+						<td>B.P</td>
+						<td><input type="text" id="systolic" name="systolic" size="5" 
+							 >/<input type="text" id="diastolic" name="diastolic" size="5" 
+							 ></td>
+							 <td>110/70-140/90</td>
+						<td>mm/Hg</td>
+					</tr>
+					<tr>
+						<td>Pulse Rate</td>
+						<td><input type="text" id="pulsRate" name="pulsRate"
+							size="11"  >
+						</td>
+						<td>60-90</td>
+						<td>/min</td>
+					</tr>
+				
+					
+		</table>
+		
+		</div>
+		
+</div>
 
 <div id="printOPDSlip" style="visibility:hidden;">
 <table class="box">

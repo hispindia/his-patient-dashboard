@@ -45,6 +45,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
@@ -102,7 +103,97 @@ public class AutoCompleteController {
 		
 		return "module/patientdashboard/session/checkSession";
 	}
-	
+	@RequestMapping(value="/module/patientdashboard/vitalStatistic.htm", method=RequestMethod.GET)
+	public String vitalStatistic(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if(id != null){
+			PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			EncounterService encounterService = Context.getEncounterService();
+			Encounter encounter =encounterService.getEncounter(id);
+			OpdPatientQueueLog opdPatientQueueLog=dashboardService.getOpdPatientQueueLog(encounter);
+			Patient patient = opdPatientQueueLog.getPatient();
+			PatientQueueService queueService = Context
+					.getService(PatientQueueService.class);
+			if (opdPatientQueueLog != null) {
+				
+				
+				Obs weight=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("WEIGHT"),encounter);
+				if(weight!=null)
+				{	model.addAttribute("weight", weight.getValueNumeric().intValue());
+				
+				}
+				else
+				{
+					model.addAttribute("weight", "");
+				}
+				Obs height=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("HEIGHT"),encounter);
+				if(height!=null)
+				{	
+					model.addAttribute("height", height.getValueNumeric().intValue());
+				
+				}
+				else
+				{
+					model.addAttribute("height", "");
+				}
+				
+				if(weight!=null && height!=null)
+				{	Obs bmi=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("BMI"),encounter);
+				  if(bmi!=null)	
+				  {
+					  model.addAttribute("bmi", Math.round(bmi.getValueNumeric()));
+				  }
+				  else
+				  {
+					  model.addAttribute("bmi", "");
+				  }
+				
+				}
+				else
+				{
+					model.addAttribute("bmi", "");
+				}
+				Obs temperature=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("TEMPERATURE"),encounter);
+				if(temperature!=null)
+				{	
+					model.addAttribute("temp", temperature.getValueNumeric());
+				
+				}
+				else
+				{
+					model.addAttribute("temp", "");
+				}
+				Obs dbp=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("DAISTOLIC BLOOD PRESSURE"),encounter);
+				if(dbp!=null)
+				{	model.addAttribute("dbp", dbp.getValueNumeric().intValue());
+				
+				}
+				else
+				{
+					model.addAttribute("dbp", "");
+				}
+				Obs sbp=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("SYSTOLIC BLOOD PRESSURE"),encounter);
+				if(sbp!=null)
+				{	model.addAttribute("sbp", sbp.getValueNumeric().intValue());
+				
+				}
+				else
+				{
+					model.addAttribute("sbp", "");
+				}
+				Obs pulserate=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("PULSE RATE"),encounter);
+				if(pulserate!=null)
+				{	model.addAttribute("pulserate", pulserate.getValueNumeric().intValue());
+				
+				}
+				else
+				{
+					model.addAttribute("pulserate", "");
+				}
+				}
+			}
+		
+		return "module/patientdashboard/vitalStatistic";
+	}
 	@RequestMapping(value="/module/patientdashboard/autoCompleteProvisionalDianosis.htm", method=RequestMethod.GET)
 	public String provisionalDianosis(@RequestParam(value="term",required=false) String name, Model model) {
 		List<Concept> diagnosis = new ArrayList<Concept>();
