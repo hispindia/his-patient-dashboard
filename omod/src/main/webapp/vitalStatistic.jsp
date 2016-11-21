@@ -56,5 +56,8 @@
 		<td><strong>Pulse Rate</strong></td>
 		<td>${pulserate}</td>
 	</tr>
-	
+	<tr>
+		<td><strong>LMP</strong></td>
+		<td>${lmp}</td>
+	</tr>
 </table>

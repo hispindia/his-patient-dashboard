@@ -21,6 +21,7 @@
 
 package org.openmrs.module.patientdashboard.web.controller.autocomplete;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -188,6 +189,21 @@ public class AutoCompleteController {
 				else
 				{
 					model.addAttribute("pulserate", "");
+				}
+				Obs lastmenstrualperiod=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("LAST MENSTRUAL PERIOD"),encounter);
+				if(lastmenstrualperiod!=null)
+				{	SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
+				 String lmpdate = formatterExt.format(lastmenstrualperiod.getValueDatetime());
+				
+				
+					model.addAttribute("lmp",lmpdate );
+				
+					
+				
+				}
+				else
+				{
+					model.addAttribute("lmp", "");
 				}
 				}
 			}

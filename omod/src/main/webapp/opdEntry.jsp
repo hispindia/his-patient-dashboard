@@ -70,7 +70,12 @@
 	float: right;
 }
 </style>
-
+<style type="text/css">
+td
+{
+    padding:0 5px 0 5px;
+}
+</style>
 <%--New Requirement "Editable Dashboard" --%>
 <script type="text/javascript">
 function getContextPath(){		
@@ -82,7 +87,43 @@ function getContextPath(){
 </script>
 <script type="text/javascript">
 jQuery(document).ready(  
-		function() { 
+		function() { 	jQuery('#lastMenstrualPeriod').datepicker({
+			yearRange : 'c-100:c+100',
+			dateFormat : 'dd/mm/yy',
+			changeMonth : true,
+			changeYear : true
+		});
+		jQuery("#calendarButton").click(function() {
+			jQuery("#lastMenstrualPeriod").datepicker("show");
+		});	
+		
+		if("${patient.gender }"=="M"){
+	    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
+	   	jQuery("#calendarButton").hide();
+	    }
+		jQuery("#lastMenstrualPeriod").change(function()
+		
+		{ 
+			var dd = new Date().getDate();
+        var mm = new Date().getMonth()+1; //January is 0!
+        var yyyy = new Date().getFullYear();
+        if(dd < 10)
+        {
+            dd = '0'+ dd;
+        }
+        if(mm < 10)
+        {
+            mm = '0' + mm;
+        }
+        var fromdate1 = dd+'/'+mm+'/'+yyyy;
+		var lmpValue=jQuery("#lastMenstrualPeriod").val();
+		if(lmpValue > fromdate1)
+		{
+		alert("LMP can not be a future date");
+		return false;
+		}
+		
+		});
 function loadSelectedDiagnosisList()
 {
 	if(${diagnosisIdSet}.length > 0)
@@ -643,34 +684,41 @@ jQuery("#BMI").val(b);
 					<tr>
 						<th></th>
 						<th></th>
+						<th></th>
 						<th>Range</th>
 						<th>Unit</th>
 					</tr>
 				<tr>
-						<td>Weight (Kg)</td>
+						<td>Weight</td>
 						<td><input type="text" id="weight" name="weight" size="11">
 						</td>
+						<td></td>
 						<td></td>
 						<td>Kg</td>
 					</tr>
 					<tr>
-						<td>Height (cm)</td>
+						<td>Height</td>
 						<td><input type="text" id="height" name="height" size="11" 
 							oninput="calculateBmi()">
 						</td>
 						<td></td>
+					<td></td>
 						<td>cm</td>
 				    </tr>
 					<tr>
 					<td>BMI</td>
-				<td><input type="text" id="BMI"  size="8"  maxlength="7" ></td>
+				<td><input type="text" id="BMI"  size="11"  maxlength="7" ></td>
+				<td></td>
 				<td>18.5-24.9</td>
+				
 						<td></td>
 				</tr>
   	<tr>
 					<td>Temperature</td>
-				<td><input type="text" id="temp"  name="temp" size="8"  maxlength="7" ></td>
+				<td><input type="text" id="temp"  name="temp" size="11"  maxlength="7" ></td>
+				<td></td>
 				<td>97.7-98.96</td>
+				
 						<td>F</td>
 				</tr>
 					<tr>
@@ -678,7 +726,9 @@ jQuery("#BMI").val(b);
 						<td><input type="text" id="systolic" name="systolic" size="5" 
 							 >/<input type="text" id="diastolic" name="diastolic" size="5" 
 							 ></td>
+							 <td></td>
 							 <td>110/70-140/90</td>
+							
 						<td>mm/Hg</td>
 					</tr>
 					<tr>
@@ -686,10 +736,21 @@ jQuery("#BMI").val(b);
 						<td><input type="text" id="pulsRate" name="pulsRate"
 							size="11"  >
 						</td>
+						<td></td>
 						<td>60-90</td>
+						
 						<td>/min</td>
 					</tr>
+						<tr>
+						<td>LMP</td>
+						<td><input type="text" id="lastMenstrualPeriod"
+							name="lastMenstrualPeriod" size="11"
+							><img id="calendarButton" 
+							src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif"  />
+						</td>
+						
 				
+					</tr>
 					
 		</table>
 		

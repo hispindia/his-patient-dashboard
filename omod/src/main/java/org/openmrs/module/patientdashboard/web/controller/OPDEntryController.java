@@ -658,6 +658,23 @@ public class OPDEntryController {
 	encounter.addObs(temperatureValue);
 	
 	}
+	if(request.getParameter("lastMenstrualPeriod")!=null && request.getParameter("lastMenstrualPeriod")!="")
+	{ String lmp=request.getParameter("lastMenstrualPeriod");
+	SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
+	Date lmpdate = (Date)formatterExt.parse(lmp);
+	Obs vitalstaticweight=new Obs();
+	vitalstaticweight.setPatient(patient);
+	vitalstaticweight.setEncounter(encounter);
+	vitalstaticweight.setConcept(Context.getConceptService().getConcept("LAST MENSTRUAL PERIOD"));
+	vitalstaticweight.setDateCreated(date);
+	vitalstaticweight.setObsGroup(obsGroup);
+	
+	vitalstaticweight.setValueDatetime(lmpdate);
+	vitalstaticweight.setCreator(user);
+	encounter.addObs(vitalstaticweight);
+	
+	
+	}
 		// TODO : out come
 
 		Concept cOutcome = conceptService
