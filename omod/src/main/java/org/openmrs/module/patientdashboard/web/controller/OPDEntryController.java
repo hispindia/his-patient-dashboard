@@ -380,6 +380,8 @@ public class OPDEntryController {
 		// diagnosis
 		//New Requirement "Final & Provisional Diagnosis" //
 		String selectedDia = request.getParameter("radio_dia");
+		 ArrayList<Integer> arrlist = new ArrayList<Integer>();
+		
 		for (Integer cId : command.getSelectedDiagnosisList()) {
 			
 			Obs obsDiagnosis = new Obs();
@@ -393,12 +395,21 @@ public class OPDEntryController {
 				
 			}
 			obsDiagnosis.setValueCoded(conceptService.getConcept(cId));
-			
+
 			obsDiagnosis.setCreator(user);
 			obsDiagnosis.setDateCreated(date);
 			obsDiagnosis.setEncounter(encounter);
 			obsDiagnosis.setPatient(patient);
-			encounter.addObs(obsDiagnosis);
+			if(!(arrlist.contains(cId)))
+			{
+				arrlist.add(cId);
+				
+				 
+				 encounter.addObs(obsDiagnosis);
+			}
+			
+			
+			
 		}
 		// historyOfPresentIllness
 		if (StringUtils.isNotBlank(command.getHistoryOfPresentIlness())) {
