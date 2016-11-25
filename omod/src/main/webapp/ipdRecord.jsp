@@ -70,6 +70,7 @@
 		<th><spring:message code="patientdashboard.dateOfDischarge"/></th>
 		<th><spring:message code="patientdashboard.finalDiagnosis"/></th>
 		<th><spring:message code="patientdashboard.finalProcedures"/></th>
+		<th><spring:message code="patientdashboard.finalDrugs"/></th>
 		<th><spring:message code="patientdashboard.admissionOutcome"/></th>
 		<th><spring:message code="patientdashboard.linkToD/cSummary"/></th>
 	</tr>
@@ -80,9 +81,32 @@
 				<td>${record.hospitalName }</td>
 				<td><openmrs:formatDate date="${record.admissionDate}" type="textbox"/></td>
 				<td><openmrs:formatDate date="${record.dischargeDate}" type="textbox"/></td>
-				
+	
 				<td>${record.diagnosis }</td>
 				<td>${record.procedures }</td>
+							<td><table class="box">
+	<tr align="center">
+		<th><strong>S.No</strong></th>
+		<th><strong>Drug</strong></th>
+		<th><strong>Formulation</strong></th>
+		<th><strong>Comments</strong></th>
+	</tr>
+	
+	<c:forEach items="${record.subDetails}" var="opdDrugOrder" varStatus="index">
+	
+	<tr>
+		
+	 
+			<td>${index.count}</td>
+			<td>${opdDrugOrder.inventoryDrug.name}</td>
+			<td>${opdDrugOrder.inventoryDrugFormulation.name}-${opdDrugOrder.inventoryDrugFormulation.dozage}</td>
+			<td>${opdDrugOrder.comments}</td>
+		
+	</tr>	
+
+	</c:forEach>
+	
+</table></td>
 				<td>${record.admissionOutcome }</td>
 				<td></td>
 			</tr>

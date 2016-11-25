@@ -31,8 +31,10 @@ import org.openmrs.Obs;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmittedLog;
+import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 
 public class IPDRecordUtil {
@@ -46,11 +48,17 @@ public class IPDRecordUtil {
 			IPDRecord record = new IPDRecord();
 			record.setHospitalName(HOSPITAL_NAME);
 			record.setAdmissionDate(admissionLog.getAdmissionDate());
+			PatientDashboardService patientDashboardService = Context
+					.getService(PatientDashboardService.class);
+			List<OpdDrugOrder>opd=patientDashboardService
+					.getOpdDrugOrder(admissionLog.getIpdEncounter());
+			
 			IpdPatientAdmittedLog admittedLog = getAdmitedLogByAdmissionLog(admittedLogs, admissionLog);
 			record.setDischargeDate(admittedLog.getAdmissionDate());
 			record.setDiagnosis(getDiagnosisProcedure(admissionLog, 1));
 			record.setProcedures(getDiagnosisProcedure(admissionLog, 2));
 			record.setAdmissionOutcome(admittedLog.getAdmissionOutCome());
+			record.setSubDetails(opd);
 			records.add(record);
 		}
 		

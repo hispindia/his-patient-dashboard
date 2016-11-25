@@ -21,6 +21,12 @@
 package org.openmrs.module.patientdashboard.web.controller.global;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
+
+
 
 public class IPDRecord {
 	
@@ -33,6 +39,15 @@ public class IPDRecord {
 	private String procedures;
 	private String admissionOutcome;
 	private String dischargeSummaryLink;
+	public List<OpdDrugOrder> subDetails;
+	
+	public List<OpdDrugOrder> getSubDetails() {
+		return subDetails;
+	}
+
+	public void setSubDetails(List<OpdDrugOrder> subDetails) {
+		this.subDetails = subDetails;
+	}
 
 	public String getHospitalName() {
 		return hospitalName;
