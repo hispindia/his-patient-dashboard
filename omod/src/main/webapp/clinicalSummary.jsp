@@ -59,7 +59,12 @@ jQuery("#printClinicalSummary").printArea({
 
 <c:choose>
 
-<c:when test="${not empty clinicalSummaries}">
+<c:when test="${empty clinicalSummaries}">
+<table cellpadding="5" cellspacing="0" width="100%">
+<tr><td>No Record Found </td></tr>
+</table>
+</c:when>
+<c:otherwise>
 <table cellpadding="5" cellspacing="0" width="100%">
 <tr>
 	<th><spring:message code="patientdashboard.clinicalSummary.view"/></th>
@@ -86,7 +91,7 @@ jQuery("#printClinicalSummary").printArea({
 	</tr>
 </c:forEach>
 </table>
-</c:when>
+</c:otherwise>
 </c:choose>
 
 <div id="printClinicalSummary" style="visibility:hidden;">
