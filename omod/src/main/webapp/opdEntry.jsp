@@ -69,6 +69,10 @@
 	width: 25%;
 	float: right;
 }
+#historyOfPresentIlness {
+    resize: none;
+}
+
 </style>
 <style type="text/css">
 td
@@ -124,6 +128,14 @@ jQuery(document).ready(
 		}
 		
 		});
+		//Show and hide for vital statstics
+		jQuery("#current").hide();
+		jQuery("#triageDiv").click(function()
+			    		{
+			    	jQuery("#current").toggle();
+			    	
+			    	
+			    		});
 function loadSelectedDiagnosisList()
 {
 	if(${diagnosisIdSet}.length > 0)
@@ -426,17 +438,101 @@ jQuery("#BMI").val(b);
 
 <div class="container">
 	
-		<div class="floatLeft"> 
+		
 	
 <table cellspacing="5">
+
 	<tr align="right"><td colspan="3">
-	  <c:if test ="${not empty queueId }">
+	   <c:if test ="${not empty queueId }">
 	  	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${queueId}');"/>
-	  </c:if>
+	  </c:if> 
    </td> </tr>
+  <tr><td colspan="3">
+  <div id="triageDiv">
+		<label><b> <input type="button" value="VITAL STATISTIC DETAILS" class="ui-button ui-widget ui-state-default ui-corner-all"/> </b></label></div>
+		
+		<div id="current">
+		<label><b class="boxHeader">Current Vitals Details</b></label>
+		<table width="65%" height="50%" class=box>
+					<tr>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th>Range</th>
+						<th>Unit</th>
+					</tr>
+				<tr>
+						<td>Weight</td>
+						<td><input type="text" id="weight" name="weight" size="11">
+						</td>
+						<td></td>
+						<td></td>
+						<td>Kg</td>
+					</tr>
+					<tr>
+						<td>Height</td>
+						<td><input type="text" id="height" name="height" size="11" 
+							oninput="calculateBmi()">
+						</td>
+						<td></td>
+					<td></td>
+						<td>cm</td>
+				    </tr>
+					<tr>
+					<td>BMI</td>
+				<td><input type="text" id="BMI"  size="11"  maxlength="7" ></td>
+				<td></td>
+				<td>18.5-24.9</td>
+				
+						<td></td>
+				</tr>
+  	<tr>
+					<td>Temperature</td>
+				<td><input type="text" id="temp"  name="temp" size="11"  maxlength="7" ></td>
+				<td></td>
+				<td>97.7-98.96</td>
+				
+						<td>F</td>
+				</tr>
+					<tr>
+						<td>B.P</td>
+						<td><input type="text" id="systolic" name="systolic" size="5" 
+							 >/<input type="text" id="diastolic" name="diastolic" size="5" 
+							 ></td>
+							 <td></td>
+							 <td>110/70-140/90</td>
+							
+						<td>mm/Hg</td>
+					</tr>
+					<tr>
+						<td>Pulse Rate</td>
+						<td><input type="text" id="pulsRate" name="pulsRate"
+							size="11"  >
+						</td>
+						<td></td>
+						<td>60-90</td>
+						
+						<td>/min</td>
+					</tr>
+						<tr>
+						<td>LMP</td>
+						<td><input type="text" id="lastMenstrualPeriod"
+							name="lastMenstrualPeriod" size="11"
+							><img id="calendarButton" 
+							src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif"  />
+						</td>
+						
+				
+					</tr>
+					
+		</table>
+		
+		</div>
+		</td></tr>
+		
    <tr><td colspan="3">
    <strong>History of Present Illness:</strong>
-   <input type="text" id="historyOfPresentIlness" name="historyOfPresentIlness" size="200" style="width: 1000px; height: 50px" class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"/></td></tr>
+   <input type="text" id="historyOfPresentIlness" name="historyOfPresentIlness" size="150" style="width: 1000px; height: 50px" rows=1 cols=20 class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input"/></td></tr>
 	<tr><td colspan="3">
 	
 	<%--New Requirement "Final & Provisional Diagnosis" ~Wasib--%>
@@ -675,86 +771,7 @@ jQuery("#BMI").val(b);
 </div>
 
 
-<div class="floatRight">
-		<label><b> VITALS STATISTICS</b></label></div>
-		
-		<div id="current" class="floatRight">
-		<label><b class="boxHeader">Current Vitals Details</b></label>
-		<table>
-					<tr>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th>Range</th>
-						<th>Unit</th>
-					</tr>
-				<tr>
-						<td>Weight</td>
-						<td><input type="text" id="weight" name="weight" size="11">
-						</td>
-						<td></td>
-						<td></td>
-						<td>Kg</td>
-					</tr>
-					<tr>
-						<td>Height</td>
-						<td><input type="text" id="height" name="height" size="11" 
-							oninput="calculateBmi()">
-						</td>
-						<td></td>
-					<td></td>
-						<td>cm</td>
-				    </tr>
-					<tr>
-					<td>BMI</td>
-				<td><input type="text" id="BMI"  size="11"  maxlength="7" ></td>
-				<td></td>
-				<td>18.5-24.9</td>
-				
-						<td></td>
-				</tr>
-  	<tr>
-					<td>Temperature</td>
-				<td><input type="text" id="temp"  name="temp" size="11"  maxlength="7" ></td>
-				<td></td>
-				<td>97.7-98.96</td>
-				
-						<td>F</td>
-				</tr>
-					<tr>
-						<td>B.P</td>
-						<td><input type="text" id="systolic" name="systolic" size="5" 
-							 >/<input type="text" id="diastolic" name="diastolic" size="5" 
-							 ></td>
-							 <td></td>
-							 <td>110/70-140/90</td>
-							
-						<td>mm/Hg</td>
-					</tr>
-					<tr>
-						<td>Pulse Rate</td>
-						<td><input type="text" id="pulsRate" name="pulsRate"
-							size="11"  >
-						</td>
-						<td></td>
-						<td>60-90</td>
-						
-						<td>/min</td>
-					</tr>
-						<tr>
-						<td>LMP</td>
-						<td><input type="text" id="lastMenstrualPeriod"
-							name="lastMenstrualPeriod" size="11"
-							><img id="calendarButton" 
-							src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif"  />
-						</td>
-						
-				
-					</tr>
-					
-		</table>
-		
-		</div>
+
 		
 </div>
 
