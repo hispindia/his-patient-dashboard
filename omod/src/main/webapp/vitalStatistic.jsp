@@ -37,7 +37,7 @@
 		<td>${bmi}</td>
 	</tr>
    <tr>
-		<td><strong>Temperature</strong></td>
+		<td><strong>Temperature(F)</strong></td>
 		<td>${temp}</td>
 	</tr>
 	<tr>
@@ -53,7 +53,7 @@
 	</tr>
 	
 	<tr>
-		<td><strong>Pulse Rate</strong></td>
+		<td><strong>Pulse Rate(/min)</strong></td>
 		<td>${pulserate}</td>
 	</tr>
 	<tr>
