@@ -134,6 +134,7 @@ public class IPDRecordController {
 		List<IpdPatientAdmittedLog> admittedLogs = ipdService.listAdmittedLogByPatientId(patientId);
 		IPDRecordUtil util = new IPDRecordUtil();
 		List<IPDRecord> records = util.generateIPDRecord(listPatientDischarge, admittedLogs);
+		model.addAttribute("patientId", patientId);
 		model.addAttribute("records", records);
 		/*IpdService ipdService = Context.getService(IpdService.class);
 		

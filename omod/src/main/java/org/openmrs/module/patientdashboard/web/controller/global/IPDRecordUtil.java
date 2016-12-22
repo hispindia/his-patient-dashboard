@@ -54,6 +54,7 @@ public class IPDRecordUtil {
 					.getOpdDrugOrder(admissionLog.getIpdEncounter());
 			
 			IpdPatientAdmittedLog admittedLog = getAdmitedLogByAdmissionLog(admittedLogs, admissionLog);
+			record.setId(admissionLog.getIpdEncounter().getEncounterId());
 			record.setDischargeDate(admittedLog.getAdmissionDate());
 			record.setDiagnosis(getDiagnosisProcedure(admissionLog, 1));
 			record.setProcedures(getDiagnosisProcedure(admissionLog, 2));

@@ -18,8 +18,37 @@
  *
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<script type="text/javascript">
+function dischargeSummary(encounterId){
+var patientId = ${patientId};
+jQuery.ajax({
+				type : "GET",
+				url : getContextPath() + "/module/patientdashboard/printDischargeSummarySlip.form",
+				data : ({
+					encounterId			: encounterId,
+					patientId			: patientId
+				}),
+				success : function(data) {
+					jQuery("#printDischargeSummary").html(data);	
+					jQuery("#printDischargeSummary").hide();
+					printDischargeSummary();	
+				}
+				
+			});			
+}
+</script>
+<script type="text/javascript">
+function printDischargeSummary(){
+jQuery("#printDischargeSummary").printArea({
+            mode : "popup",
+            popClose : true
+            });
+}
+</script>
 
+<form>
 
 <b class="boxHeader">Current Admission</b>
 <table class="box" width="100%">
@@ -108,7 +137,7 @@
 	
 </table></td>
 				<td>${record.admissionOutcome }</td>
-				<td></td>
+				<td><a href="#" onclick="dischargeSummary('${ record.id}');"><small>Print</small></a></td>
 			</tr>
 		</c:forEach>
 	</c:when>
@@ -117,4 +146,7 @@
 	</c:otherwise>
 	</c:choose>
 </table>
+<div id="printDischargeSummary" style="visibility:hidden;">
 
+</div>
+</form>

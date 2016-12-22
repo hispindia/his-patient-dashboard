@@ -31,7 +31,7 @@ import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 public class IPDRecord {
 	
 	private static final String HOSPITAL_NAME = "Hospital";
-
+	private Integer id;
 	private String hospitalName = HOSPITAL_NAME;
 	private Date admissionDate;
 	private Date dischargeDate;
@@ -103,6 +103,14 @@ public class IPDRecord {
 
 	public void setDischargeSummaryLink(String dischargeSummaryLink) {
 		this.dischargeSummaryLink = dischargeSummaryLink;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }
