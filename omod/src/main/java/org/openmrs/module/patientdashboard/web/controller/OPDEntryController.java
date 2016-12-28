@@ -743,6 +743,8 @@ public class OPDEntryController {
 		// delele opd queue , create opd log queue
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
+		OpdPatientQueueLog opdPatientLog;
+		if (command.getQueueId() != null) {
 		OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
 				.getQueueId());
 		OpdPatientQueueLog queueLog = new OpdPatientQueueLog();
@@ -759,7 +761,7 @@ public class OPDEntryController {
 		queueLog.setStatus("processed");
 		queueLog.setBirthDate(patient.getBirthdate());
 		queueLog.setEncounter(encounter);
-		OpdPatientQueueLog opdPatientLog = queueService
+		 opdPatientLog = queueService
 				.saveOpdPatientQueueLog(queueLog);
 		queueService.deleteOpdPatientQueue(queue);
 		// done queue
@@ -781,6 +783,8 @@ public class OPDEntryController {
 					+ patient.getMiddleName() + " " + patient.getFamilyName());
 			patientAdmission = ipdService
 					.saveIpdPatientAdmission(patientAdmission);
+		}	} else {
+			opdPatientLog = queueService.getOpdPatientQueueLogById(command.getOpdId());
 		}
 
 		BillingService billingService = Context

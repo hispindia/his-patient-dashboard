@@ -328,6 +328,7 @@ jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" 
 var selDiagLen = selectedDiagnosisList.length;
 for(i=selDiagLen-1; i>=0; i--){
 var diag=selectedDiagnosisList[i].text;
+
 jQuery("#printableProvisionalDiagnosis").append("<span style='margin:5px;'>" + diag + "<br/>" + "</span>");
 }
 
@@ -443,10 +444,16 @@ jQuery("#BMI").val(b);
 <table cellspacing="5">
 
 	<tr align="right"><td colspan="3">
-	   <c:if test ="${not empty queueId }">
-	  	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${queueId}');"/>
-	  </c:if> 
+	   <c:choose>
+  <c:when test ="${not empty queueId }">
+  	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${queueId}');"/>
+  </c:when>
+    <c:otherwise>
+  	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${referral.conceptId}');"/>
+  </c:otherwise>
+  </c:choose>
    </td> </tr>
+   
   <tr><td colspan="3">
   <div id="triageDiv">
 		<label><b> <input type="button" value="VITAL STATISTIC DETAILS" class="ui-button ui-widget ui-state-default ui-corner-all"/> </b></label></div>
@@ -762,9 +769,14 @@ jQuery("#BMI").val(b);
   	  </td>
   </tr>
   <tr><td colspan="3">
-  <c:if test ="${not empty queueId }">
+  <c:choose>
+  <c:when test ="${not empty queueId }">
   	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${queueId}');"/>
-  </c:if>
+  </c:when>
+    <c:otherwise>
+  	<input type="submit" value="Conclude visit" class="ui-button ui-widget ui-state-default ui-corner-all" onclick="DASHBOARD.submitOpdEntry();"/><input type="submit" class="ui-button ui-widget ui-state-default ui-corner-all" value="Back" onclick="DASHBOARD.backToQueue('${referral.conceptId}');"/>
+  </c:otherwise>
+  </c:choose>
    </td> </tr>
 </table> 
 
