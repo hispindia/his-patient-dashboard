@@ -100,6 +100,14 @@
 			</c:when>
 			</c:choose>
 		</table>
+			<table class="box">
+			<tr>
+				<td colspan="4" align="left"><b><font size="3">Clinical Findings/Instructions</font></b></td>
+			</tr>
+			<tr id="othInst">
+				<td>${otherinstructions}</td>
+			</tr>
+		</table>
 		<table class="box">
 			<br />
 			<tr>
@@ -119,15 +127,12 @@
 			<c:forEach items="${record.subDetails}" var="opdDrugOrder" varStatus="index">
 	
 	<tr>
-		
-	 
 			<td>${index.count}</td>
 			<td>${opdDrugOrder.inventoryDrug.name}</td>
 			<td>${opdDrugOrder.inventoryDrugFormulation.name}-${opdDrugOrder.inventoryDrugFormulation.dozage}</td>
 			<td>${opdDrugOrder.frequency.name}</td>
 			<td>${opdDrugOrder.noOfDays}</td>
 			<td>${opdDrugOrder.comments}</td>
-		
 	</tr>	
 
 	</c:forEach>
@@ -135,13 +140,12 @@
 	</c:when>
 	</c:choose>
 		</table>
-		<table class="box">
+	<br />
+	<div style="float:right;"> 
 			<tr>
-				<td colspan="4" align="left"><b><font size="3">Other Instructions</font></b></td>
+				<td colspan="4" align="right"><b><font size="3">Signature of Discharging Physician</font></b></td>
 			</tr>
-			<tr id="othInst">
-				<td>${otherinstructions}</td>
-			</tr>
-		</table>
+		</div>	
+		
 	
 </form>
