@@ -326,9 +326,9 @@ public class AutoCompleteController {
 						}
 						
 						if (obs.getValueCoded() != null) {
-							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
+						/*	if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
 								diagnosiss.add(obs.getValueCoded());
-							}
+							}*/
 							if (obs.getValueCoded().getConceptClass().getName().equals("Procedure")) {
 								procedures.add(obs.getValueCoded());
 							}
