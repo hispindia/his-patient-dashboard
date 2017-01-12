@@ -913,7 +913,7 @@ jQuery("#BMI").val(b);
 				<td><div id="printableHistoryOfPresentIllness"></div></td>
 			</tr>
 			<tr>
-				<td><strong>Provisional Diagnosis:</strong></td>
+				<td><strong>Diagnosis:</strong></td>
 				<td><div id="printableProvisionalDiagnosis"></div></td>
 			</tr>
 			<tr>
