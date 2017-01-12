@@ -576,7 +576,7 @@ jQuery("#BMI").val(b);
 			</tr>
 			<tr>
 				<td colspan="3">
-					<%--New Requirement "Final & Provisional Diagnosis" ~Wasib--%> <strong>PROVISIONAL
+					<%--New Requirement "Final & Provisional Diagnosis" ~Wasib--%> <strong>
 						DIAGNOSIS</strong>
 					</div>
 				</td>
@@ -903,12 +903,6 @@ jQuery("#BMI").val(b);
 			</tr>
 		</table>
 		<table class="box">
-			<tr>
-				<td><strong>Provisional Diagnosis:</strong></td>
-				<td><div id="printableProvisionalDiagnosis"></div></td>
-			</tr>
-
-			<br />
 			<tr>
 				<center>
 					<b><font size="2">CLINICAL SUMMARY</font></b>

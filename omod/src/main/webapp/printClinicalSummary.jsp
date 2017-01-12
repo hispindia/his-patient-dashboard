@@ -115,15 +115,27 @@ jQuery("#ipdadmissionward").hide();
 		<td><strong>History of Present Illness:</strong></td>
 		<td>${illnessHistory}</td>
 	</tr>
+<c:choose>
+	<c:when test="${not empty pdiagnosiss}">
 	<tr>
 		<td><strong>Provisional Diagnosis:</strong></td>
-		<c:forEach items="${diagnosiss}" var="diagnosis">
-			</td>
-			<td>${diagnosis.name}</td>
+		<c:forEach items="${pdiagnosiss}" var="pdiagnosis"></td>
+			<td>${pdiagnosis.name}</td></tr>
+		<tr>
+		<td></c:forEach>
+	</tr>
+	</c:when>
+	<c:otherwise>
+	<tr>
+		<td><strong>Final Diagnosis:</strong></td>
+		<c:forEach items="${fdiagnosiss}" var="fdiagnosis"></td>
+			<td>${fdiagnosis.name}</td>
 	</tr>
 	<tr>
 		<td></c:forEach>
 	</tr>
+	</c:otherwise>
+	</c:choose>
 
 	<tr>
 		<td><strong>Procedure:</strong></td>

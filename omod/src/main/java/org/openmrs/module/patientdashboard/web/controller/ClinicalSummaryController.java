@@ -61,7 +61,7 @@ public class ClinicalSummaryController {
         ConceptService conceptService = Context.getConceptService();
         AdministrationService administrationService = Context.getAdministrationService();
         String gpDiagnosis = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_PROVISIONAL_DIAGNOSIS);
-        
+       Concept cFinalDiagnosis = conceptService.getConcept("FINAL DIAGNOSIS");
         String gpProcedure = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_POST_FOR_PROCEDURE);
         
 		//String gpInternalReferral = administrationService.getGlobalProperty(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
@@ -86,6 +86,18 @@ public class ClinicalSummaryController {
 			for( Obs obs : enc.getAllObs()){
 				//diagnosis
 				if( obs.getConcept().getConceptId().equals(conDiagnosis.getConceptId()) ){
+//					obs.getV
+					if(obs.getValueCoded() != null){
+						diagnosis +=obs.getValueCoded().getName()+", ";
+					}
+					if(StringUtils.isNotBlank(obs.getValueText())){
+						note = "Note: "+obs.getValueText();
+					}
+					//System.out.println(obs.getva);
+			
+				}
+				//final diagnosis
+				if( obs.getConcept().getConceptId().equals(cFinalDiagnosis.getConceptId()) ){
 //					obs.getV
 					if(obs.getValueCoded() != null){
 						diagnosis +=obs.getValueCoded().getName()+", ";

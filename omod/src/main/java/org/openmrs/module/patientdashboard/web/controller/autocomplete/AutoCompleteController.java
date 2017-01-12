@@ -282,7 +282,8 @@ public class AutoCompleteController {
 			Concept conIllnessHistory = conceptService.getConceptByName("HISTORY OF PRESENT ILLNESS");
 			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
 			
-			List<Concept> diagnosiss = new ArrayList<Concept>();
+			List<Concept> pdiagnosiss = new ArrayList<Concept>();
+			List<Concept> fdiagnosiss = new ArrayList<Concept>();
 			List<Concept> procedures = new ArrayList<Concept>();
 			List<Concept> investigations = new ArrayList<Concept>();
 			try {
@@ -340,8 +341,12 @@ public class AutoCompleteController {
 								investigations.add(obs.getValueCoded());
 							}
 							//New Requirement "Final & Provisional Diagnosis" //
-							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("PROVISIONAL DIAGNOSIS"))||(obs.getConcept().isNamed("FINAL DIAGNOSIS"))) {
-								diagnosiss.add(obs.getValueCoded());
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("Provisional diagnosis"))) {
+								pdiagnosiss.add(obs.getValueCoded());
+								
+							}
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("FINAL DIAGNOSIS"))) {
+								fdiagnosiss.add(obs.getValueCoded());
 								
 							}
 						}
@@ -409,7 +414,8 @@ public class AutoCompleteController {
 			model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
 			model.addAttribute("otherInstructions", otherInstructions);
 			model.addAttribute("illnessHistory", illnessHistory);
-			model.addAttribute("diagnosiss", diagnosiss);
+			model.addAttribute("pdiagnosiss", pdiagnosiss);
+			model.addAttribute("fdiagnosiss", fdiagnosiss);
 			model.addAttribute("procedures", procedures);
 			model.addAttribute("investigations", investigations);
 			model.addAttribute("opdDrugOrders", opdDrugOrders);
