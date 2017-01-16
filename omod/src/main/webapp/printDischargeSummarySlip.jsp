@@ -11,11 +11,11 @@
 			</tr>
 			<tr>
 				<center>
-					<b><font size="3">Discharge Slip</font></b>
+					<b><font size="4">Discharge Slip</font></b>
 				</center>
 			</tr>
 			<tr>
-				<td colspan="4" align="left"><b><font size="3">Patient Details</font></b></td>
+				<td colspan="4" align="center"><b><u><font size="3">Patient Details</font></u></b></td>
 			</tr>
 			<tr>
 				<td><strong>Name:</strong></td>
@@ -49,7 +49,7 @@
 		</table>
 <table class="box">
 			<tr>
-				<td colspan="4" align="left"><b><font size="3">Admission Details</font></b></td>
+				<td colspan="4" align="center"><b><u><font size="3">Admission Details</font></u></b></td>
 			</tr>
 			<tr>
 				<td><strong>Department/OPD Consulted:</strong></td>
@@ -79,7 +79,7 @@
 	<table class="box">
 	     
 			<tr>
-				<td colspan="4" align="left"><b><font size="3">Diagnosis Details</font></b></td>
+				<td colspan="4" align="center"><b><u><font size="3">Diagnosis Details</font></u></b></td>
 			</tr>
 			<c:choose>
 	  <c:when test="${not empty records}">
@@ -102,7 +102,7 @@
 		</table>
 			<table class="box">
 			<tr>
-				<td colspan="4" align="left"><b><font size="3">Clinical Findings/Instructions</font></b></td>
+				<td colspan="4" align="center"><b><u><font size="3">Clinical Findings/Instructions</font></u></b></td>
 			</tr>
 			<tr id="othInst">
 				<td>${otherinstructions}</td>
@@ -111,7 +111,7 @@
 		<table class="box">
 			<br />
 			<tr>
-				<td colspan="4" align="left"><b><font size="3">Treatment Advised</font></b></td>
+				<td colspan="4" align="center"><b><u><font size="3">Treatment Advised</font></u></b></td>
 			</tr>
 			<tr align="center">
 				<th>S.No</th>
@@ -140,6 +140,9 @@
 	</c:when>
 	</c:choose>
 		</table>
+	<br />
+	<br />
+	<br />
 	<br />
 	<div style="float:right;"> 
 			<tr>
