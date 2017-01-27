@@ -577,7 +577,7 @@ jQuery("#BMI").val(b);
 			<tr>
 				<td colspan="3">
 					<%--New Requirement "Final & Provisional Diagnosis" ~Wasib--%> <strong>
-						DIAGNOSIS</strong>
+						Diagnosis</strong>
 					</div>
 				</td>
 			</tr>
@@ -816,9 +816,8 @@ jQuery("#BMI").val(b);
 							onclick="DASHBOARD.onClickFollowDate(this);">
 						<input type="radio" name="radio_f" value="Cured"
 							onclick="DASHBOARD.onChangeRadio(this);">Cured
-  		<input type="radio" name="radio_f" value="Died"
-							onclick="DASHBOARD.onChangeRadio(this);">Died
-  		</c:if> <input type="radio" name="radio_f" value="Reviewed"
+  		           </c:if> 
+  		           <input type="radio" name="radio_f" value="Reviewed"
 					onclick="DASHBOARD.onChangeRadio(this);">Reviewed <c:if
 						test="${empty admitted}">
 						<input type="radio" name="radio_f" value="Admit"
@@ -834,6 +833,12 @@ jQuery("#BMI").val(b);
 							</c:forEach>
 						</c:if>
 				</select></td>
+				<td align="left" style="float:right">
+				<c:if test="${empty admitted}">
+				<input type="radio" name="radio_f" value="Died"
+							onclick="DASHBOARD.onChangeRadio(this);">Died
+				</c:if>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="3"><c:choose>
