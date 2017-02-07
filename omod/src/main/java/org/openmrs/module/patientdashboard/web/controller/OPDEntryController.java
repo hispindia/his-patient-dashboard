@@ -252,6 +252,14 @@ public class OPDEntryController {
 		if (admitted != null) {
 			model.addAttribute("admittedStatus", "Admitted");
 		}
+		
+		IpdPatientAdmission ipdPatientAdmission=ipds.getIpdPatientAdmissionByPatient(patient);
+		if (ipdPatientAdmission != null) {
+			model.addAttribute("ipdPatientAdmission",true);
+		}
+		else{
+			model.addAttribute("ipdPatientAdmission",false);	
+		}
 
         return "module/patientdashboard/opdEntry";
 	}

@@ -304,6 +304,11 @@ submitStatus=0;
 }
 });
 
+if('${ipdPatientAdmission}'=='true'){
+alert("patient already sent in ipd admission queue");
+return false;
+}
+
 var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
 if(selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
