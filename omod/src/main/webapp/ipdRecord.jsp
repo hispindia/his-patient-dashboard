@@ -94,7 +94,7 @@ jQuery("#printDischargeSummary").printArea({
 <b class="boxHeader">Previous Admission</b>
 <table class="box" width="100%">
 	<tr align="center">
-		<th><spring:message code="patientdashboard.hospital"/></th>
+		<!--<th><spring:message code="patientdashboard.hospital"/></th>-->
 		<th><spring:message code="patientdashboard.dateOfAdmission"/></th>
 		<th><spring:message code="patientdashboard.dateOfDischarge"/></th>
 		<th><spring:message code="patientdashboard.finalDiagnosis"/></th>
@@ -107,7 +107,7 @@ jQuery("#printDischargeSummary").printArea({
 	  <c:when test="${not empty records}">
 		<c:forEach items="${records}" var="record" varStatus="varStatus">
 			<tr align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-				<td>${record.hospitalName }</td>
+				<!--<td>${record.hospitalName }</td>-->
 				<td><openmrs:formatDate date="${record.admissionDate}" type="textbox"/></td>
 				<td><openmrs:formatDate date="${record.dischargeDate}" type="textbox"/></td>
 	
