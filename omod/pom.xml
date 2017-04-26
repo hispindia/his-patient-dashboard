@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>patientdashboard</artifactId>
-		<version>1.4.1-SNAPSHOT</version>
+		<version>1.4.0</version>
 	</parent>
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>patientdashboard-omod</artifactId>
@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>hospitalcore-api</artifactId>
-			<version>1.5.3-SNAPSHOT</version>
+			<version>1.5.2</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
