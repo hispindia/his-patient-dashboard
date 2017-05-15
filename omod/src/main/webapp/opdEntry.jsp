@@ -328,6 +328,29 @@ var ipdward=jQuery("#ipdWard").val();
   }
  }
  
+var weight = document.getElementById('weight').value;
+jQuery("#weightDiv").append("<span style='margin:5px;'>" + weight + "</span>");
+
+var height = document.getElementById('height').value;
+jQuery("#heightDiv").append("<span style='margin:5px;'>" + height + "</span>");
+
+var bmi = document.getElementById('BMI').value;
+jQuery("#bmiDiv").append("<span style='margin:5px;'>" + bmi + "</span>");
+
+var temperature = document.getElementById('temp').value;
+jQuery("#temperatureDiv").append("<span style='margin:5px;'>" + temperature + "</span>");
+
+var systolic = document.getElementById('systolic').value;
+var diastolic = document.getElementById('diastolic').value;
+var bp=systolic + "/" + diastolic;
+jQuery("#bpDiv").append("<span style='margin:5px;'>" + bp + "</span>");
+
+var pulse = document.getElementById('pulsRate').value;
+jQuery("#pulseDiv").append("<span style='margin:5px;'>" + pulse + "</span>");
+
+var lmp = document.getElementById('lastMenstrualPeriod').value;
+jQuery("#lmpDiv").append("<span style='margin:5px;'>" + lmp + "</span>");
+ 
 var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
 
@@ -521,7 +544,7 @@ jQuery("#BMI").val(b);
 							</tr>
 							<tr>
 								<td>BMI</td>
-								<td><input type="text" id="BMI" size="11" maxlength="7"></td>
+								<td><input type="text" id="BMI" name="BMI" size="11" maxlength="7"></td>
 								<td></td>
 								<td>18.5-24.9</td>
 
@@ -910,6 +933,41 @@ jQuery("#BMI").val(b);
 			<tr>
 				<td><strong>OPD Consulted:</strong></td>
 				<td>${opd.name}</td>
+			</tr>
+		</table>
+		<table class="box">
+			<tr>
+				<center>
+					<b><font size="2">VITAL STATISTIC DETAILS</font></b>
+				</center>
+			</tr>
+			<tr>
+			<td><strong>Weight</strong></td>
+			<td><div id="weightDiv"></div></td>
+			</tr>
+			<tr>
+			<td><strong>Height</strong></td>
+			<td><div id="heightDiv"></div></td>
+			</tr>
+			<tr>
+			<td><strong>BMI</strong></td>
+			<td><div id="bmiDiv"></div></td>
+			</tr>
+			<tr>
+			<td><strong>Temperature</strong></td>
+			<td><div id="temperatureDiv"></div></td>
+			</tr>
+			<tr>
+			<td><strong>B.P</strong></td>
+			<td><div id="bpDiv"></div></td>
+			</tr>
+			<tr>
+			<td><strong>Pulse Rate</strong></td>
+			<td><div id="pulseDiv"></div></td>
+			</tr>
+			<tr>
+			<td><strong>LMP</strong></td>
+			<td><div id="lmpDiv"></div></td>
 			</tr>
 		</table>
 		<table class="box">
