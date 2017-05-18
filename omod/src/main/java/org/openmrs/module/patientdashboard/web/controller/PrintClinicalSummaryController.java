@@ -233,6 +233,7 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("visitOutCome", visitOutCome);
 		model.addAttribute("followUpDate", followUpDate);
 		model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
+		model.addAttribute("otherInstructions", otherInstructions);
 		model.addAttribute("illnessHistory", illnessHistory);
 		model.addAttribute("pdiagnosiss", pdiagnosiss);
 		model.addAttribute("fdiagnosiss", fdiagnosiss);
