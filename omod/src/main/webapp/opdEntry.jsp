@@ -961,32 +961,52 @@ jQuery("#BMI").val(b);
 				</center>
 			</tr>
 			<tr>
+			<td> </td>
+			<td> </td>
+			<td><strong>Range</strong></td>
+			<td><strong>Unit</strong></td>
+			</tr>
+			<tr>
 			<td><strong>Weight</strong></td>
 			<td><div id="weightDiv"></div></td>
+			<td></td>
+			<td>Kg</td>
 			</tr>
 			<tr>
 			<td><strong>Height</strong></td>
 			<td><div id="heightDiv"></div></td>
+			<td></td>
+			<td>cm</td>
 			</tr>
 			<tr>
 			<td><strong>BMI</strong></td>
 			<td><div id="bmiDiv"></div></td>
+			<td>18.5-24.9</td>
+			<td></td>
 			</tr>
 			<tr>
 			<td><strong>Temperature</strong></td>
 			<td><div id="temperatureDiv"></div></td>
+			<td>97.7-98.96</td>
+			<td>F</td>
 			</tr>
 			<tr>
 			<td><strong>B.P</strong></td>
 			<td><div id="bpDiv"></div></td>
+			<td>110/70-140/90</td>
+			<td>mm/Hg</td>
 			</tr>
 			<tr>
 			<td><strong>Pulse Rate</strong></td>
 			<td><div id="pulseDiv"></div></td>
+			<td>60-90</td>
+			<td>/min</td>
 			</tr>
 			<tr>
 			<td><strong>LMP</strong></td>
 			<td><div id="lmpDiv"></div></td>
+			<td></td>
+			<td></td>
 			</tr>
 		</table>
 		<table class="box">
