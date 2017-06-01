@@ -36,6 +36,7 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
@@ -397,10 +398,14 @@ public class AutoCompleteController {
 			
 			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
+			String mobno="";
 			for (PersonAttribute pa : pas) {
 				PersonAttributeType attributeType = pa.getAttributeType();
 				if (attributeType.getPersonAttributeTypeId() == 14) {
 					model.addAttribute("selectedCategory", pa.getValue());
+				}
+				if (attributeType.getPersonAttributeTypeId() == 16) {
+					mobno=pa.getValue();
 				}
 			}
 			
@@ -423,6 +428,13 @@ public class AutoCompleteController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
 			model.addAttribute("dateOfVisit", sdf.format(opql.getCreatedOn()));
+			
+			HospitalCoreService hospitalCoreService = Context
+			.getService(HospitalCoreService.class);
+			PersonAddress personAddress=hospitalCoreService.getPersonAddress(person);
+			model.addAttribute("personAddress",personAddress.getAddress1()+","+personAddress.getCountyDistrict()+","+personAddress.getCityVillage());	
+			
+			model.addAttribute("mobno", mobno);
 			
 		}
 		return "module/patientdashboard/detailClinical";

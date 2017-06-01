@@ -95,6 +95,11 @@ jQuery("#ipdadmissionwarddc").hide();
 		<td>${age}</td>
 	</tr>
 	<tr>
+				<td><strong>Address:</strong></td>
+				<td colspan="3">${personAddress}</td>
+				<td>${mobno}</td>
+			</tr>
+	<tr>
 		<td><strong>OPD Consulted:</strong></td>
 		<td>${opdConceptName}</td>
 	</tr>

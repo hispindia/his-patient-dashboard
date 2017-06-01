@@ -195,10 +195,14 @@ public class OPDEntryController {
 
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		String mobno="";
 		for (PersonAttribute pa : pas) {
 			PersonAttributeType attributeType = pa.getAttributeType();
 			if (attributeType.getPersonAttributeTypeId() == 14) {
 				model.addAttribute("selectedCategory", pa.getValue());
+			}
+			if (attributeType.getPersonAttributeTypeId() == 16) {
+				mobno=pa.getValue();
 			}
 			/*
 			 * if (attributeType.getPersonAttributeTypeId() == 36) {
@@ -266,6 +270,8 @@ public class OPDEntryController {
 		.getService(HospitalCoreService.class);
 		PersonAddress personAddress=hospitalCoreService.getPersonAddress(person);
 		model.addAttribute("personAddress",personAddress.getAddress1()+","+personAddress.getCountyDistrict()+","+personAddress.getCityVillage());	
+		
+		model.addAttribute("mobno", mobno);
 
         return "module/patientdashboard/opdEntry";
 	}
