@@ -1051,7 +1051,7 @@ jQuery("#BMI").val(b);
 				<th>No of Days</th>
 				<th>Comments</th>
 			</tr>
-			<tr align="center">
+			<tr>
 				<td><div id="printableSlNo"></div></td>
 				<td><div id="printableDrug"></div></td>
 				<td><div id="printableFormulation"></div></td>
