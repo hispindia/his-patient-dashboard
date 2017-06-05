@@ -98,6 +98,12 @@ jQuery("#ipdadmissionward").hide();
 		<td>${age}</td>
 	</tr>
 	<tr>
+		<td><strong>Address:</strong></td>
+		<td>${personAddress}</td>
+		<td><strong>Mob No:</strong></td>
+		<td>${mobno}</td>
+	</tr>
+	<tr>
 		<td><strong>OPD Consulted:</strong></td>
 		<td>${opdConceptName}</td>
 	</tr>

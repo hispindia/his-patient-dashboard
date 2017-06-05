@@ -431,7 +431,8 @@ public class AutoCompleteController {
 			
 			HospitalCoreService hospitalCoreService = Context
 			.getService(HospitalCoreService.class);
-			PersonAddress personAddress=hospitalCoreService.getPersonAddress(person);
+			Person persn=Context.getPersonService().getPerson(patient);
+			PersonAddress personAddress=hospitalCoreService.getPersonAddress(persn);
 			model.addAttribute("personAddress",personAddress.getAddress1()+","+personAddress.getCountyDistrict()+","+personAddress.getCityVillage());	
 			
 			model.addAttribute("mobno", mobno);

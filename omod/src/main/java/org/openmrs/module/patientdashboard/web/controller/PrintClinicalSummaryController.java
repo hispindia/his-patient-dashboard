@@ -30,6 +30,7 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
@@ -81,10 +82,14 @@ public class PrintClinicalSummaryController {
 
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		String mobno="";
 		for (PersonAttribute pa : pas) {
 			PersonAttributeType attributeType = pa.getAttributeType();
 			if (attributeType.getPersonAttributeTypeId() == 14) {
 				model.addAttribute("selectedCategory", pa.getValue());
+			}
+			if (attributeType.getPersonAttributeTypeId() == 16) {
+				mobno=pa.getValue();
 			}
 			User user = Context.getAuthenticatedUser();
 			model.addAttribute("user", user);
@@ -241,6 +246,14 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("investigations", investigations);
 		model.addAttribute("opdDrugOrders", opdDrugOrders);
 		model.addAttribute("opdConceptName", opql.getOpdConceptName());
+		
+		HospitalCoreService hospitalCoreService = Context
+		.getService(HospitalCoreService.class);
+		Person persn=Context.getPersonService().getPerson(patient);
+		PersonAddress personAddress=hospitalCoreService.getPersonAddress(persn);
+		model.addAttribute("personAddress",personAddress.getAddress1()+","+personAddress.getCountyDistrict()+","+personAddress.getCityVillage());	
+		
+		model.addAttribute("mobno", mobno);
 
 		return "module/patientdashboard/printClinicalSummary";
 	}

@@ -947,7 +947,8 @@ jQuery("#BMI").val(b);
 			</tr>
 			<tr>
 				<td><strong>Address:</strong></td>
-				<td colspan="3">${personAddress}</td>
+				<td>${personAddress}</td>
+				<td><strong>Mob No:</strong></td>
 				<td>${mobno}</td>
 			</tr>
 			<tr>
