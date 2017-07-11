@@ -120,7 +120,8 @@ public class PrintClinicalSummaryController {
 				.getConceptByName("OTHER INSTRUCTIONS");
 		Concept conIllnessHistory = conceptService
 				.getConceptByName("HISTORY OF PRESENT ILLNESS");
-
+        //symptom
+		List<Concept> symptoms = new ArrayList<Concept>();
 		List<Concept> pdiagnosiss = new ArrayList<Concept>();
 		List<Concept> fdiagnosiss = new ArrayList<Concept>();
 		List<Concept> procedures = new ArrayList<Concept>();
@@ -171,10 +172,10 @@ public class PrintClinicalSummaryController {
 					}
 
 					if (obs.getValueCoded() != null) {
-						/*if (obs.getValueCoded().getConceptClass().getName()
-								.equals("Diagnosis")) {
-							diagnosiss.add(obs.getValueCoded());
-						}*/
+						if (obs.getValueCoded().getConceptClass().getName()
+								.equals("Symptom")) {
+							symptoms.add(obs.getValueCoded());
+						}
 						if (obs.getValueCoded().getConceptClass().getName()
 								.equals("Procedure")) {
 							procedures.add(obs.getValueCoded());
@@ -188,7 +189,7 @@ public class PrintClinicalSummaryController {
 							investigations.add(obs.getValueCoded());
 						}
 						//New Requirement "Final & Provisional Diagnosis" //
-						if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("Provisional diagnosis"))) {
+						if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("PROVISIONAL DIAGNOSIS"))) {
 							pdiagnosiss.add(obs.getValueCoded());
 							
 						}
@@ -240,6 +241,7 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("investigations", investigations);
 		model.addAttribute("opdDrugOrders", opdDrugOrders);
 		model.addAttribute("opdConceptName", opql.getOpdConceptName());
+		model.addAttribute("symptoms", symptoms);
 
 		return "module/patientdashboard/printClinicalSummary";
 	}

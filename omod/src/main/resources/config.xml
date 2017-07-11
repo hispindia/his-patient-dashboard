@@ -45,6 +45,10 @@
 		<name>View PatientDashboard</name>
 		<description>Allows user to view PatientDashboard</description>
 	</privilege>
+		<privilege>
+		<name>Edit Patient by Doctor</name>
+		<description>Allows Doctor Edit Patient history</description>
+	</privilege>
 	<!-- Required Global Properties -->
 	
 	<globalProperty>
@@ -139,6 +143,14 @@
 		<defaultValue>LABENCOUNTER</defaultValue>
 		<description>
 			Lab Encounter type name
+		</description>
+	</globalProperty>
+	<!-- Symptom -->
+	<globalProperty>
+		<property>@MODULE_ID@.symptomConcept</property>
+		<defaultValue>symptom</defaultValue>
+		<description>
+			symptom concept name
 		</description>
 	</globalProperty>
 	<!--Required Global Properties -->

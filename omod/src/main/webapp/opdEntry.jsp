@@ -162,7 +162,54 @@ function loadSelectedDiagnosisList()
    	}
    	}
 }
+//Symptom
+function loadSelectedSymptomList()
+{
+	if(${symptomIdSet}.length > 0)
+	{
+
+	var symIdToBeAdded = ('${symptomIdSet}')
+	var symNameToBeAdded = ('${symNameSet}')
+	symIdToBeAdded = symIdToBeAdded.substr(1);
+	symIdToBeAdded = symIdToBeAdded.substr(0,symIdToBeAdded.length - 1);	
+	symNameToBeAdded = symNameToBeAdded.substr(1);
+	symNameToBeAdded = symNameToBeAdded.substring(0, symNameToBeAdded.length - 1);	
+	var sIdArr = symIdToBeAdded.split(",");
+	var sNameArr = symNameToBeAdded.split(",");
+	
+	var ssl = $("#selectedSymptomList");
+	var abc="";
+	var selectedSymptom = new Array();
+	for (var i = 0; i < sIdArr.length; i++)
+	{ 	
+		 sNameArr[i] = sNameArr[i].replaceAll("@", ",");
+		 ssl.append("<option value='"+sIdArr[i].trim()+"'>"+sNameArr[i].trim()+"</option>");
+	     var n = sIdArr[i].trim().toString(); 
+	     selectedSymptom.push(n);
+		 abc = abc.concat(n);
+		 abc = abc.concat(",");
+	}  
+
+
+     
+   	 jQuery.ajax({
+		type : "GET",	
+		url : getContextPath() + "/module/patientdashboard/getQuestion.htm",
+		data : ({
+			selectedSymptom			: abc
+		}),
+		success : function(data) {
+			jQuery("#questionDiv").html(data);	
+			
+		}
+		
+		
+		});
+	}		
+		
+}
 loadSelectedDiagnosisList();
+loadSelectedSymptomList();
 		});
 </script>
 <script type="text/javascript">
@@ -207,6 +254,7 @@ function loadSelectedDiagnosisList()
    	}
    	}
 }
+
 
 </script>
 
@@ -290,7 +338,46 @@ function deleteInput(drugName) {
    drugIssuedList.remove(drugName);
 }
 
-
+//Symptom
+function getQuestion(){
+	var selLen = selectedSymptomList.length;
+	var i;
+	var selectedSymptom = new Array();
+	var dat1;
+	var abc="";
+	for(i=selLen-1; i>=0; i--){
+	var dat1=selectedSymptomList[i].value;
+	var n = dat1.toString(); 
+	selectedSymptom.push(n);
+	abc = abc.concat(n);
+	abc = abc.concat(",");
+	}
+	jQuery.ajax({
+				type : "GET",	
+				url : getContextPath() + "/module/patientdashboard/getQuestion.htm",
+				data : ({
+					selectedSymptom			: abc
+				}),
+				success : function(data) {
+					jQuery("#questionDiv").html(data);	
+				}
+				});
+	}
+function removeSymptom(){
+	var selLen = selectedSymptomList.length;
+	var i;
+	for(i=selLen-1; i>=0; i--){
+	var dat1=selectedSymptomList[i].value;
+	var splts=dat1.toString();
+	var spltswhs="#".concat(splts); 
+	$('spltswhs').remove();
+	}
+	getQuestion();
+	}
+function viewQuestion(){ 
+	var url = "#TB_inline?height=500&width=1000&inlineId=questionDiv";
+	tb_show("View Question",url,false);
+	}
 
 // Print the slip
 function print(){
@@ -311,7 +398,7 @@ return false;
 
 var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
-if(selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
+if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
 
 if(visitOutCome=="Follow-up"){
 var datFollUp=jQuery("#dateFollowUp").val();
@@ -331,6 +418,11 @@ var ipdward=jQuery("#ipdWard").val();
 var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
 
+var selSymLen = selectedSymptomList.length;
+for(i=selSymLen-1; i>=0; i--){
+var sym=selectedSymptomList[i].text;
+jQuery("#printableSymptom").append("<span style='margin:5px;'>" + sym + "<br/>" + "</span>");
+}
 //Diagnosis
 var selDiagLen = selectedDiagnosisList.length;
 var result =[];
@@ -579,6 +671,49 @@ jQuery("#BMI").val(b);
 					style="width: 1000px; height: 50px" rows=1 cols=20
 					class="ui-autocomplete-input ui-widget-content ui-corner-all ac_input" /></td>
 			</tr>
+			<!-- SYmptom--->
+								<tr>
+						<td colspan="3"><strong>Symptom:</strong><em>*</em>
+							<input
+							class="ui-autocomplete-input ui-widget-content ui-corner-all"
+							id="symptom" title="${opd.conceptId}" style="width: 460px"
+							name="symptom" /></td>
+					</tr>
+					<tr>
+						<td>
+							<!-- List of all available DataElements -->
+							<div id="divAvailableSymptomList">
+								<select size="4" style="width: 550px"
+									id="availableSymptomList" name="availableSymptomList"
+									multiple="multiple" style="min-width:25em;height:10em"
+									ondblclick="moveSelectedById( 'availableSymptomList', 'selectedSymptomList');getQuestion();">
+									<c:forEach items="${symptomList}" var="symptom">
+										<option value="${symptom.id}">${symptom.name}</option>
+									</c:forEach>
+								</select>
+							</div></td>
+						<td><input type="button" value="&gt;"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							style="width: 50px"
+							onclick="moveSelectedById( 'availableSymptomList', 'selectedSymptomList');getQuestion();" /><br />
+							<input type="button" value="&lt;"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							style="width: 50px"
+							onclick="moveSelectedById( 'selectedSymptomList', 'availableSymptomList');removeSymptom()" />
+						</td>
+						<td>
+							<!-- List of all selected DataElements --> <select
+							id="selectedSymptomList" size="4" style="width: 550px"
+							name="selectedSymptomList" multiple="multiple"
+							style="min-width:25em;height:10em"
+							ondblclick="moveSelectedById( 'selectedSymptomList', 'availableSymptomList' );removeSymptom();">
+						</select></td>
+						<td>
+						<input type="button"
+									class="ui-button ui-widget ui-state-default ui-corner-all"
+									value="View Question" onclick="viewQuestion();"/>
+							</td>
+					</tr>
 			<tr>
 				<td colspan="3">
 					<%--New Requirement "Final & Provisional Diagnosis" ~Wasib--%> <strong>
@@ -679,48 +814,64 @@ jQuery("#BMI").val(b);
 				</td>
 			</tr>
 
-			<tr>
-				<td colspan="3">
-					<div class="ui-widget">
-						<strong>Investigation:</strong> <input
-							class="ui-autocomplete-input ui-widget-content ui-corner-all"
-							title="${opd.conceptId}" id="investigation" style="width: 450px"
-							name="investigation" />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<!-- List of all available Tests -->
-					<div id="divAvailableInvestigationList">
-						<select size="4" style="width: 550px"
-							id="availableInvestigationList" name="availableInvestigationList"
-							multiple="multiple" style="min-width:25em;height:5em"
-							ondblclick="moveSelectedById( 'availableInvestigationList', 'selectedInvestigationList');">
-							<c:forEach items="${listInvestigations}" var="investigation">
-								<option value="${investigation.conceptId}">${investigation.name}</option>
-							</c:forEach>
+		<tr>
+					    <td colspan="3"><div id="investgtion">
+							<strong>INVESTIGATION</strong></div>
+						</td>
+					<tr>
+					<tr>
+						<td colspan="3">
+							<div class="ui-widget" id="invest">
+								<strong>Investigation:</strong> <input
+									class="ui-autocomplete-input ui-widget-content ui-corner-all"
+									title="${opd.conceptId}" id="investigation"
+									style="width: 450px" name="investigation" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<!-- List of all available Tests -->
+							<div id="divAvailableInvestigationList">
+								<select size="4" style="width: 550px"
+									id="availableInvestigationList"
+									name="availableInvestigationList" multiple="multiple"
+									style="min-width:25em;height:5em"
+									ondblclick="moveSelectedById( 'availableInvestigationList', 'selectedInvestigationList');">
+									<c:forEach items="${listInvestigations}" var="investigation">
+										<option value="${investigation.conceptId}">${investigation.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</td>
+						<td><div id="investing"><input type="button"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							value="&gt;" style="width: 50px"
+							onclick="moveSelectedById( 'availableInvestigationList', 'selectedInvestigationList');" /><br />
+							<input type="button"
+							class="ui-button ui-widget ui-state-default ui-corner-all"
+							value="&lt;" style="width: 50px"
+							onclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList');" />
+							<!--  
+				<input type="button"
+				class="ui-button ui-widget ui-state-default ui-corner-all"
+				value="&gt;&gt;" style="width: 50px"
+				onclick="moveAllById( 'availableInvestigationList', 'selectedInvestigationList' );" /><br />
+				<input type="button"
+				class="ui-button ui-widget ui-state-default ui-corner-all"
+				value="&lt;&lt;" style="width: 50px"
+				onclick="moveAllById( 'selectedInvestigationList', 'availableInvestigationList' );" />
+				-->      </div>
+						</td>
+						<td>
+							<!-- List of all selected DataElements --> <select size="4"
+							style="width: 550px" id="selectedInvestigationList"
+							name="selectedInvestigationList" multiple="multiple"
+							style="min-width:25em;height:5em"
+							ondblclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList' )">
 						</select>
-					</div>
-				</td>
-				<td><input type="button"
-					class="ui-button ui-widget ui-state-default ui-corner-all"
-					value="&gt;" style="width: 50px"
-					onclick="moveSelectedById( 'availableInvestigationList', 'selectedInvestigationList');" /><br />
-					<input type="button"
-					class="ui-button ui-widget ui-state-default ui-corner-all"
-					value="&lt;" style="width: 50px"
-					onclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList');" />
-				</td>
-				<td>
-					<!-- List of all selected DataElements --> <select size="4"
-					style="width: 550px" id="selectedInvestigationList"
-					name="selectedInvestigationList" multiple="multiple"
-					style="min-width:25em;height:5em"
-					ondblclick="moveSelectedById( 'selectedInvestigationList', 'availableInvestigationList' )">
-				</select>
-				</td>
-			</tr>
+						</td>
+					</tr>
 			<tr>
 				<td colspan="3">
 					<div class="ui-widget">
@@ -874,7 +1025,10 @@ jQuery("#BMI").val(b);
 
 
 	</div>
-
+<div id="questionDiv" style="visibility:hidden;">
+<table id="tableQuestion">
+</table>
+</div>
 	<div id="printOPDSlip" style="visibility: hidden;">
 		<table class="box">
 			<tr>
@@ -922,6 +1076,7 @@ jQuery("#BMI").val(b);
 				<td><strong>History of Present Illness:</strong></td>
 				<td><div id="printableHistoryOfPresentIllness"></div></td>
 			</tr>
+			<tr><td><strong>Symptom:</strong></td><td><div id="printableSymptom"></div></td></tr>
 			<tr>
 				<td><strong>Diagnosis:</strong></td>
 				<td><div id="printableProvisionalDiagnosis"></div></td>

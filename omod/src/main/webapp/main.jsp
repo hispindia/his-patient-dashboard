@@ -22,6 +22,7 @@
 <openmrs:require privilege="View PatientDashboard" otherwise="/login.htm" redirect="index.htm" />
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="includes/js_css.jsp" %>
+
 <input type="hidden" id="pageId" value="patientDashboard"/>
 
 <b class="boxHeader">Dashboard</b>
@@ -86,6 +87,9 @@
          <li><a href="ipdRecord.htm?patientId=${patient.patientId }&opdLog=${opdLog}"  title="IPD record"><span >IPD Record</span></a></li>
          <%-- ghanshyam,date:18-april-2013 New Requirement #1391 [Patient Dashboard] Add Pharmacy record of patient in Dashboard(in all hospital of india module) --%>
 		 <li><a href="pharmacyRecord.htm?patientId=${patient.patientId }" title="Pharmacy record"><span>Pharmacy Record</span> </a></li>
+         <li><a href="patientHistory.htm?patientId=${patient.patientId } &opdId=${opd.conceptId}&referralConceptName=${referralConceptName}&hasEditPrivilige=${hasEditPrivilige}&queueId=${queueId}&referralId=${referralId}"
+				title="Patient history"><span>Patient History</span> </a></li>
+    
      </ul>
      
      <div id="OPD_entry"></div>
@@ -99,6 +103,7 @@
 	 <div id="IPD_record"></div>
 	 <%-- ghanshyam,date:18-april-2013 New Requirement #1391 [Patient Dashboard] Add Pharmacy record of patient in Dashboard(in all hospital of india module) --%>
 	 <div id="Pharmacy_record"></div>
+	 <div id="Patient_history"></div>
 </div>
 
 </div>

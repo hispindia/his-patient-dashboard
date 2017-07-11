@@ -21,7 +21,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <script type="text/javascript">
-function clinicalSummary(encounterId){
+function clinicalSummary(encounterId){ 
+	
 var patientId = ${patient.patientId};
 jQuery.ajax({
 				type : "GET",
@@ -70,6 +71,7 @@ jQuery("#printClinicalSummary").printArea({
 	<th><spring:message code="patientdashboard.clinicalSummary.view"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.dateAndTimeOfVisit"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.vitalStatistics"/></th>
+	<th><spring:message code="patientdashboard.clinicalSummary.symptomlDetails"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.treatingDoctor"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.diagnosis"/></th>
 	<th><spring:message code="patientdashboard.clinicalSummary.procedures"/></th>
@@ -84,6 +86,7 @@ jQuery("#printClinicalSummary").printArea({
 	--%>
 	<td>${clinicalSummary.dateOfVisit}</td>
 	<td><a href="#" onclick="DASHBOARD.vitalStatistics('${ clinicalSummary.id}','${ clinicalSummary.id}');"><small>View details</small></a> </td>
+	<td><a href="#" onclick="DASHBOARD.symptomlDetails('${ clinicalSummary.id}');"><small>View details</small></a> </td>
 	<td>${clinicalSummary.treatingDoctor}</td>
 	<td>${clinicalSummary.diagnosis}</td>
 	<td>${clinicalSummary.procedures}</td>

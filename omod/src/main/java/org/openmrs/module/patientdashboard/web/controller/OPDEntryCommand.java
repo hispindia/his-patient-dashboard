@@ -27,6 +27,8 @@ public class OPDEntryCommand {
 	private Integer[] selectedDiagnosisList;
 	private Integer[] selectedProcedureList;
 	private Integer[] selectedInvestigationList;
+	//Symptom
+	private Integer[] selectedSymptomList;
 	private Integer patientId;
 	private String internalReferral;
 	private String externalReferral;
@@ -162,7 +164,13 @@ public class OPDEntryCommand {
 		this.queueId = queueId;
 	}
 	
-	
+	//Symptom
+	public Integer[] getSelectedSymptomList() {
+		return selectedSymptomList;
+	}
+	public void setSelectedSymptomList(Integer[] selectedSymptomList) {
+		this.selectedSymptomList = selectedSymptomList;
+	}
 	
 	
 }

@@ -107,6 +107,16 @@ jQuery("#ipdadmissionwarddc").hide();
 		<td>${illnessHistory}</td>
 	</tr>
 	
+	<tr>
+		<td><strong>Symptom:</strong></td>
+		<c:forEach items="${symptoms}" var="symptom">
+			
+			<td>${symptom.name}</td>
+	</tr>
+	<tr>
+		<td></c:forEach>
+	</tr>
+	
 	<c:choose>
 	<c:when test="${not empty pdiagnosiss}">
 	<tr>

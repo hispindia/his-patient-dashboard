@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.saxon.instruct.ValueOf;
+
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptClass;
@@ -77,7 +79,7 @@ public class MainController {
 	                        @RequestParam(value = "queueId", required = false) Integer queueId,
 	                        //ghanshyam 23-oct-2012 Bug #423 [IPD][0.9.7] Error Screen on clicking patiend ID in Admitted patient Index
 	                        @RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
-	                        @RequestParam("referralId") Integer referralId, Model model) {
+	                        @RequestParam("referralId") Integer referralId, @RequestParam(value="referralConceptName" ,required=false) String referralConceptName,Model model) {
 		PatientService ps = Context.getPatientService();
 		Patient patient = ps.getPatient(patientId);
 		
@@ -111,6 +113,8 @@ public class MainController {
 		Date createdOn = null;
 		if(queueId!=null){
 			createdOn = opdPatientQueue.getCreatedOn();
+			referralConceptName=opdPatientQueue.getReferralConceptName();
+		    
 		}
 		else if(ipdAdmittedId!=null){
 			IpdPatientAdmitted ipdPatientAdmitted=ipdService.getIpdPatientAdmitted(ipdAdmittedId);
@@ -119,6 +123,7 @@ public class MainController {
 			Integer id=opql.getId();
 			OpdPatientQueueLog opdPatientQueueLog=pqs.getOpdPatientQueueLogById(id);
 			createdOn=opdPatientQueueLog.getCreatedOn();
+			referralConceptName=opdPatientQueueLog.getReferralConceptName();
 		}
 		else{
 			createdOn = new Date();
@@ -165,6 +170,8 @@ public class MainController {
 		model.addAttribute("observation", listObsTemporaryCategories);
 		model.addAttribute("patient", patient);
 		model.addAttribute("patientCategory", PatientUtils.getPatientCategory(patient));
+		model.addAttribute("referralConceptName", referralConceptName);
+		model.addAttribute("referralId", referralId);
 		
 		model.addAttribute("queueId", queueId);
 		// issue #108
@@ -218,26 +225,26 @@ public class MainController {
 					model.addAttribute("ob", ob);
 				}
 		
-		
-		 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
-			Set<Role> userRole = loggedInUser.getAllRoles();
-			Set<Privilege> userPrivileges = (Set<Privilege>) loggedInUser.getPrivileges();
-			 String hasEditPrivilige = "no";
-			  
-			  Iterator iteratorPrivileges = userPrivileges.iterator(); 
-		      
-		      String priv= "Edit Patient by Doctor";
-		      while (iteratorPrivileges.hasNext()){
-			         if(priv.equalsIgnoreCase(iteratorPrivileges.next().toString()))
-				      {
-			        	 hasEditPrivilige = "yes";
-				     }
-			        
-			      }
-			
-		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
-		     
-		  if(ob.getConcept().getId()!=null)
+		//patient history
+				 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
+					Set<Role> userRole = loggedInUser.getAllRoles();
+					Set<Privilege> userPrivileges = (Set<Privilege>) loggedInUser.getPrivileges();
+					 String hasEditPrivilige = "no";
+					  
+					  Iterator iteratorPrivileges = userPrivileges.iterator(); 
+				      
+				      String priv= "Edit Patient by Doctor";
+				      while (iteratorPrivileges.hasNext()){
+					         if(priv.trim().equalsIgnoreCase(iteratorPrivileges.next().toString().trim()))
+						      {
+					        	 hasEditPrivilige = "yes";
+						     }
+					        
+					      }
+					
+				      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
+				     
+			if(ob.getConcept().getId()!=null)
 		     {
 		    	 model.addAttribute("revisit","revisit");
 		     }

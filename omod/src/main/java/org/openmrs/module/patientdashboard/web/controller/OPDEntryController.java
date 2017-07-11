@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.DepartmentConcept;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
@@ -76,6 +78,8 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.hospitalcore.model.Question;
+import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -129,6 +133,17 @@ public class OPDEntryController {
 		InventoryCommonService inventoryCommonService = Context
 				.getService(InventoryCommonService.class);
 		Concept opdConcept = Context.getConceptService().getConcept(opdId);
+		
+		/*Symptoms created for TVHA project
+		 
+		 */
+		List<Concept> symptomList = patientDashboardService
+				.listByDepartmentByWard(opdId, DepartmentConcept.TYPES[3]);
+		if (CollectionUtils.isNotEmpty(symptomList)) {
+			Collections.sort(symptomList, new ConceptComparator());
+		}
+		model.addAttribute("symptomList", symptomList);
+		
 		/*
 		 * //list diagnosis need rewrtie CHUYEN List<Concept> diagnosis = new
 		 * ArrayList
@@ -158,7 +173,7 @@ public class OPDEntryController {
 			Collections.sort(investigations, new ConceptComparator());
 		}
 		model.addAttribute("listInvestigations", investigations);
-
+        
 		List<Concept> drugFrequencyConcept = inventoryCommonService
 				.getDrugFrequency();
 		model.addAttribute("drugFrequencyList", drugFrequencyConcept);
@@ -239,7 +254,22 @@ public class OPDEntryController {
 		}
 		model.addAttribute("diagnosisIdSet", diagnosisIdSet);
 		model.addAttribute("diaNameSet", diaNameSet);
-		
+		//Symptom
+		List<Obs> symptom= queueService.getAllSymptom(personId);
+		Set<Concept> symptomIdSet = new LinkedHashSet<Concept>();
+		Set<ConceptName> symptomNameSet = new LinkedHashSet<ConceptName>();
+		for(Obs symp:symptom){
+			 symptomIdSet.add(symp.getValueCoded());
+			 symptomNameSet.add(symp.getValueCoded().getName());
+		}
+		Set<String> symNameSet = new LinkedHashSet<String>();
+		Iterator itr1 = symptomNameSet.iterator();
+		while(itr1.hasNext())
+		{
+			symNameSet.add((itr1.next().toString()).replaceAll(",", "@"));
+		}
+		model.addAttribute("symptomIdSet", symptomIdSet);
+		model.addAttribute("symNameSet", symNameSet);
 		Map<Integer, String> ipdConceptMap = new LinkedHashMap<Integer, String>();
 		for(ConceptAnswer ipdcon:ipdConcept.getAnswers()){
 			ipdConceptMap.put(ipdcon.getAnswerConcept().getId(), ipdcon.getAnswerConcept().getName().toString());
@@ -268,6 +298,7 @@ public class OPDEntryController {
 	public String formSummit(
 			OPDEntryCommand command,
 			HttpServletRequest request,
+			@RequestParam(value = "syptomIdList", required = false) String[] syptomIdList,
 			@RequestParam(value = "drugOrder", required = false) String[] drugOrder)
 			throws Exception {
 		
@@ -373,6 +404,9 @@ public class OPDEntryController {
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL);
 		GlobalProperty externalReferral = administrationService
 				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_EXTERNAL_REFERRAL);
+		//Symptom
+		GlobalProperty gpSymptom = administrationService
+				.getGlobalPropertyObject(PatientDashboardConstants.PROPERTY_SYMPTOM);
 		
 		Concept cDiagnosis = conceptService.getConceptByName(gpDiagnosis.getPropertyValue());
 		
@@ -381,10 +415,31 @@ public class OPDEntryController {
 		
 		Concept chopi=Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS");
 		Concept cOtherIntructions=Context.getConceptService().getConcept("OTHER INSTRUCTIONS");
-
+//Symptom
+		Concept cSymptom = conceptService.getConceptByName(gpSymptom
+				.getPropertyValue());
 		if (cDiagnosis == null) {
 			throw new Exception("Diagnosis concept null");
 		}
+		
+		//Symptom
+		if (cSymptom == null) {
+			throw new Exception("Symptom concept null");
+		}
+		// symptom
+		
+		for (Integer cId : command.getSelectedSymptomList()) {
+			Obs obsSymptom = new Obs();
+			obsSymptom.setObsGroup(obsGroup);
+			obsSymptom.setConcept(cSymptom);
+			obsSymptom.setValueCoded(conceptService.getConcept(cId));
+			obsSymptom.setCreator(user);
+			obsSymptom.setDateCreated(date);
+			obsSymptom.setEncounter(encounter);
+			obsSymptom.setPatient(patient);
+			encounter.addObs(obsSymptom);
+		}
+		
 		// diagnosis
 		//New Requirement "Final & Provisional Diagnosis" //
 		String selectedDia = request.getParameter("radio_dia");
@@ -1007,6 +1062,9 @@ public class OPDEntryController {
 			}
 
 		}
+		
+		
+
 
 		// send pharmacy orders to issue drugs to a patient from dashboard
 		Integer formulationId;
@@ -1047,6 +1105,69 @@ public class OPDEntryController {
 				}
 			}
 		}
+		//Symptom
+		Symptom symptom = new Symptom();
+		Question question = new Question();
+		Answer answer = new Answer();
+		for (String syptomId : syptomIdList) {
+			String sypId = request.getParameter(syptomId);
+			if (sypId != null) {
+				symptom.setEncounter(encounter);
+				symptom.setSymptomConcept(Context.getConceptService()
+						.getConcept(Integer.parseInt(syptomId)));
+				symptom.setCreatedDate(new Date());
+				symptom.setCreator(Context.getAuthenticatedUser());
+				Symptom sym = patientDashboardService.saveSymptom(symptom);
+				Collection<ConceptAnswer> conceptAnswers = Context
+						.getConceptService()
+						.getConcept(Integer.parseInt(syptomId)).getAnswers();
+
+				for (ConceptAnswer conceptAnswer : conceptAnswers) {
+					if (conceptAnswer.getAnswerConcept().getDatatype()
+							.isCoded()) {
+						String aa = request.getParameter(syptomId
+								+ ":"
+								+ conceptAnswer.getAnswerConcept()
+										.getConceptId().toString() + ":"
+								+ "radioOption");
+						if (aa != null) {
+							question.setSymptom(sym);
+							question.setQuestionConcept(conceptAnswer
+									.getAnswerConcept());
+							Question que = patientDashboardService
+									.saveQuestion(question);
+
+							Integer ghi = Integer.parseInt(aa);
+							answer.setQuestion(que);
+							answer.setAnswerConcept(Context.getConceptService()
+									.getConcept(ghi));
+							answer.setFreeText(null);
+							patientDashboardService.saveAnswer(answer);
+						}
+					} else {
+						String jkl = request.getParameter(syptomId
+								+ ":"
+								+ conceptAnswer.getAnswerConcept()
+										.getConceptId().toString() + ":"
+								+ "textFieldQues");
+						if (!jkl.equals("")) {
+						//	
+							question.setSymptom(sym);
+							question.setQuestionConcept(conceptAnswer
+									.getAnswerConcept());
+							Question que = patientDashboardService
+									.saveQuestion(question);
+
+							answer.setQuestion(que);
+							answer.setAnswerConcept(null);
+							answer.setFreeText(jkl);
+							patientDashboardService.saveAnswer(answer);
+						}
+					}
+				}
+			}
+		}
+
 
 		return "redirect:/module/patientqueue/main.htm?opdId="
 				+ opdPatientLog.getOpdConcept().getId();

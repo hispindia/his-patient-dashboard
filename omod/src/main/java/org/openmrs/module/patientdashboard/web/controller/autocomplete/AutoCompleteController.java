@@ -24,8 +24,11 @@ package org.openmrs.module.patientdashboard.web.controller.autocomplete;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,10 +50,13 @@ import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.InventoryCommonService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.Answer;
 import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.Question;
+import org.openmrs.module.hospitalcore.model.Symptom;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
@@ -236,7 +242,15 @@ public class AutoCompleteController {
 		model.addAttribute("diagnosis", diagnosis);
 		return "/module/patientdashboard/autocomplete/comboboxDianosis";
 	}
-	
+	//Symptom
+	@RequestMapping(value="/module/patientdashboard/comboboxSymptom.htm", method=RequestMethod.GET)
+	public String comboboxSymptom(@RequestParam(value="text",required=false) String text, Model model) {
+		List<Concept> symptom = new ArrayList<Concept>();
+		PatientDashboardService dashboardService = Context.getService(PatientDashboardService.class);
+		symptom = dashboardService.searchSymptom(text);
+		model.addAttribute("symptom", symptom);
+		return "/module/patientdashboard/autocomplete/comboboxSymptom";
+	}
 	@RequestMapping(value="/module/patientdashboard/comboboxInvestigation.htm", method=RequestMethod.GET)
 	public String comboboxInvestigation(@RequestParam(value="text",required=false) String text, Model model) {
 		List<Concept> investigation = new ArrayList<Concept>();
@@ -281,7 +295,8 @@ public class AutoCompleteController {
 			Concept conVisiteOutCome  = conceptService.getConcept(gpVisiteOutCome);
 			Concept conIllnessHistory = conceptService.getConceptByName("HISTORY OF PRESENT ILLNESS");
 			Concept conOtherInstructions = conceptService.getConceptByName("OTHER INSTRUCTIONS");
-			
+			//Symptom
+			List<Concept> symptoms = new ArrayList<Concept>();
 			List<Concept> pdiagnosiss = new ArrayList<Concept>();
 			List<Concept> fdiagnosiss = new ArrayList<Concept>();
 			List<Concept> procedures = new ArrayList<Concept>();
@@ -327,9 +342,10 @@ public class AutoCompleteController {
 						}
 						
 						if (obs.getValueCoded() != null) {
-						/*	if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")) {
-								diagnosiss.add(obs.getValueCoded());
-							}*/
+							//Symptom
+							if (obs.getValueCoded().getConceptClass().getName().equals("Symptom")) {
+								symptoms.add(obs.getValueCoded());
+							}
 							if (obs.getValueCoded().getConceptClass().getName().equals("Procedure")) {
 								procedures.add(obs.getValueCoded());
 							}
@@ -341,7 +357,7 @@ public class AutoCompleteController {
 								investigations.add(obs.getValueCoded());
 							}
 							//New Requirement "Final & Provisional Diagnosis" //
-							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("Provisional diagnosis"))) {
+							if (obs.getValueCoded().getConceptClass().getName().equals("Diagnosis")&&(obs.getConcept().isNamed("PROVISIONAL DIAGNOSIS"))) {
 								pdiagnosiss.add(obs.getValueCoded());
 								
 							}
@@ -410,6 +426,8 @@ public class AutoCompleteController {
 			model.addAttribute("internal", internal);
 			model.addAttribute("external", external);
 			model.addAttribute("visitOutCome", visitOutCome);
+			//symptom
+			model.addAttribute("symptoms", symptoms);
 			model.addAttribute("followUpDate", followUpDate);
 			model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
 			model.addAttribute("otherInstructions", otherInstructions);
@@ -427,12 +445,50 @@ public class AutoCompleteController {
 		}
 		return "module/patientdashboard/detailClinical";
 	}
+	//Symptom
+	@RequestMapping(value="/module/patientdashboard/symptomDetails.htm", method=RequestMethod.GET)
+	public String symptomDetails(@RequestParam(value="id",required=false) Integer id, Model model) {
+		if(id != null){
+		    PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+			EncounterService encounterService = Context.getEncounterService();
+			Encounter encounter =encounterService.getEncounter(id);
+			List<Symptom> symptoms=dashboardService.getSymptom(encounter);
+			List<String> al=new ArrayList<String>();
+			Map<String,Collection<Question>> syptomquestionanswer=new LinkedHashMap<String,Collection<Question>>();
+			Map<Question,String> questionanswer=new LinkedHashMap<Question,String>();
+			for(Symptom symptom:symptoms){
+				al.add(symptom.getSymptomConcept().getName().toString());
+				Collection<Question> questions=dashboardService.getQuestion(symptom);
+				syptomquestionanswer.put( symptom.getSymptomConcept().getName().toString(), (Collection<Question>) questions);
+				for(Question question:questions){
+					Answer answer=dashboardService.getAnswer(question);
+					if(answer.getAnswerConcept()!=null){
+					questionanswer.put(question, answer.getAnswerConcept().getName().toString());
+					}
+					else{
+						questionanswer.put(question, answer.getFreeText());
+					}
+				}
+			}
+			model.addAttribute("al", al);
+			model.addAttribute("syptomquestionanswer", syptomquestionanswer);
+			model.addAttribute("questionanswer", questionanswer);
+		}
+		return "module/patientdashboard/symptomDetail";
+	}
 	
 	@RequestMapping(value="/module/patientdashboard/autoCompleteDiagnosis.htm", method=RequestMethod.GET)
 	public String autoCompleteDiagnosis(@RequestParam(value="q",required=false) String name, Model model) {
 		List<Concept> diagnosis = Context.getService(PatientDashboardService.class).searchDiagnosis(name);
 		model.addAttribute("diagnosis",diagnosis);
 		return "module/patientdashboard/autocomplete/autoCompleteDiagnosis";
+	}
+	//Symptom
+	@RequestMapping(value="/module/patientdashboard/autoCompleteSymptom.htm", method=RequestMethod.GET)
+	public String autoCompleteSymptom(@RequestParam(value="q",required=false) String name, Model model) {
+		List<Concept> symptom = Context.getService(PatientDashboardService.class).searchSymptom(name);
+		model.addAttribute("symptom",symptom);
+		return "module/patientdashboard/autocomplete/autoCompleteSymptom";
 	}
 	
 	@RequestMapping(value="/module/patientdashboard/autoCompleteProcedure.htm", method=RequestMethod.GET)
