@@ -102,7 +102,50 @@ jQuery("#ipdadmissionward").hide();
 		<td>${opdConceptName}</td>
 	</tr>
 </table>
-
+<table class="box">
+	<br />
+	<tr>
+		<center>
+			<b><font size="2">VITAL DETAILS</font> </b>
+		</center>
+	</tr>
+<tr>
+		<td><strong>Weight (Kg)</strong></td>
+		<td>${weight}</td>
+	</tr>
+	<tr>
+		<td><strong>Height (cm)</strong></td>
+		<td>${height}</td>
+	</tr>
+	<tr>
+		<td><strong>BMI</strong></td>
+		<td>${bmi}</td>
+	</tr>
+   <tr>
+		<td><strong>Temperature(F)</strong></td>
+		<td>${temp}</td>
+	</tr>
+	<tr>
+		<td><strong>B.P</strong></td>
+		<td><c:choose>
+		<c:when test="${not empty sbp && not empty dbp}">
+		${sbp}/${dbp}
+		</c:when>
+		<c:otherwise>
+		<td></td>
+		</c:otherwise>
+		</c:choose></td>
+	</tr>
+	
+	<tr>
+		<td><strong>Pulse Rate(/min)</strong></td>
+		<td>${pulserate}</td>
+	</tr>
+	<tr>
+		<td><strong>LMP</strong></td>
+		<td>${lmp}</td>
+	</tr>
+</table>
 
 <table class="box">
 	<br />

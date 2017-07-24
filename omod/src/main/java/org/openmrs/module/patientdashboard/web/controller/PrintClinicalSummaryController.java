@@ -39,6 +39,7 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
+import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -60,6 +61,7 @@ public class PrintClinicalSummaryController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		String hospitalName = Context.getAdministrationService()
 				.getGlobalProperty("hospital.location_user");
+		
 		model.addAttribute("hospitalName", hospitalName);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
 		model.addAttribute("currentDateTime", sdf.format(new Date()));
@@ -108,7 +110,101 @@ public class PrintClinicalSummaryController {
 		String ipdAdmissionWard = "";
 		String otherInstructions = "";
 		String illnessHistory = "";
-
+      //vital details
+		PatientDashboardService dashboardService =  Context.getService(PatientDashboardService.class);
+		OpdPatientQueueLog opdPatientQueueLog=dashboardService.getOpdPatientQueueLog(encounter);
+		PatientQueueService queueService = Context
+				.getService(PatientQueueService.class);
+		if (opdPatientQueueLog != null) {
+		Obs weight=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("WEIGHT"),encounter);
+		if(weight!=null)
+		{	model.addAttribute("weight", weight.getValueNumeric().intValue());
+		
+		}
+		else
+		{
+			model.addAttribute("weight", "");
+		}
+		Obs height=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("HEIGHT"),encounter);
+		if(height!=null)
+		{	
+			model.addAttribute("height", height.getValueNumeric().intValue());
+		
+		}
+		else
+		{
+			model.addAttribute("height", "");
+		}
+		
+		if(weight!=null && height!=null)
+		{	Obs bmi=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("BMI"),encounter);
+		  if(bmi!=null)	
+		  {
+			  model.addAttribute("bmi", Math.round(bmi.getValueNumeric()));
+		  }
+		  else
+		  {
+			  model.addAttribute("bmi", "");
+		  }
+		
+		}
+		else
+		{
+			model.addAttribute("bmi", "");
+		}
+		Obs temperature=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("TEMPERATURE"),encounter);
+		if(temperature!=null)
+		{	
+			model.addAttribute("temp", temperature.getValueNumeric());
+		
+		}
+		else
+		{
+			model.addAttribute("temp", "");
+		}
+		Obs dbp=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("DAISTOLIC BLOOD PRESSURE"),encounter);
+		if(dbp!=null)
+		{	model.addAttribute("dbp", dbp.getValueNumeric().intValue());
+		
+		}
+		else
+		{
+			model.addAttribute("dbp", "");
+		}
+		Obs sbp=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("SYSTOLIC BLOOD PRESSURE"),encounter);
+		if(sbp!=null)
+		{	model.addAttribute("sbp", sbp.getValueNumeric().intValue());
+		
+		}
+		else
+		{
+			model.addAttribute("sbp", "");
+		}
+		Obs pulserate=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("PULSE RATE"),encounter);
+		if(pulserate!=null)
+		{	model.addAttribute("pulserate", pulserate.getValueNumeric().intValue());
+		
+		}
+		else
+		{
+			model.addAttribute("pulserate", "");
+		}
+		Obs lastmenstrualperiod=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("LAST MENSTRUAL PERIOD"),encounter);
+		if(lastmenstrualperiod!=null)
+		{	SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
+		 String lmpdate = formatterExt.format(lastmenstrualperiod.getValueDatetime());
+		
+		
+			model.addAttribute("lmp",lmpdate );
+		
+			
+		
+		}
+		else
+		{
+			model.addAttribute("lmp", "");
+		}
+		}
 		Concept conInternal = Context.getConceptService().getConceptByName(
 				Context.getAdministrationService().getGlobalProperty(
 						PatientDashboardConstants.PROPERTY_INTERNAL_REFERRAL));
