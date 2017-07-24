@@ -414,7 +414,28 @@ var ipdward=jQuery("#ipdWard").val();
   return false;
   }
  }
- 
+ //Vital Details
+var weight = document.getElementById('weight').value;
+jQuery("#printableWeight").append("<span style='margin:5px;'>" + weight + "</span>");
+var height = document.getElementById('height').value;
+jQuery("#printableHeight").append("<span style='margin:5px;'>" + height + "</span>");
+var bmi = document.getElementById('BMI').value;
+jQuery("#printableBMI").append("<span style='margin:5px;'>" + bmi + "</span>");
+var temp = document.getElementById('temp').value;
+jQuery("#printableTemp").append("<span style='margin:5px;'>" + temp + "</span>");
+
+var sysbp = document.getElementById('systolic').value;
+var diabp = document.getElementById('diastolic').value;
+var bp = sysbp+"/"+diabp;
+jQuery("#printableBP").append("<span style='margin:5px;'>" + bp + "</span>");
+
+var pulsemp = document.getElementById('pulsRate').value;
+jQuery("#printablePulse").append("<span style='margin:5px;'>" + pulsemp + "</span>");
+var lmp = document.getElementById('lastMenstrualPeriod').value;
+jQuery("#printableLmp").append("<span style='margin:5px;'>" + lmp + "</span>");
+
+
+
 var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
 
@@ -1065,6 +1086,40 @@ jQuery("#BMI").val(b);
 				<td><strong>OPD Consulted:</strong></td>
 				<td>${opd.name}</td>
 			</tr>
+		</table>
+				<table class="box">
+			<tr>
+				<center>
+					<b><font size="2">Vital Details</font></b>
+				</center>
+			</tr>
+			<tr>
+				<td><strong>Weight(Kg):</strong></td>
+				<td><div id="printableWeight"></div></td>
+			</tr>
+			<tr><td><strong>Height(cm):</strong></td>
+			<td><div id="printableHeight"></div></td></tr>
+			<tr>
+				<td><strong>BMI:</strong></td>
+				<td><div id="printableBMI"></div></td>
+			</tr>
+			<tr>
+				<td><strong>Temperature(F):</strong></td>
+				<td><div id="printableTemp"></div></td>
+			</tr>
+			<tr>
+				<td><strong>BP :</strong></td>
+				<td><div id="printableBP"></div></td>
+			</tr>
+				<tr>
+				<td><strong>Pulse(/min):</strong></td>
+				<td><div id="printablePulse"></div></td>
+			</tr>
+					<tr>
+				<td><strong>LMP :</strong></td>
+				<td><div id="printableLmp"></div></td>
+			</tr>
+			
 		</table>
 		<table class="box">
 			<tr>

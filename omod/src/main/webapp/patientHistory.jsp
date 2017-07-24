@@ -84,7 +84,7 @@ function reset()
 						$("input[name=otherHelp]").attr("disabled", "disabled");
 
 
-				var currentMedication = function (element) {alert("hii");
+				var currentMedication = function (element) {
 					if(element.value == "No") {
 						$("input[name=medicationName]").attr("disabled", "disabled");
 						jQuery("#medicationName").val("");

@@ -1088,7 +1088,6 @@ public class OPDEntryController {
 					InventoryDrugFormulation inventoryDrugFormulation = inventoryCommonService
 							.getDrugFormulationById(formulationId);
 					Concept freCon = conceptService.getConcept(frequencyId);
-
 					OpdDrugOrder opdDrugOrder = new OpdDrugOrder();
 					opdDrugOrder.setPatient(patient);
 					opdDrugOrder.setEncounter(encounter);
@@ -1100,6 +1099,7 @@ public class OPDEntryController {
 					opdDrugOrder.setComments(comments);
 					opdDrugOrder.setCreator(user);
 					opdDrugOrder.setCreatedOn(date);
+					opdDrugOrder.setReferralWardName(opdPatientLog.getOpdConceptName());
 					patientDashboardService
 							.saveOrUpdateOpdDrugOrder(opdDrugOrder);
 				}
