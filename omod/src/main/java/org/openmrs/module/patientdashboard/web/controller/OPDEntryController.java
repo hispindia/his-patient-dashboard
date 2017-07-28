@@ -853,7 +853,6 @@ public class OPDEntryController {
 		BillingService billingService = Context
 				.getService(BillingService.class);
 
-		//IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(command.getPatientId());
 		if (admitted != null) {
 			IndoorPatientServiceBill bill = new IndoorPatientServiceBill();
 
@@ -1033,6 +1032,7 @@ public class OPDEntryController {
 					 * sdf.parse(OTscheduleDate);
 					 * opdTestOrder.setScheduleDate(scheduleDate); }
 					 */
+					opdTestOrder.setScheduleDate(date);
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 				}
 
@@ -1056,7 +1056,7 @@ public class OPDEntryController {
 					opdTestOrder.setCreator(user);
 					opdTestOrder.setCreatedOn(date);
 					opdTestOrder.setBillableService(billableService);
-					//opdTestOrder.setScheduleDate(date);
+					opdTestOrder.setScheduleDate(date);
 					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 				}
 			}
