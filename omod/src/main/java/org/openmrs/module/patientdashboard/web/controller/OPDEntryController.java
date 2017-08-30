@@ -842,8 +842,8 @@ public class OPDEntryController {
 			patientAdmission.setPatient(patient);
 			patientAdmission.setPatientIdentifier(patient
 					.getPatientIdentifier().getIdentifier());
-			patientAdmission.setPatientName(patient.getGivenName() + " "
-					+ patient.getMiddleName() + " " + patient.getFamilyName());
+			patientAdmission.setPatientName(patient.getGivenName() +" " + patient.getFamilyName());
+		
 			patientAdmission = ipdService
 					.saveIpdPatientAdmission(patientAdmission);
 		}	} else {
@@ -1062,9 +1062,6 @@ public class OPDEntryController {
 			}
 
 		}
-		
-		
-
 
 		// send pharmacy orders to issue drugs to a patient from dashboard
 		Integer formulationId;
