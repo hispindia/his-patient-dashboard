@@ -415,8 +415,8 @@ public class AutoCompleteController {
 			List<PersonAttribute> pas = hcs.getPersonAttributes(patient.getPatientId());
 			for (PersonAttribute pa : pas) {
 				PersonAttributeType attributeType = pa.getAttributeType();
-				if (attributeType.getPersonAttributeTypeId() == 14) {
-					model.addAttribute("selectedCategory", pa.getValue());
+				if (attributeType.getPersonAttributeTypeId() == 14  ) {
+					model.addAttribute("selectedCategory",Context.getConceptService().getConceptByIdOrName(pa.getValue()).getName());
 				}
 			}
 			
@@ -463,10 +463,13 @@ public class AutoCompleteController {
 				for(Question question:questions){
 					Answer answer=dashboardService.getAnswer(question);
 					if(answer.getAnswerConcept()!=null){
+						
 					questionanswer.put(question, answer.getAnswerConcept().getName().toString());
+					System.out.println("sdhjshdsh"+questionanswer);
 					}
 					else{
 						questionanswer.put(question, answer.getFreeText());
+						System.out.println("questionanswerh"+questionanswer);
 					}
 				}
 			}
