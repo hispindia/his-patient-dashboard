@@ -97,7 +97,8 @@ jQuery(document).ready(
 			yearRange : 'c-100:c+100',
 			dateFormat : 'dd/mm/yy',
 			changeMonth : true,
-			changeYear : true
+			changeYear : true,
+			maxDate: '+0d'
 		});
 		jQuery("#calendarButton").click(function() {
 			jQuery("#lastMenstrualPeriod").datepicker("show");
@@ -123,12 +124,6 @@ jQuery(document).ready(
         }
         var fromdate1 = dd+'/'+mm+'/'+yyyy;
 		var lmpValue=jQuery("#lastMenstrualPeriod").val();
-		if(lmpValue > fromdate1)
-		{
-		alert("LMP can not be a future date");
-		return false;
-		}
-		
 		});
 		//Show and hide for vital statstics
 		jQuery("#current").hide();

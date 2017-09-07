@@ -16,6 +16,7 @@ import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmittedLog;
+import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.patientdashboard.web.controller.global.IPDRecord;
 import org.openmrs.module.patientdashboard.web.controller.global.IPDRecordUtil;
@@ -62,9 +63,12 @@ public class PrintDischargeSummarySlipController {
 			}
 
 		}
-		PersonAttribute relationNameattr = patient.getAttribute("Father/Husband Name");
+		//PersonAttribute relationNameattr = patient.getAttribute("Father/Husband Name");
+		PatientSearch psearchRelativeName = hcs.getPatient(patient.getPatientId()) ;
+		String relationNameattr="";
+		relationNameattr= psearchRelativeName.getRelativeName();
 		PersonAttribute relationTypeattr = patient.getAttribute("Relative Name Type");
-		model.addAttribute("relationName", relationNameattr.getValue());
+		model.addAttribute("relationName", relationNameattr);
 		if(relationTypeattr!=null){
 			model.addAttribute("relationType", relationTypeattr.getValue());
 		}
