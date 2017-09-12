@@ -28,7 +28,7 @@
 		<c:when test="${not empty al}">
 			<c:forEach items="${al}" var="a">
 				<tr>
-					<td>${a}</td>
+					<td bgcolor="red">${a}</td>
 				</tr>
 				<c:forEach items="${syptomquestionanswer[a]}" var="sqa">
 					<tr>
