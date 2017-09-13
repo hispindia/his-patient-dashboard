@@ -86,7 +86,7 @@ public class PrintClinicalSummaryController {
 		for (PersonAttribute pa : pas) {
 			PersonAttributeType attributeType = pa.getAttributeType();
 			if (attributeType.getPersonAttributeTypeId() == 14) {
-				model.addAttribute("selectedCategory", pa.getValue());
+				model.addAttribute("selectedCategory", Context.getConceptService().getConceptByIdOrName(pa.getValue()).getName());
 			}
 			User user = Context.getAuthenticatedUser();
 			model.addAttribute("user", user);

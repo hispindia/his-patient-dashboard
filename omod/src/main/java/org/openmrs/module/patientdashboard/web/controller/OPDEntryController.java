@@ -212,7 +212,7 @@ public class OPDEntryController {
 		for (PersonAttribute pa : pas) {
 			PersonAttributeType attributeType = pa.getAttributeType();
 			if (attributeType.getPersonAttributeTypeId() == 14) {
-				model.addAttribute("selectedCategory", pa.getValue());
+				model.addAttribute("selectedCategory", Context.getConceptService().getConceptByIdOrName(pa.getValue()).getName());
 			}
 			/*
 			 * if (attributeType.getPersonAttributeTypeId() == 36) {
