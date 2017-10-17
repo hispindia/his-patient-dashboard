@@ -115,6 +115,7 @@ public class OPDEntryController {
 						hospitalConcept.getAnswers()) : null);
 		model.addAttribute("patientId", patientId);
 		IpdService ipds = (IpdService) Context.getService(IpdService.class);
+		PatientQueueService pqs = (PatientQueueService) Context.getService(PatientQueueService.class);
 		model.addAttribute("queueId", queueId);
 		model.addAttribute("admitted", ipds.getAdmittedByPatientId(patientId));
 		Concept ipdConcept = Context.getConceptService().getConceptByName(
@@ -273,6 +274,43 @@ public class OPDEntryController {
 		model.addAttribute("personAddress",personAddress.getAddress1()+","+personAddress.getCountyDistrict()+","+personAddress.getCityVillage());	
 		
 		model.addAttribute("mobno", mobno);
+		
+		OpdPatientQueue opdPatientQueue=pqs.getOpdPatientQueueById(queueId);
+		Encounter registrationEncounter=opdPatientQueue.getRegistrationEncounter();
+		if(registrationEncounter!=null){
+			Obs obsWeight=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("WEIGHT"),registrationEncounter);
+			Obs obsHeight=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("HEIGHT"),registrationEncounter);
+			Obs obsBMI=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("BMI"),registrationEncounter);
+			Obs obsTemperature=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("TEMPERATURE"),registrationEncounter);
+			Obs obsSBP=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("SYSTOLIC BLOOD PRESSURE"),registrationEncounter);
+			Obs obsDBP=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("DAISTOLIC BLOOD PRESSURE"),registrationEncounter);
+			Obs obsPulseRate=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("PULSE RATE"),registrationEncounter);
+			Obs obsLMP=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("LAST MENSTRUAL PERIOD"),registrationEncounter);
+			if(obsWeight!=null){
+			model.addAttribute("weight", obsWeight.getValueNumeric());
+			}
+			if(obsHeight!=null){
+			model.addAttribute("height", obsHeight.getValueNumeric());
+			}
+			if(obsBMI!=null){
+			model.addAttribute("BMI", obsBMI.getValueNumeric());
+			}
+			if(obsTemperature!=null){
+			model.addAttribute("temperature", obsTemperature.getValueNumeric());
+			}
+			if(obsSBP!=null){
+			model.addAttribute("SBP", obsSBP.getValueNumeric());
+			}
+			if(obsDBP!=null){
+			model.addAttribute("DBP", obsDBP.getValueNumeric());
+			}
+			if(obsPulseRate!=null){
+			model.addAttribute("pulseRate", obsPulseRate.getValueNumeric());
+			}
+			if(obsLMP!=null){
+			model.addAttribute("LMP", obsLMP.getValueNumeric());
+			}
+		}
 
         return "module/patientdashboard/opdEntry";
 	}
@@ -782,6 +820,7 @@ public class OPDEntryController {
 		queueLog.setStatus("processed");
 		queueLog.setBirthDate(patient.getBirthdate());
 		queueLog.setEncounter(encounter);
+		queueLog.setRegistrationEncounter(queue.getRegistrationEncounter());
 		 opdPatientLog = queueService
 				.saveOpdPatientQueueLog(queueLog);
 		queueService.deleteOpdPatientQueue(queue);
