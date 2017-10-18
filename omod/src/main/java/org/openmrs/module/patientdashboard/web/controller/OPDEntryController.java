@@ -576,8 +576,7 @@ public class OPDEntryController {
 					.getIdentifier());
 			queue.setOpdConcept(internalReferralConcept);
 			queue.setOpdConceptName(internalReferralConcept.getName().getName());
-			queue.setPatientName(patient.getGivenName() + " "
-					+ patient.getMiddleName() + " " + patient.getFamilyName());
+			queue.setPatientName(patient.getGivenName() + " " + patient.getFamilyName());
 			queue.setReferralConcept(currentOpd);
 			queue.setReferralConceptName(currentOpd.getName().getName());
 			queue.setSex(patient.getGender());
