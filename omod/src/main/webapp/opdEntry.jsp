@@ -97,7 +97,8 @@ jQuery(document).ready(
 			yearRange : 'c-100:c+100',
 			dateFormat : 'dd/mm/yy',
 			changeMonth : true,
-			changeYear : true
+			changeYear : true,
+			maxDate:'0'
 		});
 		jQuery("#calendarButton").click(function() {
 			jQuery("#lastMenstrualPeriod").datepicker("show");
@@ -110,35 +111,12 @@ jQuery(document).ready(
 		jQuery("#systolic").val(${SBP});
 		jQuery("#diastolic").val(${DBP});
 		jQuery("#pulsRate").val(${pulseRate});
-		jQuery("#lastMenstrualPeriod").val(${LMP});
+		jQuery("#lastMenstrualPeriod").val('${LMP}');
 		
 		if("${patient.gender }"=="M" || "${patient.gender }"=="O"){
 	    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
 	   	jQuery("#calendarButton").hide();
 	    }
-		jQuery("#lastMenstrualPeriod").change(function()
-		
-		{ 
-			var dd = new Date().getDate();
-        var mm = new Date().getMonth()+1; //January is 0!
-        var yyyy = new Date().getFullYear();
-        if(dd < 10)
-        {
-            dd = '0'+ dd;
-        }
-        if(mm < 10)
-        {
-            mm = '0' + mm;
-        }
-        var fromdate1 = dd+'/'+mm+'/'+yyyy;
-		var lmpValue=jQuery("#lastMenstrualPeriod").val();
-		if(lmpValue > fromdate1)
-		{
-		alert("LMP can not be a future date");
-		return false;
-		}
-		
-		});
 		//Show and hide for vital statstics
 		jQuery("#current").hide();
 		jQuery("#triageDiv").click(function()

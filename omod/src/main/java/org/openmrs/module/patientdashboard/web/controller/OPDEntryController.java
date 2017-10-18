@@ -308,7 +308,8 @@ public class OPDEntryController {
 			model.addAttribute("pulseRate", obsPulseRate.getValueNumeric());
 			}
 			if(obsLMP!=null){
-			model.addAttribute("LMP", obsLMP.getValueNumeric());
+			SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
+			model.addAttribute("LMP", sdfmt.format(obsLMP.getValueDatetime()));
 			}
 		}
 
