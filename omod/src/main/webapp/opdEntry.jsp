@@ -530,7 +530,7 @@ jQuery("#BMI").val(b);
 							</tr>
 							<tr>
 								<td>Weight</td>
-								<td><input type="text" id="weight" name="weight" size="11">
+								<td><input type="text" id="weight" name="weight" size="11" value="${triagePatientData.weight}">
 								</td>
 								<td></td>
 								<td></td>
@@ -538,7 +538,7 @@ jQuery("#BMI").val(b);
 							</tr>
 							<tr>
 								<td>Height</td>
-								<td><input type="text" id="height" name="height" size="11"
+								<td><input type="text" id="height" name="height" size="11" value="${triagePatientData.height}"
 									oninput="calculateBmi()"></td>
 								<td></td>
 								<td></td>
@@ -546,7 +546,7 @@ jQuery("#BMI").val(b);
 							</tr>
 							<tr>
 								<td>BMI</td>
-								<td><input type="text" id="BMI" name="BMI" size="11" maxlength="7" readonly="readonly"></td>
+								<td><input type="text" id="BMI" name="BMI" size="11" maxlength="7" readonly="readonly" value="${triagePatientData.bmi}"></td>
 								<td></td>
 								<td>18.5-24.9</td>
 
@@ -555,7 +555,7 @@ jQuery("#BMI").val(b);
 							<tr>
 								<td>Temperature</td>
 								<td><input type="text" id="temp" name="temp" size="11"
-									maxlength="7"></td>
+									maxlength="7" value="${triagePatientData.temperature}"></td>
 								<td></td>
 								<td>97.7-98.96</td>
 
@@ -564,8 +564,8 @@ jQuery("#BMI").val(b);
 							<tr>
 								<td>B.P</td>
 								<td><input type="text" id="systolic" name="systolic"
-									size="5">/<input type="text" id="diastolic"
-									name="diastolic" size="5"></td>
+									size="5" value="${triagePatientData.systolic}">/<input type="text" id="diastolic"
+									name="diastolic" size="5" value="${triagePatientData.daistolic}"></td>
 								<td></td>
 								<td>110/70-140/90</td>
 
@@ -574,7 +574,7 @@ jQuery("#BMI").val(b);
 							<tr>
 								<td>Pulse Rate</td>
 								<td><input type="text" id="pulsRate" name="pulsRate"
-									size="11"></td>
+									size="11" value="${triagePatientData.pulsRate}"></td>
 								<td></td>
 								<td>60-90</td>
 

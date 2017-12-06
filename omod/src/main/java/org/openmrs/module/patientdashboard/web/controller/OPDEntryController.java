@@ -77,6 +77,7 @@ import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.ConceptComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
@@ -276,7 +277,15 @@ public class OPDEntryController {
 		model.addAttribute("mobno", mobno);
 		
 		OpdPatientQueue opdPatientQueue=pqs.getOpdPatientQueueById(queueId);
+		if(opdPatientQueue.getTriageDataId()!=null){
+		model.addAttribute("triagePatientData", opdPatientQueue.getTriageDataId());
+		}
+		else{
+			TriagePatientData triagePatientData=new TriagePatientData();
+			model.addAttribute("triagePatientData", triagePatientData);	
+		}
 		Encounter registrationEncounter=opdPatientQueue.getRegistrationEncounter();
+		/*
 		if(registrationEncounter!=null){
 			Obs obsWeight=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("WEIGHT"),registrationEncounter);
 			Obs obsHeight=pqs.getObservationByConceptAndEncounter(Context.getConceptService().getConcept("HEIGHT"),registrationEncounter);
@@ -311,7 +320,7 @@ public class OPDEntryController {
 			SimpleDateFormat sdfmt = new SimpleDateFormat("dd/MM/yyyy");
 			model.addAttribute("LMP", sdfmt.format(obsLMP.getValueDatetime()));
 			}
-		}
+		}*/
 
         return "module/patientdashboard/opdEntry";
 	}
@@ -331,6 +340,8 @@ public class OPDEntryController {
 				.getService(HospitalCoreService.class);
 		PatientDashboardService patientDashboardService = Context
 				.getService(PatientDashboardService.class);
+		PatientQueueService queueService = Context
+		.getService(PatientQueueService.class);
 		IpdService ipdService = Context.getService(IpdService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
@@ -578,8 +589,6 @@ public class OPDEntryController {
 			queue.setReferralConcept(currentOpd);
 			queue.setReferralConceptName(currentOpd.getName().getName());
 			queue.setSex(patient.getGender());
-			PatientQueueService queueService = Context
-					.getService(PatientQueueService.class);
 			queueService.saveOpdPatientQueue(queue);
 
 		}
@@ -603,149 +612,8 @@ public class OPDEntryController {
 			obsExternalReferral.setPatient(patient);
 			encounter.addObs(obsExternalReferral);
 		}
-//Vital Static
 		
 		
-		
-		if(request.getParameter("weight")!=null && request.getParameter("weight")!="")
-			{ String weight=request.getParameter("weight");
-			  Double weights=Double.parseDouble(weight);
-			Obs vitalstaticweight=new Obs();
-			vitalstaticweight.setPatient(patient);
-			vitalstaticweight.setEncounter(encounter);
-			vitalstaticweight.setConcept(Context.getConceptService().getConcept("WEIGHT"));
-			vitalstaticweight.setDateCreated(date);
-			vitalstaticweight.setObsGroup(obsGroup);
-			
-			vitalstaticweight.setValueNumeric(weights);
-			vitalstaticweight.setCreator(user);
-			encounter.addObs(vitalstaticweight);
-			
-			
-			}
-		if(request.getParameter("height")!=null && request.getParameter("height")!="")
-		{String height=request.getParameter("height");
-		  Double heights=Double.parseDouble(height);
-			
-			Obs vitalstaticweight=new Obs();
-		vitalstaticweight.setPatient(patient);
-		vitalstaticweight.setEncounter(encounter);
-		vitalstaticweight.setConcept(Context.getConceptService().getConcept("HEIGHT"));
-		vitalstaticweight.setDateCreated(date);
-		vitalstaticweight.setObsGroup(obsGroup);
-		
-		vitalstaticweight.setValueNumeric(heights);
-		vitalstaticweight.setCreator(user);
-		encounter.addObs(vitalstaticweight);
-		
-		
-		}
-		if(request.getParameter("systolic")!=null && request.getParameter("systolic")!="")
-		{ String sys=request.getParameter("systolic");
-		  Double systolic=Double.parseDouble(sys);
-		Obs vitalstaticweight=new Obs();
-		vitalstaticweight.setPatient(patient);
-		vitalstaticweight.setEncounter(encounter);
-		vitalstaticweight.setConcept(Context.getConceptService().getConcept("SYSTOLIC BLOOD PRESSURE"));
-		vitalstaticweight.setDateCreated(date);
-		vitalstaticweight.setObsGroup(obsGroup);
-		
-		vitalstaticweight.setValueNumeric(systolic);
-		vitalstaticweight.setCreator(user);
-		encounter.addObs(vitalstaticweight);
-		
-		
-		}
-	if(request.getParameter("diastolic")!=null && request.getParameter("diastolic")!="")
-	{String dai=request.getParameter("diastolic");
-	  Double daistolic=Double.parseDouble(dai);
-		
-		Obs vitalstaticweight=new Obs();
-	vitalstaticweight.setPatient(patient);
-	vitalstaticweight.setEncounter(encounter);
-	vitalstaticweight.setConcept(Context.getConceptService().getConcept("DAISTOLIC BLOOD PRESSURE"));
-	vitalstaticweight.setDateCreated(date);
-	vitalstaticweight.setObsGroup(obsGroup);
-	
-	vitalstaticweight.setValueNumeric(daistolic);
-	vitalstaticweight.setCreator(user);
-	encounter.addObs(vitalstaticweight);
-	
-	}
-	if(request.getParameter("pulsRate")!=null && request.getParameter("pulsRate")!="")
-	{String pulse=request.getParameter("pulsRate");
-	  Double pulses=Double.parseDouble(pulse);
-		
-		Obs vitalstaticweight=new Obs();
-	vitalstaticweight.setPatient(patient);
-	vitalstaticweight.setEncounter(encounter);
-	vitalstaticweight.setConcept(Context.getConceptService().getConcept("PULSE RATE"));
-	vitalstaticweight.setDateCreated(date);
-	vitalstaticweight.setObsGroup(obsGroup);
-	
-	vitalstaticweight.setValueNumeric(pulses);
-	vitalstaticweight.setCreator(user);
-	encounter.addObs(vitalstaticweight);
-	
-	}
-	if(request.getParameter("weight")!=null && request.getParameter("weight")!=""&& request.getParameter("height")!=null && request.getParameter("height")!="" )
-	{String height=request.getParameter("height");
-	
-	  Double heights=Double.parseDouble(height);
-	  String weight=request.getParameter("weight");
-	  Double weights=Double.parseDouble(weight);
-	  Double BMI=((weights)/((heights/100)*(heights/100)));
-	  
-		Obs vitalstaticweight=new Obs();
-	vitalstaticweight.setPatient(patient);
-	vitalstaticweight.setEncounter(encounter);
-	vitalstaticweight.setConcept(Context.getConceptService().getConcept("BMI"));
-	vitalstaticweight.setDateCreated(date);
-	vitalstaticweight.setObsGroup(obsGroup);
-	
-	vitalstaticweight.setValueNumeric(BMI);
-	vitalstaticweight.setCreator(user);
-	encounter.addObs(vitalstaticweight);
-	
-	}
-	
-	
-	if(request.getParameter("temp")!=null && request.getParameter("temp")!="")
-	{String temperature=request.getParameter("temp");
-	
-	
-	
-	  Double temperatures=Double.parseDouble(temperature);
-		
-		Obs temperatureValue=new Obs();
-		temperatureValue.setPatient(patient);
-		temperatureValue.setEncounter(encounter);
-		temperatureValue.setConcept(Context.getConceptService().getConcept("TEMPERATURE"));
-		temperatureValue.setDateCreated(date);
-		temperatureValue.setObsGroup(obsGroup);
-	
-		temperatureValue.setValueNumeric(temperatures);
-		temperatureValue.setCreator(user);
-	encounter.addObs(temperatureValue);
-	
-	}
-	if(request.getParameter("lastMenstrualPeriod")!=null && request.getParameter("lastMenstrualPeriod")!="")
-	{ String lmp=request.getParameter("lastMenstrualPeriod");
-	SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
-	Date lmpdate = (Date)formatterExt.parse(lmp);
-	Obs vitalstaticweight=new Obs();
-	vitalstaticweight.setPatient(patient);
-	vitalstaticweight.setEncounter(encounter);
-	vitalstaticweight.setConcept(Context.getConceptService().getConcept("LAST MENSTRUAL PERIOD"));
-	vitalstaticweight.setDateCreated(date);
-	vitalstaticweight.setObsGroup(obsGroup);
-	
-	vitalstaticweight.setValueDatetime(lmpdate);
-	vitalstaticweight.setCreator(user);
-	encounter.addObs(vitalstaticweight);
-	
-	
-	}
 		// TODO : out come
 
 		Concept cOutcome = conceptService
@@ -801,8 +669,6 @@ public class OPDEntryController {
 		Context.getEncounterService().saveEncounter(encounter);
 
 		// delele opd queue , create opd log queue
-		PatientQueueService queueService = Context
-				.getService(PatientQueueService.class);
 		OpdPatientQueueLog opdPatientLog;
 		if (command.getQueueId() != null) {
 		OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
@@ -820,8 +686,10 @@ public class OPDEntryController {
 		queueLog.setUser(Context.getAuthenticatedUser());
 		queueLog.setStatus("processed");
 		queueLog.setBirthDate(patient.getBirthdate());
-		queueLog.setEncounter(encounter);
+		queueLog.setOpdEncounter(encounter);
 		queueLog.setRegistrationEncounter(queue.getRegistrationEncounter());
+		queueLog.setTriageEncounter(queue.getTriageEncounter());
+		queueLog.setTriageDataId(queue.getTriageDataId());
 		 opdPatientLog = queueService
 				.saveOpdPatientQueueLog(queueLog);
 		queueService.deleteOpdPatientQueue(queue);
@@ -1099,6 +967,121 @@ public class OPDEntryController {
 							.saveOrUpdateOpdDrugOrder(opdDrugOrder);
 				}
 			}
+		}
+		
+		//Vital Static
+		if (command.getQueueId() != null) {
+		OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
+				.getQueueId());
+		if(queue.getTriageDataId()!=null){
+			TriagePatientData triagePatientData=queue.getTriageDataId();
+			if(request.getParameter("weight")!=null && request.getParameter("weight")!="")
+			{ 
+			String weight=request.getParameter("weight");
+			Double weights=Double.parseDouble(weight);
+			triagePatientData.setWeight(weights);
+			}
+		    if(request.getParameter("height")!=null && request.getParameter("height")!="")
+		    {
+		    String height=request.getParameter("height");
+		    Double heights=Double.parseDouble(height);
+		    triagePatientData.setHeight(heights);
+		    }
+		    if(request.getParameter("systolic")!=null && request.getParameter("systolic")!="")
+		    { 
+		    String sys=request.getParameter("systolic");
+		    Double systolic=Double.parseDouble(sys);
+		    triagePatientData.setSystolic(systolic);
+		    }
+	        if(request.getParameter("diastolic")!=null && request.getParameter("diastolic")!="")
+	        {
+	        String dai=request.getParameter("diastolic");
+	        Double daistolic=Double.parseDouble(dai);
+	        triagePatientData.setDaistolic(daistolic);
+	        }
+	        if(request.getParameter("pulsRate")!=null && request.getParameter("pulsRate")!="")
+	        {
+	        String pulse=request.getParameter("pulsRate");
+	        Double pulses=Double.parseDouble(pulse);
+	        triagePatientData.setPulsRate(pulses);
+	        }
+	        if(request.getParameter("BMI")!=null && request.getParameter("BMI")!="")
+	        {
+	        String BMI=request.getParameter("BMI");
+	        Double bmiInDouble=Double.parseDouble(BMI);
+	        triagePatientData.setBmi(bmiInDouble);
+	        }
+	        if(request.getParameter("temp")!=null && request.getParameter("temp")!="")
+	        {
+	        String temperature=request.getParameter("temp");
+	        Double temperatures=Double.parseDouble(temperature);
+	        triagePatientData.setTemperature(temperatures);
+	        }
+	        if(request.getParameter("lastMenstrualPeriod")!=null && request.getParameter("lastMenstrualPeriod")!="")
+	        { 
+	        String lmp=request.getParameter("lastMenstrualPeriod");
+	        SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
+	        Date lmpdate = (Date)formatterExt.parse(lmp);
+	        triagePatientData.setLastMenstrualDate(lmpdate);
+	        }
+	        triagePatientData.setEncounterOpd(encounter);
+	        triagePatientData=queueService.saveTriagePatientData(triagePatientData);
+		 }
+		else{
+			TriagePatientData triagePatientData=new TriagePatientData();
+			if(request.getParameter("weight")!=null && request.getParameter("weight")!="")
+			{ 
+			String weight=request.getParameter("weight");
+			Double weights=Double.parseDouble(weight);
+			triagePatientData.setWeight(weights);
+			}
+		    if(request.getParameter("height")!=null && request.getParameter("height")!="")
+		    {
+		    String height=request.getParameter("height");
+		    Double heights=Double.parseDouble(height);
+		    triagePatientData.setHeight(heights);
+		    }
+		    if(request.getParameter("systolic")!=null && request.getParameter("systolic")!="")
+		    { 
+		    String sys=request.getParameter("systolic");
+		    Double systolic=Double.parseDouble(sys);
+		    triagePatientData.setSystolic(systolic);
+		    }
+	        if(request.getParameter("diastolic")!=null && request.getParameter("diastolic")!="")
+	        {
+	        String dai=request.getParameter("diastolic");
+	        Double daistolic=Double.parseDouble(dai);
+	        triagePatientData.setDaistolic(daistolic);
+	        }
+	        if(request.getParameter("pulsRate")!=null && request.getParameter("pulsRate")!="")
+	        {
+	        String pulse=request.getParameter("pulsRate");
+	        Double pulses=Double.parseDouble(pulse);
+	        triagePatientData.setPulsRate(pulses);
+	        }
+	        if(request.getParameter("BMI")!=null && request.getParameter("BMI")!="")
+	        {
+	        String BMI=request.getParameter("BMI");
+	        Double bmiInDouble=Double.parseDouble(BMI);
+	        triagePatientData.setBmi(bmiInDouble);
+	        }
+	        if(request.getParameter("temp")!=null && request.getParameter("temp")!="")
+	        {
+	        String temperature=request.getParameter("temp");
+	        Double temperatures=Double.parseDouble(temperature);
+	        triagePatientData.setTemperature(temperatures);
+	        }
+	        if(request.getParameter("lastMenstrualPeriod")!=null && request.getParameter("lastMenstrualPeriod")!="")
+	        { 
+	        String lmp=request.getParameter("lastMenstrualPeriod");
+	        SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
+	        Date lmpdate = (Date)formatterExt.parse(lmp);
+	        triagePatientData.setLastMenstrualDate(lmpdate);
+	        }
+	        triagePatientData.setCreatedOn(date);
+	        triagePatientData.setEncounterOpd(encounter);
+	        triagePatientData=queueService.saveTriagePatientData(triagePatientData);
+		 }
 		}
 
 		return "redirect:/module/patientqueue/main.htm?opdId="
