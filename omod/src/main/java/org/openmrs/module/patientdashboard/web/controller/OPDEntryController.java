@@ -692,7 +692,6 @@ public class OPDEntryController {
 		queueLog.setTriageDataId(queue.getTriageDataId());
 		 opdPatientLog = queueService
 				.saveOpdPatientQueueLog(queueLog);
-		queueService.deleteOpdPatientQueue(queue);
 		// done queue
 
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")) {
@@ -971,7 +970,7 @@ public class OPDEntryController {
 		
 		//Vital Static
 		if (command.getQueueId() != null) {
-		OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
+			OpdPatientQueue queue = queueService.getOpdPatientQueueById(command
 				.getQueueId());
 		if(queue.getTriageDataId()!=null){
 			TriagePatientData triagePatientData=queue.getTriageDataId();
@@ -1082,6 +1081,7 @@ public class OPDEntryController {
 	        triagePatientData.setEncounterOpd(encounter);
 	        triagePatientData=queueService.saveTriagePatientData(triagePatientData);
 		 }
+		queueService.deleteOpdPatientQueue(queue);
 		}
 
 		return "redirect:/module/patientqueue/main.htm?opdId="

@@ -281,6 +281,59 @@ function deleteInput(drugName) {
 
 // Print the slip
 function print(){
+var intRegex=/^(?:[1-9]\d*(?:\.\d\d?)?|0\.[1-9]\d?|0\.0[1-9])$/;
+
+if(!StringUtils.isBlank(jQuery("#weight").val())) {
+      if (!jQuery("#weight").val().match(intRegex)) {
+	  alert("Please enter weight in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#height").val())) {
+      if (!jQuery("#height").val().match(intRegex)) {
+	  alert("Please enter height in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#temp").val())) {
+      if (!jQuery("#temp").val().match(intRegex)) {
+	  alert("Please enter temperature in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#systolic").val())) {
+      if (!jQuery("#systolic").val().match(intRegex)) {
+	  alert("Please enter Systolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#diastolic").val())) {
+      if (!jQuery("#diastolic").val().match(intRegex)) {
+	  alert("Please enter Diastolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
+      if (!jQuery("#pulsRate").val().match(intRegex)) {
+	  alert("Please enter Pulse Rate in correct format");
+	  return false;
+	  }
+}
+
+ re = /^\d{1,2}\/\d{1,2}\/\d{4}$/; 
+ if(jQuery("#lastMenstrualPeriod").val() != '' && !jQuery("#lastMenstrualPeriod").val().match(re)) 
+ {
+ alert("Invalid date format");
+ jQuery("#lastMenstrualPeriod").val('');
+ return false; 
+ } 					
+jQuery("#lastMenstrualPeriod").removeAttr("disabled");	
+
 var submitStatus=0;
 jQuery("#opdEntryForm").keypress(function(event){		
 if(event.keyCode == 13){	
@@ -471,6 +524,63 @@ var b=Math.round(Bmi);
 jQuery("#BMI").val(b);
 }
 
+</script>
+
+<script type="text/javascript">
+function validate(){
+var intRegex=/^(?:[1-9]\d*(?:\.\d\d?)?|0\.[1-9]\d?|0\.0[1-9])$/;
+
+if(!StringUtils.isBlank(jQuery("#weight").val())) {
+      if (!jQuery("#weight").val().match(intRegex)) {
+	  alert("Please enter weight in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#height").val())) {
+      if (!jQuery("#height").val().match(intRegex)) {
+	  alert("Please enter height in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#temp").val())) {
+      if (!jQuery("#temp").val().match(intRegex)) {
+	  alert("Please enter temperature in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#systolic").val())) {
+      if (!jQuery("#systolic").val().match(intRegex)) {
+	  alert("Please enter Systolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#diastolic").val())) {
+      if (!jQuery("#diastolic").val().match(intRegex)) {
+	  alert("Please enter Diastolic B.P in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
+      if (!jQuery("#pulsRate").val().match(intRegex)) {
+	  alert("Please enter Pulse Rate in correct format");
+	  return false;
+	  }
+}
+
+ re = /^\d{1,2}\/\d{1,2}\/\d{4}$/; 
+ if(jQuery("#lastMenstrualPeriod").val() != '' && !jQuery("#lastMenstrualPeriod").val().match(re)) 
+ {
+ alert("Invalid date format");
+ jQuery("#lastMenstrualPeriod").val('');
+ return false; 
+ } 					
+jQuery("#lastMenstrualPeriod").removeAttr("disabled");	
+}
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm"
