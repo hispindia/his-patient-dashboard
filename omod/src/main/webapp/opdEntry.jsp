@@ -104,15 +104,6 @@ jQuery(document).ready(
 			jQuery("#lastMenstrualPeriod").datepicker("show");
 		});	
 		
-		jQuery("#weight").val(${weight});
-		jQuery("#height").val(${height});
-		jQuery("#BMI").val(${BMI});
-		jQuery("#temp").val(${temperature});
-		jQuery("#systolic").val(${SBP});
-		jQuery("#diastolic").val(${DBP});
-		jQuery("#pulsRate").val(${pulseRate});
-		jQuery("#lastMenstrualPeriod").val('${LMP}');
-		
 		if("${patient.gender }"=="M" || "${patient.gender }"=="O"){
 	    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
 	   	jQuery("#calendarButton").hide();
@@ -693,7 +684,8 @@ jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 							<tr>
 								<td>LMP</td>
 								<td><input type="text" id="lastMenstrualPeriod"
-									name="lastMenstrualPeriod" size="11"><img
+									name="lastMenstrualPeriod" size="11" value="${lastMenstrualDate}">
+									<img
 									id="calendarButton"
 									src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
 								</td>

@@ -277,8 +277,12 @@ public class OPDEntryController {
 		model.addAttribute("mobno", mobno);
 		
 		OpdPatientQueue opdPatientQueue=pqs.getOpdPatientQueueById(queueId);
+		SimpleDateFormat sdFormat = new SimpleDateFormat("dd/MM/yyyy");
 		if(opdPatientQueue.getTriageDataId()!=null){
 		model.addAttribute("triagePatientData", opdPatientQueue.getTriageDataId());
+		if(opdPatientQueue.getTriageDataId().getLastMenstrualDate()!=null){
+		model.addAttribute("lastMenstrualDate", sdFormat.format(opdPatientQueue.getTriageDataId().getLastMenstrualDate()));
+		}
 		}
 		else{
 			TriagePatientData triagePatientData=new TriagePatientData();
