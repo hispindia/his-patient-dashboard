@@ -26,38 +26,33 @@
 <table class="box">
 	<tr>
 		<td><strong>Weight (Kg)</strong></td>
-		<td>${weight}</td>
+		<td>${triagePatientData.weight}</td>
 	</tr>
 	<tr>
 		<td><strong>Height (cm)</strong></td>
-		<td>${height}</td>
+		<td>${triagePatientData.height}</td>
 	</tr>
 	<tr>
 		<td><strong>BMI</strong></td>
-		<td>${bmi}</td>
+		<td>${triagePatientData.bmi}</td>
 	</tr>
    <tr>
 		<td><strong>Temperature(F)</strong></td>
-		<td>${temp}</td>
+		<td>${triagePatientData.temperature}</td>
 	</tr>
 	<tr>
 		<td><strong>B.P</strong></td>
-		<td><c:choose>
-		<c:when test="${not empty sbp && not empty dbp}">
-		${sbp}/${dbp}
-		</c:when>
-		<c:otherwise>
-		<td></td>
-		</c:otherwise>
-		</c:choose></td>
+		<td>${triagePatientData.systolic}/${triagePatientData.daistolic}</td>
 	</tr>
 	
 	<tr>
 		<td><strong>Pulse Rate(/min)</strong></td>
-		<td>${pulserate}</td>
+		<td>${triagePatientData.pulsRate}</td>
 	</tr>
+	<c:if test="${patient.gender=='F'}">
 	<tr>
 		<td><strong>LMP</strong></td>
-		<td>${lmp}</td>
+		<td>${lastMenstrualDate}</td>
 	</tr>
+	</c:if>
 </table>

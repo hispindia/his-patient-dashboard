@@ -21,7 +21,6 @@
 
 package org.openmrs.module.patientdashboard.web.controller.autocomplete;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +51,7 @@ import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
+import org.openmrs.module.hospitalcore.model.TriagePatientData;
 import org.openmrs.module.hospitalcore.util.PatientDashboardConstants;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
@@ -113,11 +113,24 @@ public class AutoCompleteController {
 			Encounter encounter =encounterService.getEncounter(id);
 			OpdPatientQueueLog opdPatientQueueLog=dashboardService.getOpdPatientQueueLog(encounter);
 			Patient patient = opdPatientQueueLog.getPatient();
+			model.addAttribute("patient",patient);
 			PatientQueueService queueService = Context
 					.getService(PatientQueueService.class);
+			
+			SimpleDateFormat sdFormat = new SimpleDateFormat("dd/MM/yyyy");
+			
 			if (opdPatientQueueLog != null) {
-				
-				
+				if(opdPatientQueueLog.getTriageDataId()!=null){
+					model.addAttribute("triagePatientData", opdPatientQueueLog.getTriageDataId());
+					if(opdPatientQueueLog.getTriageDataId().getLastMenstrualDate()!=null){
+					model.addAttribute("lastMenstrualDate", sdFormat.format(opdPatientQueueLog.getTriageDataId().getLastMenstrualDate()));
+					}
+					}
+					else{
+						TriagePatientData triagePatientData=new TriagePatientData();
+						model.addAttribute("triagePatientData", triagePatientData);	
+					}	
+				/*
 				Obs weight=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patient.getPatientId()),Context.getConceptService().getConcept("WEIGHT"),encounter);
 				if(weight!=null)
 				{	model.addAttribute("weight", weight.getValueNumeric().intValue());
@@ -205,7 +218,7 @@ public class AutoCompleteController {
 				else
 				{
 					model.addAttribute("lmp", "");
-				}
+				}*/
 				}
 			}
 		

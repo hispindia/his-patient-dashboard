@@ -71,7 +71,6 @@ import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
-import org.openmrs.module.hospitalcore.model.LabTest;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
@@ -681,7 +680,7 @@ public class OPDEntryController {
 		queueLog.setOpdConcept(queue.getOpdConcept());
 		queueLog.setOpdConceptName(queue.getOpdConceptName());
 		queueLog.setPatient(queue.getPatient());
-		queueLog.setCreatedOn(queue.getCreatedOn());
+		queueLog.setCreatedOn(new Date());
 		queueLog.setPatientIdentifier(queue.getPatientIdentifier());
 		queueLog.setPatientName(queue.getPatientName());
 		queueLog.setReferralConcept(queue.getReferralConcept());
@@ -1084,6 +1083,8 @@ public class OPDEntryController {
 	        triagePatientData.setCreatedOn(date);
 	        triagePatientData.setEncounterOpd(encounter);
 	        triagePatientData=queueService.saveTriagePatientData(triagePatientData);
+	        opdPatientLog.setTriageDataId(triagePatientData);
+	        queueService.saveOpdPatientQueueLog(opdPatientLog);
 		 }
 		queueService.deleteOpdPatientQueue(queue);
 		}
