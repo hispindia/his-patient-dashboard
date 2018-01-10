@@ -88,6 +88,10 @@ public class PrintClinicalSummaryController {
 			if (attributeType.getPersonAttributeTypeId() == 14) {
 				model.addAttribute("selectedCategory", Context.getConceptService().getConceptByIdOrName(pa.getValue()).getName());
 			}
+			
+			if (attributeType.getPersonAttributeTypeId() == 29) {
+				model.addAttribute("dohId", pa.getValue());
+			}
 			User user = Context.getAuthenticatedUser();
 			model.addAttribute("user", user);
 		}

@@ -100,6 +100,10 @@ jQuery("#ipdadmissionward").hide();
 	<tr>
 		<td><strong>OPD Consulted:</strong></td>
 		<td>${opdConceptName}</td>
+		<c:if test="${not empty dohId}">
+		<td><strong>DoH Id:</strong></td>
+		<td>${dohId}</td>
+		</c:if>
 	</tr>
 </table>
 <table class="box">

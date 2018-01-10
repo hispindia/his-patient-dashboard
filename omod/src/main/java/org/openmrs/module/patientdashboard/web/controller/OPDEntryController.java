@@ -214,6 +214,9 @@ public class OPDEntryController {
 			if (attributeType.getPersonAttributeTypeId() == 14) {
 				model.addAttribute("selectedCategory", Context.getConceptService().getConceptByIdOrName(pa.getValue()).getName());
 			}
+			if (attributeType.getPersonAttributeTypeId() == 29) {
+				model.addAttribute("dohId", pa.getValue());
+			}
 			/*
 			 * if (attributeType.getPersonAttributeTypeId() == 36) {
 			 * model.addAttribute("exemptionNumber", pa.getValue()); }

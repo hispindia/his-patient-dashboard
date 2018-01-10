@@ -1080,6 +1080,10 @@ jQuery("#BMI").val(b);
 			<tr>
 				<td><strong>OPD Consulted:</strong></td>
 				<td>${opd.name}</td>
+				<c:if test="${not empty dohId}">
+				<td><strong>DoH Id:</strong></td>
+				<td>${dohId}</td>
+				</c:if>
 			</tr>
 		</table>
 				<table class="box">
