@@ -24,7 +24,7 @@
 jQuery(document).ready(function(){
 var otherInstructions = '${otherInstructions}';
 if(otherInstructions!=""){
-
+	jQuery("#othInstt").show();
 }
 else{
 jQuery("#othInstt").hide();
@@ -32,7 +32,7 @@ jQuery("#othInstt").hide();
 
 var internalReferral = '${internal}';
 if(internalReferral!=""){
-
+	jQuery("#intReff").show();
 }
 else{
 jQuery("#intReff").hide();
@@ -40,7 +40,7 @@ jQuery("#intReff").hide();
 
 var externalReferral = '${external}';
 if(externalReferral!=""){
-
+	jQuery("#external").show()
 }
 else{
 jQuery("#extReff").hide();
@@ -49,7 +49,7 @@ jQuery("#extReff").hide();
 
 var dateFollowUp = '${followUpDate}';
 if(dateFollowUp!=""){
-
+	jQuery("#followupdate").show();
 }
 else{
 jQuery("#followupdate").hide();
@@ -57,7 +57,7 @@ jQuery("#followupdate").hide();
 
 var ipdward= '${ipdAdmissionWard}';
 if(ipdward!=""){
-  
+	jQuery("#ipdadmissionward").show(); 
 }
 else{
 jQuery("#ipdadmissionward").hide();  

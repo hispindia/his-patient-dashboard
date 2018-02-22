@@ -329,6 +329,7 @@ public class PrintClinicalSummaryController {
 				.getOpdDrugOrder(encounter);
 
 		model.addAttribute("treatingDoctor", treatingDoctor);
+		model.addAttribute("otherInstructions", otherInstructions);
 		model.addAttribute("internal", internal);
 		model.addAttribute("external", external);
 		model.addAttribute("visitOutCome", visitOutCome);
