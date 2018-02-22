@@ -39,8 +39,7 @@ import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonAttributeType;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.Privilege;
 import org.openmrs.Role;
 import org.openmrs.User;
@@ -73,13 +72,20 @@ public class MainController {
 	 */
 	@SuppressWarnings("deprecation")
 	@RequestMapping(method = RequestMethod.GET)
-	public String firstView(@RequestParam("patientId") Integer patientId, @RequestParam("opdId") Integer opdId,
+	public String firstView(@RequestParam(value = "patientId", required = false) Integer patientId, @RequestParam("opdId") Integer opdId,
 	                        @RequestParam(value = "queueId", required = false) Integer queueId,
-	                        //ghanshyam 23-oct-2012 Bug #423 [IPD][0.9.7] Error Screen on clicking patiend ID in Admitted patient Index
+	                        @RequestParam(value = "identifier", required = false) String identifier,
 	                        @RequestParam(value = "ipdAdmittedId", required = false) Integer ipdAdmittedId,
 	                        @RequestParam("referralId") Integer referralId, Model model) {
+		HospitalCoreService hcs=Context.getService(HospitalCoreService.class);
 		PatientService ps = Context.getPatientService();
+		PatientIdentifier patientIdentifier=hcs.getPatientIdentifier(identifier);
 		Patient patient = ps.getPatient(patientId);
+		if(patient==null){
+			if(patientIdentifier!=null){
+			patient=patientIdentifier.getPatient();	
+			}
+		}
 		
 		//ghanshyam 16-06-2012 Bug #44 OPD Dashboard/ Patient category,Temporary category is not being displayed
 		List<EncounterType> types = new ArrayList<EncounterType>();
@@ -131,7 +137,6 @@ public class MainController {
 		if (1 == listEncounter.size())
 			encounter = listEncounter.get(0);
 		else {
-			HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 			encounter = hcs.getLastVisitEncounter(patient, types);
 		}
 		
