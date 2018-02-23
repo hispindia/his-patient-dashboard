@@ -79,8 +79,14 @@ public class MainController {
 	                        @RequestParam("referralId") Integer referralId, Model model) {
 		HospitalCoreService hcs=Context.getService(HospitalCoreService.class);
 		PatientService ps = Context.getPatientService();
-		PatientIdentifier patientIdentifier=hcs.getPatientIdentifier(identifier);
-		Patient patient = ps.getPatient(patientId);
+		PatientIdentifier patientIdentifier=null;
+		Patient patient=null;
+		if(identifier!=null){
+		patientIdentifier=hcs.getPatientIdentifier(identifier);
+		}
+		if(patientId!=null){
+		patient = ps.getPatient(patientId);
+		}
 		if(patient==null){
 			if(patientIdentifier!=null){
 			patient=patientIdentifier.getPatient();	
