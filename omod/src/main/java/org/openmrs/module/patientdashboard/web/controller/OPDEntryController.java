@@ -1167,7 +1167,10 @@ public class OPDEntryController {
 			}
 		}
 
-
+		 if (admitted != null) {
+	        	opdPatientLog=admitted.getPatientAdmissionLog().getOpdLog();
+			}
+		 
 		return "redirect:/module/patientqueue/main.htm?opdId="
 				+ opdPatientLog.getOpdConcept().getId();
 
