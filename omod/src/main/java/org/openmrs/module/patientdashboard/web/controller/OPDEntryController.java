@@ -1065,6 +1065,9 @@ public class OPDEntryController {
 
 		}
 
+		 if (admitted != null) {
+	        	opdPatientLog=admitted.getPatientAdmissionLog().getOpdLog();
+			}
 		// send pharmacy orders to issue drugs to a patient from dashboard
 		Integer formulationId;
 		Integer frequencyId;
@@ -1166,10 +1169,6 @@ public class OPDEntryController {
 				}
 			}
 		}
-
-		 if (admitted != null) {
-	        	opdPatientLog=admitted.getPatientAdmissionLog().getOpdLog();
-			}
 		 
 		return "redirect:/module/patientqueue/main.htm?opdId="
 				+ opdPatientLog.getOpdConcept().getId();
