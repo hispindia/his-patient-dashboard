@@ -28,7 +28,12 @@
 <div  class="box">
 <table  cellspacing="10" width="100%">
 	<tr>
-		<td width="40%"><b>Patient ID:</b> ${patient.patientIdentifier.identifier}</td>
+		<td width="40%"><b>Patient ID:</b>
+		<b><a href="http://192.168.1.10/pcs/api/apps/TEI-Search-App/index.html?tei=${patient.patientIdentifier.identifier}">
+		${patient.patientIdentifier.identifier}
+	</a>
+	</b>
+		</td>
 		<td width="30%">
 			<c:if test="${not empty admittedStatus }">
 				<span style="background-color:red; color:white">Admitted patient</span>				
