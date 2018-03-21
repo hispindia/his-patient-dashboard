@@ -5,7 +5,7 @@
   <groupId>org.openmrs.module</groupId>
   <artifactId>patientdashboard</artifactId>
   <name>Patient Dashboard</name>
-  <version>1.4.2</version>
+  <version>1.4.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <description>Patient  dashboard for hospital</description>
@@ -22,13 +22,13 @@
             <repository>
                 <id>shimla-nexus</id>
                 <name>Shimla nexus repo</name>
-                <url>http://hospdev.hispindia.org/nexus/content/repositories/tvha-releases/</url>
+                <url>http://hospdev.hispindia.org/nexus/content/repositories/tvhaupgraded-releases/</url>
             </repository>
         <!-- use the following if you ARE using a snapshot version. -->
             <snapshotRepository>
                 <id>shimla-nexus</id>
                 <name>Shimla nexus repo</name>
-                <url>http://hospdev.hispindia.org/nexus/content/repositories/tvha-snapshots/</url>
+                <url>http://hospdev.hispindia.org/nexus/content/repositories/tvhaupgraded-snapshots/</url>
                 <uniqueVersion>false</uniqueVersion>
              </snapshotRepository>
      </distributionManagement>
@@ -66,7 +66,7 @@
       <dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>hospitalcore-api</artifactId>
-			<version>1.5.4</version>
+			<version>1.5.5-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
     </dependencies>
@@ -74,7 +74,7 @@
   </dependencyManagement>
 
   <properties>
-    <openMRSVersion>1.8.0</openMRSVersion>
+    <openMRSVersion>1.9.7</openMRSVersion>
   </properties>
 
   <build>
