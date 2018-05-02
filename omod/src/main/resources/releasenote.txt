@@ -1,0 +1,68 @@
+1.3.10
+- #4811 printout and changes in dashboard
+released by ghanshyam on 16-March-2015
+
+1.3.9
+released by ghanshyam on 11-Nov-2013
+- #2937 Dealing with Dead Patient
+
+1.3.8
+released by ghanshyam on 20-may-2013
+- #1302	Introduce Radiology record on Patient dashboard	
+- #1391	Introduce Pharmacy  record on Patient dashboard(in all hospitals of India module)	
+- #1408	Change in the Patient Dashboard Tab 'Investigation report' to 'Laboratory record' for all hospital of India module	
+- #1429	The lab test results in patient report doesn’t match with the results on patient dashboard for the same investigations	
+- #1496	The Lab Results displayed in the Laboratory Record of the PATIENT DASHBOARD go beyond the default screen resolution	
+
+1.3.7
+New Requirement #314: [OPD] Advanced Search in Search Patient in System
+released by harsh
+
+1.3.6
+- Resolved issues
+	Bug #44:  OPD Dashboard/ Temporary category is not being displayed
+	Bug #45:  Dashboard
+	Bug #108: Discrepancy in age in Registartion and OPD
+	Bug #122: investigation report in opd
+	Bug #144: OPD Investigation report
+	Bug #173: Patient dashboard in OPD
+	Bug #233: [1.3.6-SNAPSHOT][DDU] Unable to view Investigation report
+	Bug #234: [1.3.6 -Snapshot] [DDU] Unable to view patient category on patient dashboard
+	Bug #294: DDU - Temporary category on the patient dashboard
+
+26/04/2011
+-Update diagnosis and procedure small than before
+15/04/2011
+- Show diagnosis and procedure follow department
+- Fix show procedures on IPD Record
+14/04/2011
+- Change solution get diagnosis and procedure
+09-04-2011
+-Update get obs group and create obs group if not exist at dashboard  
+1.0
+-Update search diagnosis and procedure from server side
+-Fix bug list investigation report. ( 04-05-2011 ) 
+-Add radio name reviewed 
+0.9
+- Fixed bug showing Admit radio button when a patient has been already in IPD
+
+0.5
+- Added IPD Record tab
+##############################
+0.4
+- Insert necessary concepts and encounter on the first time run
+- Insert necessary external hospitals unless they exist
+- minor fix in investigation report tab.
+########################################
+0.3
+- Add patient to queue when select internal referral in opd entry form
+###################
+0.2
+- integrate with ddupatientqueue.
+- Fixed bug display incorrect diagnosis in Clinical summary tab.
+####################
+0.1
+- finish opd entry, except IPD admit function.
+- finish clinical summary
+- finish investigation reports
+- require hospitalcore module version 0.3
