@@ -72,7 +72,6 @@ import org.openmrs.module.hospitalcore.model.InventoryDrug;
 import org.openmrs.module.hospitalcore.model.InventoryDrugFormulation;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
-import org.openmrs.module.hospitalcore.model.LabTest;
 import org.openmrs.module.hospitalcore.model.OpdDrugOrder;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
@@ -335,13 +334,14 @@ public class OPDEntryController {
 		// create obs group only for internal referral and admit
 		Obs obsGroup = null;
 		obsGroup = hcs.getObsGroupCurrentDate(patient.getPersonId());
+		/*
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")
 				|| (command.getInternalReferral() != null)) {
 			if (obsGroup == null) {
 				obsGroup = hcs.createObsGroup(patient,
 						HospitalCoreConstants.PROPERTY_OBSGROUP);
 			}
-		}
+		}*/
 
 		// ===================Comment this if we want to
 		// save===========================
