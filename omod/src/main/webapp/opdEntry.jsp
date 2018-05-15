@@ -205,17 +205,31 @@ document.onkeypress = stopRKey;
 var drugIssuedList = new Array();
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value.toString();
-   drugIssuedList.push(drugName);
+  
+   if(drugIssuedList.length==0)
+	   {
+	   drugIssuedList.push(drugName);
+	   }
+   else
+	   {if(drugIssuedList[0]==drugName)
+	   {
+	   drugName=drugName.toLowerCase()
+		   drugIssuedList.push(drugName);
+	   }
+	   }
+	   
    if(drugName==null || drugName==""){
    alert("Please enter drug name");
    return false;
    }else{
    var formulation=document.getElementById('formulation').value;
+   
    if(formulation==null || formulation==""){
    alert("Please select formulation");
    return false;
    }
    var formulationArr=formulation.split("_"); 
+   
    var frequency=document.getElementById('frequency').value;
    if(frequency==null || frequency==""){
    alert("Please select frequency");
@@ -249,6 +263,7 @@ function addDrugOrder() {
    var newElement = document.createElement('div');
    newElement.setAttribute("id", drugName);   
    newElement.innerHTML = htmlText;
+  
    var fieldsArea = document.getElementById('headerValue');
    fieldsArea.appendChild(newElement);
    jQuery("#drugName").val("");
@@ -420,10 +435,13 @@ j++;
 
 
 var selDrugLen = drugIssuedList.length;
+
 var k=1;
 for(i=selDrugLen-1; i>=0; i--){
 var drug=drugIssuedList[i];
+
 var formulationName=document.getElementById(drug+"_formulationName").value;
+
 var frequencyName=document.getElementById(drug+"_frequencyName").value;
 var noOfDays=document.getElementById(drug+"_noOfDays").value;
 var comments=document.getElementById(drug+"_comments").value;
@@ -859,6 +877,7 @@ jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 				<td colspan="1">
 					<div class="drug-order" id="drugOrder"
 						style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 5em;">
+				
 						<div class="drugs" class="ui-widget">
 							<input title="${opd.conceptId}" id="drugName" name="drugName"
 								placeholder="Search for drugs" onblur="ISSUE.onBlur(this);" />
