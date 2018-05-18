@@ -98,7 +98,7 @@ jQuery(document).ready(
 			dateFormat : 'dd/mm/yy',
 			changeMonth : true,
 			changeYear : true,
-			maxDate: '+0d'
+			maxDate: new Date()
 		});
 		jQuery("#calendarButton").click(function() {
 			jQuery("#lastMenstrualPeriod").datepicker("show");
