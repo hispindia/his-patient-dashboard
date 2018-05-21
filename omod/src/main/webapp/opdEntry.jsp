@@ -202,27 +202,21 @@ document.onkeypress = stopRKey;
 		_ipdConceptMap[${entry.key}] = "${entry.value}";
 	</c:forEach>
 
-var drugIssuedList = new Array();
+
+var drugIssuedList1 = new Array();
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value.toString();
-  
-   if(drugIssuedList.length==0)
-	   {
-	   drugIssuedList.push(drugName);
-	   }
-   else
-	   {if(drugIssuedList[0]==drugName)
-	   {
-	   drugName=drugName.toLowerCase()
-		   drugIssuedList.push(drugName);
-	   }
-	   }
-	   
    if(drugName==null || drugName==""){
    alert("Please enter drug name");
    return false;
    }else{
    var formulation=document.getElementById('formulation').value;
+   drugIssuedList1.push(drugName.concat("+").concat(formulation));
+  var i;var value;
+   for(i=0;i<drugIssuedList1.length;i++)
+	   {
+	    value=drugIssuedList1[i];
+	   }
    
    if(formulation==null || formulation==""){
    alert("Please select formulation");
@@ -248,20 +242,21 @@ function addDrugOrder() {
     }
    }
    var comments=document.getElementById('comments').value;
-   var deleteString = 'deleteInput(\"'+drugName+'\")';
-   var htmlText =  "<div id='com_"+drugName+"_div'>"
-	       	 +"<input id='"+drugName+"_name'  name='drugOrder' type='text' size='14' value='"+drugName+"'  readonly='readonly'/>&nbsp;&nbsp;"
-	       	 +"<input id='"+drugName+"_formulationName'  name='"+drugName+"_formulatioNname' type='text' size='14' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
-	       	 +"<input id='"+drugName+"_frequencyName'  name='"+drugName+"_frequencyName' type='text' size='6' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
-	       	 +"<input id='"+drugName+"_noOfDays'  name='"+drugName+"_noOfDays' type='text' size='7' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;&nbsp;"
-	       	 +"<input id='"+drugName+"_comments'  name='"+drugName+"_comments' type='text' size='17' value='"+comments+"'  readonly='readonly'/>&nbsp;&nbsp;"
-	       	 +"<input id='"+drugName+"_formulationId'  name='"+drugName+"_formulationId' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
-	       	 +"<input id='"+drugName+"_frequencyId'  name='"+drugName+"_frequencyId' type='hidden' value='"+frequencyArr[1]+"'/>&nbsp;"
+   
+   var deleteString = 'deleteInput(\"'+value+'\")';
+   var htmlText =  "<div id='com_"+value+"_div'>"
+	       	 +"<input id='"+value+"_name'  name='drugOrder' type='text' size='14' value='"+value+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+value+"_formulationName'  name='"+value+"_formulationName' type='text' size='14' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+value+"_frequencyName'  name='"+value+"_frequencyName' type='text' size='6' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+value+"_noOfDays'  name='"+value+"_noOfDays' type='text' size='7' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+value+"_comments'  name='"+value+"_comments' type='text' size='17' value='"+comments+"'  readonly='readonly'/>&nbsp;&nbsp;"
+	       	 +"<input id='"+value+"_formulationId'  name='"+value+"_formulationId' type='hidden' value='"+formulationArr[1]+"'/>&nbsp;"
+	       	 +"<input id='"+value+"_frequencyId'  name='"+value+"_frequencyId' type='hidden' value='"+frequencyArr[1]+"'/>&nbsp;"
 	       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
 	       	 +"</div>";
 	       	
    var newElement = document.createElement('div');
-   newElement.setAttribute("id", drugName);   
+   newElement.setAttribute("id", value);   
    newElement.innerHTML = htmlText;
   
    var fieldsArea = document.getElementById('headerValue');
@@ -271,6 +266,7 @@ function addDrugOrder() {
    jQuery("#frequency").val("");
    jQuery("#noOfDays").val("");
    jQuery("#comments").val("");
+  
    }
 }
 
@@ -280,7 +276,7 @@ function deleteInput(drugName) {
    var parent = document.getElementById(parentDiv);
    parent.removeChild(child); 
    Array.prototype.remove = function(v) { this.splice(this.indexOf(v) == -1 ? this.length : this.indexOf(v), 1); }
-   drugIssuedList.remove(drugName);
+   drugIssuedList1.remove(drugName);
 }
 
 
@@ -434,21 +430,21 @@ j++;
 }
 
 
-var selDrugLen = drugIssuedList.length;
+var selDrugLen = drugIssuedList1.length;
 
 var k=1;
-for(i=selDrugLen-1; i>=0; i--){
-var drug=drugIssuedList[i];
-
+for(i=0; i<=selDrugLen-1; i++){
+var drug=drugIssuedList1[i];
+var drugArr=drug.split("+"); 
 var formulationName=document.getElementById(drug+"_formulationName").value;
-
 var frequencyName=document.getElementById(drug+"_frequencyName").value;
 var noOfDays=document.getElementById(drug+"_noOfDays").value;
 var comments=document.getElementById(drug+"_comments").value;
-if(drug.length>22){
+if(drug.length>22){ 
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
-jQuery("#printableDrug").append("<span style='margin:5px;'>" + drug + "<br/>" + "</span>");
+jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[0] + "<br/>" + "</span>");
+jQuery("#printableDrug").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
@@ -460,7 +456,7 @@ jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</
 }
 else{
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
-jQuery("#printableDrug").append("<span style='margin:5px;'>" + drug + "<br/>" + "</span>");
+jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[0] + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
 jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
 jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
