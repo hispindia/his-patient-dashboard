@@ -270,7 +270,17 @@ document.onkeypress = stopRKey;
 var drugIssuedList = new Array();
 function addDrugOrder() {
    var drugName=document.getElementById('drugName').value.toString();
-   drugIssuedList.push(drugName);
+   if(drugIssuedList.length==0)
+	   	   {
+	   	   drugIssuedList.push(drugName);
+	   	   }
+	      else
+	   	   {if(drugIssuedList[0]==drugName)
+	   	   {
+	   	   drugName=drugName.toLowerCase()
+	   		   drugIssuedList.push(drugName);
+	      }
+	     }
    if(drugName==null || drugName==""){
    alert("Please enter drug name");
    return false;
