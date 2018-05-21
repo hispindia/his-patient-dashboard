@@ -1074,11 +1074,11 @@ public class OPDEntryController {
 		Integer noOfDays;
 		String comments;
 		if (drugOrder != null) {
-			for (String drugName : drugOrder) {
+			for (String drugName : drugOrder) {String arr[]=drugName.split("\\+");
 				InventoryCommonService inventoryCommonService = Context
 						.getService(InventoryCommonService.class);
 				InventoryDrug inventoryDrug = inventoryCommonService
-						.getDrugByName(drugName);
+						.getDrugByName(arr[0]);
 				if (inventoryDrug != null) {
 					formulationId = Integer.parseInt(request
 							.getParameter(drugName + "_formulationId"));
