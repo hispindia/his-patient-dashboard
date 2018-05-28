@@ -282,6 +282,8 @@ document.onkeypress = stopRKey;
 		   {
 		    value=drugIssuedList1[i];
 		   }
+	   var valueArr=value.split("+");  
+	  
    if(formulation==null || formulation==""){
    alert("Please select formulation");
    return false;
@@ -307,7 +309,8 @@ document.onkeypress = stopRKey;
    var comments=document.getElementById('comments').value;
    var deleteString = 'deleteInput(\"'+value+'\")';
    var htmlText =  "<div id='com_"+value+"_div'>"
- 	 +"<input id='"+value+"_name'  name='drugOrder' type='text' size='14' value='"+value+"'  readonly='readonly'/>&nbsp;&nbsp;"
+ 	 +"<input id='"+value+"_names'  name='drugOrder' value='"+value+"' type='hidden' />&nbsp;&nbsp;"
+ 	 +"<input id='"+value+"_name'  name='"+value+"drugOrder' type='text' size='14' value='"+valueArr[0]+"' type='hidden' readonly='readonly'/>&nbsp;&nbsp;"
  	 +"<input id='"+value+"_formulationName'  name='"+value+"_formulationName' type='text' size='14' value='"+formulationArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
  	 +"<input id='"+value+"_frequencyName'  name='"+value+"_frequencyName' type='text' size='6' value='"+frequencyArr[0]+"'  readonly='readonly'/>&nbsp;&nbsp;"
  	 +"<input id='"+value+"_noOfDays'  name='"+value+"_noOfDays' type='text' size='7' value='"+noOfDays+"'  readonly='readonly'/>&nbsp;&nbsp;"
@@ -461,8 +464,18 @@ for(j=0; j<=result.length; j++)
     	{
     	result.push(diag);
     	}
-}
+} 
+var prov;var fin;
 jQuery("#printableProvisionalDiagnosis").append("<span style='margin:5px;'>" + result + "<br/>" + "</span>");
+if (jQuery("#prov_dia").is(":checked")) { 
+	 prov='Provisional Diagnosis:';
+	jQuery("#printableProvisionDiagnosis").append( prov);
+	}
+else if (jQuery("#final_dia").is(":checked")) {  
+fin='Final Diagnosis:';
+jQuery("#printableFinalDiagnosis").append( fin);
+
+}
 
 var selProLen = selectedProcedureList.length;
 for(i=selProLen-1; i>=0; i--){
@@ -946,6 +959,8 @@ jQuery("#BMI").val(b);
 				<td>
 					<div id="headerValue"
 						style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+						<input type='hidden' id="drugs" name="drugs" value='Drugss' size="14"
+							readonly="readonly" />&nbsp; 
 						<input type='text' id="drug" name="drug" value='Drugs' size="14"
 							readonly="readonly" />&nbsp; <input type='text' id="formulation"
 							name='formulation' value="Formulation" size="14"
@@ -1140,9 +1155,12 @@ jQuery("#BMI").val(b);
 			</tr>
 			<tr><td><strong>Symptom:</strong></td><td><div id="printableSymptom"></div></td></tr>
 			<tr>
-				<td><strong>Diagnosis:</strong></td>
+		
+			<td><strong><div id="printableProvisionDiagnosis"></div></strong>
+			<strong><div id="printableFinalDiagnosis"></div></strong></td>
 				<td><div id="printableProvisionalDiagnosis"></div></td>
 			</tr>
+			
 			<tr>
 				<td><strong>Procedure:</strong></td>
 				<td><div id="printablePostForProcedure"></div></td>
