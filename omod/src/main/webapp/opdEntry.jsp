@@ -415,7 +415,15 @@ for(j=0; j<=result.length; j++)
     	}
 }
 jQuery("#printableProvisionalDiagnosis").append("<span style='margin:5px;'>" + result + "<br/>" + "</span>");
+if (jQuery("#prov_dia").is(":checked")) { 
+	 prov='Provisional Diagnosis:';
+	jQuery("#printableProvisionDiagnosis").append( prov);
+	}
+else if (jQuery("#final_dia").is(":checked")) {  
+fin='Final Diagnosis:';
+jQuery("#printableFinalDiagnosis").append( fin);
 
+}
 var selProLen = selectedProcedureList.length;
 for(i=selProLen-1; i>=0; i--){
 var pro=selectedProcedureList[i].text;
@@ -1129,8 +1137,9 @@ jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 				<td><div id="printableHistoryOfPresentIllness"></div></td>
 			</tr>
 			<tr>
-				<td><strong>Diagnosis:</strong></td>
-				<td><div id="printableProvisionalDiagnosis"></div></td>
+			<td><strong><div id="printableProvisionDiagnosis"></div></strong>
+			<strong><div id="printableFinalDiagnosis"></div></strong></td>
+			<td><div id="printableProvisionalDiagnosis"></div></td>
 			</tr>
 			<tr>
 				<td><strong>Procedure:</strong></td>
