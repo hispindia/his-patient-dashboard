@@ -324,6 +324,24 @@ public class OPDEntryController {
 			model.addAttribute("LMP", sdfmt.format(obsLMP.getValueDatetime()));
 			}
 		}*/
+		Concept con=Context.getConceptService().getConcept("VISIT OUTCOME");
+		Obs obs=hcs.getLastVisitOutCome(person.getPersonId(),con.getConceptId());
+		System.out.println("xxxxxxxxxxxxxxxxxxxxx"+obs.getValueDatetime());
+		if(obs.getValueDatetime()!=null){
+			model.addAttribute("followup", "followup");	
+			System.out.println("yyyyyyyyyyyyyyyyyyyyyyy");
+			Encounter encounter=obs.getEncounter();
+			Obs hopi=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS"));
+			Obs othins=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("OTHER INSTRUCTIONS"));
+			List<Obs> provDiag=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("Provisional Diagnosis"));
+			//Obs othins=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("OTHER INSTRUCTIONS"));
+			//Obs hopi=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS"));
+			model.addAttribute("hopi", hopi.getValueText());	
+			model.addAttribute("provDiag", provDiag);
+			model.addAttribute("provDiagSize", provDiag.size());
+			System.out.println("zzzzzzzzzzzzzzzz"+provDiag.size());
+			model.addAttribute("othins", othins.getValueText());
+		}
 
         return "module/patientdashboard/opdEntry";
 	}
@@ -348,6 +366,7 @@ public class OPDEntryController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		// harsh 14/6/2012 setting death date to today's date and dead variable
 		// to true when "died" is selected
@@ -633,8 +652,10 @@ public class OPDEntryController {
 			obsOutcome.setValueText(command.getRadio_f());
 			// TODO if
 			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")) {
-				obsOutcome.setValueDatetime(Context.getDateFormat().parse(
-						command.getDateFollowUp()));
+				System.out.println("aaaaaaaaaaaaaa"+command.getDateFollowUp());
+				//obsOutcome.setValueDatetime(Context.getDateFormat().parse(
+				//		command.getDateFollowUp()));
+				obsOutcome.setValueDatetime(formatter.parse(command.getDateFollowUp()));
 			}
 
 			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")) {

@@ -116,31 +116,7 @@ jQuery(document).ready(
 			    	
 			    	
 			    		});
-function loadSelectedDiagnosisList()
-{
-	if(${diagnosisIdSet}.length > 0)
-	{
-	var diagIdToBeAdded = ('${diagnosisIdSet}');
-	
-	var diagNameToBeAdded = ('${diaNameSet}');
 
-	diagIdToBeAdded = diagIdToBeAdded.substr(1);
-	diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
-	diagNameToBeAdded = diagNameToBeAdded.substr(1);
-	diagNameToBeAdded = diagNameToBeAdded.substring(0, diagNameToBeAdded.length - 1);	
-	var dIdArr = diagIdToBeAdded.split(",");
-	var dNameArr = diagNameToBeAdded.split(",");
-	
-	var sdl = $("#selectedDiagnosisList");
-	for (var i = 0; i < dIdArr.length; i++)
-	{ 
-		 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
-		
-	     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
-   	}
-   	}
-}
-loadSelectedDiagnosisList();
 		});
 </script>
 <script type="text/javascript">
@@ -595,6 +571,24 @@ if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
  } 					
 jQuery("#lastMenstrualPeriod").removeAttr("disabled");	
 }
+
+
+    function copyData(){
+	jQuery("#historyOfPresentIlness").val('${hopi}');
+	jQuery("#otherInstructions").val('${othins}');
+	var sdl = jQuery("#selectedDiagnosisList");
+	var provDiagSize="${provDiagSize}";
+	alert(provDiagSize);
+	if(parseInt(provDiagSize)==1){
+	var provDiagid1=${provDiag[0].valueCoded.id};
+	var provDiagnam1="${provDiag[0].valueCoded.name.name}";
+	sdl.append("<option value='" + provDiagid1+ "'>" +  provDiagnam1 + "</option>");
+	}
+	else if(parseInt(provDiagSize)==2){
+	var provDiagid1=${provDiag[0].valueCoded.id};
+	var provDiagnam1="${provDiag[0].valueCoded.name.name}";
+	}
+	}
 </script>
 <b class="boxHeader">Opd Form</b>
 <form class="box" method="post" action="opdEntry.htm" id="opdEntryForm"
@@ -639,6 +633,14 @@ jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 						<label><b> <input type="button"
 								value="VITAL STATISTIC DETAILS"
 								class="ui-button ui-widget ui-state-default ui-corner-all" />
+						</b></label>
+					</div>
+					
+					<div>
+						<label><b>
+								<input type="button"
+								value="COPY"
+								class="ui-button ui-widget ui-state-default ui-corner-all" onclick="copyData();"/>
 						</b></label>
 					</div>
 
