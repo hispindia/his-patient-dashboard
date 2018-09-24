@@ -329,18 +329,25 @@ public class OPDEntryController {
 		System.out.println("xxxxxxxxxxxxxxxxxxxxx"+obs.getValueDatetime());
 		if(obs.getValueDatetime()!=null){
 			model.addAttribute("followup", "followup");	
-			System.out.println("yyyyyyyyyyyyyyyyyyyyyyy");
 			Encounter encounter=obs.getEncounter();
 			Obs hopi=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS"));
 			Obs othins=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("OTHER INSTRUCTIONS"));
 			List<Obs> provDiag=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("Provisional Diagnosis"));
-			//Obs othins=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("OTHER INSTRUCTIONS"));
-			//Obs hopi=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS"));
+			List<Obs> pfp=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("POST FOR PROCEDURE"));
+			List<Obs> investigation=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("INVESTIGATION"));
 			model.addAttribute("hopi", hopi.getValueText());	
 			model.addAttribute("provDiag", provDiag);
 			model.addAttribute("provDiagSize", provDiag.size());
-			System.out.println("zzzzzzzzzzzzzzzz"+provDiag.size());
+			model.addAttribute("pfp", pfp);
+			model.addAttribute("pfpSize", pfp.size());
+			model.addAttribute("investigation", investigation);
+			model.addAttribute("investigationSize", investigation.size());
 			model.addAttribute("othins", othins.getValueText());
+			
+			List<OpdDrugOrder> listOpdDrugOrder=patientDashboardService.getOpdDrugOrder(obs.getEncounter());
+			model.addAttribute("listOpdDrugOrder", listOpdDrugOrder);
+			model.addAttribute("listOpdDrugOrderSize", listOpdDrugOrder.size());
+			System.out.println("yyyyyyyyyyyyyy"+listOpdDrugOrder.size());
 		}
 
         return "module/patientdashboard/opdEntry";

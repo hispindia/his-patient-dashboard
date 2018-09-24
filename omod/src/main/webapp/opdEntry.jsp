@@ -92,6 +92,15 @@ function getContextPath(){
 	}
 </script>
 <script type="text/javascript">
+var _provDiagId = new Array();
+var _provDiagName = new Array();
+var _postForProcedureId = new Array();
+var _postForProcedureName = new Array();
+var _investigationId = new Array();
+var _investigationName = new Array();
+var _inventoryDrugId = new Array();
+var _noOfDays = new Array();
+var _comments = new Array();
 jQuery(document).ready(  
 		function() { 	jQuery('#lastMenstrualPeriod').datepicker({
 			yearRange : 'c-100:c+100',
@@ -103,6 +112,27 @@ jQuery(document).ready(
 		jQuery("#calendarButton").click(function() {
 			jQuery("#lastMenstrualPeriod").datepicker("show");
 		});	
+		
+		<c:forEach var="provDg" items="${provDiag}" varStatus="status">
+		_provDiagId[${status.index}] = "${provDg.valueCoded.id}";
+		_provDiagName[${status.index}] = "${provDg.valueCoded.name.name}";
+	    </c:forEach>
+	    
+	    <c:forEach var="pp" items="${pfp}" varStatus="status">
+	    _postForProcedureId[${status.index}] = "${pp.valueCoded.id}";
+	    _postForProcedureName[${status.index}] = "${pp.valueCoded.name.name}";
+	    </c:forEach>
+	    
+	    <c:forEach var="invstg" items="${investigation}" varStatus="status">
+	    _investigationId[${status.index}] = "${invstg.valueCoded.id}";
+	    _investigationName[${status.index}] = "${invstg.valueCoded.name.name}";
+	    </c:forEach>
+	    
+	    <c:forEach var="odo" items="${listOpdDrugOrder}" varStatus="status">
+	    _inventoryDrugId[${status.index}] = "${odo.inventoryDrug.id}";
+	    _noOfDays[${status.index}] = "${odo.inventoryDrug.noOfDays}";
+	    _comments[${status.index}] = "${odo.inventoryDrug.comments}";
+	    </c:forEach>
 		
 		if("${patient.gender }"=="M" || "${patient.gender }"=="O"){
 	    jQuery("#lastMenstrualPeriod").attr("disabled", "disabled");
@@ -573,20 +603,47 @@ jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 }
 
 
-    function copyData(){
-	jQuery("#historyOfPresentIlness").val('${hopi}');
+function copyData(){
+    if("${followup}"!=null){
+    jQuery("#historyOfPresentIlness").val('${hopi}');
 	jQuery("#otherInstructions").val('${othins}');
 	var sdl = jQuery("#selectedDiagnosisList");
-	var provDiagSize="${provDiagSize}";
-	alert(provDiagSize);
-	if(parseInt(provDiagSize)==1){
-	var provDiagid1=${provDiag[0].valueCoded.id};
-	var provDiagnam1="${provDiag[0].valueCoded.name.name}";
-	sdl.append("<option value='" + provDiagid1+ "'>" +  provDiagnam1 + "</option>");
+	var spl = jQuery("#selectedProcedureList");
+	var sil = jQuery("#selectedInvestigationList");
+	var provDiagSize=parseInt("${provDiagSize}");
+	var pfpSize=parseInt("${pfpSize}");
+	var investigationSize=parseInt("${investigationSize}");
+	var listOpdDrugOrderSize=parseInt("${listOpdDrugOrderSize}");
+	for(i=0;i<provDiagSize;i++){
+	sdl.append("<option value='" + _provDiagId[i]+ "'>" +  _provDiagName[i] + "</option>");
 	}
-	else if(parseInt(provDiagSize)==2){
-	var provDiagid1=${provDiag[0].valueCoded.id};
-	var provDiagnam1="${provDiag[0].valueCoded.name.name}";
+	for(i=0;i<pfpSize;i++){
+	spl.append("<option value='" + _postForProcedureId[i]+ "'>" +  _postForProcedureName[i] + "</option>");
+	}
+	for(i=0;i<investigationSize;i++){
+	sil.append("<option value='" + _investigationId[i]+ "'>" +  _investigationName[i] + "</option>");
+	}
+	for(i=0;i<listOpdDrugOrderSize;i++){
+		alert("yyyyyyyyyyyyy"); 
+		var value="abc";
+		var deleteString = 'deleteInput(\"'+value+'\")';
+		 var htmlText =  "<div id='com_"+value+"_div'>"
+       	
+       	 +"<input id='"+value+"_noOfDays'  name='"+value+"_noOfDays' type='text' size='7' value='"+_noOfDays[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+       	 +"<input id='"+value+"_comments'  name='"+value+"_comments' type='text' size='17' value='"+_comments[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+       	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
+       	 +"</div>";
+			       	
+		   var newElement = document.createElement('div');
+		   newElement.setAttribute("id", value);   
+		   newElement.innerHTML = htmlText;
+		  
+		   var fieldsArea = document.getElementById('headerValue');
+		   fieldsArea.appendChild(newElement);
+	}
+    }
+	else{
+		alert("data can not be copied");
 	}
 	}
 </script>
