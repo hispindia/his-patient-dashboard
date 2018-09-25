@@ -134,7 +134,7 @@ jQuery(document).ready(
 	    
 	    <c:forEach var="odo" items="${listOpdDrugOrder}" varStatus="status">
 	    _inventoryDrugName[${status.index}] = "${odo.inventoryDrug.name}";
-	    _formulationName[${status.index}] = "${odo.inventoryDrugFormulation.name}-{odo.inventoryDrugFormulation.dozage}";
+	    _formulationName[${status.index}] = "${odo.inventoryDrugFormulation.name}-${odo.inventoryDrugFormulation.dozage}";
 	    _formulationId[${status.index}] = "${odo.inventoryDrugFormulation.id}";
 	    _frequencyName[${status.index}] = "${odo.frequency.name.name}";
 	    _frequencyId[${status.index}] = "${odo.frequency.id}";
@@ -612,7 +612,7 @@ jQuery("#lastMenstrualPeriod").removeAttr("disabled");
 
 
 function copyData(){
-    if("${followup}"!=null){
+	if("${followup}"=="followup"){
     jQuery("#historyOfPresentIlness").val('${hopi}');
 	jQuery("#otherInstructions").val('${othins}');
 	var sdl = jQuery("#selectedDiagnosisList");
@@ -632,18 +632,18 @@ function copyData(){
 	sil.append("<option value='" + _investigationId[i]+ "'>" +  _investigationName[i] + "</option>");
 	}
 	for(i=0;i<listOpdDrugOrderSize;i++){
-		alert("yyyyyyyyyyyyy"); 
-		var value=_inventoryDrugName[i].concat("+").concat(_formulationName[i]);
+		var value="";
+		value=_inventoryDrugName[i].concat("+").concat(_formulationName[i]);
 		var deleteString = 'deleteInput(\"'+value+'\")';
 		 var htmlText =  "<div id='com_"+value+"_div'>"
 		 +"<input id='"+value+"_names'  name='drugOrder' value='"+value+"' type='hidden' />&nbsp;&nbsp;"
 	     +"<input id='"+value+"_name'  name='"+value+"drugOrder' type='text' size='14' value='"+_inventoryDrugName[i]+"' type='hidden' readonly='readonly'/>&nbsp;&nbsp;"
 		 +"<input id='"+value+"_formulationName'  name='"+value+"_formulationName' type='text' size='14' value='"+_formulationName[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
-		 +"<input id='"+value+"_frequencyName'  name='"+value+"_frequencyName' type='text' size='6' value='"+frequencyName[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+		 +"<input id='"+value+"_frequencyName'  name='"+value+"_frequencyName' type='text' size='6' value='"+_frequencyName[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
        	 +"<input id='"+value+"_noOfDays'  name='"+value+"_noOfDays' type='text' size='7' value='"+_noOfDays[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
        	 +"<input id='"+value+"_comments'  name='"+value+"_comments' type='text' size='17' value='"+_comments[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
        	 +"<input id='"+value+"_formulationId'  name='"+value+"_formulationId' type='hidden' value='"+_formulationId[i]+"'/>&nbsp;"
-       	 +"<input id='"+value+"_frequencyId'  name='"+value+"_frequencyId' type='hidden' value='"+frequencyId[i]+"'/>&nbsp;"
+       	 +"<input id='"+value+"_frequencyId'  name='"+value+"_frequencyId' type='hidden' value='"+_frequencyId[i]+"'/>&nbsp;"
        	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
        	 +"</div>";
        	 
@@ -671,8 +671,6 @@ function copyData(){
 
 	<div class="container">
 
-
-
 		<table cellspacing="5">
 
 			<tr align="right">
@@ -698,19 +696,19 @@ function copyData(){
 			</tr>
 
 			<tr>
+			<td>
+			<input type="button"
+								value="COPY"
+								class="ui-button ui-widget ui-state-default ui-corner-all" onclick="copyData();"/>
+			</td>
+			</tr>
+			
+			<tr>
 				<td colspan="3">
 					<div id="triageDiv">
 						<label><b> <input type="button"
 								value="VITAL STATISTIC DETAILS"
 								class="ui-button ui-widget ui-state-default ui-corner-all" />
-						</b></label>
-					</div>
-					
-					<div>
-						<label><b>
-								<input type="button"
-								value="COPY"
-								class="ui-button ui-widget ui-state-default ui-corner-all" onclick="copyData();"/>
 						</b></label>
 					</div>
 

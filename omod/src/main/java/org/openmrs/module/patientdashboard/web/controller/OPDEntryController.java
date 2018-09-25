@@ -326,14 +326,12 @@ public class OPDEntryController {
 		}*/
 		Concept con=Context.getConceptService().getConcept("VISIT OUTCOME");
 		Obs obs=hcs.getLastVisitOutCome(person.getPersonId(),con.getConceptId());
-		System.out.println("xxxxxxxxxxxxxxxxxxxxx"+obs.getValueDatetime());
 		if(obs.getValueDatetime()!=null){
 			model.addAttribute("followup", "followup");	
 			Encounter encounter=obs.getEncounter();
 			Obs hopi=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS"));
 			Obs othins=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("OTHER INSTRUCTIONS"));
 			List<Obs> provDiag=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("Provisional Diagnosis"));
-			System.out.println("yyyyyyyyyyyyyy"+provDiag.size());
 			List<Obs> pfp=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("POST FOR PROCEDURE"));
 			List<Obs> investigation=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("INVESTIGATION"));
 			model.addAttribute("hopi", hopi.getValueText());	
@@ -348,7 +346,9 @@ public class OPDEntryController {
 			List<OpdDrugOrder> listOpdDrugOrder=patientDashboardService.getOpdDrugOrder(obs.getEncounter());
 			model.addAttribute("listOpdDrugOrder", listOpdDrugOrder);
 			model.addAttribute("listOpdDrugOrderSize", listOpdDrugOrder.size());
-			System.out.println("yyyyyyyyyyyyyy"+listOpdDrugOrder.size());
+		}
+		else{
+			model.addAttribute("followup", "notfollowup");		
 		}
 
         return "module/patientdashboard/opdEntry";
@@ -374,7 +374,7 @@ public class OPDEntryController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		Patient patient = ps.getPatient(command.getPatientId());
 		PatientSearch patientSearch = hcs.getPatient(command.getPatientId());
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
 		// harsh 14/6/2012 setting death date to today's date and dead variable
 		// to true when "died" is selected
@@ -660,10 +660,9 @@ public class OPDEntryController {
 			obsOutcome.setValueText(command.getRadio_f());
 			// TODO if
 			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Follow-up")) {
-				System.out.println("aaaaaaaaaaaaaa"+command.getDateFollowUp());
 				//obsOutcome.setValueDatetime(Context.getDateFormat().parse(
 				//		command.getDateFollowUp()));
-				obsOutcome.setValueDatetime(formatter.parse(command.getDateFollowUp()));
+				obsOutcome.setValueDatetime((Date)formatter.parse(command.getDateFollowUp()));
 			}
 
 			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")) {
