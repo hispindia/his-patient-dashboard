@@ -333,6 +333,7 @@ public class OPDEntryController {
 			Obs hopi=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("HISTORY OF PRESENT ILLNESS"));
 			Obs othins=hcs.getObsByEncounterAndConcept(encounter,Context.getConceptService().getConcept("OTHER INSTRUCTIONS"));
 			List<Obs> provDiag=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("Provisional Diagnosis"));
+			System.out.println("yyyyyyyyyyyyyy"+provDiag.size());
 			List<Obs> pfp=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("POST FOR PROCEDURE"));
 			List<Obs> investigation=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("INVESTIGATION"));
 			model.addAttribute("hopi", hopi.getValueText());	

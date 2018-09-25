@@ -98,7 +98,11 @@ var _postForProcedureId = new Array();
 var _postForProcedureName = new Array();
 var _investigationId = new Array();
 var _investigationName = new Array();
-var _inventoryDrugId = new Array();
+var _inventoryDrugName = new Array();
+var _formulationName = new Array();
+var _formulationId = new Array();
+var _frequencyName = new Array();
+var _frequencyId = new Array();
 var _noOfDays = new Array();
 var _comments = new Array();
 jQuery(document).ready(  
@@ -129,9 +133,13 @@ jQuery(document).ready(
 	    </c:forEach>
 	    
 	    <c:forEach var="odo" items="${listOpdDrugOrder}" varStatus="status">
-	    _inventoryDrugId[${status.index}] = "${odo.inventoryDrug.id}";
-	    _noOfDays[${status.index}] = "${odo.inventoryDrug.noOfDays}";
-	    _comments[${status.index}] = "${odo.inventoryDrug.comments}";
+	    _inventoryDrugName[${status.index}] = "${odo.inventoryDrug.name}";
+	    _formulationName[${status.index}] = "${odo.inventoryDrugFormulation.name}-{odo.inventoryDrugFormulation.dozage}";
+	    _formulationId[${status.index}] = "${odo.inventoryDrugFormulation.id}";
+	    _frequencyName[${status.index}] = "${odo.frequency.name.name}";
+	    _frequencyId[${status.index}] = "${odo.frequency.id}";
+	    _noOfDays[${status.index}] = "${odo.noOfDays}";
+	    _comments[${status.index}] = "${odo.comments}";
 	    </c:forEach>
 		
 		if("${patient.gender }"=="M" || "${patient.gender }"=="O"){
@@ -625,15 +633,20 @@ function copyData(){
 	}
 	for(i=0;i<listOpdDrugOrderSize;i++){
 		alert("yyyyyyyyyyyyy"); 
-		var value="abc";
+		var value=_inventoryDrugName[i].concat("+").concat(_formulationName[i]);
 		var deleteString = 'deleteInput(\"'+value+'\")';
 		 var htmlText =  "<div id='com_"+value+"_div'>"
-       	
+		 +"<input id='"+value+"_names'  name='drugOrder' value='"+value+"' type='hidden' />&nbsp;&nbsp;"
+	     +"<input id='"+value+"_name'  name='"+value+"drugOrder' type='text' size='14' value='"+_inventoryDrugName[i]+"' type='hidden' readonly='readonly'/>&nbsp;&nbsp;"
+		 +"<input id='"+value+"_formulationName'  name='"+value+"_formulationName' type='text' size='14' value='"+_formulationName[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+		 +"<input id='"+value+"_frequencyName'  name='"+value+"_frequencyName' type='text' size='6' value='"+frequencyName[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
        	 +"<input id='"+value+"_noOfDays'  name='"+value+"_noOfDays' type='text' size='7' value='"+_noOfDays[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
        	 +"<input id='"+value+"_comments'  name='"+value+"_comments' type='text' size='17' value='"+_comments[i]+"'  readonly='readonly'/>&nbsp;&nbsp;"
+       	 +"<input id='"+value+"_formulationId'  name='"+value+"_formulationId' type='hidden' value='"+_formulationId[i]+"'/>&nbsp;"
+       	 +"<input id='"+value+"_frequencyId'  name='"+value+"_frequencyId' type='hidden' value='"+frequencyId[i]+"'/>&nbsp;"
        	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"		
        	 +"</div>";
-			       	
+       	 
 		   var newElement = document.createElement('div');
 		   newElement.setAttribute("id", value);   
 		   newElement.innerHTML = htmlText;
