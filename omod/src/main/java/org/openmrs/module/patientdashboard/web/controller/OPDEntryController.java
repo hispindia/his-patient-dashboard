@@ -326,6 +326,7 @@ public class OPDEntryController {
 		}*/
 		Concept con=Context.getConceptService().getConcept("VISIT OUTCOME");
 		Obs obs=hcs.getLastVisitOutCome(person.getPersonId(),con.getConceptId());
+		if(obs!=null){
 		if(obs.getValueDatetime()!=null){
 			model.addAttribute("followup", "followup");	
 			Encounter encounter=obs.getEncounter();
@@ -348,7 +349,8 @@ public class OPDEntryController {
 			model.addAttribute("listOpdDrugOrderSize", listOpdDrugOrder.size());
 		}
 		else{
-			model.addAttribute("followup", "notfollowup");		
+			model.addAttribute("followup", "notfollowup");
+		}
 		}
 
         return "module/patientdashboard/opdEntry";

@@ -155,7 +155,32 @@ jQuery(document).ready(
 			    	
 			    		});
 
-		});
+		function loadSelectedDiagnosisList()
+		{
+			if(${diagnosisIdSet}.length > 0)
+			{
+			var diagIdToBeAdded = ('${diagnosisIdSet}');
+			
+			var diagNameToBeAdded = ('${diaNameSet}');
+
+			diagIdToBeAdded = diagIdToBeAdded.substr(1);
+			diagIdToBeAdded = diagIdToBeAdded.substring(0, diagIdToBeAdded.length - 1);	
+			diagNameToBeAdded = diagNameToBeAdded.substr(1);
+			diagNameToBeAdded = diagNameToBeAdded.substring(0, diagNameToBeAdded.length - 1);	
+			var dIdArr = diagIdToBeAdded.split(",");
+			var dNameArr = diagNameToBeAdded.split(",");
+			
+			var sdl = $("#selectedDiagnosisList");
+			for (var i = 0; i < dIdArr.length; i++)
+			{ 
+				 dNameArr[i] = dNameArr[i].replaceAll("@", ",");
+				
+			     sdl.append("<option value='" + dIdArr[i]+ "'>" +  dNameArr[i] + "</option>");
+		   	}
+		   	}
+		}
+		loadSelectedDiagnosisList();
+				});
 </script>
 <script type="text/javascript">
 function radio_fSelected()
