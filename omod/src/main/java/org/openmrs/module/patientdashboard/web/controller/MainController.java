@@ -219,15 +219,6 @@ public class MainController {
 		  model.addAttribute("createNew", value);
 		 
 		}
-		Obs ob=queueService.getObservationByPersonConceptAndEncounter(Context.getPersonService().getPerson(patientId),Context.getConceptService().getConcept("VISIT OUTCOME"),enc);
-				if(ob==null)
-				{
-					return "module/patientdashboard/main";
-				}
-				else
-				{
-					model.addAttribute("ob", ob);
-				}
 		
 		
 		 User loggedInUser = Context.getUserContext().getAuthenticatedUser();
@@ -247,13 +238,16 @@ public class MainController {
 			      }
 			
 		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
-		     
-		  if(ob.getConcept().getId()!=null)
-		     {
-		    	 model.addAttribute("revisit","revisit");
-		     }
 		
 	
+			System.out.println("bbbbbbbbbbbbbbb");
+		List<Obs> opdward=hcs.getObsByPersonAndConcept(Context.getPersonService().getPerson(patientId), Context.getConceptService().getConcept("OPD WARD"));
+		if(opdward.size()==1){
+			model.addAttribute("visitStatus","New Patient");	
+		}
+		else if(opdward.size()>1){
+			model.addAttribute("visitStatus","revisit");	
+		}
 		
 		//ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
 		Boolean dead = patient.getDead();
