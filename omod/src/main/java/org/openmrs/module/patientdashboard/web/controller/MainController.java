@@ -240,7 +240,6 @@ public class MainController {
 		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
 		
 	
-			System.out.println("bbbbbbbbbbbbbbb");
 		List<Obs> opdward=hcs.getObsByPersonAndConcept(Context.getPersonService().getPerson(patientId), Context.getConceptService().getConcept("OPD WARD"));
 		if(opdward.size()==1){
 			model.addAttribute("visitStatus","New Patient");	

@@ -335,14 +335,18 @@ public class OPDEntryController {
 			List<Obs> provDiag=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("Provisional Diagnosis"));
 			List<Obs> pfp=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("POST FOR PROCEDURE"));
 			List<Obs> investigation=hcs.getObssByEncounterAndConcept(encounter,Context.getConceptService().getConcept("INVESTIGATION"));
-			model.addAttribute("hopi", hopi.getValueText());	
+			if(hopi!=null){
+			model.addAttribute("hopi", hopi.getValueText());
+			}
 			model.addAttribute("provDiag", provDiag);
 			model.addAttribute("provDiagSize", provDiag.size());
 			model.addAttribute("pfp", pfp);
 			model.addAttribute("pfpSize", pfp.size());
 			model.addAttribute("investigation", investigation);
 			model.addAttribute("investigationSize", investigation.size());
+			if(othins!=null){
 			model.addAttribute("othins", othins.getValueText());
+			}
 			
 			List<OpdDrugOrder> listOpdDrugOrder=patientDashboardService.getOpdDrugOrder(obs.getEncounter());
 			model.addAttribute("listOpdDrugOrder", listOpdDrugOrder);
