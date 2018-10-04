@@ -683,6 +683,7 @@ function copyData(){
 	else{
 		alert("data can not be copied");
 	}
+	document.getElementById("copydata").disabled = true; 
 	}
 </script>
 <b class="boxHeader">Opd Form</b>
@@ -724,7 +725,7 @@ function copyData(){
 			<td>
 			<input type="button"
 								value="COPY"
-								class="ui-button ui-widget ui-state-default ui-corner-all" onclick="copyData();"/>
+								class="ui-button ui-widget ui-state-default ui-corner-all" id="copydata" name="copydata" onclick="copyData();"/>
 			</td>
 			</tr>
 			
