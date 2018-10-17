@@ -255,6 +255,7 @@ function addDrugOrder() {
    for(i=0;i<drugIssuedList1.length;i++)
 	   {
 	    value=drugIssuedList1[i];
+	    
 	   }
     var valueArr=value.split("+"); 
    if(formulation==null || formulation==""){
@@ -479,40 +480,151 @@ j++;
 
 
 var selDrugLen = drugIssuedList1.length;
+var drugArr=new Array();
+var form=new Array();
+var freq=new Array();
+var nod=new Array(); 
+var comm=new Array();
+var test=parseInt("${listOpdDrugOrderSize}");
+ if(!isNaN(test))
+	{var k=1;
+	 for(i=0;i<test;i++)
+		{
+		drugArr.push(_inventoryDrugName[i]);
+		form.push(_formulationName[i]);
+		freq.push(_frequencyName[i]);
+		nod.push(_noOfDays[i]);
+		comm.push(_comments[i]);
+		}
+	if(selDrugLen!=0)
+      {  
+		var drug1=new Array();
+		    for(j=0; j<=(test+selDrugLen-1); j++){
+			if(drugIssuedList1[j]!=null)
+				{
+			drugArr.push((drugIssuedList1[j].split("+"))[0]);
+			 drug1=drugIssuedList1[j];
+			    }
+if(document.getElementById(drug1+"_formulationName").value!=null)
+		{ form.push(document.getElementById(drug1+"_formulationName").value);
+		
+		}
+else
+	{ form[j] ;
+	}
 
-var k=1;
-for(i=0; i<=selDrugLen-1; i++){
-var drug=drugIssuedList1[i];
-var drugArr=drug.split("+"); 
-var formulationName=document.getElementById(drug+"_formulationName").value;
-var frequencyName=document.getElementById(drug+"_frequencyName").value;
-var noOfDays=document.getElementById(drug+"_noOfDays").value;
-var comments=document.getElementById(drug+"_comments").value;
-if(drug.length>22){ 
+if(document.getElementById(drug1+"_frequencyName").value!=null)
+{ freq.push(document.getElementById(drug1+"_frequencyName").value);
+}
+else
+	{
+	freq[j];
+	}
+if(document.getElementById(drug1+"_noOfDays").value!=null)
+{ nod.push(document.getElementById(drug1+"_noOfDays").value);
+}
+else
+	{
+	nod[j];
+	}
+if(document.getElementById(drug1+"_comments").value!=null)
+{ comm.push(document.getElementById(drug1+"_comments").value);
+}
+else
+	{
+	comm[j];
+	}
+
+if(drug1.length>22){ 
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
-jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[0] + "<br/>" + "</span>");
+jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
 jQuery("#printableDrug").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
-jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
+jQuery("#printableFormulation").append("<span style='margin:5px;'>" + form[j] + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
-jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
+jQuery("#printableFrequency").append("<span style='margin:5px;'>" + freq[j] + "<br/>" + "</span>");
 jQuery("#printableFrequency").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
-jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
+jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
 jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
-jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
+jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 }
 else{
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
-jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[0] + "<br/>" + "</span>");
-jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
-jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
-jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
-jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
+jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
+jQuery("#printableFormulation").append("<span style='margin:5px;'>" + form[j] + "<br/>" + "</span>");
+jQuery("#printableFrequency").append("<span style='margin:5px;'>" + freq[j] + "<br/>" + "</span>");
+jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
+jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 }
 k++;
 }
-
+	}
+	else
+		{
+		 for(j=0; j<=(test-1); j++){
+				
+	if(drugArr.length>22){ 
+	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
+	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
+	jQuery("#printableDrug").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + form[j] + "<br/>" + "</span>");
+	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableFrequency").append("<span style='margin:5px;'>" + freq[j] + "<br/>" + "</span>");
+	jQuery("#printableFrequency").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
+	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
+	jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	}
+	else{
+	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
+	jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
+	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + form[j] + "<br/>" + "</span>");
+	jQuery("#printableFrequency").append("<span style='margin:5px;'>" + freq[j] + "<br/>" + "</span>");
+	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
+	jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
+	}
+	k++;
+	}
+		}
+	}
+else
+	{
+	var k=1;
+	for(i=0; i<=selDrugLen-1; i++){
+	var drug=drugIssuedList1[i];
+	var drugArr=drug.split("+"); 
+	var formulationName=document.getElementById(drug+"_formulationName").value;
+	var frequencyName=document.getElementById(drug+"_frequencyName").value;
+	var noOfDays=document.getElementById(drug+"_noOfDays").value;
+	var comments=document.getElementById(drug+"_comments").value;
+	if(drug.length>22){ 
+	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
+	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[0] + "<br/>" + "</span>");
+	jQuery("#printableDrug").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
+	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
+	jQuery("#printableFrequency").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
+	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
+	jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
+	}
+	else{
+	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
+	jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[0] + "<br/>" + "</span>");
+	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + formulationName + "<br/>" + "</span>");
+	jQuery("#printableFrequency").append("<span style='margin:5px;'>" + frequencyName + "<br/>" + "</span>");
+	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + noOfDays + "<br/>" + "</span>");
+	jQuery("#printableComments").append("<span style='margin:5px;'>" + comments + "<br/>" + "</span>");
+	}
+	k++;
+	}
+	}
 
 var otherInstructions = document.getElementById('otherInstructions').value;
 if(otherInstructions!=""){
