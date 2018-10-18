@@ -240,15 +240,13 @@ public class MainController {
 		      model.addAttribute("hasEditPrivilige",hasEditPrivilige);
 		
 	
-		List<Obs> opdward=hcs.getObsByPersonAndConcept(Context.getPersonService().getPerson(patientId), Context.getConceptService().getConcept("OPD WARD"));
-		if(opdward.size()==1){
-			model.addAttribute("visitStatus","New Patient");	
-		}
-		else if(opdward.size()>1){
-			model.addAttribute("visitStatus","revisit");	
-		}
+		List<Obs> opdward=hcs.getObsByPersonAndConcept(Context.getPersonService().getPerson(patientId), Context.getConceptService().getConcept("TRIAGE"));
+	
 		
-		//ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
+			model.addAttribute("visitStatus",opdPatientQueue.getReferralConceptName());	
+		
+	
+			//ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
 		Boolean dead = patient.getDead();
 		if(dead.equals(false)){
 			return "module/patientdashboard/main";
