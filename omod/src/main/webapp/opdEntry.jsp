@@ -309,9 +309,10 @@ function addDrugOrder() {
    jQuery("#comments").val("");
   
    }
-}
+} var deleteval=[];
 
-function deleteInput(drugName) {
+function deleteInput(drugName) { var drs=drugName.split("+");
+	deleteval.push(drs[0]);
    var parentDiv = 'headerValue';
    var child = document.getElementById(drugName);
    var parent = document.getElementById(parentDiv);
@@ -478,8 +479,9 @@ jQuery("#printableInvestigation").append("<span style='margin:5px;'>" + j + "." 
 j++;
 }
 
-
 var selDrugLen = drugIssuedList1.length;
+//alert("deletval"+deleteval+"&&&&&"+deletval); 
+
 var drugArr=new Array();
 var form=new Array();
 var freq=new Array();
@@ -487,23 +489,28 @@ var nod=new Array();
 var comm=new Array();
 var test=parseInt("${listOpdDrugOrderSize}");
  if(!isNaN(test))
-	{var k=1;
+	{ 
+	 var k=1;
 	 for(i=0;i<test;i++)
 		{
-		drugArr.push(_inventoryDrugName[i]);
-		form.push(_formulationName[i]);
-		freq.push(_frequencyName[i]);
-		nod.push(_noOfDays[i]);
-		comm.push(_comments[i]);
+			if(deleteval.includes(_inventoryDrugName[i])==false)
+			{
+			drugArr.push(_inventoryDrugName[i]);		
+			form.push(_formulationName[i]);
+		    freq.push(_frequencyName[i]);
+		    nod.push(_noOfDays[i]);
+		    comm.push(_comments[i]);
+			}
+		 
 		}
 	if(selDrugLen!=0)
       {  
 		var drug1=new Array();
-		    for(j=0; j<=(test+selDrugLen-1); j++){
+		for(j=0; j<=(test+selDrugLen-1); j++){
 			if(drugIssuedList1[j]!=null)
 				{
-			drugArr.push((drugIssuedList1[j].split("+"))[0]);
-			 drug1=drugIssuedList1[j];
+			  drugArr.push((drugIssuedList1[j].split("+"))[0]);
+			  drug1=drugIssuedList1[j];
 			    }
 if(document.getElementById(drug1+"_formulationName").value!=null)
 		{ form.push(document.getElementById(drug1+"_formulationName").value);
@@ -534,7 +541,9 @@ else
 	{
 	comm[j];
 	}
-
+	
+if(drugArr.length>0)
+	{
 if(drug1.length>22){ 
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
@@ -557,13 +566,14 @@ jQuery("#printableFrequency").append("<span style='margin:5px;'>" + freq[j] + "<
 jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
 jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 }
+	}
 k++;
 }
 	}
+	
 	else
-		{
-		 for(j=0; j<=(test-1); j++){
-				
+		{ 
+	for(j=0; j<=(test-1); j++){	
 	if(drugArr.length>22){ 
 	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
@@ -579,6 +589,8 @@ k++;
 	jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 	}
 	else{
+	if(drugArr[j]!=undefined)
+	{
 	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 	jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
 	jQuery("#printableFormulation").append("<span style='margin:5px;'>" + form[j] + "<br/>" + "</span>");
@@ -586,12 +598,14 @@ k++;
 	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
 	jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 	}
-	k++;
 	}
+		 }
+	k++;
+	
 		}
 	}
 else
-	{
+	{ 
 	var k=1;
 	for(i=0; i<=selDrugLen-1; i++){
 	var drug=drugIssuedList1[i];
@@ -746,7 +760,7 @@ if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
  } 					
 jQuery("#lastMenstrualPeriod").removeAttr("disabled");	
 }
-
+ var deletval="";
 
 function copyData(){
 	if("${followup}"=="followup"){
@@ -768,6 +782,7 @@ function copyData(){
 	for(i=0;i<investigationSize;i++){
 	sil.append("<option value='" + _investigationId[i]+ "'>" +  _investigationName[i] + "</option>");
 	}
+	
 	for(i=0;i<listOpdDrugOrderSize;i++){
 		var value="";
 		value=_inventoryDrugName[i].concat("+").concat(_formulationName[i]);
@@ -787,7 +802,7 @@ function copyData(){
 		   var newElement = document.createElement('div');
 		   newElement.setAttribute("id", value);   
 		   newElement.innerHTML = htmlText;
-		  
+		    deletval=deleteString;
 		   var fieldsArea = document.getElementById('headerValue');
 		   fieldsArea.appendChild(newElement);
 	}
@@ -834,13 +849,11 @@ function copyData(){
 			</tr>
 
 			<tr>
-			<td>
-			<input type="button"
-								value="COPY"
-								class="ui-button ui-widget ui-state-default ui-corner-all" id="copydata" name="copydata" onclick="copyData();"/>
-			</td>
+				<td><input type="button" value="COPY"
+					class="ui-button ui-widget ui-state-default ui-corner-all"
+					id="copydata" name="copydata" onclick="copyData();" /></td>
 			</tr>
-			
+
 			<tr>
 				<td colspan="3">
 					<div id="triageDiv">
@@ -862,23 +875,25 @@ function copyData(){
 							</tr>
 							<tr>
 								<td>Weight</td>
-								<td><input type="text" id="weight" name="weight" size="11" value="${triagePatientData.weight}">
-								</td>
+								<td><input type="text" id="weight" name="weight" size="11"
+									value="${triagePatientData.weight}"></td>
 								<td></td>
 								<td></td>
 								<td>Kg</td>
 							</tr>
 							<tr>
 								<td>Height</td>
-								<td><input type="text" id="height" name="height" size="11" value="${triagePatientData.height}"
-									oninput="calculateBmi()"></td>
+								<td><input type="text" id="height" name="height" size="11"
+									value="${triagePatientData.height}" oninput="calculateBmi()"></td>
 								<td></td>
 								<td></td>
 								<td>cm</td>
 							</tr>
 							<tr>
 								<td>BMI</td>
-								<td><input type="text" id="BMI" name="BMI" size="11" maxlength="7" readonly="readonly" value="${triagePatientData.bmi}"></td>
+								<td><input type="text" id="BMI" name="BMI" size="11"
+									maxlength="7" readonly="readonly"
+									value="${triagePatientData.bmi}"></td>
 								<td></td>
 								<td>18.5-24.9</td>
 
@@ -896,8 +911,9 @@ function copyData(){
 							<tr>
 								<td>B.P</td>
 								<td><input type="text" id="systolic" name="systolic"
-									size="5" value="${triagePatientData.systolic}">/<input type="text" id="diastolic"
-									name="diastolic" size="5" value="${triagePatientData.daistolic}"></td>
+									size="5" value="${triagePatientData.systolic}">/<input
+									type="text" id="diastolic" name="diastolic" size="5"
+									value="${triagePatientData.daistolic}"></td>
 								<td></td>
 								<td>110/70-140/90</td>
 
@@ -915,9 +931,8 @@ function copyData(){
 							<tr>
 								<td>LMP</td>
 								<td><input type="text" id="lastMenstrualPeriod"
-									name="lastMenstrualPeriod" size="11" value="${lastMenstrualDate}">
-									<img
-									id="calendarButton"
+									name="lastMenstrualPeriod" size="11"
+									value="${lastMenstrualDate}"> <img id="calendarButton"
 									src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
 								</td>
 
@@ -1090,7 +1105,7 @@ function copyData(){
 				<td colspan="1">
 					<div class="drug-order" id="drugOrder"
 						style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; min-width: 25em; height: 5em;">
-				
+
 						<div class="drugs" class="ui-widget">
 							<input title="${opd.conceptId}" id="drugName" name="drugName"
 								placeholder="Search for drugs" onblur="ISSUE.onBlur(this);" />
@@ -1130,17 +1145,16 @@ function copyData(){
 				<td>
 					<div id="headerValue"
 						style="background: #FFFFFF; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-						<input type='hidden' id="drugs" name="drugs" value='Drugss' size="14"
-							readonly="readonly" />&nbsp; 
-						<input type='text' id="drug" name="drug" value='Drugs' size="14"
-							readonly="readonly" />&nbsp; <input type='text' id="formulation"
-							name='formulation' value="Formulation" size="14"
-							readonly="readonly" />&nbsp; <input type='text' id='frequency'
-							name='frequency' value='Frequency' size="6" readonly="readonly" />&nbsp;
-						<input type='text' id='noOfDays' name='noOfDays'
-							value='No Of Days' size="7" readonly="readonly" />&nbsp; <input
-							type='text' id='comments' name='comments' value='Comments'
-							size="17" readonly="readonly" />&nbsp;
+						<input type='hidden' id="drugs" name="drugs" value='Drugss'
+							size="14" readonly="readonly" />&nbsp; <input type='text'
+							id="drug" name="drug" value='Drugs' size="14" readonly="readonly" />&nbsp;
+						<input type='text' id="formulation" name='formulation'
+							value="Formulation" size="14" readonly="readonly" />&nbsp; <input
+							type='text' id='frequency' name='frequency' value='Frequency'
+							size="6" readonly="readonly" />&nbsp; <input type='text'
+							id='noOfDays' name='noOfDays' value='No Of Days' size="7"
+							readonly="readonly" />&nbsp; <input type='text' id='comments'
+							name='comments' value='Comments' size="17" readonly="readonly" />&nbsp;
 					</div>
 				</td>
 			</tr>
@@ -1182,8 +1196,7 @@ function copyData(){
 							onclick="DASHBOARD.onClickFollowDate(this);">
 						<input type="radio" name="radio_f" value="Cured"
 							onclick="DASHBOARD.onChangeRadio(this);">Cured
-  		           </c:if> 
-  		           <input type="radio" name="radio_f" value="Reviewed"
+  		           </c:if> <input type="radio" name="radio_f" value="Reviewed"
 					onclick="DASHBOARD.onChangeRadio(this);">Reviewed <c:if
 						test="${empty admitted}">
 						<input type="radio" name="radio_f" value="Admit"
@@ -1199,12 +1212,11 @@ function copyData(){
 							</c:forEach>
 						</c:if>
 				</select></td>
-				<td align="left" style="float:right">
-				<c:if test="${empty admitted}">
-				<input type="radio" name="radio_f" value="Died"
+				<td align="left" style="float: right"><c:if
+						test="${empty admitted}">
+						<input type="radio" name="radio_f" value="Died"
 							onclick="DASHBOARD.onChangeRadio(this);">Died
-				</c:if>
-				</td>
+				</c:if></td>
 			</tr>
 			<tr>
 				<td colspan="3"><c:choose>
@@ -1286,52 +1298,52 @@ function copyData(){
 				</center>
 			</tr>
 			<tr>
-			<td> </td>
-			<td> </td>
-			<td><strong>Range</strong></td>
-			<td><strong>Unit</strong></td>
+				<td></td>
+				<td></td>
+				<td><strong>Range</strong></td>
+				<td><strong>Unit</strong></td>
 			</tr>
 			<tr>
-			<td><strong>Weight</strong></td>
-			<td><div id="weightDiv"></div></td>
-			<td></td>
-			<td>Kg</td>
+				<td><strong>Weight</strong></td>
+				<td><div id="weightDiv"></div></td>
+				<td></td>
+				<td>Kg</td>
 			</tr>
 			<tr>
-			<td><strong>Height</strong></td>
-			<td><div id="heightDiv"></div></td>
-			<td></td>
-			<td>cm</td>
+				<td><strong>Height</strong></td>
+				<td><div id="heightDiv"></div></td>
+				<td></td>
+				<td>cm</td>
 			</tr>
 			<tr>
-			<td><strong>BMI</strong></td>
-			<td><div id="bmiDiv"></div></td>
-			<td>18.5-24.9</td>
-			<td></td>
+				<td><strong>BMI</strong></td>
+				<td><div id="bmiDiv"></div></td>
+				<td>18.5-24.9</td>
+				<td></td>
 			</tr>
 			<tr>
-			<td><strong>Temperature</strong></td>
-			<td><div id="temperatureDiv"></div></td>
-			<td>97.7-98.96</td>
-			<td>F</td>
+				<td><strong>Temperature</strong></td>
+				<td><div id="temperatureDiv"></div></td>
+				<td>97.7-98.96</td>
+				<td>F</td>
 			</tr>
 			<tr>
-			<td><strong>B.P</strong></td>
-			<td><div id="bpDiv"></div></td>
-			<td>110/70-140/90</td>
-			<td>mm/Hg</td>
+				<td><strong>B.P</strong></td>
+				<td><div id="bpDiv"></div></td>
+				<td>110/70-140/90</td>
+				<td>mm/Hg</td>
 			</tr>
 			<tr>
-			<td><strong>Pulse Rate</strong></td>
-			<td><div id="pulseDiv"></div></td>
-			<td>60-90</td>
-			<td>/min</td>
+				<td><strong>Pulse Rate</strong></td>
+				<td><div id="pulseDiv"></div></td>
+				<td>60-90</td>
+				<td>/min</td>
 			</tr>
 			<tr>
-			<td><strong>LMP</strong></td>
-			<td><div id="lmpDiv"></div></td>
-			<td></td>
-			<td></td>
+				<td><strong>LMP</strong></td>
+				<td><div id="lmpDiv"></div></td>
+				<td></td>
+				<td></td>
 			</tr>
 		</table>
 		<table class="box">
@@ -1345,9 +1357,9 @@ function copyData(){
 				<td><div id="printableHistoryOfPresentIllness"></div></td>
 			</tr>
 			<tr>
-			<td><strong><div id="printableProvisionDiagnosis"></div></strong>
-			<strong><div id="printableFinalDiagnosis"></div></strong></td>
-			<td><div id="printableProvisionalDiagnosis"></div></td>
+				<td><strong><div id="printableProvisionDiagnosis"></div></strong>
+					<strong><div id="printableFinalDiagnosis"></div></strong></td>
+				<td><div id="printableProvisionalDiagnosis"></div></td>
 			</tr>
 			<tr>
 				<td><strong>Procedure:</strong></td>
