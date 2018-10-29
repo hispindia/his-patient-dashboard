@@ -105,8 +105,9 @@ var _frequencyName = new Array();
 var _frequencyId = new Array();
 var _noOfDays = new Array();
 var _comments = new Array();
-jQuery(document).ready(  
-		function() { 	jQuery('#lastMenstrualPeriod').datepicker({
+jQuery(document).ready(   
+		function() { 	 
+			jQuery('#lastMenstrualPeriod').datepicker({
 			yearRange : 'c-100:c+100',
 			dateFormat : 'dd/mm/yy',
 			changeMonth : true,
@@ -480,8 +481,9 @@ j++;
 }
 
 var selDrugLen = drugIssuedList1.length;
-//alert("deletval"+deleteval+"&&&&&"+deletval); 
 
+//alert("deletval"+deleteval+"&&&&&"+deletval); 
+//alert("hasBeenClicked"+ hasBeenClicked );
 var drugArr=new Array();
 var form=new Array();
 var freq=new Array();
@@ -492,8 +494,8 @@ var test=parseInt("${listOpdDrugOrderSize}");
 	{ 
 	 var k=1;
 	 for(i=0;i<test;i++)
-		{
-			if(deleteval.includes(_inventoryDrugName[i])==false)
+		{   if(hasBeenClicked==true)
+			{if(deleteval.includes(_inventoryDrugName[i])==false)
 			{
 			drugArr.push(_inventoryDrugName[i]);		
 			form.push(_formulationName[i]);
@@ -501,7 +503,7 @@ var test=parseInt("${listOpdDrugOrderSize}");
 		    nod.push(_noOfDays[i]);
 		    comm.push(_comments[i]);
 			}
-		 
+			}
 		}
 	if(selDrugLen!=0)
       {  
@@ -544,7 +546,8 @@ else
 	
 if(drugArr.length>0)
 	{
-if(drug1.length>22){ 
+if(drug1.length>22){// alert("hiiii");
+if(drugArr[j]!=undefined){
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
@@ -558,13 +561,17 @@ jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + "<br/>" + "</
 jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 }
+}
 else{
+	if(drugArr[j]!=undefined)
+{ //alert("hiiq");
 jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
 jQuery("#printableFormulation").append("<span style='margin:5px;'>" + form[j] + "<br/>" + "</span>");
 jQuery("#printableFrequency").append("<span style='margin:5px;'>" + freq[j] + "<br/>" + "</span>");
 jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
 jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
+}
 }
 	}
 k++;
@@ -574,7 +581,8 @@ k++;
 	else
 		{ 
 	for(j=0; j<=(test-1); j++){	
-	if(drugArr.length>22){ 
+	if(drugArr.length>22){ //alert("hi####");
+	if(drugArr[j]!=undefined){
 	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + k + "<br/>" + "</span>");
 	jQuery("#printableSlNo").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 	jQuery("#printableDrug").append("<span style='margin:5px;'>" + drugArr[j] + "<br/>" + "</span>");
@@ -588,6 +596,7 @@ k++;
 	jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 	jQuery("#printableComments").append("<span style='margin:5px;'>" + "<br/>" + "</span>");
 	}
+	}
 	else{
 	if(drugArr[j]!=undefined)
 	{
@@ -598,6 +607,7 @@ k++;
 	jQuery("#printableNoOfDays").append("<span style='margin:5px;'>" + nod[j] + "<br/>" + "</span>");
 	jQuery("#printableComments").append("<span style='margin:5px;'>" + comm[j] + "<br/>" + "</span>");
 	}
+	k++;
 	}
 		 }
 	k++;
@@ -605,7 +615,7 @@ k++;
 		}
 	}
 else
-	{ 
+	{ //alert("^^^^");
 	var k=1;
 	for(i=0; i<=selDrugLen-1; i++){
 	var drug=drugIssuedList1[i];
@@ -761,8 +771,8 @@ if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
 jQuery("#lastMenstrualPeriod").removeAttr("disabled");	
 }
  var deletval="";
-
-function copyData(){
+ var hasBeenClicked = false;
+function copyData(){ hasBeenClicked = true;
 	if("${followup}"=="followup"){
     jQuery("#historyOfPresentIlness").val('${hopi}');
 	jQuery("#otherInstructions").val('${othins}');
