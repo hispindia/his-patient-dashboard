@@ -241,9 +241,12 @@ public class MainController {
 		
 	
 		List<Obs> opdward=hcs.getObsByPersonAndConcept(Context.getPersonService().getPerson(patientId), Context.getConceptService().getConcept("TRIAGE"));
-	
-		
-			model.addAttribute("visitStatus",opdPatientQueue.getReferralConceptName());	
+	      
+		   if(opdPatientQueue!=null)
+			
+			   {
+			   model.addAttribute("visitStatus",opdPatientQueue.getReferralConceptName());	
+			   }
 		
 	
 			//ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead Patient
