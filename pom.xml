@@ -5,7 +5,7 @@
   <groupId>org.openmrs.module</groupId>
   <artifactId>patientdashboard</artifactId>
   <name>Patient Dashboard</name>
-  <version>1.4.3</version>
+  <version>1.4.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <description>Patient  dashboard for hospital</description>
@@ -66,7 +66,7 @@
       <dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>hospitalcore-api</artifactId>
-			<version>1.5.5</version>
+			<version>1.5.6-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
     </dependencies>
