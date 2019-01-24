@@ -128,8 +128,16 @@ public class ClinicalSummaryController {
 			}
 			
 			//${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp; ${patient.familyName}
+            if(enc.getCreator().getPerson().getMiddleName()!=null)
+			
+            	{
+            	clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
+            	} 
+            else
+            {
+            	clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName());
 
-			clinical.setTreatingDoctor(enc.getCreator().getPerson().getGivenName()+" "+enc.getCreator().getPerson().getMiddleName()+" "+enc.getCreator().getPerson().getFamilyName());
+            }
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
 			clinical.setDateOfVisit(sdf.format(enc.getDateCreated()));
 			clinical.setId(enc.getId());

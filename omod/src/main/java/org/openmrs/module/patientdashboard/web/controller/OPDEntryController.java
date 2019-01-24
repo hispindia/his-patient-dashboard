@@ -301,14 +301,14 @@ public class OPDEntryController {
 		// create obs group only for internal referral and admit
 		Obs obsGroup = null;
 		obsGroup = hcs.getObsGroupCurrentDate(patient.getPersonId());
-		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")
+	/*	if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")
 				|| (command.getInternalReferral() != null)) {
 			if (obsGroup == null) {
 				obsGroup = hcs.createObsGroup(patient,
 						HospitalCoreConstants.PROPERTY_OBSGROUP);
 			}
 		}
-
+*/
 		// ===================Comment this if we want to
 		// save===========================
 		/*
@@ -787,8 +787,16 @@ public class OPDEntryController {
 			patientAdmission.setPatient(patient);
 			patientAdmission.setPatientIdentifier(patient
 					.getPatientIdentifier().getIdentifier());
+			if(patient.getMiddleName()!=null)
+			{
 			patientAdmission.setPatientName(patient.getGivenName() + " "
 					+ patient.getMiddleName() + " " + patient.getFamilyName());
+			}
+			else
+			{patientAdmission.setPatientName(patient.getGivenName() + 
+					 " " + patient.getFamilyName());
+				
+			}
 			patientAdmission = ipdService
 					.saveIpdPatientAdmission(patientAdmission);
 		}	} else {
