@@ -63,8 +63,9 @@ public class PrintClinicalSummaryController {
 				.getGlobalProperty("hospital.location_user");
 		
 		model.addAttribute("hospitalName", hospitalName);
+		Encounter enc= Context.getEncounterService().getEncounter(encounterId);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
-		model.addAttribute("currentDateTime", sdf.format(new Date()));
+		model.addAttribute("currentDateTime", sdf.format(enc.getEncounterDatetime()));
 		String patientName;
 		if (patient.getMiddleName() != null) {
 			patientName = patient.getGivenName() + " "

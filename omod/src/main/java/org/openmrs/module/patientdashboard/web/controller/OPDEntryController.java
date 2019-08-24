@@ -321,7 +321,7 @@ public class OPDEntryController {
 		if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Died")) {
 			patient.setDead(true);
 			patient.setDeathDate(new Date());
-
+            patient.setCauseOfDeath( Context.getConceptService().getConceptByName("CAUSE OF DEATH"));
 			ps.savePatient(patient);
 
 			// ghanshyam,23-oct-2013,New Requirement #2937 Dealing with Dead
