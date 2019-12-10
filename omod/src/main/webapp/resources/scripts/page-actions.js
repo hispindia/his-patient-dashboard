@@ -192,6 +192,12 @@ var CHECK =
 		
 					
 					jQuery('.date-pick').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,minDate:'0'});
+					jQuery('.died-date-pick').datepicker({
+						maxDate: 0,
+						dateFormat: 'dd/mm/yy',
+						changeMonth: true,
+						changeYear: true,
+					})
 					//jQuery('#diagnosisList').listnav();
 					var validator = jQuery("#opdEntryForm").validate(
 							{
@@ -208,7 +214,16 @@ var CHECK =
 							                    return (jQuery("input[name='radio_f']:checked").val() == 'follow'? true : false);
 							                }
 							            }
-							        },
+									},
+									"dateDied" : {
+										required: {
+											depends: function () {
+												return (
+													jQuery("input[name='radio_f']:checked").val() == 'Died' ? true : false
+												);
+											}
+										}
+									},
 							        "ipdWard" : {
 							            required: {
 							                depends: function() {

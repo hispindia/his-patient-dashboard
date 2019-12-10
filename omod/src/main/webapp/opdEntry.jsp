@@ -384,43 +384,49 @@ function viewQuestion(){
 	}
 
 // Print the slip
-function print(){
-var submitStatus=0;
-jQuery("#opdEntryForm").keypress(function(event){		
-if(event.keyCode == 13){	
-submitStatus=1;	
-}
-else{
-submitStatus=0;
-}
-});
+function print() {
+	var submitStatus=0;
+	jQuery("#opdEntryForm").keypress(function(event){		
+		if(event.keyCode == 13){	
+			submitStatus=1;	
+		}
+		else{
+			submitStatus=0;
+		}
+	});
 
-if('${ipdPatientAdmission}'=='true'){
-alert("patient already sent in ipd admission queue");
-return false;
-}
+	if('${ipdPatientAdmission}'=='true'){
+		alert("patient already sent in ipd admission queue");
+		return false;
+	}
 
-var visitOutCome = $('input:radio[name=radio_f]:checked').val();
+	var visitOutCome = $('input:radio[name=radio_f]:checked').val();
 
-if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
+	if(selectedSymptomList.length!=0 && selectedDiagnosisList.length!=0 && visitOutCome!=undefined){
 
-if(visitOutCome=="Follow-up"){
-var datFollUp=jQuery("#dateFollowUp").val();
-  if(datFollUp==""){
-  alert("Please Enter Follow-up date");
-  return false;
-  }
- }
-else if(visitOutCome=="Admit"){
-var ipdward=jQuery("#ipdWard").val();
-  if(ipdward==""){
-  alert("Please select ipd ward");
-  return false;
-  }
- }
- //Vital Details
-var weight = document.getElementById('weight').value;
-jQuery("#printableWeight").append("<span style='margin:5px;'>" + weight + "</span>");
+		if(visitOutCome=="Follow-up"){
+			var datFollUp=jQuery("#dateFollowUp").val();
+  			if(datFollUp==""){
+  				alert("Please Enter Follow-up date");
+  				return false;
+  			}
+ 		}
+		else if(visitOutCome=="Admit"){
+			var ipdward=jQuery("#ipdWard").val();
+  			if(ipdward==""){
+  				alert("Please select ipd ward");
+  				return false;
+  			}
+ 		} else if (visitOutCome == "Died") {
+			 let dateDied = jQuery("#dateDied").val();
+			 if (dateDied == "") {
+				 alert("Please Enter Died date");
+				 return false;
+			 }
+		 }
+ 		//Vital Details
+		var weight = document.getElementById('weight').value;
+		jQuery("#printableWeight").append("<span style='margin:5px;'>" + weight + "</span>");
 var height = document.getElementById('height').value;
 jQuery("#printableHeight").append("<span style='margin:5px;'>" + height + "</span>");
 var bmi = document.getElementById('BMI').value;
@@ -538,23 +544,23 @@ jQuery("#extRef").hide();
 
 var admittedStatus='${admittedStatus}';
 if(admittedStatus==""){
-var dateFollowUp = document.getElementById('dateFollowUp').value;
-if(dateFollowUp!=""){
-jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "    " + "Visit Date:  " + dateFollowUp + "</span>");
-}
-else{
-var ipdward=jQuery("#ipdWard").val();
-  if(ipdward!=""){
-  var selectedIpdName =_ipdConceptMap[ipdward];
-  jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "  -  " + selectedIpdName + "</span>");
-  }
-  else{
-  jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
-  }
- }
-}
-else{
-jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
+	var dateFollowUp = document.getElementById('dateFollowUp').value;
+	let dateDied = document.getElementById('dateDied').value;
+	if(dateFollowUp!=""){
+		jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "    " + "Visit Date:  " + dateFollowUp + "</span>");
+	} else if (dateDied != "") {
+		jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "    " + "Visit Date:  " + dateDied + "</span>");
+	} else{
+		var ipdward=jQuery("#ipdWard").val();
+  		if(ipdward!=""){
+  			var selectedIpdName =_ipdConceptMap[ipdward];
+  			jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "  -  " + selectedIpdName + "</span>");
+  		} else {
+  			jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
+  		}
+ 	}
+} else {
+	jQuery("#printableOPDVisitOutCome").append("<span style='margin:5px;'>" + visitOutCome + "</span>");
 }
 
 jQuery("#printOPDSlip").printArea({
@@ -1030,8 +1036,11 @@ jQuery("#BMI").val(b);
 				</select></td>
 				<td align="left" style="float:right">
 				<c:if test="${empty admitted}">
-				<input type="radio" name="radio_f" value="Died"
+					<input type="radio" name="radio_f" id="input_died" value="Died"
 							onclick="DASHBOARD.onChangeRadio(this);">Died
+					<input type="text" class="died-date-pick left" readonly="readonly"
+							ondblclick="this.value='';" name="dateDied" id="dateDied"
+							onclick="DASHBOARD.onClickDiedDate(this);">
 				</c:if>
 				</td>
 			</tr>

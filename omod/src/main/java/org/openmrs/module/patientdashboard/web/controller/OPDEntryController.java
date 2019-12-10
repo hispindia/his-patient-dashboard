@@ -771,6 +771,10 @@ public class OPDEntryController {
 						command.getDateFollowUp()));
 			}
 
+			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Died")) {
+				obsOutcome.setValueDatetime(Context.getDateFormat().parse(command.getDateDied()));
+			}
+
 			if (StringUtils.equalsIgnoreCase(command.getRadio_f(), "Admit")) {
 				// System.out.println("command.getIpdWard(): "+command.getIpdWard());
 				obsOutcome.setValueCoded(conceptService.getConcept(command

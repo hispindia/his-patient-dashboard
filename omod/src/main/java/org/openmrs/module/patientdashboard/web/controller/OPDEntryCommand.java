@@ -37,6 +37,7 @@ public class OPDEntryCommand {
 	private Integer admit;
 	private String outCome;
 	private String dateFollowUp;
+	private String dateDied;
 	private Integer admitWard;
 	private String radio_f ;
 	private Integer opdId;
@@ -88,6 +89,15 @@ public class OPDEntryCommand {
 	public void setDateFollowUp(String dateFollowUp) {
 		this.dateFollowUp = dateFollowUp;
 	}
+
+	public String getDateDied() {
+		return dateDied;
+	}
+
+	public void setDateDied(String dateDied) {
+		this.dateDied = dateDied;
+	}
+
 	public Integer getAdmitWard() {
 		return admitWard;
 	}
@@ -142,8 +152,8 @@ public class OPDEntryCommand {
 				+ patientId + ", internalReferral=" + internalReferral
 				+ ", externalReferral=" + externalReferral + ", historyOfPresentIlness=" + historyOfPresentIlness
 				+ ", admit=" + admit + ", outCome=" + outCome
-				+ ", dateFollowUp=" + dateFollowUp + ", admitWard=" + admitWard
-				+ ", radio_f=" + radio_f + "]";
+				+ ", dateFollowUp=" + dateFollowUp + ", dateDied=" + dateDied
+				+ ", admitWard=" + admitWard + ", radio_f=" + radio_f + "]";
 	}
 	public Integer getOpdId() {
 		return opdId;

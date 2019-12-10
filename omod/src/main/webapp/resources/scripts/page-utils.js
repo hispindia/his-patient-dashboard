@@ -320,6 +320,10 @@ DASHBOARD={
 			}else{
 				jQuery("#dateFollowUp").val("");
 			}
+
+			if (text != null && text != '' && text != 'Died') {
+				jQuery("#dateDied").val("");
+			}
 		},
 		backToQueue : function(queueId)
 		{
@@ -328,6 +332,9 @@ DASHBOARD={
 		onClickFollowDate : function(thiz)
 		{
 			jQuery('input#input_follow').attr('checked', true);
+		},
+		onClickDiedDate : function (thiz) {
+			jQuery('input#input_died').attr('checked', true);
 		}
 		
 };

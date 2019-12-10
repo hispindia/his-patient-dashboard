@@ -112,6 +112,7 @@ public class PrintClinicalSummaryController {
 		String external = "";
 		String visitOutCome = "";
 		String followUpDate = "";
+		String dateDied = "";
 		String ipdAdmissionWard = "";
 		String otherInstructions = "";
 		String illnessHistory = "";
@@ -249,6 +250,12 @@ public class PrintClinicalSummaryController {
 								e.printStackTrace();
 							}
 
+						} else if ("Died".equalsIgnoreCase(visitOutCome)) {
+							try {
+								dateDied = formatter.format(obs.getValueDatetime());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						} else if ("Admit".equalsIgnoreCase(visitOutCome)) {
 							if (obs.getValueCoded() != null) {
 
@@ -335,6 +342,7 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("external", external);
 		model.addAttribute("visitOutCome", visitOutCome);
 		model.addAttribute("followUpDate", followUpDate);
+		model.addAttribute("dateDied", dateDied);
 		model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
 		model.addAttribute("illnessHistory", illnessHistory);
 		model.addAttribute("pdiagnosiss", pdiagnosiss);

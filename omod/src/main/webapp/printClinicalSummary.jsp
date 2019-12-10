@@ -55,6 +55,13 @@ else{
 jQuery("#followupdate").hide();
 }
 
+let dateDied = '${dateDied}'
+if (dateDied != "") {
+	jQuery("#dateDied").show();
+} else {
+	jQuery("#dateDied").hide();
+}
+
 var ipdward= '${ipdAdmissionWard}';
 if(ipdward!=""){
 	jQuery("#ipdadmissionward").show(); 
@@ -260,6 +267,7 @@ jQuery("#ipdadmissionward").hide();
 		<td><strong>OPD Visit Outcome:</strong></td>
 		<td>${visitOutCome} -</td>
 		<td id="followupdate">${followUpDate}</td>
+		<td id="dateDied">${dateDied}</td>
 		<td id="ipdadmissionward">${ipdAdmissionWard}</td>
 	</tr>
 </table>

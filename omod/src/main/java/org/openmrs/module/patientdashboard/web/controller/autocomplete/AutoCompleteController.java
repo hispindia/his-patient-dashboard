@@ -286,6 +286,7 @@ public class AutoCompleteController {
 			String external = "";
 			String visitOutCome = "";
 			String followUpDate = "";
+			String dateDied = "";
 			String ipdAdmissionWard = "";
 			String otherInstructions = "";
 			String illnessHistory = "";
@@ -320,7 +321,13 @@ public class AutoCompleteController {
 									e.printStackTrace();
 								}
 								
-							}else if("Admit".equalsIgnoreCase(visitOutCome)){
+							} else if ("Died".equalsIgnoreCase(visitOutCome)) {
+								try {
+									dateDied = formatter.format(obs.getValueDatetime());
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							} else if("Admit".equalsIgnoreCase(visitOutCome)){
 								if(obs.getValueCoded() != null){
 									
 									try {
@@ -429,6 +436,7 @@ public class AutoCompleteController {
 			//symptom
 			model.addAttribute("symptoms", symptoms);
 			model.addAttribute("followUpDate", followUpDate);
+			model.addAttribute("dateDied", dateDied);
 			model.addAttribute("ipdAdmissionWard", ipdAdmissionWard);
 			model.addAttribute("otherInstructions", otherInstructions);
 			model.addAttribute("illnessHistory", illnessHistory);

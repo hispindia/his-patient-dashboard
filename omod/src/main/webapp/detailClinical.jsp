@@ -56,6 +56,11 @@ else{
 jQuery("#followupdatedc").hide();
 }
 
+let dateDied = '${dateDied}';
+if (dateDied == "") {
+	jQuery("#dateDied").hide();
+}
+
 var ipdward= '${ipdAdmissionWard}';
 if(ipdward!=""){
   
@@ -198,6 +203,7 @@ jQuery("#ipdadmissionwarddc").hide();
 		<td><strong>OPD Visit Outcome:</strong></td>
 		<td>${visitOutCome} -</td>
 		<td id="followupdatedc">${followUpDate}</td>
+		<td id="dateDied">${dateDied}</td>
 		<td id="ipdadmissionwarddc">${ipdAdmissionWard}</td>
 	</tr>
 </table>
