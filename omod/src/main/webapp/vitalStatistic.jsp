@@ -55,4 +55,19 @@
 		<td>${lastMenstrualDate}</td>
 	</tr>
 	</c:if>
+
+	<tr>
+		<td><strong>FBS</strong></td>
+		<td>${triagePatientData.fbs}</td>
+	</tr>
+
+	<tr>
+		<td><strong>RBS</strong></td>
+		<td>${triagePatientData.rbs}</td>
+	</tr>
+
+	<tr>
+		<td><strong>PPBS</strong></td>
+		<td>${triagePatientData.ppbs}</td>
+	</tr>
 </table>

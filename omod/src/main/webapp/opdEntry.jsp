@@ -370,6 +370,27 @@ if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
 	  }
 }
 
+if(!StringUtils.isBlank(jQuery("#fastingBloodSugar").val())) {
+      if (!jQuery("#fastingBloodSugar").val().match(intRegex)) {
+	  alert("Please enter Fasting Blood Sugar in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#randomBloodSugar").val())) {
+      if (!jQuery("#randomBloodSugar").val().match(intRegex)) {
+	  alert("Please enter Random Blood Sugar in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#postPrandialBloodSugar").val())) {
+      if (!jQuery("#postPrandialBloodSugar").val().match(intRegex)) {
+	  alert("Please enter Post Prandial Blood Sugar in correct format");
+	  return false;
+	  }
+}
+
  re = /^\d{1,2}\/\d{1,2}\/\d{4}$/; 
  if(jQuery("#lastMenstrualPeriod").val() != '' && !jQuery("#lastMenstrualPeriod").val().match(re)) 
  {
@@ -435,6 +456,15 @@ jQuery("#pulseDiv").append("<span style='margin:5px;'>" + pulse + "</span>");
 
 var lmp = document.getElementById('lastMenstrualPeriod').value;
 jQuery("#lmpDiv").append("<span style='margin:5px;'>" + lmp + "</span>");
+
+let fbs = document.getElementById('fastingBloodSugar').value;
+jQuery("#fbsDiv").append("<span style='margin:5px;'>" + fbs + "</span>");
+
+let rbs = document.getElementById('randomBloodSugar').value;
+jQuery("#rbsDiv").append("<span style='margin:5px;'>" + rbs + "</span>");
+
+let ppbs = document.getElementById('postPrandialBloodSugar').value;
+jQuery("#ppbsDiv").append("<span style='margin:5px;'>" + ppbs + "</span>");
  
 var historyOfPresentIlness = document.getElementById('historyOfPresentIlness').value;
 jQuery("#printableHistoryOfPresentIllness").append("<span style='margin:5px;'>" + historyOfPresentIlness + "</span>");
@@ -761,6 +791,27 @@ if(!StringUtils.isBlank(jQuery("#pulsRate").val())) {
 	  }
 }
 
+if(!StringUtils.isBlank(jQuery("#fastingBloodSugar").val())) {
+      if (!jQuery("#fastingBloodSugar").val().match(intRegex)) {
+	  alert("Please enter Fasting Blood Sugar in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#randomBloodSugar").val())) {
+      if (!jQuery("#randomBloodSugar").val().match(intRegex)) {
+	  alert("Please enter Random Blood Sugar in correct format");
+	  return false;
+	  }
+}
+
+if(!StringUtils.isBlank(jQuery("#postPrandialBloodSugar").val())) {
+      if (!jQuery("#postPrandialBloodSugar").val().match(intRegex)) {
+	  alert("Please enter Post Prandial Blood Sugar in correct format");
+	  return false;
+	  }
+}
+
  re = /^\d{1,2}\/\d{1,2}\/\d{4}$/; 
  if(jQuery("#lastMenstrualPeriod").val() != '' && !jQuery("#lastMenstrualPeriod").val().match(re)) 
  {
@@ -945,8 +996,36 @@ function copyData(){ hasBeenClicked = true;
 									value="${lastMenstrualDate}"> <img id="calendarButton"
 									src="${pageContext.request.contextPath}/moduleResources/patientdashboard/calendar.gif" />
 								</td>
+							</tr>
 
+							<tr>
+								<td>FBS</td>
+								<td>
+									<input type="text" name="fastingBloodSugar" id="fastingBloodSugar"
+										size="11" value="${triagePatientData.fbs}">
+								</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
 
+							<tr>
+								<td>RBS</td>
+								<td>
+									<input type="text" name="randomBloodSugar" id="randomBloodSugar"
+										size="11" value="${triagePatientData.rbs}">
+								</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+
+							<tr>
+								<td>PPBS</td>
+								<td>
+									<input type="text" name="postPrandialBloodSugar" id="postPrandialBloodSugar"
+										size="11" value="${triagePatientData.ppbs}">
+								</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
 							</tr>
 
 						</table>
@@ -1354,6 +1433,27 @@ function copyData(){ hasBeenClicked = true;
 				<td><div id="lmpDiv"></div></td>
 				<td></td>
 				<td></td>
+			</tr>
+
+			<tr>
+				<td><strong>FBS</strong></td>
+				<td><div id="fbsDiv"></div></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td><strong>RBS</strong></td>
+				<td><div id="rbsDiv"></div></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td><strong>PPBS</strong></td>
+				<td><div id="ppbsDiv"></div></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 		</table>
 		<table class="box">

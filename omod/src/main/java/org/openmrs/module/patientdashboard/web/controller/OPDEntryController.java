@@ -1060,7 +1060,26 @@ public class OPDEntryController {
 	        SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
 	        Date lmpdate = (Date)formatterExt.parse(lmp);
 	        triagePatientData.setLastMenstrualDate(lmpdate);
-	        }
+			}
+			
+			if (request.getParameter("fastingBloodSugar") != null && request.getParameter("fastingBloodSugar") != "") {
+				String FBS = request.getParameter("fastingBloodSugar");
+				Double fbsDouble = Double.parseDouble(FBS);
+				triagePatientData.setFbs(fbsDouble);
+			}
+			
+			if (request.getParameter("randomBloodSugar") != null && request.getParameter("randomBloodSugar") != "") {
+				String RBS = request.getParameter("randomBloodSugar");
+				Double rbsDouble = Double.parseDouble(RBS);
+				triagePatientData.setRbs(rbsDouble);
+			}
+			
+			if (request.getParameter("postPrandialBloodSugar") != null && request.getParameter("postPrandialBloodSugar") != "") {
+				String PPBS = request.getParameter("postPrandialBloodSugar");
+				Double ppbsDouble = Double.parseDouble(PPBS);
+				triagePatientData.setPpbs(ppbsDouble);
+			}
+
 	        triagePatientData.setEncounterOpd(encounter);
 	        triagePatientData=queueService.saveTriagePatientData(triagePatientData);
 		 }
@@ -1114,7 +1133,26 @@ public class OPDEntryController {
 	        SimpleDateFormat formatterExt = new SimpleDateFormat("dd/MM/yyyy");
 	        Date lmpdate = (Date)formatterExt.parse(lmp);
 	        triagePatientData.setLastMenstrualDate(lmpdate);
-	        }
+			}
+			
+			if (request.getParameter("fastingBloodSugar") != null && request.getParameter("fastingBloodSugar") != "") {
+				String FBS = request.getParameter("fastingBloodSugar");
+				Double fbsDouble = Double.parseDouble(FBS);
+				triagePatientData.setFbs(fbsDouble);
+			}
+			
+			if (request.getParameter("randomBloodSugar") != null && request.getParameter("randomBloodSugar") != "") {
+				String RBS = request.getParameter("randomBloodSugar");
+				Double rbsDouble = Double.parseDouble(RBS);
+				triagePatientData.setRbs(rbsDouble);
+			}
+			
+			if (request.getParameter("postPrandialBloodSugar") != null && request.getParameter("postPrandialBloodSugar") != "") {
+				String PPBS = request.getParameter("postPrandialBloodSugar");
+				Double ppbsDouble = Double.parseDouble(PPBS);
+				triagePatientData.setPpbs(ppbsDouble);
+			}
+
 	        triagePatientData.setCreatedOn(date);
 	        triagePatientData.setEncounterOpd(encounter);
 	        triagePatientData=queueService.saveTriagePatientData(triagePatientData);
