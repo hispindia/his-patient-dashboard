@@ -261,6 +261,9 @@ public class OPDEntryController {
 			model.addAttribute("ipdPatientAdmission",false);	
 		}
 
+		GlobalProperty slipMessage = Context.getAdministrationService().getGlobalPropertyObject("hospitalcore.slipMessage");
+		model.addAttribute("slipMessage", slipMessage.getPropertyValue());
+
         return "module/patientdashboard/opdEntry";
 	}
 

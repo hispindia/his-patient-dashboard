@@ -1,4 +1,4 @@
- <%--
+<%--
  *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-dashboard module.
@@ -16,55 +16,56 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Patient-dashboard module.  If not, see <http://www.gnu.org/licenses/>.
  *
---%> 
+--%>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/headerMinimal.jsp" %>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/moduleResources/patientdashboard/styles/common.css" />
 
 <script type="text/javascript">
-jQuery(document).ready(function(){
-var otherInstructions = '${otherInstructions}';
-if(otherInstructions!=""){
+	jQuery(document).ready(function () {
+		var otherInstructions = '${otherInstructions}';
+		if (otherInstructions != "") {
 
-}
-else{
-jQuery("#othInstdc").hide();
-}
+		}
+		else {
+			jQuery("#othInstdc").hide();
+		}
 
-var internalReferral = '${internal}';
-if(internalReferral!=""){
+		var internalReferral = '${internal}';
+		if (internalReferral != "") {
 
-}
-else{
-jQuery("#intRefdc").hide();
-}
+		}
+		else {
+			jQuery("#intRefdc").hide();
+		}
 
-var externalReferral = '${external}';
-if(externalReferral!=""){
+		var externalReferral = '${external}';
+		if (externalReferral != "") {
 
-}
-else{
-jQuery("#extRefdc").hide();
-}
+		}
+		else {
+			jQuery("#extRefdc").hide();
+		}
 
 
-var dateFollowUp = '${followUpDate}';
-if(dateFollowUp!=""){
+		var dateFollowUp = '${followUpDate}';
+		if (dateFollowUp != "") {
 
-}
-else{
-jQuery("#followupdatedc").hide();
-}
+		}
+		else {
+			jQuery("#followupdatedc").hide();
+		}
 
-var ipdward= '${ipdAdmissionWard}';
-if(ipdward!=""){
-  
-}
-else{
-jQuery("#ipdadmissionwarddc").hide();  
-}
+		var ipdward = '${ipdAdmissionWard}';
+		if (ipdward != "") {
 
-});
+		}
+		else {
+			jQuery("#ipdadmissionwarddc").hide();
+		}
+
+	});
 </script>
 
 <span class="boxHeader">Visit Detail</span>
@@ -83,20 +84,24 @@ jQuery("#ipdadmissionwarddc").hide();
 	</tr>
 	<tr>
 		<td><strong>Gender:</strong></td>
-		<td><c:choose>
+		<td>
+			<c:choose>
 				<c:when test="${patient.gender eq 'M'}">
 					Male
 				</c:when>
 				<c:otherwise>
 					Female
 				</c:otherwise>
-			</c:choose></td>
+			</c:choose>
+		</td>
 		<td><strong>Age:</strong></td>
 		<td>${age}</td>
 	</tr>
 	<tr>
 		<td><strong>OPD Consulted:</strong></td>
 		<td>${opdConceptName}</td>
+		<td><strong>Encounter No:</strong></td>
+		<td>${encounterId}</td>
 	</tr>
 </table>
 
@@ -106,27 +111,32 @@ jQuery("#ipdadmissionwarddc").hide();
 		<td><strong>History of Present Illness:</strong></td>
 		<td>${illnessHistory}</td>
 	</tr>
-	
+
 	<c:choose>
-	<c:when test="${not empty pdiagnosiss}">
-	<tr>
-		<td><strong>Provisional Diagnosis:</strong></td>
-		<c:forEach items="${pdiagnosiss}" var="pdiagnosis"></td>
-			<td>${pdiagnosis.name}</td></tr>
-		<tr>
-		<td></c:forEach>
-	</tr>
-	</c:when>
-	<c:otherwise>
-	<tr>
-		<td><strong>Final Diagnosis:</strong></td>
-		<c:forEach items="${fdiagnosiss}" var="fdiagnosis"></td>
-			<td>${fdiagnosis.name}</td>
-	</tr>
-	<tr>
-		<td></c:forEach>
-	</tr>
-	</c:otherwise>
+		<c:when test="${not empty pdiagnosiss}">
+			<tr>
+				<td><strong>Provisional Diagnosis:</strong></td>
+				<c:forEach items="${pdiagnosiss}" var="pdiagnosis">
+					</td>
+					<td>${pdiagnosis.name}</td>
+			</tr>
+			<tr>
+				<td>
+					</c:forEach>
+			</tr>
+		</c:when>
+		<c:otherwise>
+			<tr>
+				<td><strong>Final Diagnosis:</strong></td>
+				<c:forEach items="${fdiagnosiss}" var="fdiagnosis">
+					</td>
+					<td>${fdiagnosis.name}</td>
+			</tr>
+			<tr>
+				<td>
+					</c:forEach>
+			</tr>
+		</c:otherwise>
 	</c:choose>
 
 	<tr>
@@ -136,7 +146,8 @@ jQuery("#ipdadmissionwarddc").hide();
 			<td>${procedure.name}</td>
 	</tr>
 	<tr>
-		<td></c:forEach>
+		<td>
+			</c:forEach>
 	</tr>
 
 	<tr>
@@ -146,7 +157,8 @@ jQuery("#ipdadmissionwarddc").hide();
 			<td>${index.count}.${investigation.name}</td>
 	</tr>
 	<tr>
-		<td></c:forEach>
+		<td>
+			</c:forEach>
 	</tr>
 </table>
 
@@ -207,8 +219,10 @@ jQuery("#ipdadmissionwarddc").hide();
 	<br />
 	<tr>
 		<center>
-			<b><font size="2">Please Note - All follow-up appointments
-					are scheduled between 3:00 -4:00 pm everyday</font> </b>
+			<b>
+				<font size="2">Please Note - All follow-up appointments
+					are scheduled between 3:00 -4:00 pm everyday</font>
+			</b>
 		</center>
 	</tr>
 </table>

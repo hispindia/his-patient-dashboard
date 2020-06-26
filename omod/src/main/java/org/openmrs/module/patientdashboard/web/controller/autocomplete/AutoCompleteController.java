@@ -420,6 +420,7 @@ public class AutoCompleteController {
 			model.addAttribute("investigations", investigations);
 			model.addAttribute("opdDrugOrders", opdDrugOrders);
 			model.addAttribute("opdConceptName", opql.getOpdConceptName());
+			model.addAttribute("encounterId", id);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
 			model.addAttribute("dateOfVisit", sdf.format(opql.getCreatedOn()));

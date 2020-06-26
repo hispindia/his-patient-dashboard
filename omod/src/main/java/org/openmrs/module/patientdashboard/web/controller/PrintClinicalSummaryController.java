@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -240,6 +241,10 @@ public class PrintClinicalSummaryController {
 		model.addAttribute("investigations", investigations);
 		model.addAttribute("opdDrugOrders", opdDrugOrders);
 		model.addAttribute("opdConceptName", opql.getOpdConceptName());
+		model.addAttribute("encounterId", encounterId);
+
+		GlobalProperty slipMessage = Context.getAdministrationService().getGlobalPropertyObject("hospitalcore.slipMessage");
+		model.addAttribute("slipMessage", slipMessage.getPropertyValue());
 
 		return "module/patientdashboard/printClinicalSummary";
 	}
