@@ -80,10 +80,12 @@
 	function creatTable() {
 		var rows = "";
 		patientDrugDetails.forEach((element, index) => {
-			let date = new Date(element.issue_date)
+			let date = new Date(element.issue_date);
+			let drug = element.drug.split(",").join(" -").split(" [")[0];
+
 			rows += "<tr class=" + (index % 2 == 0 ? 'evenRow' : 'oddRow') + ">";
 			rows += "<td>" + (index + 1) + "</td>";
-			rows += "<td>" + element.drug + "</td>";
+			rows += "<td>" + drug + "</td>";
 			rows += "<td>" + date.toDateString() + "</td>";
 			rows += "<td>" + element.quantity + "</td>";
 			rows += "</tr>";
