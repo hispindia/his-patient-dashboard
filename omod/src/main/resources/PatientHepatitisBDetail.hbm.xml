@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.patientdashboard.model">
+    <class name="PatientHepatitisBDetail" table="patient_hepatitis_b_details" batch-size="500">
+        <id name="id" type="int" column="id" unsaved-value="0">
+            <generator class="native"></generator>
+        </id>
+        <property name="alu" column="alu" />
+        <property name="hbvDna" column="hbv_dna" />
+        <property name="hbeag" column="hbeag" />
+        <property name="usgLiver" column="usg_liver" />
+        <property name="fibroscan" column="fibroscan" />
+        <property name="afp" column="afp" />
+        <property name="cr" column="cr" />
+        <property name="others" column="others" />
+        <property name="followupDate" column="followup_date" />
+        <property name="createdDate" column="created_date" />
+        <property name="rxDate" column="rx_date" />
+        <property name="cirrhosis" column="cirrhosis" />
+        <property name="highHbvDna" column="high_hbv_dna" />
+        <property name="familyHcc" column="family_hcc" />
+        <property name="rxOthers" column="rx_others" />
+        <property name="yearsOfDiagnosis" column="years_of_diagnosis" />
+        <property name="complications" column="complications" />
+        <property name="clinicalNotesMedication" column="clinical_notes_medication" />
+        <many-to-one name="patient" column="patient_id" class="org.openmrs.Patient" lazy="false" foreign-key="patient_hepatitis_b_details_fk" />
+    </class>
+</hibernate-mapping>

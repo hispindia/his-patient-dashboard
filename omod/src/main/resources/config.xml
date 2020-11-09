@@ -2,7 +2,7 @@
 <!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "http://resources.openmrs.org/doctype/config-1.2.dtd">
 
 <module configVersion="1.2">
-	
+
 	<!-- Base Module Properties -->
 	<id>@MODULE_ID@</id>
 	<name>@MODULE_NAME@</name>
@@ -15,13 +15,13 @@
 
 	<activator>@MODULE_PACKAGE@.PatientDashboardActivator</activator>
 	<require_modules>
-                  <require_module>org.openmrs.module.hospitalcore</require_module>
-    </require_modules>
+		<require_module>org.openmrs.module.hospitalcore</require_module>
+	</require_modules>
 	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
 	<!-- /Base Module Properties -->
-	
+
 	<require_version>1.9.10</require_version>
-	
+
 	<!-- Extensions 
 	<extension>
 		<point>org.openmrs.admin.list</point>
@@ -33,24 +33,24 @@
 		<class>@MODULE_PACKAGE@.extension.html.PatientDashboardHeader</class>
 	</extension>
 	-->
-	
+
 	<!-- AOP
 	<advice>
 		<point>org.openmrs.api.FormService</point>
 		<class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
 	</advice>
 	 /AOP -->
-	
+
 	<privilege>
 		<name>View PatientDashboard</name>
 		<description>Allows user to view PatientDashboard</description>
 	</privilege>
-		<privilege>
+	<privilege>
 		<name>Edit Patient by Doctor</name>
 		<description>Allows Doctor Edit Patient history</description>
 	</privilege>
 	<!-- Required Global Properties -->
-	
+
 	<globalProperty>
 		<property>@MODULE_ID@.OPDRootConcept</property>
 		<defaultValue>OPD WARD</defaultValue>
@@ -65,7 +65,7 @@
 			IPD root concept name
 		</description>
 	</globalProperty>
-	
+
 	<globalProperty>
 		<property>@MODULE_ID@.initNeededConcept</property>
 		<defaultValue>0</defaultValue>
@@ -74,7 +74,7 @@
 			User must not modify this value !
 		</description>
 	</globalProperty>
-	
+
 	<globalProperty>
 		<property>@MODULE_ID@.externalHospitalConcept</property>
 		<defaultValue>EXTERNAL HOSPITAL</defaultValue>
@@ -82,7 +82,7 @@
 			External hospital root concept name
 		</description>
 	</globalProperty>
- 	<globalProperty>
+	<globalProperty>
 		<property>@MODULE_ID@.provisionalDiagnosisConcept</property>
 		<defaultValue>Provisional diagnosis</defaultValue>
 		<description>
@@ -154,7 +154,7 @@
 		</description>
 	</globalProperty>
 	<!--Required Global Properties -->
-	
+
 	<!--
 	<dwr>
 		<allow>
@@ -172,7 +172,7 @@
 		</signatures>	
 	</dwr>
 	-->
-	
+
 	<!-- Servlets -->
 	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
 	<servlet>
@@ -181,8 +181,8 @@
 	</servlet>
 	-->
 	<!-- /Servlets -->
-	
-	
+
+
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->
 	<messages>
@@ -198,8 +198,9 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
-	
-	<mappingFiles>
-    </mappingFiles>
-</module>
 
+	<mappingFiles>
+		PatientHepatitisBDetail.hbm.xml
+		PatientReferralDetail.hbm.xml
+	</mappingFiles>
+</module>

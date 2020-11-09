@@ -12,16 +12,56 @@
 			- "use business-database-name;" was called prior to
 			   calling this script
 	</help>
-	<!-- 
 	<diff>
 		<version>0.1</version>
-		<author>Viet Nguyen</author>
-		<date>Dec 06th 2010</date>
-		<description>
-		</description>
+		<author>Shubham Goyal</author>
+		<date>Sept 07th 2020</date>
+		<description>Table to record values for Hapatitis B</description>
 		<sql>
+			CREATE TABLE IF NOT EXISTS patient_hepatitis_b_details (
+			`id` INT(11) auto_increment NOT NULL,
+			`patient_id` INT(11) NOT NULL,
+			`alu` varchar(50) NULL,
+			`hbv_dna` varchar(50) NULL,
+			`hbeag` varchar(50) NULL,
+			`usg_liver` varchar(50) NULL,
+			`fibroscan` varchar(50) NULL,
+			`afp` varchar(50) NULL,
+			`cr` varchar(50) NULL,
+			`others` varchar(255) NULL,
+			`followup_date` DATETIME NULL,
+			`rx_date` DATETIME NULL,
+			`cirrhosis` varchar(100) NULL,
+			`high_hbv_dna` varchar(100) NULL,
+			`family_hcc` varchar(100) NULL,
+			`rx_others` varchar(100) NULL,
+			`years_of_diagnosis` varchar(255) NULL,
+			`complications` varchar(255) NULL,
+			`created_date` DATETIME NOT NULL,
+			`clinical_notes_medication` varchar(255) NULL,
+			PRIMARY KEY (`id`),
+			CONSTRAINT patient_hepatitis_b_details_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
-	</diff>	
- -->
-	
+	</diff>
+	<diff>
+		<version>0.2</version>
+		<author>Shubham Goyal</author>
+		<date>Nov 02nd 2020</date>
+		<description>Table to record values for Referral Letter</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS patient_referral_details (
+			`referral_id` INT(11) auto_increment NOT NULL,
+			`patient_id` INT(11) NOT NULL,
+			`refer_to` varchar(255) NOT NULL,
+			`symptoms` varchar(255) NULL,
+			`investigations` varchar(255) NULL,
+			`diagnosis` varchar(255) NULL,
+			`treatment_given` varchar(255) NULL,
+			`past_history` varchar(255) NULL,
+			`reason_for_referral` varchar(255) NULL,
+			`created_date` DATETIME NOT NULL,
+			PRIMARY KEY (`referral_id`),
+			CONSTRAINT patient_referral_details_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
 </sqldiff>

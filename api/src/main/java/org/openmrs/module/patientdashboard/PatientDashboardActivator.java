@@ -26,17 +26,17 @@ import org.openmrs.module.Activator;
 import org.openmrs.module.ModuleActivator;
 
 /**
- * This class contains the logic that is run every time this module is either started or shutdown
+ * This class contains the logic that is run every time this module is either
+ * started or shutdown
  */
-public class PatientDashboardActivator  implements ModuleActivator{
-	
+public class PatientDashboardActivator implements ModuleActivator {
+
 	private Log log = LogFactory.getLog(this.getClass());
-	
 
 	@Override
 	public void contextRefreshed() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class PatientDashboardActivator  implements ModuleActivator{
 	@Override
 	public void willRefreshContext() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -68,5 +68,5 @@ public class PatientDashboardActivator  implements ModuleActivator{
 		// TODO Auto-generated method stub
 		log.info("Shutting down PATIENTDASHBOARD Module");
 	}
-	
+
 }

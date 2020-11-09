@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.patientdashboard.model">
+    <class name="PatientReferralDetail" table="patient_referral_details" batch-size="500">
+        <id name="referralId" type="int" column="referral_id" unsaved-value="0">
+            <generator class="native"></generator>
+        </id>
+        <property column="refer_to" name="referTo" />
+        <property column="symptoms" name="symptoms" />
+        <property column="investigations" name="investigations" />
+        <property column="diagnosis" name="diagnosis" />
+        <property column="treatment_given" name="treatmentGiven" />
+        <property column="past_history" name="pastHistory" />
+        <property column="reason_for_referral" name="ReasonForReferral" />
+        <property column="created_date" name="createdDate" />
+        <many-to-one name="patient" column="patient_id" class="org.openmrs.Patient" lazy="false" foreign-key="patient_referral_details_fk" />
+    </class>
+</hibernate-mapping>

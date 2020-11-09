@@ -81,6 +81,8 @@
 		 <li><a href="pharmacyRecord.htm?patientId=${patient.patientId }" title="Pharmacy record"><span>Pharmacy Record</span> </a></li>
          <li><a href="patientHistory.htm?patientId=${patient.patientId } &opdId=${opd.conceptId}&referralConceptName=${referralConceptName}&hasEditPrivilige=${hasEditPrivilige}&queueId=${queueId}&referralId=${referralId}"
 				title="Patient history"><span>Patient History</span> </a></li>
+		<li><a href="opdForm.htm?patientId=${patient.patientId}" title="OPD forms"><span>OPD Forms</span></a></li>
+		
     
      </ul>
      
@@ -96,6 +98,7 @@
 	 <%-- ghanshyam,date:18-april-2013 New Requirement #1391 [Patient Dashboard] Add Pharmacy record of patient in Dashboard(in all hospital of india module) --%>
 	 <div id="Pharmacy_record"></div>
 	 <div id="Patient_history"></div>
+	 <div id="OPD_forms"></div>
 </div>
 
 </div>
