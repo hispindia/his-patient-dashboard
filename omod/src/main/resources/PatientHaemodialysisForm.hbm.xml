@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.patientdashboard.model">
+    <class name="PatientHaemodialysisForm" table="patient_haemodialysis_form" batch-size="500">
+        <id name="id" type="int" column="id" unsaved-value="0">
+            <generator class="native"></generator>
+        </id>
+        <property name="bicarbonateAcetate" column="bicarbonate_acetate" />
+        <property name="newReuse" column="new_reuse" />
+        <property name="perAceticAcidTest" column="per_acetic_acid_test" />
+        <property name="dryWeight" column="dry_weight" />
+        <property name="preDialysisWeight" column="pre_dialysis_weight" />
+        <property name="postDialysisWeight" column="post_dialysis_weight" />
+        <property name="crepitation" column="crepitation" />
+        <property name="vomiting" column="vomiting" />
+        <property name="startedAt" column="started_at" />
+        <property name="staffName" column="staff_name" />
+        <property name="dyspnoea" column="dyspnoea" />
+        <property name="bleeding" column="bleeding" />
+        <property name="jvp" column="jvp" />
+        <property name="stoppedAt" column="stopped_at" />
+        <property name="staffNameTwo" column="staff_name_two" />
+        <property name="fever" column="fever" />
+        <property name="flaps" column="flaps" />
+        <property name="pericarditis" column="pericarditis" />
+        <property name="hiv" column="hiv" />
+        <property name="hbsag" column="hbsag" />
+        <property name="hcv" column="hcv" />
+        <property name="preHdPulse" column="pre_hd_pulse" />
+        <property name="vascularAccess" column="vascular_access" />
+        <property name="afv" column="afv" />
+        <property name="avShunt" column="av_shunt" />
+        <property name="ijv" column="ijv" />
+        <property name="subclavianFemoralGraft" column="subclavian_femoral_graft" />
+        <property name="dialysisPlan" column="dialysis_plan" />
+        <property name="numberOfDialysisUsed" column="number_of_dialysis_used" />
+        <property name="duration" column="duration" />
+        <property name="numberOfTubingsUsed" column="number_of_tubings_used" />
+        <property name="bloodFlowRate" column="blood_flow_rate" />
+        <property name="uf" column="uf" />
+        <property name="injections" column="injections" />
+        <property name="heparinDose" column="heparin_dose" />
+        <property name="bloodTransfusion" column="blood_transfusion" />
+        <property name="postDialysisBp" column="post_dialysis_bp" />
+        <property name="createdDate" column="created_date" />
+        <property name="note" column="note" />
+        <property name="nextDialysisDate" column="next_dialysis_date" />
+        <many-to-one name="patient" column="patient_id" class="org.openmrs.Patient" lazy="false" foreign-key="patient_haemodialysis_form_fk" />
+    </class>
+</hibernate-mapping>

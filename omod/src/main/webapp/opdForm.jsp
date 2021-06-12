@@ -81,14 +81,14 @@
 </style>
 
 <ul class="opdFormNav">
-    <li><a href="#" class="active" onclick="getForm('hepatitisBForm.htm')">HAPATITIS B</a></li>
+    <li><a href="#" class="active" onclick="getForm('hepatitisBForm.htm')">HEPATITIS B</a></li>
     <li><a href="#" onclick="getForm('medicalCertificate.htm')">MEDICAL FITNESS</a></li>
     <li><a href="#" onclick="getForm('medicalSickness.htm')">MEDICAL SICKNESS</a></li>
     <li><a href="#" onclick="getForm('deathCertificate.htm')">DEATH CERTIFICATE</a></li>
     <li><a href="#" onclick="getForm('referralLetter.htm')">REFFERAL LETTER</a></li>
-    <li><a href="#">DIALYSIS</a></li>
-    <li><a href="#">DIALYSIS</a></li>
-    <li><a href="#">DIALYSIS</a></li>
+    <li><a href="#" onclick="getForm('dialysisForm.htm')">DIALYSIS</a></li>
+    <li><a href="#" onclick="getForm('haemodialysisForm.htm')">HAEMODIALYSIS</a></li>
+    <li><a href="#" onclick="getForm('dialysisSummaryForm.htm')">DIALYSIS SUMMARY</a></li>
 
 </ul>
 <div id="formsSection" style="margin-top: 10px"></div>

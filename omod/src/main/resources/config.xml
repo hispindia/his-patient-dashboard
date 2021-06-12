@@ -202,5 +202,9 @@
 	<mappingFiles>
 		PatientHepatitisBDetail.hbm.xml
 		PatientReferralDetail.hbm.xml
+		PatientDialysisFormDetail.hbm.xml
+		PatientHaemodialysisForm.hbm.xml
+		PatientHaemodialysisFormDetail.hbm.xml
+		PatientDialysisSummaryForm.hbm.xml
 	</mappingFiles>
 </module>

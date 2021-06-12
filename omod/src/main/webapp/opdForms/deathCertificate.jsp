@@ -110,7 +110,20 @@
                 }
             </style>
             <div class="w3-row">
-                <h1 style="text-align: center; margin: 5 0;">Gajang Medical Society</h1>
+                <div style="width: 24%; float: left;">
+                    <img id="facilityLogo" src="../../moduleResources/patientdashboard/gajangMedicalSocietyLogo.jpg"
+                        alt="Gajang Medical Society Logo" style="width: 50%;">
+                </div>
+                <div style="width: 50%; float: left; margin-top: 50px;">
+                    <img id="dialysisFormHeadingLogo"
+                        src="../../moduleResources/patientdashboard/gadenDialysisFormHeading.jpg"
+                        alt="Gajang Medical Society Logo" style="width: 90%;">
+                    <h1 style="text-align: center; margin: 5 0;">GAJANG MEDICAL SOCIETY</h1>
+                </div>
+                <div style="width: 24%; float: left;">
+                    <img id="doctorLogo" src="../../moduleResources/patientdashboard/doctorLogo.jpg" alt="Doctor's Logo"
+                        style="width: 50%; float: right;">
+                </div>
             </div>
             <div class="w3-row">
                 <h3 style="text-align: center; margin: 5 0;">(REGD. UNDER K.S.R. ACT 1960 No. SOCIETY
@@ -176,7 +189,7 @@
             </div>
             <div class="w3-row" style="margin: 5px 2px;">
                 <label style="width: 150px;">Past Medical History:</label>
-                <input type="text" class="w3-input editInput" id="patientDiagnosis" value=""
+                <input type="text" class="w3-input editInput" id="pastMedicalHistory" value=""
                     style="width: calc(100% - 150px); font-weight: bold;">
             </div>
             <br>

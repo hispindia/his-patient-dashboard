@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.patientdashboard.model">
+    <class name="PatientDialysisSummaryForm" table="patient_dialysis_summary_form" batch-size="500">
+        <id name="id" type="int" column="id" unsaved-value="0">
+            <generator class="native"></generator>
+        </id>
+        <property name="bloodGroup" column="blood_group" />
+        <property name="diagnosis" column="diagnosis" />
+        <property name="vascularAccess" column="vascular_access" />
+        <property name="dryWeightHd" column="dry_weight_hd" />
+        <property name="frequencyHoursHd" column="frequency_hours_hd" />
+        <property name="bloodFlowRate" column="blood_flow_rate" />
+        <property name="heparin" column="heparin" />
+        <property name="complicationHd" column="complication_hd" />
+        <property name="hbvVaccination" column="hbv_vaccination" />
+        <property name="hdStartDate" column="hd_start_date" />
+        <property name="latestInvestigation" column="latest_investigation" />
+        <property name="medications" column="medications" />
+        <property name="createdDate" column="created_date" />
+        <many-to-one name="patient" column="patient_id" class="org.openmrs.Patient" lazy="false" foreign-key="patient_dialysis_summary_form_fk" />
+    </class>
+</hibernate-mapping>

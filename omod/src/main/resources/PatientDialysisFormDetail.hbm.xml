@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.patientdashboard.model">
+    <class name="PatientDialysisFormDetail" table="patient_dialysis_form_details" batch-size="500">
+        <id name="id" type="int" column="id" unsaved-value="0">
+            <generator class="native"></generator>
+        </id>
+        <property name="bunPreDialysis" column="bun_pre_dialysis" />
+        <property name="bunPostDialysis" column="bun_post_dialysis" />
+        <property name="urr" column="urr" />
+        <property name="serumCreatinine" column="serum_creatinine" />
+        <property name="hemoglobin" column="hemoglobin" />
+        <property name="potassium" column="potassium" />
+        <property name="calcium" column="calcium" />
+        <property name="phosphorus" column="phosphorus" />
+        <property name="albumin" column="albumin" />
+        <property name="fbs" column="fbs" />
+        <property name="rbs" column="rbs" />
+        <property name="iron" column="iron" />
+        <property name="tibc" column="tibc" />
+        <property name="saturation" column="saturation" />
+        <property name="ferritin" column="ferritin" />
+        <property name="hbsAntibody" column="hbs_antibody" />
+        <property name="hbsAg" column="hbs_ag" />
+        <property name="hcv" column="hcv" />
+        <property name="hiv" column="hiv" />
+        <property name="sodium" column="sodium" />
+        <property name="sBilli" column="s_billi" />
+        <property name="sgpt" column="sgpt" />
+        <property name="alkPhos" column="alk_phos" />
+        <property name="uricAcid" column="uric_acid" />
+        <property name="createdDate" column="created_date" />
+        <many-to-one name="patient" column="patient_id" class="org.openmrs.Patient" lazy="false" foreign-key="patient_dialysis_form_details_fk" />
+    </class>
+</hibernate-mapping>

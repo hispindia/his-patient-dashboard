@@ -254,7 +254,24 @@
                 }
             </style>
 
-            <h1 style="text-align: center; margin: 5 0;">GADEN JANGTSE HOSPITAL</h1>
+            <div class="w3-row">
+                <div style="width: 24%; float: left;">
+                    <img id="facilityLogo" src="../../moduleResources/patientdashboard/gajangMedicalSocietyLogo.jpg"
+                        alt="Gajang Medical Society Logo" style="width: 50%;">
+                </div>
+                <div style="width: 50%; float: left; margin-top: 50px;">
+                    <img id="dialysisFormHeadingLogo"
+                        src="../../moduleResources/patientdashboard/gadenDialysisFormHeading.jpg"
+                        alt="Gajang Medical Society Logo" style="width: 90%;">
+                    <h1 style="text-align: center; margin: 5 0;">GAJANG MEDICAL SOCIETY</h1>
+                </div>
+                <div style="width: 24%; float: left;">
+                    <img id="doctorLogo" src="../../moduleResources/patientdashboard/doctorLogo.jpg" alt="Doctor's Logo"
+                        style="width: 50%; float: right;">
+                </div>
+            </div>
+            <p style="text-align: center;">Lama Camp No. 1, P.O. Tibetan Colony - 581411, Mundgod Distt. Uttar Kanada
+                (K.S) India</p>
             <h3 style="text-align: center; margin: 5 0;"><u>HEPATITIS 'B' CONTROL PROGRAM</u></h3>
             <div class="w3-row" style="margin: 5px 2px;">
                 <div style="width: 24%; float: left; padding: 5px;">

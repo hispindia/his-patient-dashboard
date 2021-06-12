@@ -28,17 +28,17 @@
 			`fibroscan` varchar(50) NULL,
 			`afp` varchar(50) NULL,
 			`cr` varchar(50) NULL,
-			`others` varchar(255) NULL,
+			`others` varchar(50) NULL,
 			`followup_date` DATETIME NULL,
 			`rx_date` DATETIME NULL,
 			`cirrhosis` varchar(100) NULL,
 			`high_hbv_dna` varchar(100) NULL,
 			`family_hcc` varchar(100) NULL,
 			`rx_others` varchar(100) NULL,
-			`years_of_diagnosis` varchar(255) NULL,
-			`complications` varchar(255) NULL,
+			`years_of_diagnosis` varchar(50) NULL,
+			`complications` varchar(50) NULL,
 			`created_date` DATETIME NOT NULL,
-			`clinical_notes_medication` varchar(255) NULL,
+			`clinical_notes_medication` varchar(50) NULL,
 			PRIMARY KEY (`id`),
 			CONSTRAINT patient_hepatitis_b_details_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
@@ -62,6 +62,150 @@
 			`created_date` DATETIME NOT NULL,
 			PRIMARY KEY (`referral_id`),
 			CONSTRAINT patient_referral_details_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+	<diff>
+		<version>0.3</version>
+		<author>Shubham Goyal</author>
+		<date>Nov 11th 2020</date>
+		<description>Changed column type to longtext</description>
+		<sql>
+			ALTER TABLE patient_referral_details
+				CHANGE COLUMN `refer_to` refer_to longtext,
+				CHANGE COLUMN `symptoms` symptoms longtext,
+				CHANGE COLUMN `investigations` investigations longtext,
+				CHANGE COLUMN `diagnosis` diagnosis longtext,
+				CHANGE COLUMN `treatment_given` treatment_given longtext,
+				CHANGE COLUMN `past_history` past_history longtext,
+				CHANGE COLUMN `reason_for_referral` reason_for_referral longtext;
+		</sql>
+	</diff>
+	<diff>
+		<version>0.4</version>
+		<author>Shubham Goyal</author>
+		<date>Nov 19th 2020</date>
+		<description>Table to record values for Dialysis Form</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS patient_dialysis_form_details (
+			`id` INT(11) auto_increment NOT NULL,
+			`patient_id` INT(11) NOT NULL,
+			`bun_pre_dialysis` varchar(50) NULL,
+			`bun_post_dialysis` varchar(50) NULL,
+			`urr` varchar(50) NULL,
+			`serum_creatinine` varchar(50) NULL,
+			`hemoglobin` varchar(50) NULL,
+			`potassium` varchar(50) NULL,
+			`calcium` varchar(50) NULL,
+			`phosphorus` varchar(255) NULL,
+			`albumin` varchar(255) NULL,
+			`fbs` varchar(255) NULL,
+			`rbs` varchar(100) NULL,
+			`iron` varchar(100) NULL,
+			`tibc` varchar(100) NULL,
+			`saturation` varchar(100) NULL,
+			`ferritin` varchar(255) NULL,
+			`hbs_antibody` varchar(255) NULL,
+			`hbs_ag` varchar(255) NULL,
+			`hcv` varchar(255) NULL,
+			`hiv` varchar(255) NULL,
+			`sodium` varchar(255) NULL,
+			`s_billi` varchar(255) NULL,
+			`sgpt` varchar(255) NULL,
+			`alk_phos` varchar(255) NULL,
+			`uric_acid` varchar(255) NULL,
+			`created_date` DATETIME NOT NULL,
+			PRIMARY KEY (`id`),
+			CONSTRAINT patient_dialysis_form_details_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+	<diff>
+		<version>0.5</version>
+		<author>Shubham Goyal</author>
+		<date>Nov 25th 2020</date>
+		<description>Table to record values for Haemodialysis Form</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS patient_haemodialysis_form (
+			`id` INT(11) auto_increment NOT NULL,
+			`patient_id` INT(11) NOT NULL,
+			`bicarbonate_acetate` varchar(50) NULL,
+			`new_reuse` varchar(50) NULL,
+			`per_acetic_acid_test` varchar(50) NULL,
+			`dry_weight` varchar(50) NULL,
+			`pre_dialysis_weight` varchar(50) NULL,
+			`post_dialysis_weight` varchar(50) NULL,
+			`crepitation` varchar(50) NULL,
+			`vomiting` varchar(50) NULL,
+			`started_at` varchar(50) NULL,
+			`staff_name` varchar(50) NULL,
+			`dyspnoea` varchar(50) NULL,
+			`bleeding` varchar(50) NULL,
+			`jvp` varchar(50) NULL,
+			`stopped_at` varchar(50) NULL,
+			`staff_name_two` varchar(50) NULL,
+			`fever` varchar(50) NULL,
+			`flaps` varchar(50) NULL,
+			`pericarditis` varchar(50) NULL,
+			`hiv` varchar(50) NULL,
+			`hbsag` varchar(50) NULL,
+			`hcv` varchar(50) NULL,
+			`pre_hd_pulse` varchar(50) NULL,
+			`vascular_access` varchar(50) NULL,
+			`afv` varchar(50) NULL,
+			`av_shunt` varchar(50) NULL,
+			`ijv` varchar(50) NULL,
+			`subclavian_femoral_graft` varchar(50) NULL,
+			`dialysis_plan` varchar(50) NULL,
+			`number_of_dialysis_used` varchar(50) NULL,
+			`duration` varchar(50) NULL,
+			`number_of_tubings_used` varchar(50) NULL,
+			`blood_flow_rate` varchar(50) NULL,
+			`uf` varchar(50) NULL,
+			`injections` varchar(50) NULL,
+			`heparin_dose` varchar(50) NULL,
+			`blood_transfusion` varchar(50) NULL,
+			`post_dialysis_bp` varchar(50) NULL,
+			`note` varchar(50) NULL,
+			`next_dialysis_date` DATETIME NULL,
+			`created_date` DATETIME NOT NULL,
+			PRIMARY KEY (`id`),
+			CONSTRAINT patient_haemodialysis_form_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+			CREATE TABLE IF NOT EXISTS patient_haemodialysis_form_details (
+			`id` INT(11) auto_increment NOT NULL,
+			`patient_haemodialysis_form_id` INT(11) NOT NULL,
+			`bp` varchar(50) NULL,
+			`pulse` varchar(50) NULL,
+			`tmp` varchar(50) NULL,
+			`vp` varchar(50) NULL,
+			`created_date` DATETIME NOT NULL,
+			PRIMARY KEY (`id`),
+			CONSTRAINT patient_haemodialysis_form_details_fk FOREIGN KEY (patient_haemodialysis_form_id) REFERENCES patient_haemodialysis_form(id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+	<diff>
+		<version>0.6</version>
+		<author>Shubham Goyal</author>
+		<date>Dec 15th 2020</date>
+		<description>Table to record values for Dialysis summary form</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS patient_dialysis_summary_form (
+			`id` INT(11) auto_increment NOT NULL,
+			`patient_id` INT(11) NOT NULL,
+			`blood_group` varchar(50) NULL,
+			`diagnosis` longtext NULL,
+			`vascular_access` varchar(255) NULL,
+			`dry_weight_hd` varchar(50) NULL,
+			`frequency_hours_hd` varchar(50) NULL,
+			`blood_flow_rate` varchar(50) NULL,
+			`heparin` varchar(50) NULL,
+			`complication_hd` longtext NULL,
+			`hbv_vaccination` varchar(50) NULL,
+			`hd_start_date` DATETIME NULL,
+			`latest_investigation` longtext NULL,
+			`medications` longtext NULL,
+			`created_date` DATETIME NOT NULL,
+			PRIMARY KEY (`id`),
+			CONSTRAINT patient_dialysis_summary_form_fk FOREIGN KEY (patient_id) REFERENCES patient(patient_id)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 </sqldiff>

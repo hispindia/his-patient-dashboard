@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.api.db.DAOException;
+import org.openmrs.module.patientdashboard.model.PatientDialysisFormDetail;
+import org.openmrs.module.patientdashboard.model.PatientDialysisSummaryForm;
+import org.openmrs.module.patientdashboard.model.PatientHaemodialysisForm;
+import org.openmrs.module.patientdashboard.model.PatientHaemodialysisFormDetail;
 import org.openmrs.module.patientdashboard.model.PatientHepatitisBDetail;
 import org.openmrs.module.patientdashboard.model.PatientReferralDetail;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,4 +49,76 @@ public interface OPDFormsService extends OpenmrsService {
      * @throws ParseException
      */
     public List<Map<String, Object>> getPatientReferralDetails(Integer patientId) throws ParseException;
+
+    /**
+     * Save patient dialysis form detail
+     * 
+     * @param patientDialysisFormDetail
+     * @return
+     */
+    public PatientDialysisFormDetail savePatientDialysisFormDetail(PatientDialysisFormDetail patientDialysisFormDetail);
+
+    /**
+     * Get list of patient dialysis forms details
+     * 
+     * @param patientId
+     * @return
+     * @throws ParseException
+     */
+    public List<Map<String, Object>> getPatientDialysisFormDetails(Integer patientId) throws ParseException;
+
+    /**
+     * Save patient heamodialysis form
+     * 
+     * @param patientHeamodialysisForm
+     * @return
+     */
+    public PatientHaemodialysisForm savePatientHeamodialysisForm(PatientHaemodialysisForm patientHaemodialysisForm);
+
+    public PatientHaemodialysisForm getPatientHaemodialysisFormById(Integer id) throws DAOException;
+
+    /**
+     * Get list of patient haemodialysis forms
+     * 
+     * @param patientId
+     * @return
+     * @throws ParseException
+     */
+    public List<Map<String, Object>> getPatientHaemodialysisForms(Integer patientId) throws ParseException;
+
+    /**
+     * Save patient haemodialysis form details
+     * 
+     * @param patientHaemodialysisFormDetail
+     * @return
+     */
+    public PatientHaemodialysisFormDetail savePatientHaemodialysisFormDetail(
+            PatientHaemodialysisFormDetail patientHaemodialysisFormDetail);
+
+    /**
+     * Get list of patient haemodialysis form details
+     * 
+     * @param patientId
+     * @return
+     * @throws ParseException
+     */
+    public List<Map<String, Object>> getPatientHaemodialysisFormDetails(Integer patientHaemodialysisFormId)
+            throws ParseException;
+
+    /**
+     * Save patient dialysis summary form
+     * 
+     * @param patientDialysisSummaryForm
+     * @return
+     */
+    public PatientDialysisSummaryForm savePatientDialysisSummaryForm(
+            PatientDialysisSummaryForm patientDialysisSummaryForm);
+
+    /**
+     * 
+     * @param id
+     * @return List of dialysis forms
+     * @throws ParseException
+     */
+    public List<Map<String, Object>> getPatientDialysisSummaryForms(Integer patientId) throws ParseException;
 }
